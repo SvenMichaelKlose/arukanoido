@@ -5,8 +5,6 @@
 add_sprite:
     stx add_sprite_x
     sty add_sprite_y
-    txa
-    jsr assert_sprite_index
 
     ldy #@(-- num_sprites)
 l:  lda sprite_rr
@@ -46,8 +44,6 @@ remove_sprite_regs_already_saved:
 ; X: sprite index
 ; Y: low address byte of descriptor of new sprite in sprite_inits
 replace_sprite:
-    txa
-    jsr assert_sprite_index
     lda #sprites_x          ; Copy descriptor to sprite table.
     sta @(++ +selfmod)
 l:  lda sprite_inits,y
@@ -149,9 +145,3 @@ m1: jsr $1234
 n1: dex
     bpl -l1
     rts
-
-assert_sprite_index:
-    and #$f0
-    beq +n
-l:  bne -l
-n:  rts

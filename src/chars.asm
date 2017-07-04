@@ -34,6 +34,34 @@ end
     sta @(++ d)
     rts
 
+; Get address of character in charset.
+get_char_addr_s:
+    sta tmp
+    asl
+    asl
+    asl
+if @*add-charset-base?*
+    clc
+    adc #<charset
+    php
+end
+    sta s
+    lda tmp
+    lsr
+    lsr
+    lsr
+    lsr
+    lsr
+if @*add-charset-base?*
+    plp
+    adc #>charset
+end
+if @(not *add-charset-base?*)
+    ora #>charset
+end
+    sta @(++ s)
+    rts
+
 ; We've run out of chars. Reset allocation.
 alloc_wrap:
     lda spriteframe

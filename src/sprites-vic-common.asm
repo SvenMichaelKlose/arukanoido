@@ -10,7 +10,7 @@ end
 
     lda #0
     sta foreground_collision
-    jsr draw_sprite
+    jsr draw_huge_sprite
     lda sprites_i,x
     ora foreground_collision
     sta sprites_i,x

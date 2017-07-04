@@ -56,8 +56,6 @@ l:  ora (d),y
 
 blit_char:
     ldy #7
-blit_copy:
-    sta s
 l1: lda (s),y
     sta (d),y
     dey

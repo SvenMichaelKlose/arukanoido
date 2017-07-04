@@ -1,3 +1,4 @@
+    0 0
 vaus_directions:
     168
     168 168 168 168
@@ -5,6 +6,8 @@ vaus_directions:
     112 112 112 112
     88 88 88 88
     88
+
+    0 0
 
 vaus_directions_extended:
     168
@@ -17,6 +20,8 @@ vaus_directions_extended:
     88 88 88 88
     88 88 88 88
     88
+
+    0 0
 
 ctrl_ball:
     lda caught_ball

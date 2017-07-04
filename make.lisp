@@ -5,6 +5,13 @@
 (var *show-cpu?* nil)
 (var *make-only-vic?* t)
 
+(fn gen-sprite-nchars ()
+  (with-queue q
+    (dotimes (a 8)
+      (dotimes (b 8)
+        (enqueue q (* a b))))
+    (queue-list q)))
+
 (fn ascii2pixcii (x)
   (@ [?
        (== 32 (char-code _))  (code-char 255)
@@ -601,8 +608,10 @@
                           "sprites.asm"
                           "sprites-vic-common.asm"
                           "sprites-vic.asm"
+                          "sprites-vic-huge.asm"
                           "music.asm"
                           "digisound.asm"
+                          "joystick.asm"
 
                           ; Level display
                           "lifes.asm"
@@ -619,7 +628,7 @@
                           "laser.asm"
                           "ball.asm"
                           "bonus.asm"
-                          "distractor.asm"
+                          "obstacle.asm"
 
                           ; Top level
                           "irq.asm"

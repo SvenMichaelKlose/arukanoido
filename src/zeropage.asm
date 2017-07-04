@@ -105,14 +105,15 @@ has_hiscore:          0
 
 score:      fill num_score_digits
 
-sprites_x:  fill num_sprites  ; X positions.
-sprites_y:  fill num_sprites  ; Y positions.
-sprites_i:  fill num_sprites  ; Flags.
-sprites_c:  fill num_sprites  ; Colors.
-sprites_l:  fill num_sprites  ; Low character addresses.
-sprites_fl: fill num_sprites  ; Function controlling the sprite (low).
-sprites_fh: fill num_sprites  ; Function controlling the sprite (high).
-sprites_d:  fill num_sprites  ; Whatever the controllers want.
+sprites_x:          fill num_sprites  ; X positions.
+sprites_y:          fill num_sprites  ; Y positions.
+sprites_i:          fill num_sprites  ; Flags.
+sprites_c:          fill num_sprites  ; Colors.
+sprites_l:          fill num_sprites  ; Low character addresses.
+sprites_fl:         fill num_sprites  ; Function controlling the sprite (low).
+sprites_fh:         fill num_sprites  ; Function controlling the sprite (high).
+sprites_dimensions: fill num_sprites  ; %0000rrcc
+sprites_d:          fill num_sprites  ; Whatever the controllers want.
 
     @(check-zeropage-size (- #x00fc num_score_digits))
     org @(- #x00fc num_score_digits)
@@ -125,7 +126,18 @@ sprites_dx:     fill num_sprites ; Whatever the controllers want.
 sprites_dy:     fill num_sprites ; Whatever the controllers want.
 sprites_ox:     fill num_sprites ; Former X positions for cleaning up.
 sprites_oy:     fill num_sprites ; Former Y positions for cleaning up.
+sprites_width:  fill num_sprites ; Width in chars.
+sprites_height: fill num_sprites ; Height in rows.
 
+sprite_char:        0   ; Current sprite: First char.
+sprite_x:           0   ; Current sprite: X position (text).
+sprite_y:           0   ; Current sprite: Y position (text).
+sprite_cols:        0   ; Current sprite: total width in chars.
+sprite_inner_cols:  0   ; Current sprite: width in chars.
+sprite_rows:        0   ; Current sprite: total height in chars.
+sprite_inner_rows:  0   ; Current sprite: height in chars.
+sprite_lines:       0   ; Current sprite: total height in lines.
+sprite_inner_lines: 0   ; Current sprite: height in lines.
     end
 
 ; Minigrafik viewer
