@@ -20,17 +20,22 @@ n:  cmp #@(+ is_inactive was_cleared)
 
     ; Remove remaining chars of sprites in old frame.
     lda sprites_ox,x
-    sta scrx                ; (upper left)
-    lda sprites_oy,x
+    sta scrx
+l2: lda sprites_oy,x
     sta scry
-    jsr scraddr_clear_char
-    inc scrx                ; (upper right)
-    jsr clear_char
-    dec scrx                ; (bottom left)
+    lda sprite_rows
+    sta tmp2
+
+l3: jsr scraddr_clear_char
+    inc tmp
     inc scry
-    jsr scraddr_clear_char
-    inc scrx                ; (bottom right)
-    jsr clear_char
+    dec tmp2
+    bpl -l3
+
+    inc scrx
+    dec sprite_cols
+    bpl -l2
+
 
     ; Save current position as old one.
     jsr xpixel_to_char

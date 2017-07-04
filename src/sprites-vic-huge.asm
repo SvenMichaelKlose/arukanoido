@@ -65,7 +65,6 @@ l:  sta sprite_char
     and #foreground
     cmp #foreground                                                                                          
     bne +n
-stop:
     lda spriteframe
     ora #first_sprite_char
     sta next_sprite_char
@@ -182,6 +181,8 @@ plot_chars:
     sta tmp
     lda sprite_x
     sta scrx
+    lda sprite_cols
+    sta tmp3
 
 l2: lda sprite_y
     sta scry
@@ -203,7 +204,7 @@ n:  inc tmp
     bne -l
 
     inc scrx
-    dec sprite_cols
+    dec tmp3
     bne -l2
 
     rts
