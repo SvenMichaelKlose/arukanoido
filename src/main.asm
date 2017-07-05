@@ -103,6 +103,7 @@ retry:
     sta snd_reflection
     sta framecounter
     sta @(++ framecounter)
+    sta num_obstacles
     lda #1
     sta balls
     sta sfx_reflection
@@ -176,3 +177,13 @@ n:  jsr random              ; Improve randomness and avoid CRTC hsync wobble.
     sta has_new_score
     jsr display_score
     jmp mainloop
+
+show_charset:
+    ldx #0
+l:  txa
+    sta @(+ screen 34),x
+    lda #1
+    sta @(+ colors 34),x
+    dex
+    bne -l
+    rts

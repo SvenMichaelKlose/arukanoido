@@ -27,7 +27,6 @@ l2: lda sprites_oy,x
     sta tmp2
 
 l3: jsr scraddr_clear_char
-    inc tmp
     inc scry
     dec tmp2
     bpl -l3
@@ -35,7 +34,6 @@ l3: jsr scraddr_clear_char
     inc scrx
     dec sprite_cols
     bpl -l2
-
 
     ; Save current position as old one.
     jsr xpixel_to_char

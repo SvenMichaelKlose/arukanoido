@@ -158,7 +158,7 @@ bonus_p:
     %10011010
     %00101000
 
-obstacle_ball_top:
+obstacle_ball:
     %00011000
     %00100100
     %01000010
@@ -168,7 +168,6 @@ obstacle_ball_top:
     %10000001
     %10000001
 
-obstacle_ball_bottom:
     %10000001
     %10000001
     %10000001

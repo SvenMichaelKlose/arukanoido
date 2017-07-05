@@ -12,7 +12,7 @@ is_inactive  = 128
 was_cleared  = 64
 fg_collision = 32
 is_ball      = 8
-is_distrator = 4
+is_obstacle  = 4
 is_bonus     = 2
 is_vaus      = 1
 
@@ -32,10 +32,8 @@ laser_init:
     0 vaus_y  0           white      <laser       <ctrl_laser >ctrl_laser 9 0
 bonus_init:
     0 0       is_bonus    black      <bonus_l     <ctrl_bonus >ctrl_bonus 9 0
-obstacle_ball_top_init:
-    30 24     is_distrator white      <obstacle_ball_top     <ctrl_obstacle_top >ctrl_obstacle_top 9 0
-obstacle_ball_bottom_init:
-    30 24     is_distrator white      <obstacle_ball_bottom  <ctrl_obstacle_bottom >ctrl_obstacle_bottom 9 0
+obstacle_ball_init:
+    28 24     is_obstacle white      <obstacle_ball  <ctrl_obstacle >ctrl_obstacle 17 0
 dummy_init:
     0 0       is_inactive  black      0            <ctrl_dummy >ctrl_dummy 9 0
 sprite_inits_end:

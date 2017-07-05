@@ -63,6 +63,7 @@ vaus_width:           0
 level:                0
 bricks_left:          0
 bricks_until_bonus:   0
+num_obstacles:        0
 
 collision_y_distance: 0
 collision_x_distance: 0

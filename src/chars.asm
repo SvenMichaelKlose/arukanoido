@@ -143,13 +143,13 @@ scraddr_clear_char:
     jsr scrcoladdr
 
 clear_char:
-    jsr test_position
-    bcs +l
+;    jsr test_position
+;    bcs +l
     lda (scr),y
     beq +l              ; Nothing to clear…
     and #foreground
     cmp #foreground
-    beq +l              ; On scrolling foreground…
+    beq +l              ; Don't remove foreground chars…
     lda (scr),y
     and #framemask
     cmp spriteframe
