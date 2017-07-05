@@ -8,7 +8,7 @@ test_vaus_hit_right:
 n:  cmp #@(* (- screen_columns 3) 8)
 r:  rts
 
-ctrl_vaus_left:
+ctrl_vaus:
     lda #0              ; Fetch joystick status.
     sta $9113
     lda $9111
@@ -152,46 +152,20 @@ n:  lda #@(* (- screen_columns 1) 8)
     sta sprites_x,x
     rts
 
-ctrl_vaus_middle:
-    lda @(+ sprites_x spriteidx_vaus_left)
-    clc
-    adc #8
-    sta sprites_x,x
-    rts
-
-ctrl_vaus_right:
-    lda @(+ sprites_x spriteidx_vaus_left)
-    sec
-    sbc #8
-    clc
-    adc vaus_width
-    sta sprites_x,x
-    rts
-
-spriteidx_vaus_left = @(- num_sprites 1)
-spriteidx_vaus_right = @(- num_sprites 2)
+spriteidx_vaus = @(- num_sprites 1)
 
 make_vaus:
-    ldx #spriteidx_vaus_left
-    ldy #@(- vaus_left_init sprite_inits)
+    ldx #spriteidx_vaus
+    ldy #@(- vaus_init sprite_inits)
     jsr replace_sprite 
-    ldx #spriteidx_vaus_right
-    ldy #@(- vaus_right_init sprite_inits)
-    jmp replace_sprite 
 
 set_vaus_color:
-    lda #<vaus_left
-    sta @(+ sprites_l spriteidx_vaus_left)
-    lda #<vaus_right
-    sta @(+ sprites_l spriteidx_vaus_right)
     lda mode
     cmp #mode_laser
     bne +n
     lda framecounter
     lsr
     bcs +n
-    lda #<vaus_left_laser
-    sta @(+ sprites_l spriteidx_vaus_left)
-    lda #<vaus_right_laser
-    sta @(+ sprites_l spriteidx_vaus_right)
+    lda #<vaus_laser
+    sta @(+ sprites_l spriteidx_vaus)
 n:  rts

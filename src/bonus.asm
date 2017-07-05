@@ -37,9 +37,11 @@ n:
     bne +n
     txa
     pha
-    ldx vaus_middle_idx
-    jsr remove_sprite
-    ldx #spriteidx_vaus_left
+    ldx #spriteidx_vaus
+    lda #<vaus
+    sta sprites_l,x
+    lda #10
+    sta sprites_dimensions,x
     lda sprites_x,x
     clc
     adc #4
@@ -89,13 +91,15 @@ apply_bonus_l:
     rts
 
 apply_bonus_e:
-    ldy #spriteidx_vaus_left
+    ldy #spriteidx_vaus
     lda sprites_x,y
     sec
     sbc #4
     sta sprites_x,y
-    ldy #@(- vaus_middle_init sprite_inits)
-    jsr add_sprite
+    lda #<vaus_extended
+    sta sprites_l,y
+    lda #11
+    sta sprites_dimensions,y
     cmp #255
     bne +n
     jsr remove_bonuses  ; No slots left, last resort.
