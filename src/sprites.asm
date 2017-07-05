@@ -20,7 +20,7 @@ l:  lda sprite_rr
 
 sprite_added:
     txa
-    ldx add_sprite_x
+r:  ldx add_sprite_x
     ldy add_sprite_y
     rts
 
@@ -37,7 +37,9 @@ remove_sprite:
     sty add_sprite_y
 
 remove_sprite_regs_already_saved:
-    ldy #@(- dummy_init sprite_inits)
+    lda #is_inactive
+    sta sprites_i,x
+    jmp -r
 
 ; Replace sprite by another.
 ;
@@ -132,7 +134,9 @@ ok: rts
 call_sprite_controllers:
     ; Call the functions that control sprite behaviour.
     ldx #@(-- num_sprites)
-l1: lda sprites_fh,x
+l1: lda sprites_i,x
+    bmi +n1
+    lda sprites_fh,x
     sta @(+ +m1 2)
     lda sprites_fl,x
     sta @(++ +m1)

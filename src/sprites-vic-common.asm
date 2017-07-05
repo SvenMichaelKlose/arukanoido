@@ -18,6 +18,11 @@ end
 n:  cmp #@(+ is_inactive was_cleared)
     beq +n
 
+if @*show-cpu?*
+    lda #@(+ 8 1)
+    sta $900f
+end
+ 
     ; Remove remaining chars of sprites in old frame.
     lda sprites_ox,x
     sta scrx
