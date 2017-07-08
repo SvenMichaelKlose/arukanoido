@@ -48,6 +48,12 @@ n:
     sta sprite_lines
 n:
 
+    ; Save dimensions for cleanup.
+    lda sprite_cols
+    sta sprites_w,x
+    lda sprite_rows
+    sta sprites_h,x
+
     ; Allocate chars.
     lda next_sprite_char
 l:  sta sprite_char

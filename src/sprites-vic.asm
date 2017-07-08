@@ -12,7 +12,10 @@ draw_sprite:
     sta curcol
 
     ; Calculate text position.
-    jsr xpixel_to_char
+    lda sprites_x,x
+    lsr
+    lsr
+    lsr
     sta scrx
     lda sprites_y,x
     lsr

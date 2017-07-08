@@ -104,26 +104,56 @@ out:rts
 ; Y: Sprite index of other sprite.
 find_hit:
     stx tmp
+
+    ; Get opposite corner's coordinates of sprite.
+    lda sprites_dimensions,x
+    and #%111
+    asl
+    asl
+    asl
+    clc
+    adc sprites_x,x
+    sta tmp2
+
+    lda sprites_dimensions,x
+    and #%111000
+    clc
+    adc sprites_y,x
+    sta tmp3
+
     ldy #@(-- num_sprites)
 
 l:  cpy tmp             ; Skip same sprite.
     beq +n
-    lda sprites_i,y     ; Skip decorative sprite.
+
+    lda sprites_i,y     ; Skip inactive sprite.
     bmi +n
 
-    lda sprites_x,x     ; Get X distance.
-    sec
-    sbc sprites_x,y
-    jsr abs
-    cmp collision_x_distance
-    bcs +n             ; Too far off horizontally...
+    lda sprites_x,y
+    cmp tmp2
+    bcs +n
+    lda sprites_dimensions,y
+    and #%111
+    asl
+    asl
+    asl
+    clc
+    adc sprites_x,y
+    cmp sprites_x,x
+    bcc +n
 
-    lda sprites_y,x     ; Get Y distance.
-    sec
-    sbc sprites_y,y
-    jsr abs
-    cmp collision_y_distance
-    bcc +ok             ; Got one!
+    lda sprites_y,y
+    cmp tmp3
+    bcs +n
+    lda sprites_dimensions,y
+    and #%111000
+    clc
+    adc sprites_y,y
+    cmp sprites_y,x
+    bcc +n
+
+    clc
+    rts
 
 n:  dey
     bpl -l
@@ -141,9 +171,6 @@ l1: lda sprites_i,x
     lda sprites_fl,x
     sta @(++ +m1)
     stx call_controllers_x
-    lda #8
-    sta collision_x_distance
-    sta collision_y_distance
 m1: jsr $1234
     ldx call_controllers_x
 n1: dex

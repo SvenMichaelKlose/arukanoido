@@ -5,9 +5,9 @@ control_obstacles:
     ldy #@(- obstacle_ball_init sprite_inits)
     jsr add_sprite
     inc num_obstacles
-
 done:
     rts
 
 ctrl_obstacle:
+    inc sprites_x,x
     rts

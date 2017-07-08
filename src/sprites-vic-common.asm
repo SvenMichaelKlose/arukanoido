@@ -14,26 +14,32 @@ end
     lda sprites_i,x
     ora foreground_collision
     sta sprites_i,x
+n:
 
-n:  cmp #@(+ is_inactive was_cleared)
+    cmp #@(+ is_inactive was_cleared)
     beq +n
 
 if @*show-cpu?*
     lda #@(+ 8 1)
     sta $900f
 end
- 
+
     ; Remove remaining chars of sprites in old frame.
+    lda sprites_ow,x
+    sta sprite_cols
+
+    lda sprites_oh,x
+    sta sprite_rows
+    
     lda sprites_ox,x
     sta scrx
+
 l2: lda sprites_oy,x
     sta scry
-    lda sprite_rows
-    sta tmp2
 
 l3: jsr scraddr_clear_char
     inc scry
-    dec tmp2
+    dec sprite_rows
     bpl -l3
 
     inc scrx
@@ -41,11 +47,20 @@ l3: jsr scraddr_clear_char
     bpl -l2
 
     ; Save current position as old one.
-    jsr xpixel_to_char
+    lda sprites_x,x
+    lsr
+    lsr
+    lsr
     sta sprites_ox,x
     lda sprites_y,x
-    jsr pixel_to_char
+    lsr
+    lsr
+    lsr
     sta sprites_oy,x
+    lda sprites_w,x
+    sta sprites_ow,x
+    lda sprites_h,x
+    sta sprites_oh,x
 
     lda sprites_i,x
     ora #was_cleared
@@ -60,14 +75,6 @@ end
 
     dex
     bpl -l
-    rts
-
-xpixel_to_char:
-    lda sprites_x,x
-pixel_to_char:
-    lsr
-    lsr
-    lsr
     rts
 
 clear_sprites:

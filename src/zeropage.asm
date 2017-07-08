@@ -65,9 +65,6 @@ bricks_left:          0
 bricks_until_bonus:   0
 num_obstacles:        0
 
-collision_y_distance: 0
-collision_x_distance: 0
-
 joystick_status:      0
 
 last_random_value:    0   ; Random number generator's last returned value.
@@ -127,18 +124,24 @@ sprites_dx:     fill num_sprites ; Whatever the controllers want.
 sprites_dy:     fill num_sprites ; Whatever the controllers want.
 sprites_ox:     fill num_sprites ; Former X positions for cleaning up.
 sprites_oy:     fill num_sprites ; Former Y positions for cleaning up.
-sprites_width:  fill num_sprites ; Width in chars.
-sprites_height: fill num_sprites ; Height in rows.
+sprites_iw:     fill num_sprites ; Width in chars.
+sprites_ih:     fill num_sprites ; Height in rows.
+sprites_w:      fill num_sprites ; Total width in chars.
+sprites_h:      fill num_sprites ; Total height in rows.
+sprites_ow:     fill num_sprites ; Width in chars.
+sprites_oh:     fill num_sprites ; Height in rows.
 
-sprite_char:        0   ; Current sprite: First char.
-sprite_x:           0   ; Current sprite: X position (text).
-sprite_y:           0   ; Current sprite: Y position (text).
-sprite_cols:        0   ; Current sprite: total width in chars.
-sprite_inner_cols:  0   ; Current sprite: width in chars.
-sprite_rows:        0   ; Current sprite: total height in chars.
-sprite_inner_rows:  0   ; Current sprite: height in chars.
-sprite_lines:       0   ; Current sprite: total height in lines.
-sprite_inner_lines: 0   ; Current sprite: height in lines.
+; Currently processed sprite
+sprite_char:        0   ; First char.
+sprite_x:           0   ; X position (text).
+sprite_y:           0   ; Y position (text).
+sprite_cols:        0   ; total width in chars.
+sprite_inner_cols:  0   ; width in chars.
+sprite_rows:        0   ; total height in chars.
+sprite_inner_rows:  0   ; height in chars.
+sprite_width:       0   ; Width in pixels.
+sprite_lines:       0   ; total height in lines.
+sprite_inner_lines: 0   ; height in lines.
     end
 
 ; Minigrafik viewer
