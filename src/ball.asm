@@ -32,9 +32,8 @@ ctrl_ball:
 l:  tya
     pha
     jsr ctrl_ball_subpixel
-    lda sprites_fl,x
-    cmp #<ctrl_ball
-    bne +e              ; Ball sprite has been removed…
+    lda sprites_i,x
+    bmi +e              ; Ball sprite has been removed…
     pla
     tay
     dey
@@ -222,7 +221,7 @@ still_balls_left:
     bne +r
     lda #0              ; Reset from disruption bonus.
     sta mode
-r:  jsr remove_sprite
+r:  jmp remove_sprite
 
 play_reflection_sound:
     lda has_hit_brick
