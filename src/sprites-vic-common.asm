@@ -25,17 +25,15 @@ if @*show-cpu?*
 end
 
     ; Remove remaining chars of sprites in old frame.
+    lda sprites_ox,x
+    sta scrx
     lda sprites_ow,x
     sta sprite_cols
 
-    lda sprites_oh,x
-    sta sprite_rows
-    
-    lda sprites_ox,x
-    sta scrx
-
 l2: lda sprites_oy,x
     sta scry
+    lda sprites_oh,x
+    sta sprite_rows
 
 l3: jsr scraddr_clear_char
     inc scry
@@ -81,12 +79,14 @@ clear_sprites:
     ldx #0
 l:  lda screen,x
     and #foreground
-    bne +n
+    cmp #foreground
+    beq +n
     lda #0
     sta screen,x
 n:  lda @(+ 258 screen),x
     and #foreground
-    bne +n
+    cmp #foreground
+    beq +n
     lda #0
     sta @(+ 258 screen),x
 n:  dex
