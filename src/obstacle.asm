@@ -24,7 +24,18 @@ ctrl_obstacle:
 
 float:
     jsr ball_step
-    jmp ball_step
+    jsr ball_step
+
+    ; Check on collision with background.
+    ; Check on collision with other obstacle or Vaus.
+    jsr find_hit
+    bcs +done
+    lda sprites_i,y
+    and #is_vaus
+    beq +done
+remove_obstacle:
+    dec num_obstacles
+    jmp remove_sprite
 
 done:
     rts
