@@ -7,7 +7,7 @@ control_obstacles:
     ldy #@(- obstacle_ball_init sprite_inits)
     jsr add_sprite
     tax
-    lda #255        ; Obstacle is moving in.
+    lda #32        ; Direction
     sta sprites_d,x
     inc num_obstacles
 done:
@@ -15,19 +15,20 @@ done:
 
 ctrl_obstacle:
     lda framecounter
-    and #%11
-    bne +done
+    lsr
+    bcs +done
 
-    lda sprites_d,x
-    bpl +n
+    lda sprites_y,x
+    cmp #24
+    bcs +float
 
     ; Move obstacle in.
     inc sprites_y,x
-    lda sprites_y,x
-    cmp #24
-    bne +done
-    lda #0          ; Obstacle done moving in.
-    sta sprites_d,x
+    rts
+
+float:
+    jmp ball_step
+
 done:
     rts
 
