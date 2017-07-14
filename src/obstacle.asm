@@ -14,10 +14,6 @@ done:
     rts
 
 ctrl_obstacle:
-    lda framecounter
-    lsr
-    bcs +done
-
     lda sprites_y,x
     cmp #24
     bcs +float
@@ -27,6 +23,7 @@ ctrl_obstacle:
     rts
 
 float:
+    jsr ball_step
     jmp ball_step
 
 done:
