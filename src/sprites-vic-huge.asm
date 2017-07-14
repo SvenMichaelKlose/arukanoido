@@ -195,7 +195,10 @@ l2: lda sprite_y
     lda sprite_rows
     sta tmp2
 
-l:  jsr scrcoladdr
+l:  lda scry
+    cmp #1
+    bcc +n
+    jsr scrcoladdr
     lda (scr),y
     and #foreground
     cmp #foreground
