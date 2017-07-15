@@ -44,6 +44,8 @@ n:  jsr play_music
     jsr set_vaus_color
     lda is_running_game
     beq +n
+    lda bricks_left
+    beq +n
     jsr call_sprite_controllers
     jsr rotate_bonuses
     lda #1
