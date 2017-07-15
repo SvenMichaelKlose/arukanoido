@@ -1,4 +1,7 @@
 ctrl_laser:
+    lda #1
+    sta is_testing_laser_hit
+
     ; We check two collisions, on the left and the right, so we need this flag.
     lda #0              ; No brick hit.
     sta laser_has_hit
@@ -32,6 +35,12 @@ m:  lda laser_has_hit
     ora has_hit_golden_brick
     bne +n
     lda #8
-    jmp sprite_up
+    jsr sprite_up
+    jmp +done
 
-n:  jmp remove_sprite   ; Remove laser sprite.
+n:  jsr remove_sprite   ; Remove laser sprite.
+
+done:
+    lda #0
+    sta is_testing_laser_hit
+    rts

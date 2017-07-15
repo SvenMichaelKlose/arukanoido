@@ -96,6 +96,7 @@ has_hit_vaus:         0
 num_brick_hits:       0
 
 laser_has_hit:        0   ; For the laser controller to remember if it hit one the left.
+is_testing_laser_hit: 0
 
 vaus_middle_idx:      0   ; Index of middle sprite of extended Vaus.
 

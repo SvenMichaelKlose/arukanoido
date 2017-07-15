@@ -40,8 +40,11 @@ l:  ldy #@(- score_50 scores)
     jmp +o
 
 remove_brick:
+    lda is_testing_laser_hit
+    bne +n
     inc num_brick_hits
     jsr adjust_ball_speed
+n:
 
     lda (col),y
     and #$0f
