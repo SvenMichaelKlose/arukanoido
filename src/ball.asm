@@ -349,6 +349,19 @@ n:
     rts
 
 release_ball:
+    ; Correct X position.
+    ldy caught_ball
+    lda sprites_x,y
+    cmp #@(- (* (-- screen_columns) 8) 3)
+    bcc +n
+    lda #@(- (* (-- screen_columns) 8) 3)
+    sta sprites_x,y                                                                                               
+n:  cmp #7
+    bcs +n
+    lda #8
+    sta sprites_x,y                                                                                               
+n:
+
     lda #255
     sta caught_ball
     lda #snd_reflection_low
