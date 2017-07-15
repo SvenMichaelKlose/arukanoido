@@ -116,14 +116,11 @@ apply_bonus_c:
     rts
 
 apply_bonus_s:
-    lda ball_speed
-    cmp #min_ball_speed
-    beq +n
-    dec ball_speed
+    lda #min_ball_speed
+    sta ball_speed
     lda #0              ; Time acceleration back to default.
-    sta framecounter
-    sta @(++ framecounter)
-n:  rts
+    sta num_brick_hits
+    rts
 
 apply_bonus_b:
     inc mode_break
