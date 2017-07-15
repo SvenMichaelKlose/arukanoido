@@ -26,12 +26,7 @@ ctrl_bonus:
     ; Release caught ball.
     lda caught_ball
     bmi +n
-    lda #255
-    sta caught_ball
-    lda #snd_reflection_low
-    jsr play_sound
-    lda #0
-    sta sfx_reflection
+    jsr release_ball
 n:
 
     ; Un-extend Vaus.

@@ -23,9 +23,13 @@ vaus_directions_extended:
 
     0 0
 
+l:  dec ball_release_timer
+    bne +r
+    jsr release_ball
+
 ctrl_ball:
     lda caught_ball
-    bpl +r
+    bpl -l
 
     ; Call the ball controller ball_speed times.
     ldy ball_speed
@@ -103,6 +107,8 @@ m:  sta sprites_d,x
     lda #@(* 28 8)
     sta sprites_y,x
     jsr applied_reflection
+    lda #delay_until_ball_is_released
+    sta ball_release_timer
     lda #snd_caught_ball
     jmp play_sound
 
@@ -305,6 +311,8 @@ make_ball:
     sta @(+ ball_init sprite_init_gfx_l)
     lda #default_ball_direction
     sta @(+ ball_init sprite_init_data)
+    lda #initial_delay_until_ball_is_released
+    sta ball_release_timer
     ldx #@(- num_sprites 3)
     stx caught_ball
     ldy #@(- ball_init sprite_inits)
@@ -338,4 +346,13 @@ n:
 
     pla
     tay
+    rts
+
+release_ball:
+    lda #255
+    sta caught_ball
+    lda #snd_reflection_low
+    jsr play_sound
+    lda #0
+    sta sfx_reflection
     rts

@@ -57,6 +57,7 @@ current_bonus:        0
 
 side_degrees:         0
 caught_ball:          0
+ball_release_timer:   0
 reflections_since_last_vaus_hit: 0
 vaus_width:           0
 

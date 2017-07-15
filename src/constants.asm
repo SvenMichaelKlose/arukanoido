@@ -42,6 +42,9 @@ ball_width              = 3
 ball_height             = 5
 vaus_edge_distraction   = 16
 
+initial_delay_until_ball_is_released = $a0
+delay_until_ball_is_released = $80
+
 ; Score settings
 
 num_score_digits    = 7
