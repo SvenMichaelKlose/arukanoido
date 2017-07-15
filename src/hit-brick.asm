@@ -40,6 +40,9 @@ l:  ldy #@(- score_50 scores)
     jmp +o
 
 remove_brick:
+    inc num_brick_hits
+    jsr adjust_ball_speed
+
     lda (col),y
     and #$0f
     tay

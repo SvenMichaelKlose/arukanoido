@@ -104,6 +104,7 @@ retry:
     sta framecounter
     sta @(++ framecounter)
     sta num_obstacles
+    sta num_brick_hits
     lda #1
     sta balls
     sta sfx_reflection

@@ -49,7 +49,6 @@ n:  jsr play_music
     lda #1
     sta has_moved_sprites
 
-    jsr adjust_ball_speed
     jsr control_obstacles
 
 n:  lda #$7f        ; Acknowledge IRQ.

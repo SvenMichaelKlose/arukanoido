@@ -310,19 +310,26 @@ make_ball:
     ldy #@(- ball_init sprite_inits)
     jmp replace_sprite
 
-; Reset ball speed when it's slow after 5 seconds.                                                           
+ball_accelerations_after_brick_hits:
+    $00 $0a $0f $14 $1e $28 $37 $50 $6e $87 $a0 $b9 $d2 $e6 $f5 $ff ; TODO: Check if $ff really terminates.
+
 adjust_ball_speed:
-    lda @(++ framecounter)
-    cmp #5
-    bne +n
-    lda ball_speed
+    txa
+    pha
+    ldx #0
+l:  lda ball_accelerations_after_brick_hits,x
+    cmp #$ff
+    beq +n
+    cmp num_brick_hits
+    beq +l
+    inx
+    jmp -l
+    
+l:  lda ball_speed
     cmp #max_ball_speed
     bcs +n                  ; Already at maximum speed. Do nothing…
     inc ball_speed          ; Play the blues…
-    lda is_using_paddle
-    beq +m
-    inc ball_speed
-m:  lda #0
-    sta framecounter
-    sta @(++ framecounter)
-n:  rts
+n:
+    pla
+    tax
+    rts

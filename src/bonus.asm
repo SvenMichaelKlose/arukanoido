@@ -7,6 +7,9 @@ bonus_colors:
     @(+ multicolor cyan)
     @(+ multicolor white)
 
+bonus_probabilities:    ; TODO: Use this.
+    $07 $df $3d $b9 $1b $5e   ; S C E D L B – P ???
+
 ctrl_bonus:
     lda sprites_y,x
     beq +r              ; Bonus left playfield…

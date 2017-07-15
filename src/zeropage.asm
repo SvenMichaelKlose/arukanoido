@@ -93,6 +93,7 @@ bricks_in_line:       0
 has_hit_brick:        0
 has_hit_golden_brick: 0
 has_hit_vaus:         0
+num_brick_hits:       0
 
 laser_has_hit:        0   ; For the laser controller to remember if it hit one the left.
 
