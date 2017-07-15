@@ -80,6 +80,8 @@ end
     sta @(++ current_level)
 
 next_level:
+    jsr wait_sound
+
     lda #0
     sta is_running_game
     inc level
