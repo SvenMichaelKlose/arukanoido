@@ -143,9 +143,23 @@ r:  rts
 handle_break_mode:
     lda mode_break
     beq +n
+
+    ; Remove all sprites except the Vaus.
+    ldy #@(-- num_sprites)
+l:  lda sprites_i,y
+    and #is_vaus
+    bne +m
+    lda #is_inactive
+    sta sprites_i,y
+m:  dey
+    bpl -l
+
+    lda #snd_round_break
+    jsr play_sound
     lda #0
     sta bricks_left
     rts
+
 n:  lda #@(* (- screen_columns 1) 8)
     sec
     sbc vaus_width

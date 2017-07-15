@@ -21,7 +21,7 @@ snd_doh_dissolving    = 13
 snd_growing_vaus      = 14
 snd_hit_distractor    = 15
 snd_laser             = 16
-snd_seventeen         = 17
+snd_round_break       = 17
 
 sound_priorities:
     0 ; no sound
