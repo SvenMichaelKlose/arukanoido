@@ -1,5 +1,7 @@
-len_round   = 9
-len_ready   = 5
+len_round       = 9
+len_round_chars = 5
+len_ready       = 5
+len_ready_chars = 3
 ofs_round = @(+ (* 15 22) 5)
 ofs_ready = @(+ (* 15 24) 6)
 screen_round = @(+ screen ofs_round)
@@ -27,8 +29,8 @@ n:  clc
 
     ; Clear bitmaps
     0
-    c_clrmb <charset_round >charset_round @(* 8 len_round)
-    c_clrmb <charset_ready >charset_ready @(* 8 len_ready)
+    c_clrmb <charset_round >charset_round @(* 8 len_round_chars)
+    c_clrmb <charset_ready >charset_ready @(* 8 len_ready_chars)
     0
 
     ; Make bitmap chars for "ROUND XX".
@@ -50,7 +52,7 @@ n:  clc
     jsr make_4x8_line
 
     ; Make colors.
-    ldx #len_round
+    ldx #@(half len_round)
     lda #white
 l:  sta colors_round,x
     sta colors_ready,x
