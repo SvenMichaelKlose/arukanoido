@@ -114,7 +114,7 @@ m:  sta sprites_d,x
 
 n:  jmp applied_reflection
 
-m:  jsr correct_trajectory
+m:  jsr avoid_endless_flight
     jmp move_ball
 
 no_vaus_hit:
@@ -136,10 +136,10 @@ no_vaus_hit:
     ; Make bonus.
     lda mode
     cmp #mode_disruption    ; No bonuses in disruption mode.
-    beq apply_reflection
+    beq do_apply_reflection
 
     dec bricks_until_bonus
-    bne apply_reflection
+    bne do_apply_reflection
     lda #8
     sta bricks_until_bonus
 
@@ -174,22 +174,13 @@ a:  jsr random
     sta @(+ bonus_init sprite_init_color)
     ldy #@(- bonus_init sprite_inits)
     jsr add_sprite
-    jmp apply_reflection
+    jmp do_apply_reflection
 
 hit_solid:
     inc reflections_since_last_vaus_hit
 
-apply_reflection:
-    ; Calculate new direction.
-    lda sprites_d,x     ; Get degrees.
-    sec
-    sbc side_degrees    ; Rotate back to zero degrees.
-    jsr neg             ; Get opposite deviation from general direction.
-    clc
-    adc side_degrees    ; Rotate back to original axis.
-    clc
-    adc #128            ; Rotate to opposite direction.
-    sta sprites_d,x
+do_apply_reflection:
+    jsr apply_reflection
 
 applied_reflection:
     ; Determine reflection sound.
@@ -206,6 +197,7 @@ applied_reflection:
 n:  inc sfx_reflection
 
 move_ball:
+    ; Move a full pixel at most.
     jsr ball_step
     jsr ball_step
 
@@ -242,7 +234,7 @@ play_reflection_sound:
     jmp play_sound
 n:  rts
 
-correct_trajectory:
+avoid_endless_flight:
     lda reflections_since_last_vaus_hit
     cmp #32
     bcc +r
@@ -344,7 +336,7 @@ l:  inc ball_speed          ; Play the blues…
 n:  rts
 
 release_ball:
-    ; Correct X position.
+    ; Correct X position so the ball won't end up in the border.
     ldy caught_ball
     lda sprites_x,y
     cmp #@(- (* (-- screen_columns) 8) 3)

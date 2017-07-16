@@ -47,6 +47,7 @@ j:  lda #64
     jmp +l
 
 reflect:
+    ; Get centre position of ball.
     ldy sprites_x,x
     iny
     sty ball_x
@@ -86,3 +87,15 @@ l:  clc
     inc has_hit_brick
 
 r:  rts
+
+apply_reflection:
+    lda sprites_d,x     ; Get degrees.
+    sec
+    sbc side_degrees    ; Rotate back to zero degrees.
+    jsr neg             ; Get opposite deviation from general direction.
+    clc
+    adc side_degrees    ; Rotate back to original axis.
+    clc
+    adc #128            ; Rotate to opposite direction.
+    sta sprites_d,x
+    rts
