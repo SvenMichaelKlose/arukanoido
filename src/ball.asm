@@ -296,20 +296,21 @@ n:  sta sprites_dy,x
     rts
 
 make_ball:
+    ldy #@(- ball_init sprite_inits)
+    jsr add_sprite
+    sta caught_ball
+    tax
     lda #70
-    sta @(+ ball_init sprite_init_x)
+    sta sprites_x,x
     lda #@(* 28 8)
-    sta @(+ ball_init sprite_init_y)
+    sta sprites_y,x
     lda #<ball_caught
-    sta @(+ ball_init sprite_init_gfx_l)
+    sta sprites_l,x
     lda #default_ball_direction
-    sta @(+ ball_init sprite_init_data)
+    sta sprites_d,x
     lda #initial_delay_until_ball_is_released
     sta ball_release_timer
-    ldx #@(- num_sprites 3)
-    stx caught_ball
-    ldy #@(- ball_init sprite_inits)
-    jmp replace_sprite
+    rts
 
 ball_accelerations_after_brick_hits:
     $00 $0a $0f $14 $1e $28 $37 $50 $6e $87 $a0 $b9 $d2 $e6 $f5 $ff ; TODO: Check if $ff really terminates.
