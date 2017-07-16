@@ -102,8 +102,7 @@ apply_bonus_e:
     bne +n
     jsr remove_bonuses  ; No slots left, last resort.
     jmp apply_bonus_e
-n:  sta vaus_middle_idx
-    lda #mode_extended
+n:  lda #mode_extended
     sta mode
     lda #24
     sta vaus_width
