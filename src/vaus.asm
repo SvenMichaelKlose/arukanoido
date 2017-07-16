@@ -177,9 +177,10 @@ set_vaus_color:
     lda mode
     cmp #mode_laser
     bne +n
+    ldy #<vaus
     lda framecounter
     lsr
-    bcs +n
-    lda #<vaus_laser
-    sta @(+ sprites_l spriteidx_vaus)
+    bcs +m
+    ldy #<vaus_laser
+m:  sty @(+ sprites_l spriteidx_vaus)
 n:  rts
