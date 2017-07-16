@@ -33,10 +33,10 @@ foreground          = @(+ (half framechars) (quarter framechars))
 ; Game settings
 
 default_num_lifes       = 3
-default_ball_speed      = 6
-min_ball_speed          = 4
-max_ball_speed          = 12
-max_ball_speed_joystick = 8
+default_ball_speed      = 3
+min_ball_speed          = 2
+max_ball_speed          = 6
+max_ball_speed_joystick = 4
 default_ball_direction  = 116
 ball_width              = 3
 ball_height             = 5

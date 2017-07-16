@@ -207,6 +207,7 @@ n:  inc sfx_reflection
 
 move_ball:
     jsr ball_step
+    jsr ball_step
 
     ; Deal with lost ball.
     lda sprites_y,x
