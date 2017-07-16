@@ -10,6 +10,7 @@ init_hiscore:
     0
     rts
 
+; Y: Index into 'scores'.
 add_to_score:
     inc has_new_score
     txa
