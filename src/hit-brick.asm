@@ -46,6 +46,7 @@ remove_brick:
     jsr adjust_ball_speed
 n:
 
+    ldy scrx
     lda (col),y
     and #$0f
     tay

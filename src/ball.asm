@@ -323,8 +323,6 @@ ball_accelerations_after_brick_hits:
     $00 $0a $0f $14 $1e $28 $37 $50 $6e $87 $a0 $b9 $d2 $e6 $f5 $ff ; TODO: Check if $ff really terminates.
 
 adjust_ball_speed:
-    tya
-    pha
     ldy #0
 l:  lda ball_accelerations_after_brick_hits,y
     cmp #$ff
@@ -343,11 +341,7 @@ l:  lda ball_speed
 m:  cmp #max_ball_speed
     bcs +n                  ; Already at maximum speed. Do nothing…
 l:  inc ball_speed          ; Play the blues…
-n:
-
-    pla
-    tay
-    rts
+n:  rts
 
 release_ball:
     ; Correct X position.
