@@ -98,4 +98,7 @@ apply_reflection:
     clc
     adc #128            ; Rotate to opposite direction.
     sta sprites_d,x
+    lda #0
+    sta sprites_dx,x
+    sta sprites_dy,x
     rts
