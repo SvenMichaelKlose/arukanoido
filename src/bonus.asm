@@ -116,6 +116,18 @@ apply_bonus_c:
     rts
 
 apply_bonus_s:
+    ; Reset subpixel positions in hope that it would keep balls from going through bricks.
+    ; TODO: Check if this works.
+    ldy #@(-- num_sprites)
+l:  lda sprites_i,y
+    and #is_ball
+    beq +n
+    lda #0
+    sta sprites_dx,y
+    sta sprites_dy,y
+n:  dey
+    bpl -l
+
     lda #min_ball_speed
     sta ball_speed
     lda #0              ; Time acceleration back to default.
