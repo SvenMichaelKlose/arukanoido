@@ -3447,7 +3447,7 @@
 335c: 2 13660 : a9 00        lda #0
 335e: 3 13662 : 85 4c        sta has_hit_vaus
 3360: 4 13665 : b5 6a        lda sprites_y,x
-3362: 2 13669 : c9 e6        cmp #@(- vaus_y 2)
+3362: 2 13669 : c9 e3        cmp #@(- vaus_y ball_height)
 3364: 2 13671 : 90 63        bcc no_vaus_hit
 3366: 2 13673 : c9 f0        cmp #@(+ vaus_y 8)
 3368: 2 13675 : b0 5f        bcs no_vaus_hit
@@ -3480,7 +3480,7 @@
 3397: 4 13750 : b9 1a 33 n:  lda vaus_directions_extended,y
 3397: 4 13754 :          m:  sta sprites_d,x
 339a: 4 13758 : 95 da    m:  sta sprites_d,x
-339c: 2 13762 : a9 e5        lda #@(- vaus_y 3)
+339c: 2 13762 : a9 e3        lda #@(- vaus_y ball_height)
 339e: 4 13764 : 95 6a        sta sprites_y,x
 33a0: 2 13768 : a9 00        lda #0
 33a2: 3 13770 : 85 2f        sta reflections_since_last_vaus_hit

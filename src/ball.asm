@@ -52,7 +52,7 @@ ctrl_ball_subpixel:
 
     ; Test on vertical collision with Vaus.
     lda sprites_y,x
-    cmp #@(- vaus_y 2)
+    cmp #@(- vaus_y ball_height)
     bcc no_vaus_hit
     cmp #@(+ vaus_y 8)
     bcs no_vaus_hit
@@ -90,7 +90,7 @@ h:  lda tmp2
 n:  lda vaus_directions_extended,y
 m:  sta sprites_d,x
 
-    lda #@(- vaus_y 3)
+    lda #@(- vaus_y ball_height)
     sta sprites_y,x
 
     lda #0
