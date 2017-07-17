@@ -20,6 +20,9 @@ ctrl_bonus:
     and #is_vaus
     beq +m              ; Didn't hit the Vaus…
 
+    lda sprites_d,x
+    sta current_bonus
+
     ldy #@(- score_1000 scores)
     jsr add_to_score
 
@@ -258,19 +261,15 @@ a:  jsr random
     beq -a      ; Only seven bonuses available.
     cmp current_bonus
     beq -a
-    sta current_bonus
-    pha
+    sta @(+ bonus_init sprite_init_data)
+    tay
     asl
     asl
     asl
     clc
     adc #<bonus_l
     sta @(+ bonus_init sprite_init_gfx_l)
-    pla
-    sta @(+ bonus_init sprite_init_data)
-    tay
     lda bonus_colors,y
     sta @(+ bonus_init sprite_init_color)
     ldy #@(- bonus_init sprite_inits)
     jmp add_sprite
-
