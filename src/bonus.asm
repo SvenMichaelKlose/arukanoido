@@ -234,4 +234,43 @@ n:  dex
     bpl -l
     pla
     tax
-    rts
+r:  rts
+
+make_bonus:
+    dec bricks_until_bonus
+    bne -r
+    lda #8
+    sta bricks_until_bonus
+
+    lda scrx
+    asl
+    asl
+    asl
+    sta @(+ bonus_init sprite_init_x)
+    lda scry
+    asl
+    asl
+    asl
+    sta @(+ bonus_init sprite_init_y)
+a:  jsr random
+    and #%111
+    cmp #%111
+    beq -a      ; Only seven bonuses available.
+    cmp current_bonus
+    beq -a
+    sta current_bonus
+    pha
+    asl
+    asl
+    asl
+    clc
+    adc #<bonus_l
+    sta @(+ bonus_init sprite_init_gfx_l)
+    pla
+    sta @(+ bonus_init sprite_init_data)
+    tay
+    lda bonus_colors,y
+    sta @(+ bonus_init sprite_init_color)
+    ldy #@(- bonus_init sprite_inits)
+    jmp add_sprite
+

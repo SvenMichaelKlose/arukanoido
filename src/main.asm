@@ -119,15 +119,10 @@ retry:
     sta current_bonus
 
     jsr clear_sprites
+    jsr remove_sprites
     jsr draw_walls      ; Freshen up after mode_break.
     jsr draw_lifes
     jsr roundstart
-
-    ; Empty sprite slots.
-    ldx #@(-- num_sprites)
-l:  jsr remove_sprite
-    dex
-    bpl -l
 
     jsr make_vaus
     jsr make_ball
@@ -150,7 +145,10 @@ l:  jsr remove_sprite
 
 mainloop:
     lda bricks_left
-    beq next_level
+    bne +n
+    jsr draw_sprites
+    jmp next_level
+n:
 
     lda is_running_game
     bne +n

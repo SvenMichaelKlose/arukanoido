@@ -59,6 +59,13 @@ selfmod:
     sta @(++ -selfmod)
     jmp -l
 
+remove_sprites:
+    ldx #@(-- num_sprites)
+l:  jsr remove_sprite
+    dex
+    bpl -l
+    rts
+
 ; Move sprite X up A pixels.
 sprite_up:
     jsr neg
