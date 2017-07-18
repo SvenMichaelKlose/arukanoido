@@ -136,10 +136,9 @@ n:  dec tmp2
 n:
 
     ; Get sprite graphics.
-    lda sprites_l,x
+    lda sprites_gl,x
     sta s
-;    lda sprites_gfx_h,x
-    lda #>sprite_gfx
+    lda sprites_gh,x
     sta @(++ s)
 
     lda sprite_inner_cols

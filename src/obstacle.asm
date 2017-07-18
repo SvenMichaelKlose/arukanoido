@@ -4,7 +4,7 @@ control_obstacles:
     beq +done
     lda framecounter
     bne +done
-    ldy #@(- obstacle_ball_init sprite_inits)
+    ldy #@(- obstacle_cube_init sprite_inits)
     jsr add_sprite
     tax
     lda #32        ; Direction

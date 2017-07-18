@@ -39,8 +39,10 @@ n:
     txa
     pha
     ldx #spriteidx_vaus
-    lda #<vaus
-    sta sprites_l,x
+    lda #<gfx_vaus
+    sta sprites_gl,x
+    lda #>gfx_vaus
+    sta sprites_gh,x
     lda #10
     sta sprites_dimensions,x
     lda sprites_x,x
@@ -97,8 +99,10 @@ apply_bonus_e:
     sec
     sbc #4
     sta sprites_x,y
-    lda #<vaus_extended
-    sta sprites_l,y
+    lda #<gfx_vaus_extended
+    sta sprites_gl,y
+    lda #>gfx_vaus_extended
+    sta sprites_gh,y
     lda #11
     sta sprites_dimensions,y
     cmp #255
@@ -201,28 +205,28 @@ rotate_bonuses:
     bcc +n
     lsr
     bcc +m
-    lda #<bonus_l
-    ldx #>bonus_l
+    lda #<gfx_bonus_l
+    ldx #>gfx_bonus_l
     jsr rotate_bonus
-    lda #<bonus_e
-    ldx #>bonus_e
+    lda #<gfx_bonus_e
+    ldx #>gfx_bonus_e
     jmp rotate_bonus
-m:  lda #<bonus_c
-    ldx #>bonus_c
+m:  lda #<gfx_bonus_c
+    ldx #>gfx_bonus_c
     jsr rotate_bonus
-    lda #<bonus_s
-    ldx #>bonus_s
+    lda #<gfx_bonus_s
+    ldx #>gfx_bonus_s
     jmp rotate_bonus
 n:  lsr
     bcc +m
-    lda #<bonus_b
-    ldx #>bonus_b
+    lda #<gfx_bonus_b
+    ldx #>gfx_bonus_b
     jsr rotate_bonus
-    lda #<bonus_d
-    ldx #>bonus_d
+    lda #<gfx_bonus_d
+    ldx #>gfx_bonus_d
     jmp rotate_bonus
-m:  lda #<bonus_p
-    ldx #>bonus_p
+m:  lda #<gfx_bonus_p
+    ldx #>gfx_bonus_p
     jmp rotate_bonus
 
 remove_bonuses:
@@ -267,7 +271,7 @@ a:  jsr random
     asl
     asl
     clc
-    adc #<bonus_l
+    adc #<gfx_bonus_l
     sta @(+ bonus_init sprite_init_gfx_l)
     lda bonus_colors,y
     sta @(+ bonus_init sprite_init_color)

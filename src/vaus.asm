@@ -110,8 +110,10 @@ do_fire:
     bmi +n
     lda #@(- (* 29 8) 5)
     sta sprites_y,y
-    lda #<ball
-    sta sprites_l,y
+    lda #<gfx_ball
+    sta sprites_gl,y
+    lda #>gfx_ball
+    sta sprites_gh,y
     lda #snd_reflection_low
     jsr play_sound
 n:  lda #255
@@ -177,10 +179,10 @@ set_vaus_color:
     lda mode
     cmp #mode_laser
     bne +n
-    ldy #<vaus
+    ldy #<gfx_vaus
     lda framecounter
     lsr
     bcs +m
-    ldy #<vaus_laser
-m:  sty @(+ sprites_l spriteidx_vaus)
+    ldy #<gfx_vaus_laser
+m:  sty @(+ sprites_gl spriteidx_vaus)   ; TODO: dynamic index
 n:  rts

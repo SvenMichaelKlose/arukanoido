@@ -3,7 +3,6 @@
 ; Y: descriptor of new sprite in sprite_inits
 ; Returns: A: Index of new sprite or 255 if slots are full.
 add_sprite:
-
     stx add_sprite_x
     sty add_sprite_y
 

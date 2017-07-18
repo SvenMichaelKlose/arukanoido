@@ -102,8 +102,10 @@ m:  sta sprites_d,x
 
     ; Catch ball.
     stx caught_ball
-    lda #<ball_caught
-    sta sprites_l,x
+    lda #<gfx_ball_caught
+    sta sprites_gl,x
+    lda #>gfx_ball_caught
+    sta sprites_gh,x
     lda #@(* 28 8)
     sta sprites_y,x
     jsr applied_reflection
@@ -268,8 +270,10 @@ make_ball:
     sta sprites_x,x
     lda #@(* 28 8)
     sta sprites_y,x
-    lda #<ball_caught
-    sta sprites_l,x
+    lda #<gfx_ball_caught
+    sta sprites_gl,x
+    lda #>gfx_ball_caught
+    sta sprites_gh,x
     lda #default_ball_direction
     sta sprites_d,x
     lda #initial_delay_until_ball_is_released

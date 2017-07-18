@@ -2,10 +2,10 @@
 draw_sprite:
     stx draw_sprite_x
 
-    lda #>sprite_gfx
-    sta @(++ s)
-    lda sprites_l,x
+    lda sprites_gl,x
     sta s
+    lda sprites_gh,x
+    sta @(++ s)
     sta sprite_data_top
 
     lda sprites_c,x

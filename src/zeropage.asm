@@ -96,19 +96,14 @@ has_hit_golden_brick: 0
 has_hit_vaus:         0
 num_brick_hits:       0
 
-laser_has_hit:        0   ; For the laser controller to remember if it hit one the left.
-is_testing_laser_hit: 0
-
-has_new_score:        0
-has_hiscore:          0
-
 score:      fill num_score_digits
 
 sprites_x:          fill num_sprites  ; X positions.
 sprites_y:          fill num_sprites  ; Y positions.
 sprites_i:          fill num_sprites  ; Flags.
 sprites_c:          fill num_sprites  ; Colors.
-sprites_l:          fill num_sprites  ; Low character addresses.
+sprites_gl:         fill num_sprites  ; Low character addresses.
+sprites_gh:         fill num_sprites  ; High character addresses.
 sprites_fl:         fill num_sprites  ; Function controlling the sprite (low).
 sprites_fh:         fill num_sprites  ; Function controlling the sprite (high).
 sprites_dimensions: fill num_sprites  ; %0000rrcc
@@ -143,6 +138,12 @@ sprite_inner_rows:  0   ; height in chars.
 sprite_width:       0   ; Width in pixels.
 sprite_lines:       0   ; total height in lines.
 sprite_inner_lines: 0   ; height in lines.
+
+laser_has_hit:        0   ; For the laser controller to remember if it hit one the left.
+is_testing_laser_hit: 0
+has_new_score:        0
+has_hiscore:          0
+
     end
 
 ; Minigrafik viewer
