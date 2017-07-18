@@ -11,8 +11,18 @@ reflect_obstacle_h:
     php
     inc scrx
     plp
-    bne +r
     beq +j
+
+    dec scrx
+    inc scry
+    jsr get_hard_collision
+    php
+    inc scrx
+    dec scrx
+    plp
+    beq +j
+    bne +r
+
 
     ; Bounce back right.
 n:  inc scrx
@@ -20,9 +30,18 @@ n:  inc scrx
     php
     dec scrx
     plp
-    bne +r
+    bne +n
 j:  lda #64
     jmp +l
+
+n:  inc scrx
+    inc scry
+    jsr get_hard_collision
+    php
+    dec scrx
+    dec scry
+    plp
+    beq -j
 
 r:  rts
 
