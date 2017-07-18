@@ -198,7 +198,17 @@ play_reflection_sound:
     ldx #0
     stx snd_reflection
     jmp play_sound
-n:  rts
+n:
+
+    ; Hit obstacle?
+    jsr find_hit
+    bcs +n
+    lda sprites_i,y
+    and #is_obstacle
+    beq +n
+    jsr remove_obstacle
+n:
+    rts
 
 avoid_endless_flight:
     lda reflections_since_last_vaus_hit

@@ -1,4 +1,14 @@
 ctrl_laser:
+    ; Hit obstacle?
+    jsr find_hit
+    bcs +n
+    lda sprites_i,y
+    and #is_obstacle
+    beq +n
+    jsr remove_obstacle
+    jmp remove_sprite
+n:
+
     lda #1
     sta is_testing_laser_hit
 

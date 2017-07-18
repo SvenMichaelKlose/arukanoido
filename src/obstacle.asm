@@ -7,22 +7,41 @@ control_obstacles:
     ldy #@(- obstacle_cube_init sprite_inits)
     jsr add_sprite
     tax
-    lda #32        ; Direction
+    lda #56        ; Direction
     sta sprites_d,x
     inc num_obstacles
 done:
     rts
 
 ctrl_obstacle:
+    lda framecounter
+    lsr
+    bcs +r
+
     lda sprites_y,x
     cmp #24
     bcs +n
 
     ; Move obstacle in.
     inc sprites_y,x
-    rts
-
+r:  rts
 n:
+
+    lda sprites_x,x
+    cmp #15
+    bcs +n
+    lda #56
+    sta sprites_d,x
+n:
+
+    lda sprites_x,x
+    cmp #@(* (- screen_columns 2) 8)
+    bcc +n
+    lda #198
+    sta sprites_d,x
+n:
+
+    ; Animate obstacle.
     lda framecounter
     and #7
     bne +n
@@ -52,9 +71,18 @@ n:
     lda sprites_i,y
     and #is_vaus
     beq +done
+
+; Y: Sprite index
 remove_obstacle:
+    txa
+    pha
+    tya
+    tax
+    jsr remove_sprite
     dec num_obstacles
-    jmp remove_sprite
+    pla
+    tax
+    rts
 
 done:
     rts
