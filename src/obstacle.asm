@@ -55,7 +55,7 @@ n:
     jsr apply_reflection
 n:
 
-    ; Check on collision with other obstacle or Vaus.
+    ; Check on collision with Vaus.
     jsr find_hit
     bcs +done
     lda sprites_i,y
@@ -74,7 +74,5 @@ remove_obstacle:
     jsr play_sound
     pla
     tax
-    rts
-
 done:
     rts
