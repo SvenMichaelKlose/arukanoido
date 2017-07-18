@@ -70,6 +70,8 @@ remove_obstacle:
     tax
     jsr remove_sprite
     dec num_obstacles
+    lda #snd_hit_obstacle
+    jsr play_sound
     pla
     tax
     rts

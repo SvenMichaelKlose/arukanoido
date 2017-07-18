@@ -623,6 +623,7 @@
                           "score.asm"
                           "reflect.asm"
                           "reflect-obstacle.asm"
+                          "reflect-ball-obstacle.asm"
                           "hit-brick.asm"
 
                           ; Sprite controllers

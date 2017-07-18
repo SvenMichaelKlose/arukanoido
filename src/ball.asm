@@ -201,6 +201,8 @@ n:
     lda sprites_i,y
     and #is_obstacle
     beq +n
+    jsr reflect_ball_obstacle
+    jsr apply_reflection
     jsr remove_obstacle
 n:
     rts

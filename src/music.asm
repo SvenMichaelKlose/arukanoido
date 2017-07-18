@@ -19,7 +19,7 @@ snd_coin              = 11
 snd_hit_doh           = 12
 snd_doh_dissolving    = 13
 snd_growing_vaus      = 14
-snd_hit_distractor    = 15
+snd_hit_obstacle      = 15
 snd_laser             = 16
 snd_round_break       = 17
 
