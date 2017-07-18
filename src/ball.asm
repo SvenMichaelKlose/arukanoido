@@ -204,6 +204,7 @@ n:
     jsr reflect_ball_obstacle
     jsr apply_reflection
     jsr remove_obstacle
+    jsr increase_ball_speed
 n:
     rts
 
@@ -299,7 +300,8 @@ l:  lda ball_accelerations_after_brick_hits,y
     beq +l
     iny
     jmp -l
-    
+
+increase_ball_speed:
 l:  lda ball_speed
     ldy is_using_paddle
     bne +m
