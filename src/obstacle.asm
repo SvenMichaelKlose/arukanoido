@@ -16,13 +16,32 @@ done:
 ctrl_obstacle:
     lda sprites_y,x
     cmp #24
-    bcs +float
+    bcs +n
 
     ; Move obstacle in.
     inc sprites_y,x
     rts
 
-float:
+n:
+    lda framecounter
+    and #7
+    bne +n
+    lda sprites_gl,x
+    clc
+    adc #32
+    sta sprites_gl,x
+    lda sprites_gh,x
+    adc #0
+    sta sprites_gh,x
+    lda sprites_gl,x
+    cmp #<gfx_obstacle_cube_end
+    bne +n
+    lda #<gfx_obstacle_cube
+    sta sprites_gl,x
+    lda #>gfx_obstacle_cube
+    sta sprites_gh,x
+n:
+
     jsr ball_step
     jsr ball_step
 
@@ -38,7 +57,4 @@ remove_obstacle:
     jmp remove_sprite
 
 done:
-    rts
-
-n:
     rts
