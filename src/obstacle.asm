@@ -27,20 +27,6 @@ ctrl_obstacle:
 r:  rts
 n:
 
-    lda sprites_x,x
-    cmp #15
-    bcs +n
-    lda #56
-    sta sprites_d,x
-n:
-
-    lda sprites_x,x
-    cmp #@(* (- screen_columns 2) 8)
-    bcc +n
-    lda #198
-    sta sprites_d,x
-n:
-
     ; Animate obstacle.
     lda framecounter
     and #7
@@ -63,8 +49,12 @@ n:
 
     jsr ball_step
     jsr ball_step
+    jsr reflect_obstacle
+    lda has_collision
+    beq +n
+    jsr apply_reflection
+n:
 
-    ; Check on collision with background.
     ; Check on collision with other obstacle or Vaus.
     jsr find_hit
     bcs +done

@@ -622,6 +622,7 @@
                           ; Display object interactions
                           "score.asm"
                           "reflect.asm"
+                          "reflect-obstacle.asm"
                           "hit-brick.asm"
 
                           ; Sprite controllers

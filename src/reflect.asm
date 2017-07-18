@@ -20,7 +20,7 @@ get_hard_collision:
     beq +n
     and #foreground
     cmp #foreground
-r:  rts
+    rts
 n:  lda #1
     rts
 
