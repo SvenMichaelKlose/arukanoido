@@ -116,19 +116,14 @@ m:  sta sprites_d,x
 
 n:  jmp applied_reflection
 
-m:  jsr avoid_endless_flight
-    jmp move_ball
-
 no_vaus_hit:
-    ; Reflect ball.
-    lda #0
-    sta side_degrees
-    sta has_collision
-    sta has_hit_brick
-
     jsr reflect
     lda has_collision
-    beq -m
+    bne +n
+m:  jsr avoid_endless_flight
+    jmp move_ball
+n:
+
     lda has_hit_brick
     beq hit_solid
 
