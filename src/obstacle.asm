@@ -14,10 +14,6 @@ done:
     rts
 
 ctrl_obstacle:
-    lda framecounter
-    lsr
-    bcs +r
-
     lda sprites_y,x
     cmp #24
     bcs +n
@@ -47,7 +43,6 @@ n:
     sta sprites_gh,x
 n:
 
-    jsr ball_step
     jsr ball_step
     jsr reflect_obstacle
     lda has_collision
