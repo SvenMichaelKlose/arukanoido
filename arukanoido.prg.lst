@@ -3754,7 +3754,7 @@
 34f3: 4 14690 : ad aa 02 m:  lda laser_has_hit
 34f6: 3 14694 : 05 4b        ora has_hit_golden_brick
 34f8: 2 14697 : d0 08        bne +n
-34fa: 2 14699 : a9 08        lda #8
+34fa: 2 14699 : a9 04        lda #4
 34fc: 6 14701 : 20 b2 2b     jsr sprite_up
 34ff: 4 14707 : 4c 05 35     jmp +done
 34ff: 4 14711 :          n:  jsr remove_sprite   ; Remove laser sprite.

@@ -44,7 +44,7 @@ o:  lda sprites_x,x
 m:  lda laser_has_hit
     ora has_hit_golden_brick
     bne +n
-    lda #8
+    lda #4
     jsr sprite_up
     jmp +done
 
