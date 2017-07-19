@@ -4,8 +4,8 @@ reflect_ball_obstacle_h:
     bpl +n                  ; No…
     lda sprites_x,x
     cmp sprites_x,y
-    bcc +j
-    bcs +r
+    bcs +j
+    bcc +r
 
     ; Bounce back right.
 n:  lda sprites_x,x
@@ -30,8 +30,8 @@ reflect_ball_obstacle_v:
     bpl +n                  ; No…
     lda sprites_y,x
     cmp sprites_y,y
-    bcc +j
-    bcs +r
+    bcs +j
+    bcc +r
 
     ; Bounce back from bottom.
 n:  lda sprites_y,x

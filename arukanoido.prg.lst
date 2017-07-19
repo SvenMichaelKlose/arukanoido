@@ -3446,8 +3446,8 @@
 32d6: 2 13682 : 10 09        bpl +n                  ; No…
 32d8: 4 13684 : b5 55        lda sprites_x,x
 32da: 4 13688 : d9 55 00     cmp sprites_x,y
-32dd: 2 13692 : 90 0b        bcc +j
-32df: 2 13694 : b0 35        bcs +r
+32dd: 2 13692 : b0 0b        bcs +j
+32df: 2 13694 : 90 35        bcc +r
 32df: 2 13696 :          n:  lda sprites_x,x
 32e1: 4 13698 : b5 55    n:  lda sprites_x,x
 32e3: 4 13702 : d9 55 00     cmp sprites_x,y
@@ -3467,8 +3467,8 @@
 32fb: 2 13747 : 10 09        bpl +n                  ; No…
 32fd: 4 13749 : b5 65        lda sprites_y,x
 32ff: 4 13753 : d9 65 00     cmp sprites_y,y
-3302: 2 13757 : 90 0b        bcc +j
-3304: 2 13759 : b0 10        bcs +r
+3302: 2 13757 : b0 0b        bcs +j
+3304: 2 13759 : 90 10        bcc +r
 3304: 2 13761 :          n:  lda sprites_y,x
 3306: 4 13763 : b5 65    n:  lda sprites_y,x
 3308: 4 13767 : d9 65 00     cmp sprites_y,y
