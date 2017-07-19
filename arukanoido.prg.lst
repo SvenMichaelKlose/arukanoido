@@ -1661,16 +1661,16 @@
 2801: 4 7292 : 09            70 0      is_ball     white      <gfx_ball >gfx_ball    <ctrl_ball >ctrl_ball 9 0
 2802: 4 7296 : 00            70 0      is_ball     white      <gfx_ball >gfx_ball    <ctrl_ball >ctrl_ball 9 0
 2802: 4 7300 :           laser_init:
-2803: 4 7304 : 00            0 vaus_y  0           white      <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
-2804: 4 7308 : e8            0 vaus_y  0           white      <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
-2805: 4 7312 : 00            0 vaus_y  0           white      <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
-2806: 4 7316 : 01            0 vaus_y  0           white      <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
-2807: 4 7320 : 48            0 vaus_y  0           white      <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
-2808: 4 7324 : 21            0 vaus_y  0           white      <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
-2809: 4 7328 : ad            0 vaus_y  0           white      <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
-280a: 4 7332 : 34            0 vaus_y  0           white      <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
-280b: 4 7336 : 09            0 vaus_y  0           white      <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
-280c: 4 7340 : 00            0 vaus_y  0           white      <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
+2803: 4 7304 : 00            0 vaus_y  0           yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
+2804: 4 7308 : e8            0 vaus_y  0           yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
+2805: 4 7312 : 00            0 vaus_y  0           yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
+2806: 4 7316 : 07            0 vaus_y  0           yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
+2807: 4 7320 : 48            0 vaus_y  0           yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
+2808: 4 7324 : 21            0 vaus_y  0           yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
+2809: 4 7328 : ad            0 vaus_y  0           yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
+280a: 4 7332 : 34            0 vaus_y  0           yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
+280b: 4 7336 : 09            0 vaus_y  0           yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
+280c: 4 7340 : 00            0 vaus_y  0           yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
 280c: 4 7344 :           bonus_init:
 280d: 4 7348 : 00            0 0       is_bonus    black      0 >gfx_bonus_l         <ctrl_bonus >ctrl_bonus 9 0
 280e: 4 7352 : 00            0 0       is_bonus    black      0 >gfx_bonus_l         <ctrl_bonus >ctrl_bonus 9 0

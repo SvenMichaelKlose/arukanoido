@@ -26,7 +26,7 @@ vaus_init:
 ball_init:
     70 0      is_ball     white      <gfx_ball >gfx_ball    <ctrl_ball >ctrl_ball 9 0
 laser_init:
-    0 vaus_y  0           white      <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
+    0 vaus_y  0           yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
 bonus_init:
     0 0       is_bonus    black      0 >gfx_bonus_l         <ctrl_bonus >ctrl_bonus 9 0
 obstacle_cube_init:
