@@ -3368,7 +3368,7 @@
 325d: 6 13399 : 20 b4 31     jsr get_hard_collision
 3260: 3 13405 : 08           php
 3261: 5 13408 : e6 0a        inc scrx
-3263: 5 13413 : c6 0a        dec scrx
+3263: 5 13413 : c6 0b        dec scry
 3265: 4 13418 : 28           plp
 3266: 2 13422 : f0 0d        beq +j
 3268: 2 13424 : d0 1f        bne +r

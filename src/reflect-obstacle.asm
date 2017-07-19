@@ -18,11 +18,10 @@ reflect_obstacle_h:
     jsr get_hard_collision
     php
     inc scrx
-    dec scrx
+    dec scry
     plp
     beq +j
     bne +r
-
 
     ; Bounce back right.
 n:  inc scrx
