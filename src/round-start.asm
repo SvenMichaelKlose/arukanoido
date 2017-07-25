@@ -9,7 +9,7 @@ screen_ready = @(+ screen ofs_ready)
 colors_round = @(+ colors ofs_round)
 colors_ready = @(+ colors ofs_ready)
 chars_round = @(quarter framechars)
-chars_ready = @(+ chars_round len_round)
+chars_ready = @(+ chars_round len_round_chars)
 charset_round = @(+ charset (* 8 chars_round))
 charset_ready = @(+ charset (* 8 chars_ready))
 
