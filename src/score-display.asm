@@ -43,6 +43,7 @@ l:  lda #red
     rts
 
 display_score:
+    sei
     lda scorechar_start
     sta curchar
 
@@ -77,6 +78,9 @@ display_score:
     sta s
     lda #>hiscore
     sta @(++ s)
+    jsr print_string
+    cli
+    rts
 
 ; X: Number of chars
 ; scrx/scry: Text position

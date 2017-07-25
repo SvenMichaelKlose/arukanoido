@@ -195,9 +195,12 @@ l2: lda sprite_y
     sta tmp2
 
 l:  lda scry
-    cmp #1
+    cmp #2
     bcc +n
     cmp #@screen_rows
+    bcs +n
+    lda scrx
+    cmp #@screen_columns
     bcs +n
     jsr scrcoladdr
     lda (scr),y
