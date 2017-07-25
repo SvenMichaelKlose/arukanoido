@@ -8,6 +8,16 @@ l:  cpx #@(-- hiscore)
     bcs +n
     sta 0,x
 n:  sta $200,x
+if @*debug?*
+    sta charset,x
+    sta @(+ 256 charset),x
+    sta @(+ 512 charset),x
+    sta @(+ 768 charset),x
+    sta @(+ 1024 charset),x
+    sta @(+ 1024 256 charset),x
+    sta @(+ 1024 512 charset),x
+    sta @(+ 1024 768 charset),x
+end
     dex
     bne -l
     rts
@@ -127,6 +137,11 @@ retry:
     jsr make_vaus
     jsr make_ball
 
+if @*debug?*
+    jsr clear_screen
+    jsr show_charset
+end
+
     ; Initialise sprite frame.
     lda #0
     sta spriteframe
@@ -178,13 +193,3 @@ n:  jsr random              ; Improve randomness and avoid CRTC hsync wobble.
     sta has_new_score
     jsr display_score
     jmp mainloop
-
-show_charset:
-    ldx #0
-l:  txa
-    sta @(+ screen 34),x
-    lda #1
-    sta @(+ colors 34),x
-    dex
-    bne -l
-    rts

@@ -4,6 +4,7 @@
 (var *add-charset-base?* t)
 (var *show-cpu?* nil)
 (var *make-only-vic?* t)
+(var *debug?* nil)
 
 (fn gen-sprite-nchars ()
   (with-queue q
@@ -640,10 +641,11 @@
                               '("round-intro.asm"))
                           "hiscore.asm"
                           "main.asm"
+                          "debug.asm"
 
                           ; Streamable or loadable on occasion.
                           "level-data.asm"
-;                          "gfx-doh.asm"
+                          "gfx-doh.asm"
 ;                          "gfx-title.asm"
 
                           ; Imported music player binary.
