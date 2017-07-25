@@ -36,6 +36,27 @@ if @*show-cpu?*
     sta $900f
 end
 
+    lda scrx
+    pha
+    lda scry
+    pha
+    lda scr
+    pha
+    lda @(++ scr)
+    pha
+    lda col
+    pha
+    lda @(++ col)
+    pha
+    lda s
+    pha
+    lda @(++ s)
+    pha
+    lda d
+    pha
+    lda @(++ d)
+    pha
+
     inc framecounter
     bne +n
     inc @(++ framecounter)
@@ -60,5 +81,26 @@ if @*show-cpu?*
     lda #@(+ 8 2)
     sta $900f
 end
+
+    pla
+    sta @(++ d)
+    pla
+    sta d
+    pla
+    sta @(++ s)
+    pla
+    sta s
+    pla
+    sta @(++ col)
+    pla
+    sta col
+    pla
+    sta @(++ scr)
+    pla
+    sta scr
+    pla
+    sta scry
+    pla
+    sta scrx
 
     jmp $eb18       ; CBM ROM IRQ return

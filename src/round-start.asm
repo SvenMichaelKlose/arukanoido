@@ -16,16 +16,16 @@ charset_ready = @(+ charset (* 8 chars_ready))
 roundstart:
     ; Copy round number digits into round message.
     lda #score_char0
-    sta @(+ txt_round_nn 7)
+    sta @(+ txt_round_nn 8)
     lda level
 l:  sec
     sbc #10
     bcc +n
-    inc @(+ txt_round_nn 7)
+    inc @(+ txt_round_nn 8)
     jmp -l
 n:  clc
     adc #@(+ 10 (char-code #\0) (- score_char0 (char-code #\0)))
-    sta @(+ txt_round_nn 8)
+    sta @(+ txt_round_nn 9)
 
     ; Clear bitmaps
     0
@@ -33,40 +33,21 @@ n:  clc
     c_clrmb <charset_ready >charset_ready @(* 8 len_ready_chars)
     0
 
-    ; Make bitmap chars for "ROUND XX".
-    lda #<screen_round
-    sta d
-    lda #>screen_round
-    sta @(++ d)
-    ldx #5
-    lda #chars_round
-    jsr make_4x8_line
-
-    ; Make bitmap chars for "READY".
-    lda #<screen_ready
-    sta d
-    lda #>screen_ready
-    sta @(++ d)
-    ldx #3
-    lda #chars_ready
-    jsr make_4x8_line
-
-    ; Make colors.
-    ldx #@(half len_round)
-    lda #white
-l:  sta colors_round,x
-    sta colors_ready,x
-    dex
-    bpl -l
-
     ; Print "ROUND XX".
-    txt_round_nnm = @(-- txt_round_nn)
-    0
-    c_setsd <txt_round_nnm >txt_round_nnm <charset_round >charset_round
-    0
-    ldx #len_round
-    ldy #1
-    jsr print_string2
+    lda #white
+    sta curcol
+    lda #16
+    sta curchar
+    lda #5
+    sta scrx
+    lda #22
+    sta scry
+    lda #<txt_round_nn
+    sta s
+    lda #>txt_round_nn
+    sta @(++ s)
+    ldx #255
+    jsr print_string
 
     lda #snd_round
     jsr play_sound
@@ -82,13 +63,17 @@ n:  lda $9004
     bne -l
 
     ; Print "READY".
-    txt_readym = @(-- txt_ready)
-    0
-    c_setsd <txt_readym >txt_readym <charset_ready >charset_ready
-    0
-    ldx #len_ready
-    ldy #1
-    jsr print_string2
+    inc curchar
+    lda #6
+    sta scrx
+    lda #24
+    sta scry
+    lda #<txt_ready
+    sta s
+    lda #>txt_ready
+    sta @(++ s)
+    ldx #255
+    jsr print_string
 
     jsr wait_sound
 
@@ -109,5 +94,5 @@ l:  sta (d),y
     bne -l
     rts
 
-txt_round_nn:   @(string4x8 "ROUND  XX")
-txt_ready:      @(string4x8 "READY")
+txt_round_nn:   @(string4x8 " ROUND  XX") 255
+txt_ready:      @(string4x8 " READY") 255

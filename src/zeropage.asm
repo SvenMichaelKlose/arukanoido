@@ -143,6 +143,7 @@ laser_has_hit:        0   ; For the laser controller to remember if it hit one t
 is_testing_laser_hit: 0
 has_new_score:        0
 has_hiscore:          0
+scorechar_start:      0
 
     end
 
