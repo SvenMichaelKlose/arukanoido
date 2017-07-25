@@ -33,12 +33,6 @@ replace_sprite2:
 ;
 ; X: sprite index
 remove_sprite:
-    txa
-    and #$f0
-    beq +ok
-stop:
-    nop
-ok:
     stx add_sprite_x
     sty add_sprite_y
 
