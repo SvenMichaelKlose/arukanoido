@@ -1,6 +1,9 @@
 num_score_chars = 32
 score_chars     = @(- (half num_chars) num_score_chars)
 score_charset   = @(+ charset (* 8 score_chars))
+txt_hiscore_charset = @(+ score_charset 40)
+score_current_charset = @(+ score_charset (* screen_columns 8))
+score_hiscore_charset = @(+ score_current_charset 48)
 
 make_score_screen:
     ; Clear charset.
@@ -23,14 +26,12 @@ l:  sta screen,y
 
     ; Set colours.
     ldx #@(-- screen_columns)
-l:  lda #2
+l:  lda #red
     sta colors,x
-    lda #1
+    lda #white
     sta @(+ colors screen_columns),x
     dex
     bpl -l
-
-txt_hiscore_charset = @(+ score_charset 40)
 
     ; Print "HIGH SCORE".
     ldx #$ff
@@ -44,14 +45,12 @@ txt_hiscore_charset = @(+ score_charset 40)
     sta @(++ s)
     jmp print_string
 
-score_charset0 = @(+ score_charset (* screen_columns 8))
-score_charset1 = @(+ score_charset0 48)
-
 display_score:
+    ; Print score.
     ldx #num_score_digits
-    lda #<score_charset0
+    lda #<score_current_charset
     sta d
-    lda #>score_charset0
+    lda #>score_current_charset
     sta @(++ d)
     lda #<score
     sta s
@@ -59,16 +58,18 @@ display_score:
     sta @(++ s)
     jsr print_string
 
+    ; Print hiscore.
     ldx #num_score_digits
-    lda #<score_charset1
+    lda #<score_hiscore_charset
     sta d
-    lda #>score_charset1
+    lda #>score_hiscore_charset
     sta @(++ d)
     lda #<hiscore
     sta s
     lda #>hiscore
     sta @(++ s)
 
+; X: Number of chars
 print_string:
     ldy #0
 print_string2:
