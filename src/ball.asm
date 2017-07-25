@@ -23,6 +23,10 @@ vaus_directions_extended:
 
     0 0
 
+
+n:  jsr determine_reflection_sound
+    jmp play_reflection_sound
+
 l:  dec ball_release_timer
     bne +r
     jsr release_ball
@@ -31,10 +35,35 @@ ctrl_ball:
     lda caught_ball
     bpl -l
 
+    jsr ctrl_ball_vaus
+    lda has_hit_vaus
+    bne -n
+
+    ; Deal with lost ball.
+    lda sprites_y,x
+    cmp #@(- (* 8 screen_rows) 4)
+    bcc +ball_loop
+
+    dec balls
+    bne still_balls_left
+
+    lda #0
+    sta is_running_game
+    lda #snd_miss
+    jmp play_sound
+
+still_balls_left:
+    lda balls
+    cmp #1
+    bne +m
+    lda #0              ; Reset from disruption bonus.
+    sta mode
+m:  jmp remove_sprite
+n:
+
     ; Call the ball controller ball_speed times.
-    lda ball_speed
-    asl
-    tay
+ball_loop:
+    ldy ball_speed
 l:  tya
     pha
     jsr ctrl_ball_subpixel
@@ -48,16 +77,16 @@ r:  rts
 e:  pla
     rts
 
-ctrl_ball_subpixel:
+ctrl_ball_vaus:
     lda #0
     sta has_hit_vaus
 
     ; Test on vertical collision with Vaus.
     lda sprites_y,x
     cmp #@(- vaus_y ball_height -1)
-    bcc no_vaus_hit
+    bcc -r
     cmp #@(+ vaus_y 8)
-    bcs no_vaus_hit
+    bcs -r
 
     ; Test on horizontal collision with Vaus (middle pixel).
     ldy sprites_x,x
@@ -67,14 +96,14 @@ ctrl_ball_subpixel:
     dey                 ; Allow one pixel off to the left.
     sty tmp2
     cpy tmp
-    bcs +no_vaus_hit
+    bcs -r
 
 h:  lda tmp2
     clc
     adc #1              ; Allow a pixel off to the right as well.
     adc vaus_width
     cmp tmp
-    bcc +no_vaus_hit
+    bcc -r
 
     inc has_hit_vaus
 
@@ -116,13 +145,16 @@ m:  sta sprites_d,x
     lda #snd_caught_ball
     jmp play_sound
 
-n:  jmp applied_reflection
+n:  rts
 
-no_vaus_hit:
+jmp applied_reflection
+
+ctrl_ball_subpixel:
     jsr reflect
     lda has_collision
     bne +n
-m:  jsr avoid_endless_flight
+    jsr check_hit_with_obstacle
+    jsr avoid_endless_flight
     jmp move_ball
 n:
 
@@ -146,10 +178,45 @@ do_apply_reflection:
     jsr apply_reflection
 
 applied_reflection:
+    jsr determine_reflection_sound
+    jsr play_reflection_sound
+
+move_ball:
+    ; Move a full pixel at most.
+    jsr ball_step
+    jmp ball_step
+
+play_reflection_sound:
+    lda has_hit_brick
+    ora has_hit_golden_brick
+    ora has_hit_vaus
+    beq +r
+    lda snd_reflection
+    beq +r
+    ldx #0
+    stx snd_reflection
+    jmp play_sound
+r:  rts
+
+check_hit_with_obstacle:
+    ; Hit obstacle?
+    jsr find_hit
+    bcs -r
+    lda sprites_i,y
+    and #is_obstacle
+    beq -r
+    lda #0
+    sta reflections_since_last_vaus_hit
+    jsr reflect_ball_obstacle
+    jsr apply_reflection
+    jsr remove_obstacle
+    jmp increase_ball_speed
+
+determine_reflection_sound:
     ; Determine reflection sound.
     lda has_hit_brick
     ora has_hit_vaus
-    beq +move_ball
+    beq +r
     lda snd_reflection
     bne +n
     lda sfx_reflection
@@ -158,57 +225,7 @@ applied_reflection:
     adc #snd_reflection_low
     sta snd_reflection
 n:  inc sfx_reflection
-
-move_ball:
-    ; Move a full pixel at most.
-    jsr ball_step
-;    jsr ball_step
-
-    ; Deal with lost ball.
-    lda sprites_y,x
-    cmp #@(- (* 8 screen_rows) 4)
-    bcc play_reflection_sound
-
-    dec balls
-    bne still_balls_left
-
-    lda #0
-    sta is_running_game
-    lda #snd_miss
-    jmp play_sound
-
-still_balls_left:
-    lda balls
-    cmp #1
-    bne +r
-    lda #0              ; Reset from disruption bonus.
-    sta mode
-r:  jmp remove_sprite
-
-play_reflection_sound:
-    lda has_hit_brick
-    ora has_hit_golden_brick
-    ora has_hit_vaus
-    beq +n
-    lda snd_reflection
-    beq +n
-    ldx #0
-    stx snd_reflection
-    jmp play_sound
-n:
-
-    ; Hit obstacle?
-    jsr find_hit
-    bcs +n
-    lda sprites_i,y
-    and #is_obstacle
-    beq +n
-    jsr reflect_ball_obstacle
-    jsr apply_reflection
-    jsr remove_obstacle
-    jsr increase_ball_speed
-n:
-    rts
+r:  rts
 
 avoid_endless_flight:
     lda reflections_since_last_vaus_hit
@@ -326,7 +343,7 @@ release_ball:
 n:  cmp #7
     bcs +n
     lda #8
-    sta sprites_x,y                                                                                               
+    sta sprites_x,y
 n:
 
     lda #255
