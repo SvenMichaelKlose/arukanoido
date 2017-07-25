@@ -32,7 +32,9 @@ ctrl_ball:
     bpl -l
 
     ; Call the ball controller ball_speed times.
-    ldy ball_speed
+    lda ball_speed
+    asl
+    tay
 l:  tya
     pha
     jsr ctrl_ball_subpixel
@@ -160,7 +162,7 @@ n:  inc sfx_reflection
 move_ball:
     ; Move a full pixel at most.
     jsr ball_step
-    jsr ball_step
+;    jsr ball_step
 
     ; Deal with lost ball.
     lda sprites_y,x

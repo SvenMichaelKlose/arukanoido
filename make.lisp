@@ -675,10 +675,11 @@
 (= *model* :vic-20+xk)
 
 (gen-vcpu-tables "src/_vcpu.asm")
-(with-temporary *show-cpu?* t
-  (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt"))
+;(with-temporary *show-cpu?* t
+;  (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt"))
 ;(with-temporary *shadowvic?* t
 ;  (make-game :prg "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
+(unix-sh-mkdir "arukanoido")
 (make-game :prg "arukanoido.prg" "arukanoido.vice.txt")
 
 (format t "Updating POKEs…~%")
@@ -692,4 +693,8 @@
             addr jmp (++ addr) lo (+ 2 addr) hi)))
 
 (format t "Level data: ~A B~%" (length +level-data+))
+
+(sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-t52" "-x1" "-o" "arukanoido/arukanoido.prg" "arukanoido.prg")
+                    :pty cl:*standard-output*)
+
 (quit)

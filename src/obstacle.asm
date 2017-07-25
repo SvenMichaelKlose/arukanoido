@@ -7,7 +7,7 @@ control_obstacles:
     ldy #@(- obstacle_cube_init sprite_inits)
     jsr add_sprite
     tax
-    lda #56        ; Direction
+    lda #48        ; Direction
     sta sprites_d,x
     inc num_obstacles
 done:
