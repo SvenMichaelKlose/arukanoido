@@ -197,6 +197,8 @@ l2: lda sprite_y
 l:  lda scry
     cmp #1
     bcc +n
+    cmp #@screen_rows
+    bcs +n
     jsr scrcoladdr
     lda (scr),y
     and #foreground
