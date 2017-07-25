@@ -176,13 +176,14 @@ make_vaus:
     jsr replace_sprite 
 
 set_vaus_color:
+    ldy #<gfx_vaus
     lda mode
     cmp #mode_laser
     bne +n
     ldy #<gfx_vaus
     lda framecounter
     lsr
-    bcs +m
+    bcs +n
     ldy #<gfx_vaus_laser
-m:  sty @(+ sprites_gl spriteidx_vaus)   ; TODO: dynamic index
-n:  rts
+n:  sty @(+ sprites_gl spriteidx_vaus)   ; TODO: dynamic index
+    rts
