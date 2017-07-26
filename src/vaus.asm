@@ -9,6 +9,15 @@ n:  cmp #@(* (- screen_columns 3) 8)
 r:  rts
 
 ctrl_vaus:
+    ; Check on collision with obstacle.
+    jsr find_hit
+    bcs +n
+    lda sprites_i,y
+    and #is_obstacle
+    beq +n
+    jsr remove_obstacle
+n:
+
     lda #0              ; Fetch joystick status.
     sta $9113
     lda $9111

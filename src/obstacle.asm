@@ -47,15 +47,8 @@ n:
     jsr reflect_obstacle
     lda has_collision
     beq +n
-    jsr apply_reflection
-n:
-
-    ; Check on collision with Vaus.
-    jsr find_hit
-    bcs +done
-    lda sprites_i,y
-    and #is_vaus
-    beq +done
+    jmp apply_reflection
+n:  rts
 
 ; Y: Sprite index
 remove_obstacle:
