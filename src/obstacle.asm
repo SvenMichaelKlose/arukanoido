@@ -25,7 +25,7 @@ n:
 
     ; Animate obstacle.
     lda framecounter
-    and #7
+    and #15
     bne +n
     lda sprites_gl,x
     clc
