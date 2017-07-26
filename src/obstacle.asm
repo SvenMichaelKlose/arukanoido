@@ -29,7 +29,7 @@ n:
     bne +n
     lda sprites_gl,x
     clc
-    adc #32
+    adc #16
     sta sprites_gl,x
     lda sprites_gh,x
     adc #0
