@@ -1,18 +1,3 @@
-len_round       = 9
-len_round_chars = 5
-len_ready       = 5
-len_ready_chars = 3
-ofs_round = @(+ (* 15 22) 5)
-ofs_ready = @(+ (* 15 24) 6)
-screen_round = @(+ screen ofs_round)
-screen_ready = @(+ screen ofs_ready)
-colors_round = @(+ colors ofs_round)
-colors_ready = @(+ colors ofs_ready)
-chars_round = @(quarter framechars)
-chars_ready = @(+ chars_round len_round_chars)
-charset_round = @(+ charset (* 8 chars_round))
-charset_ready = @(+ charset (* 8 chars_ready))
-
 roundstart:
     ; Copy round number digits into round message.
     lda #score_char0
@@ -26,12 +11,6 @@ l:  sec
 n:  clc
     adc #@(+ 10 (char-code #\0) (- score_char0 (char-code #\0)))
     sta @(+ txt_round_nn 9)
-
-    ; Clear bitmaps
-    0
-    c_clrmb <charset_round >charset_round @(* 8 len_round_chars)
-    c_clrmb <charset_ready >charset_ready @(* 8 len_ready_chars)
-    0
 
     ; Print "ROUND XX".
     lda #white
@@ -78,6 +57,8 @@ n:  lda $9004
     jsr wait_sound
 
     ; Remove message.
+screen_round = @(+ screen (* 15 22) 5)
+screen_ready = @(+ screen (* 15 24) 6)
     0
     c_clrmb <screen_round >screen_round 5
     c_clrmb <screen_ready >screen_ready 5

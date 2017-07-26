@@ -677,8 +677,8 @@
 (= *model* :vic-20+xk)
 
 (gen-vcpu-tables "src/_vcpu.asm")
-;(with-temporary *show-cpu?* t
-;  (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt"))
+(with-temporary *show-cpu?* t
+  (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt"))
 ;(with-temporary *shadowvic?* t
 ;  (make-game :prg "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
 (unix-sh-mkdir "arukanoido")
