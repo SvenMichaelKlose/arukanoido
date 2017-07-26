@@ -13,6 +13,15 @@ l:  lda @(-- gfx_background),x
     dex
     bne -l
 
+    ; Copy DOH into charset.
+    ldx #@(* 15 16)
+l:  lda @(-- gfx_doh_a),x
+    sta @(-- (+ charset (* 8 (+ foreground (half foreground))))),x
+    lda @(-- gfx_doh_b),x
+    sta @(-- (+ charset (* 8 (+ framechars foreground (half foreground))))),x
+    dex
+    bne -l
+
     ; Check if it's NTSC or PAL.
     lda $ede4
     cmp #$0c

@@ -27,7 +27,7 @@ charsetmask         = @(-- num_chars)
 framemask           = @(half num_chars)
 framechars          = @(half num_chars)
 first_sprite_char   = 1
-foreground          = @(+ (half framechars) (quarter framechars))
+foreground          = @(half framechars)
 
 ; Game settings
 

@@ -3,7 +3,6 @@
 (var *shadowvic?* nil)
 (var *add-charset-base?* t)
 (var *show-cpu?* nil)
-(var *make-only-vic?* t)
 (var *debug?* nil)
 
 (fn gen-sprite-nchars ()
@@ -633,6 +632,7 @@
                           "ball.asm"
                           "bonus.asm"
                           "obstacle.asm"
+                          "doh.asm"
 
                           ; Top level
                           "irq.asm"

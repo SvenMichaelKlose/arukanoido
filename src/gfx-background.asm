@@ -1,4 +1,4 @@
-bg_start = @(* (/ num_chars 8) 7)
+bg_start = @(+ framechars foreground)
 
 gfx_background:
 
