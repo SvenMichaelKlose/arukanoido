@@ -196,12 +196,12 @@ l2: lda sprite_y
 
 l:  lda scry
     cmp #2
-    bcc +n
-    cmp #@screen_rows
-    bcs +n
+    bcc +n               ; Don't plot into score area…
+    cmp #screen_rows
+    bcs +n               ; Don't plot over the bottom…
     lda scrx
-    cmp #@screen_columns
-    bcs +n
+    cmp #screen_columns
+    bcs +n               ; Don't plot over the right…
     jsr scrcoladdr
     lda (scr),y
     and #foreground
