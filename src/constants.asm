@@ -24,7 +24,6 @@ charsetsize         = @(* num_chars 8)
 
 num_sprites         = 16
 charsetmask         = @(-- num_chars)
-framesize           = @(half charsetsize)
 framemask           = @(half num_chars)
 framechars          = @(half num_chars)
 first_sprite_char   = 1
