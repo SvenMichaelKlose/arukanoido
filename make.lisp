@@ -627,12 +627,12 @@
                           "hit-brick.asm"
 
                           ; Sprite controllers
+                          "doh.asm"
                           "vaus.asm"
                           "laser.asm"
                           "ball.asm"
                           "bonus.asm"
                           "obstacle.asm"
-                          "doh.asm"
 
                           ; Top level
                           "irq.asm"

@@ -92,6 +92,7 @@ end
 next_level:
     jsr wait_sound
 
+q:
     lda #0
     sta is_running_game
     inc level
@@ -100,10 +101,20 @@ next_level:
     beq game_done
 
     jsr clear_screen
-    jsr draw_level
-    jsr draw_walls
+    lda level
+    cmp #33
+    bne +n
+    jsr draw_doh
+    lda #16
+    sta bricks_left
+    jmp +m
+n:  jsr draw_level
+m:  jsr draw_walls
     jsr make_score_screen
     jsr display_score
+;lda level
+;cmp #33
+;bcc -q
 
 retry:
     lda #0

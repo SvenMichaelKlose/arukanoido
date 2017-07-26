@@ -30,6 +30,12 @@ n:  clc
 
     lda #snd_round
     jsr play_sound
+    lda level
+    cmp #33
+    bne +n
+    lda #snd_doh_round
+    jsr play_sound
+n:
 
     ldx #130
 l:  lda $9004
