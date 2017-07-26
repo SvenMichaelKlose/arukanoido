@@ -455,7 +455,7 @@
 "pppppx xppppp"
 "xxwxxx xxxwxx"
 "bbbbbx xbbbbb"
-"rrrrrb xrrrrr"
+"rrrrrx xrrrrr"
 "gggggx xggggg"
 "sswssx xsswss"
 "cccccx xccccc"
