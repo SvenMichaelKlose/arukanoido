@@ -580,6 +580,7 @@
                           "gfx-background.asm"
                           "gfx-sprites.asm"
                           "gfx-obstacle-cube.asm"
+                          "gfx-explosion.asm"
                           "charset-4x8.asm"
 
                           ; Tables
@@ -633,6 +634,7 @@
                           "ball.asm"
                           "bonus.asm"
                           "obstacle.asm"
+                          "explosion.asm"
 
                           ; Top level
                           "irq.asm"

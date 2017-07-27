@@ -56,7 +56,7 @@ remove_obstacle:
     pha
     tya
     tax
-    jsr remove_sprite
+    jsr make_explosion
     dec num_obstacles
     lda #snd_hit_obstacle
     jsr play_sound
