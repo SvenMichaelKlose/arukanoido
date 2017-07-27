@@ -4,7 +4,7 @@ control_obstacles:
     beq +done
     lda framecounter
     bne +done
-    ldy #@(- obstacle_cube_init sprite_inits)
+    ldy #@(- obstacle_cone_init sprite_inits)
     jsr add_sprite
     tax
     lda #48        ; Direction
@@ -25,7 +25,7 @@ n:
 
     ; Animate obstacle.
     lda framecounter
-    and #15
+    and #7
     bne +n
     lda sprites_gl,x
     clc
@@ -35,11 +35,11 @@ n:
     adc #0
     sta sprites_gh,x
     lda sprites_gl,x
-    cmp #<gfx_obstacle_cube_end
+    cmp #<gfx_obstacle_cone_end
     bne +n
-    lda #<gfx_obstacle_cube
+    lda #<gfx_obstacle_cone
     sta sprites_gl,x
-    lda #>gfx_obstacle_cube
+    lda #>gfx_obstacle_cone
     sta sprites_gh,x
 n:
 

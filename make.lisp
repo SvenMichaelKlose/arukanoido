@@ -579,6 +579,7 @@
                           ; Graphics
                           "gfx-background.asm"
                           "gfx-sprites.asm"
+                          "gfx-obstacle-cone.asm"
                           "gfx-obstacle-cube.asm"
                           "gfx-explosion.asm"
                           "charset-4x8.asm"
