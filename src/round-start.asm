@@ -17,8 +17,8 @@ n:  clc
     sta curcol
     lda #16
     sta curchar
-    lda #5
-    sta scrx
+    lda #10
+    sta scrx2
     lda #22
     sta scry
     lda #<txt_round_nn
@@ -49,8 +49,8 @@ n:  lda $9004
 
     ; Print "READY".
     inc curchar
-    lda #6
-    sta scrx
+    lda #12
+    sta scrx2
     lda #24
     sta scry
     lda #<txt_ready

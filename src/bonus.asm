@@ -23,7 +23,10 @@ ctrl_bonus:
     lda sprites_d,x
     sta current_bonus
 
-    ldy #@(- score_1000 scores)
+    lda #<score_1000
+    sta s
+    lda #>score_1000
+    sta @(++ s)
     jsr add_to_score
 
     ; Release caught ball.

@@ -31,7 +31,10 @@ check_golden_brick:
     txa
     pha
     ldx level
-l:  ldy #@(- score_50 scores)
+l:  lda #<score_50
+    sta s
+    lda #>score_50
+    sta @(++ s)
     jsr add_to_score
     dex
     bne -l
@@ -50,8 +53,10 @@ n:
     lda (col),y
     and #$0f
     tay
-    lda color_scores,y
-    tay
+    lda color_scores_l,y
+    sta s
+    lda color_scores_h,y
+    sta @(++ s)
     jsr add_to_score
 o:  dec bricks_left
     lda #0

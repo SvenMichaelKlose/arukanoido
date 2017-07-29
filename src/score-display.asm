@@ -4,8 +4,8 @@ make_score_screen:
     sta curcol
     lda #foreground
     sta curchar
-    lda #5
-    sta scrx
+    lda #10
+    sta scrx2
     lda #0
     sta scry
     ldx #10
@@ -28,33 +28,68 @@ display_score:
     lda #white
     sta curcol
     lda #0
-    sta scrx
+    sta scrx2
     lda #1
     sta scry
-    ldx #num_score_digits
     lda #<score
     sta s
     lda #>score
     sta @(++ s)
-    jsr print_string
+    jsr print_score_string
 
     ; Print hiscore.
     inc curchar
-    lda #6
-    sta scrx
-    ldx #num_score_digits
+    lda #12
+    sta scrx2
     lda #<hiscore
     sta s
     lda #>hiscore
     sta @(++ s)
-    jsr print_string
+    jsr print_score_string
     cli
     rts
 
+; scrx2/scry: Text position
+; curchar: Character to print into.
+print_score_string:
+    ldx #num_score_digits
+    ldy #0
+l:  tya
+    pha
+    lda (s),y
+    clc
+    adc #score_char0
+    jsr print4x8_dynalloc
+    pla
+    tay
+    iny
+    dex
+    bne -l
+r:  rts
+
 ; X: Number of chars
-; scrx/scry: Text position
+; scrx2/scry: Text position
 ; curchar: Character to print into.
 print_string:
+    ldy #0
+l:  tya
+    pha
+    lda (s),y
+    bmi +r
+    jsr print4x8_dynalloc
+    pla
+    tay
+    iny
+    dex
+    bne -l
+    rts
+r:  pla
+    rts
+
+print4x8_dynalloc:
+    pha
+
+    ; Get char address.
     lda curchar
     sta d
     lda #0
@@ -68,34 +103,35 @@ print_string:
     adc #>charset
     sta @(++ d)
 
+    ; Clear char if left half is being printed to.
+    lda scrx2
+    lsr
+    sta scrx
+    bcs +n
     ldy #7
     lda #0
 l:  sta (d),y
     dey
     bpl -l
+n:
 
-    ldy #0
-l:  tya
-    lsr
-    php
-    tya
-    pha
+    ; Plot char.
     jsr scrcoladdr
     lda curchar
     sta (scr),y
     lda curcol
     sta (col),y
+
+    lda scrx2
+    lsr
     pla
-    tay
-    plp
-    lda (s),y
-    bmi +r
-    php
     jsr print4x8
-    plp
-    bcc +n
+
+    ; Step to next char if required.
+    lda scrx2
+    lsr
+    bcc +r
     inc curchar
-    inc scrx
     lda d
     clc
     adc #8
@@ -104,17 +140,5 @@ l:  tya
     adc #0
     sta @(++ d)
 
-    tya
-    pha
-    ldy #7
-    lda #0
-l2: sta (d),y
-    dey
-    bpl -l2
-    pla
-    tay
-
-n:  iny
-    dex
-    bne -l
-r:  rts
+r:  inc scrx2
+    rts

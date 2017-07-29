@@ -145,6 +145,7 @@ has_new_score:        0
 has_hiscore:          0
 scorechar_start:      0
 
+scrx2:      0
     end
 
 ; Minigrafik viewer

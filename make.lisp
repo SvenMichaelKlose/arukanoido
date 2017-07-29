@@ -599,6 +599,7 @@
                           "_vcpu.asm"
 
                           ; Library
+                          "bcd.asm"
                           "chars.asm"
                           "screen.asm"
                           "blitter.asm"
