@@ -1,5 +1,7 @@
-; String from original ROM.
-"Wed,  4 Jun 1986, 16:34 Programmed By Yasu."
+if @*demo?*
+txt_preview:  @(string4x8 "   SOON TO BE AVAILABLE ON") 255
+txt_preview2: @(string4x8 "      TAPESONDEMAND.COM") 255
+end
 
 clear_data:
     lda #0
@@ -100,6 +102,38 @@ q:
     cmp #34
     beq game_done
 
+if @*demo?*
+    cmp #9
+    bne +n
+    jsr clear_screen
+    jsr draw_doh
+    lda #white
+    sta curcol
+    lda #<txt_preview
+    sta s
+    lda #>txt_preview
+    sta @(++ s)
+    lda #0
+    sta scrx2
+    lda #21
+    sta scry
+    ldx #255
+    jsr print_string
+    lda #<txt_preview2
+    sta s
+    lda #>txt_preview2
+    sta @(++ s)
+    lda #0
+    sta scrx2
+    lda #23
+    sta scry
+    ldx #255
+    jsr print_string
+    jsr wait_fire
+    jmp restart
+n:
+end
+
     jsr clear_screen
     lda level
     cmp #33
@@ -112,9 +146,6 @@ n:  jsr draw_level
 m:  jsr draw_walls
     jsr make_score_screen
     jsr display_score
-;lda level
-;cmp #33
-;bcc -q
 
 retry:
     lda #0

@@ -4,6 +4,7 @@
 (var *add-charset-base?* t)
 (var *show-cpu?* nil)
 (var *debug?* nil)
+(var *demo?* nil)
 
 (fn gen-sprite-nchars ()
   (with-queue q
@@ -24,7 +25,7 @@
 
 (const *bricks* '(#\  #\w #\o #\c #\g #\r #\b #\p #\y #\s #\x))
 
-(const *levels* '(
+(const *levels* `(
 
 ; Round 01
 (4
@@ -154,6 +155,7 @@
 "   x x x x   ")
 
 ; Round 09
+,@(unless *demo?* `(
 (2
 " x x     x x "
 " xgx     xgx "
@@ -526,7 +528,7 @@
 "    psspp    "
 "     ssp     "
 "      s      ")
-))
+))))
 
 (= *model* :vic-20)
 
