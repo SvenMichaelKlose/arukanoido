@@ -146,6 +146,9 @@ has_hiscore:          0
 scorechar_start:      0
 
 scrx2:      0
+
+next_powerup_score: fill num_score_digits
+
     end
 
 ; Minigrafik viewer
