@@ -94,8 +94,7 @@ end
 next_level:
     jsr wait_sound
 
-q:
-    lda #0
+q:  lda #0
     sta is_running_game
     inc level
     lda level

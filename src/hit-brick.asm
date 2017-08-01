@@ -1,33 +1,31 @@
 hit_brick:
+    lda scr
+    sta tmp
+    lda @(++ scr)
+    ora #>bricks
+    sta @(++ tmp)
+
     ; Check brick type.
     ldy scrx
-    lda (scr),y
-    cmp #bg_brick_special4
-    bcs +r              ; Not a brick of any type…
-    cmp #bg_brick_special1
-    beq check_golden_brick
-    cmp #bg_brick_orange
-    bcc +r              ; Not a brick of any type…
-    beq remove_brick
-    cmp #bg_brick
-    beq remove_brick
+    lda (tmp),y
+    beq +r              ; Not a brick of any type…
+    cmp #b_golden
+    beq +golden
+    bcc remove_brick
+    cmp #b_silver
+    beq remove_silver
 
     lda #snd_reflection_silver
     sta snd_reflection
 
     ; Degrade silver brick.
-    lda (scr),y
+    lda (tmp),y
     sec
     sbc #1
     jmp modify_brick
 
-check_golden_brick:
-    lda (col),y
-    and #$0f
-    cmp #yellow
-    beq +golden
-
     ; Silver brick's score is 50 multiplied by round number.
+remove_silver:
     txa
     pha
     ldx level
@@ -50,19 +48,22 @@ remove_brick:
 n:
 
     ldy scrx
-    lda (col),y
-    and #$0f
+    lda (tmp),y
     tay
-    lda color_scores_l,y
+    lda brick_scores_l,y
     sta s
-    lda color_scores_h,y
+    lda brick_scores_h,y
     sta @(++ s)
     jsr add_to_score
+
 o:  dec bricks_left
     lda #0
     ldy scrx
-modify_brick:
     sta (scr),y
+
+modify_brick:
+    ldy scrx
+    sta (tmp),y
     clc
     rts
 

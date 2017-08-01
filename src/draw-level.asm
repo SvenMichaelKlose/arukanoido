@@ -1,54 +1,58 @@
 draw_level:
-    lda #16
-    sta bricks_in_line
+    ; Clear brick map.
+    ldx #0
+    txa
+l:  sta bricks,x
+    sta @(+ bricks 256),x
+    dex
+    bne -l
+
     lda #0
     sta bricks_left
-    sta scrx
     jsr fetch_brick
     sta scry
-    jsr scrcoladdr
-    jsr brick_inc
 
-l:  jsr fetch_brick
+m:  lda #1
+    sta scrx
+l:  jsr scrcoladdr
+    lda scr
+    sta tmp
+    lda @(++ scr)
+    ora #>bricks
+    sta @(++ tmp)
+    jsr fetch_brick
+    cmp #0
+    beq +o
     cmp #15
-    beq +done
-    tax
-    lda @(-- brick_colors),x
-    sta curcol
-    txa
-    cpx #0
-    beq +plot
-    lda #bg_brick_orange
-    cpx #b_orange
-    beq +plot
-    lda #bg_brick
-    cpx #b_silver
-    bcc +plot
-    cpx #b_golden
-    bne +m
-    dec bricks_left
-    lda #bg_brick_special1
-    jmp +plot
-m:  lda #bg_brick_special2
-plot:
-    jsr plot_brick
-    jmp -l
-    
-done:
-    rts
-
-fetch_brick:
-    dec bricks_in_line
-    lda bricks_in_line
-    and #%11111110
+    beq +r
+    ldy scrx
+    pha
+    jsr brick_to_char
+    sta (scr),y
+    lda curcol
+    sta (col),y
+    pla
+    cmp #b_golden
+    beq +n
+    inc bricks_left
+n:  cmp #b_silver
     bne +n
-    lda #0
-    ldx bricks_in_line
-    bne -done
-    ldx #15
-    stx bricks_in_line
-    jmp -done
-n:  ldy #0
+    lda level
+    lsr
+    lsr
+    lsr
+    clc
+    adc #@(++ b_silver)
+n:  sta (tmp),y
+o:  inc scrx
+    lda scrx
+    cmp #14
+    bne -l
+    inc scry
+    jmp -m
+    
+fetch_brick:
+    ldy #0
     lda (current_level),y
     ldx current_half
     bne +n
@@ -69,19 +73,20 @@ inc_zp:
     inc 1,x
 r:  rts
 
-plot_brick:
-    cmp #0
-    beq brick_inc
-    ldy #0
-    sta (scr),y
-    lda curcol
-    sta (col),y
-    inc bricks_left
-brick_inc:
-    ldx #scr
-    jsr inc_zp
-    ldx #col
-    jmp inc_zp
+brick_to_char:
+    tax
+    lda @(-- brick_colors),x
+    sta curcol
+    txa
+    beq +r
+    lda #bg_brick_orange
+    cpx #b_orange
+    beq +r
+    lda #bg_brick
+    cpx #b_golden
+    bcc +r
+    lda #bg_brick_special1
+r:  rts
 
 draw_walls:
     txa

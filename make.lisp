@@ -23,7 +23,7 @@
 (fn string4x8 (x)
   (@ [- (char-code _) 32] (string-list x)))
 
-(const *bricks* '(#\  #\w #\o #\c #\g #\r #\b #\p #\y #\s #\x))
+(const *bricks* '(#\  #\w #\o #\c #\g #\r #\b #\p #\y #\x #\s))
 
 (const *levels* `(
 

@@ -89,7 +89,6 @@ ball_x:               0
 ball_y:               0
 
 current_half:         0
-bricks_in_line:       0
 
 has_hit_brick:        0
 has_hit_golden_brick: 0

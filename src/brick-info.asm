@@ -6,8 +6,8 @@ b_red = 5
 b_blue = 6
 b_purple = 7
 b_yellow = 8
-b_silver = 9
-b_golden = 10
+b_golden = 9
+b_silver = 10
 
 brick_colors:
     white
@@ -18,15 +18,27 @@ brick_colors:
     blue
     purple
     yellow
-    white
     yellow
+    white
 
-brick_scores:
-    50
-    60
-    70
-    80
-    90
-    100
-    110
-    120
+brick_scores_l:
+    0
+    <score_50
+    <score_60
+    <score_70
+    <score_80
+    <score_90
+    <score_100
+    <score_110
+    <score_120
+
+brick_scores_h:
+    0
+    >score_50
+    >score_60
+    >score_70
+    >score_80
+    >score_90
+    >score_100
+    >score_110
+    >score_120
