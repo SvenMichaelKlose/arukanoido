@@ -43,19 +43,21 @@ sound_priorities:
     1 ; 16
     1 ; 17
 
+music_tmp:  0       ; TODO: Zero page?
+
 play_sound:
-    sta tmp4
+    sta music_tmp
     txa
     pha
     tya
     pha
-    ldx tmp4
+    ldx music_tmp
     ldy current_song
     lda sound_priorities,y
     cmp sound_priorities,x
     beq +m
     bcs +n
-m:  lda tmp4
+m:  lda music_tmp
     sta requested_song
 n:  pla
     tay

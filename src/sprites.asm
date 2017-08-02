@@ -109,8 +109,12 @@ out:rts
 ; Returns:
 ; C: Clear when a hit was found.
 ; Y: Sprite index of other sprite.
+find_hit_tmp:   0
+find_hit_tmp2:  0
+find_hit_tmp3:  0
+
 find_hit:
-    stx tmp
+    stx find_hit_tmp
 
     ; Get opposite corner's coordinates of sprite.
     lda sprites_dimensions,x
@@ -120,24 +124,24 @@ find_hit:
     asl
     clc
     adc sprites_x,x
-    sta tmp2
+    sta find_hit_tmp2
 
     lda sprites_dimensions,x
     and #%111000
     clc
     adc sprites_y,x
-    sta tmp3
+    sta find_hit_tmp3
 
     ldy #@(-- num_sprites)
 
-l:  cpy tmp             ; Skip same sprite.
+l:  cpy find_hit_tmp    ; Skip same sprite.
     beq +n
 
     lda sprites_i,y     ; Skip inactive sprite.
     bmi +n
 
     lda sprites_x,y
-    cmp tmp2
+    cmp find_hit_tmp2
     bcs +n
     lda sprites_dimensions,y
     and #%111
@@ -150,7 +154,7 @@ l:  cpy tmp             ; Skip same sprite.
     bcc +n
 
     lda sprites_y,y
-    cmp tmp3
+    cmp find_hit_tmp3
     bcs +n
     lda sprites_dimensions,y
     and #%111000

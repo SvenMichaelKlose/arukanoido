@@ -105,8 +105,6 @@ e:  pla
 ctrl_ball_vaus:
     lda #0
     sta has_hit_vaus
-    jsr get_vaus_index_in_y
-    sty tmp3
 
     ; Test on vertical collision with Vaus.
     lda sprites_y,x
@@ -115,19 +113,21 @@ ctrl_ball_vaus:
     cmp #@(+ vaus_y 8)
     bcs -r
 
+    jsr get_vaus_index_in_y
+
     ; Test on horizontal collision with Vaus (middle pixel).
-    ldy sprites_x,x
-    iny
-    sty tmp
-    ldy tmp3
+    lda sprites_x,x
+    clc
+    adc #1
+    sta tmp
     lda sprites_x,y
-    tay
-    dey                 ; Allow one pixel off to the left.
-    sty tmp2
-    cpy tmp
+    sec                 ; Allow one pixel off to the left.
+    sbc #1
+    sta tmp2
+    cmp tmp
     bcs -r
 
-h:  lda tmp2
+    lda tmp2
     clc
     adc #1              ; Allow a pixel off to the right as well.
     adc vaus_width

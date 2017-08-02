@@ -1,5 +1,9 @@
 sprites_nchars: @(gen-sprite-nchars)
 
+draw_sprites_tmp:   0
+draw_sprites_tmp2:  0
+draw_sprites_tmp3:  0
+
 ; Draw sprite, masking out the background
 draw_huge_sprite:
     ; Get screen position.
@@ -79,12 +83,12 @@ n:
 
     ; Copy background graphics into allocated chars.
     lda sprite_cols
-    sta tmp3
+    sta draw_sprites_tmp3
     lda sprite_x
     sta scrx
 
 l2: lda sprite_rows
-    sta tmp2
+    sta draw_sprites_tmp2
     lda sprite_y
     sta scry
 
@@ -108,11 +112,11 @@ n:
     sta d
     bcc +n
     inc @(++ d)
-n:  dec tmp2
+n:  dec draw_sprites_tmp2
     bne -l
 
     inc scrx
-    dec tmp3
+    dec draw_sprites_tmp3
     bne -l2
 
     ; Configure the blitter.
@@ -142,7 +146,7 @@ n:
     sta @(++ s)
 
     lda sprite_inner_cols
-    sta tmp2
+    sta draw_sprites_tmp2
 
     ; Draw left half of sprite column.
 l:  ldy sprite_inner_lines
@@ -168,7 +172,7 @@ n:
 n:
 
     ; Break here when all columns are done.
-    dec tmp2
+    dec draw_sprites_tmp2
     beq +plot_chars
 
     ; Step to next sprite graphics column.
@@ -183,16 +187,16 @@ n:
     ; Plot the filled chars to screen.
 plot_chars:
     lda sprite_char
-    sta tmp
+    sta draw_sprites_tmp
     lda sprite_x
     sta scrx
     lda sprite_cols
-    sta tmp3
+    sta draw_sprites_tmp3
 
 l2: lda sprite_y
     sta scry
     lda sprite_rows
-    sta tmp2
+    sta draw_sprites_tmp2
 
 l:  lda scry
     cmp #2
@@ -207,17 +211,17 @@ l:  lda scry
     and #foreground
     cmp #foreground
     beq +n
-    lda tmp
+    lda draw_sprites_tmp
     sta (scr),y
     lda sprites_c,x
     sta (col),y
-n:  inc tmp
+n:  inc draw_sprites_tmp
     inc scry
-    dec tmp2
+    dec draw_sprites_tmp2
     bne -l
 
     inc scrx
-    dec tmp3
+    dec draw_sprites_tmp3
     bne -l2
 
     rts
