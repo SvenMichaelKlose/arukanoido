@@ -1,4 +1,3 @@
-    0 0
 vaus_directions:
     168
     168 168 168 168
@@ -7,22 +6,15 @@ vaus_directions:
     88 88 88 88
     88
 
-    0 0
-
 vaus_directions_extended:
     168
     168 168 168 168
-    168 168 168 168
     138 138 138 138
     138 138 138 138
     116 116 116 116
     116 116 116 116
-    88 88 88 88
     88 88 88 88
     88
-
-    0 0
-
 
 n:  jsr determine_reflection_sound
     jmp play_reflection_sound
