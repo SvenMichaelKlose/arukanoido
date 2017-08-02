@@ -689,16 +689,6 @@
 (unix-sh-mkdir "arukanoido")
 (make-game :prg "arukanoido.prg" "arukanoido.vice.txt")
 
-(format t "Updating POKEs…~%")
-(with-output-file o "POKES"
-  (with (addr (- (get-label 'poke_unlimited)
-                 (get-label 'relocation_offset))
-         jmp #x4c
-         lo (low (get-label 'retry))
-         hi (high (get-label 'retry)))
-    (format o "Unlimited lifes: POKE~A,~A:POKE~A,~A:POKE~A,~A~%"
-            addr jmp (++ addr) lo (+ 2 addr) hi)))
-
 (format t "Level data: ~A B~%" (length +level-data+))
 
 (sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-t52" "-x1" "-o" "arukanoido/arukanoido.prg" "arukanoido.prg")
