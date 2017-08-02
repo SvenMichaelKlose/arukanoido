@@ -1,3 +1,11 @@
+bonus_l = 1
+bonus_e = 2
+bonus_c = 3
+bonus_s = 4
+bonus_b = 5
+bonus_d = 6
+bonus_p = 7
+
 bonus_colors:
     @(+ multicolor yellow)
     @(+ multicolor blue)
@@ -274,7 +282,16 @@ a:  jsr random
     beq -a      ; Only seven bonuses available.
     cmp current_bonus
     beq -a
-    sta @(+ bonus_init sprite_init_data)
+    ldy mode_disruption
+    beq +n
+    cmp #bonus_d
+    beq -a
+n:  cmp #bonus_s
+    bne +n
+    ldy ball_speed
+    cpy #min_ball_speed
+    beq -a
+n:  sta @(+ bonus_init sprite_init_data)
     tay
     asl
     asl
