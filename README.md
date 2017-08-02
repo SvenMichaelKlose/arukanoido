@@ -23,11 +23,12 @@ in an empty directory and it'll clone everything and build it.
 
 # Things missing:
 
-* No two-player mode.
-* No distractions floating down.
-* Round 33 is missing.
-* No title screen nor intro.
-
+* Round 33 (raining objects, cannot hit the DOH, sprites over background)
+* Title screens
+* Intro
+* Correct ball angles
+* Correct reflection from Vaus
+* Ball leaves screen at top wall corners.
 
 # Applications used
 
