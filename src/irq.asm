@@ -39,6 +39,19 @@ end
     inc framecounter
     bne +n
     inc @(++ framecounter)
+n:
+
+    lda mode_break
+    beq +n
+    lda framecounter
+    lsr
+    and #1
+    clc
+    adc #bg_break
+    sta @(+ screen (* 15 28) 14)
+    sta @(+ screen (* 15 29) 14)
+    sta @(+ screen (* 15 30) 14)
+n:
 
 n:  jsr play_music
     jsr set_vaus_color

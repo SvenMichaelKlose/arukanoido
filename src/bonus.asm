@@ -143,15 +143,33 @@ apply_bonus_b:
     inc mode_break
     lda #14
     sta scrx
-    lda #28
+    lda #27
     sta scry
-l:  jsr scrcoladdr
-    lda #0
+    jsr scrcoladdr
+    lda #bg_side
     sta (scr),y
     inc scry
-    lda scry
-    cmp #31
-    bne -l
+    jsr scrcoladdr
+    lda #0
+    sta (scr),y
+    lda #white
+    sta (col),y
+    inc scry
+    jsr scrcoladdr
+    lda #0
+    sta (scr),y
+    lda #white
+    sta (col),y
+    inc scry
+    jsr scrcoladdr
+    lda #0
+    sta (scr),y
+    lda #white
+    sta (col),y
+    inc scry
+    jsr scrcoladdr
+    lda #@(+ bg_side 2)
+    sta (scr),y
     rts
 
 apply_bonus_d:
