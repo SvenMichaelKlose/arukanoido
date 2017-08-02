@@ -146,7 +146,12 @@ scorechar_start:      0
 
 scrx2:      0
 
+; Initialised with 20.000 at game start and then 50.000 are
+; added with each extra life.
 next_powerup_score: fill num_score_digits
+
+; Initialised with 0 and then increased by 50 before each level.
+score_silver:       fill num_score_digits
 
     end
 

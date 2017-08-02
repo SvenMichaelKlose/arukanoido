@@ -26,18 +26,10 @@ hit_brick:
 
     ; Silver brick's score is 50 multiplied by round number.
 remove_silver:
-    txa
-    pha
-    ldx level
-l:  lda #<score_50
+    lda #<score_silver
     sta s
-    lda #>score_50
+    lda #>score_silver
     sta @(++ s)
-    jsr add_to_score
-    dex
-    bne -l
-    pla
-    tax
     jmp +o
 
 remove_brick:
@@ -54,9 +46,9 @@ n:
     sta s
     lda brick_scores_h,y
     sta @(++ s)
-    jsr add_to_score
+o:  jsr add_to_score
 
-o:  dec bricks_left
+    dec bricks_left
     lda #0
     ldy scrx
     sta (scr),y

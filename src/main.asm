@@ -133,6 +133,8 @@ if @*demo?*
 n:
 end
 
+    jsr increase_silver_score
+
     jsr clear_screen
     lda level
     cmp #33
