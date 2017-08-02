@@ -211,9 +211,51 @@ applied_reflection:
     jsr play_reflection_sound
 
 move_ball:
-    ; Move a full pixel at most.
     jsr ball_step
-    jmp ball_step
+
+ball_step:
+    ; Move on X axis.
+    ldy sprites_d,x
+    lda ball_directions_x,y
+    bmi +m
+    lda sprites_dx,x
+    clc
+    adc ball_directions_x,y
+    bcc +n
+    inc sprites_x,x
+    jmp +n
+
+m:  jsr neg
+    sta tmp
+    lda sprites_dx,x
+    sec
+    sbc tmp
+    bcs +n
+    dec sprites_x,x
+
+n:  sta sprites_dx,x
+
+    ; Move on Y axis.
+    lda ball_directions_y,y
+    bmi +m
+    lda sprites_dy,x
+    clc
+    adc ball_directions_y,y
+    bcc +n
+    inc sprites_y,x
+    jmp +n
+
+m:  jsr neg
+    sta tmp
+    lda sprites_dy,x
+    sec
+    sbc tmp
+    bcs +n
+    dec sprites_y,x
+
+n:  sta sprites_dy,x
+    rts
+
 
 play_reflection_sound:
     lda has_hit_brick
@@ -270,49 +312,6 @@ n:  lda sprites_d,x
     jsr turn_counterclockwise
 l:  sta sprites_d,x
 r:  rts
-
-ball_step:
-    ; Move on X axis.
-    ldy sprites_d,x
-    lda ball_directions_x,y
-    bmi +m
-    lda sprites_dx,x
-    clc
-    adc ball_directions_x,y
-    bcc +n
-    inc sprites_x,x
-    jmp +n
-
-m:  jsr neg
-    sta tmp
-    lda sprites_dx,x
-    sec
-    sbc tmp
-    bcs +n
-    dec sprites_x,x
-
-n:  sta sprites_dx,x
-
-    ; Move on Y axis.
-    lda ball_directions_y,y
-    bmi +m
-    lda sprites_dy,x
-    clc
-    adc ball_directions_y,y
-    bcc +n
-    inc sprites_y,x
-    jmp +n
-
-m:  jsr neg
-    sta tmp
-    lda sprites_dy,x
-    sec
-    sbc tmp
-    bcs +n
-    dec sprites_y,x
-
-n:  sta sprites_dy,x
-    rts
 
 make_ball:
     ldy #@(- ball_init sprite_inits)
