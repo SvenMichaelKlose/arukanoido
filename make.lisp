@@ -585,6 +585,10 @@
                           "gfx-obstacle-cube.asm"
                           "gfx-explosion.asm"
                           "charset-4x8.asm"
+                          "gfx-doh.asm"
+
+                          ; Level data
+                          "level-data.asm"
 
                           ; Tables
                           "bits.asm"
@@ -648,11 +652,6 @@
                           "hiscore.asm"
                           "main.asm"
                           "debug.asm"
-
-                          ; Streamable or loadable on occasion.
-                          "level-data.asm"
-                          "gfx-doh.asm"
-;                          "gfx-title.asm"
 
                           ; Imported music player binary.
                           "music-player.asm"
