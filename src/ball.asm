@@ -132,8 +132,6 @@ ctrl_ball_vaus:
     cmp tmp
     bcc -r
 
-    inc has_hit_vaus
-
     ; Get reflection from Vaus.
     lda tmp
     sec
@@ -160,19 +158,19 @@ m:  sta sprites_d,x
 
     ; Catch ball.
     stx caught_ball
-    lda #<gfx_ball_caught
+    lda #<gfx_ball_caught   ; Trick to avoid colour clash.
     sta sprites_gl,x
     lda #>gfx_ball_caught
     sta sprites_gh,x
     lda #@(* 28 8)
     sta sprites_y,x
-    jsr applied_reflection
     lda #delay_until_ball_is_released
     sta ball_release_timer
     lda #snd_caught_ball
     jmp play_sound
 
-r:  rts
+r:  inc has_hit_vaus
+    rts
 
 ctrl_ball_subpixel:
     jsr reflect
@@ -200,8 +198,6 @@ hit_solid:
 
 do_apply_reflection:
     jsr apply_reflection
-
-applied_reflection:
     jsr determine_reflection_sound
     jsr play_reflection_sound
 
