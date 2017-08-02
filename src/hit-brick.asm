@@ -1,14 +1,15 @@
 hit_brick:
+    ; Get pointer into 'bricks'.
     lda scr
     sta tmp
     lda @(++ scr)
     ora #>bricks
     sta @(++ tmp)
 
-    ; Check brick type.
     ldy scrx
     lda (tmp),y
-    beq +r              ; Not a brick of any type…
+    beq +r              ; No brick hit…
+
     cmp #b_golden
     beq +golden
     bcc remove_brick

@@ -18,7 +18,9 @@ init_hiscore:
 
 ; s: Score to add.
 add_to_score:
-    stx tmp
+    txa
+    pha
+
     inc has_new_score
 
     lda #<score
@@ -80,7 +82,8 @@ n:
     ldy #@(-- num_score_digits)
     jsr bcd_add
 
-n:  ldx tmp
+n:  pla
+    tax
     rts
 
 increase_silver_score:
