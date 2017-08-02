@@ -66,8 +66,7 @@ n:
     bcc +n
     bne +n
 
-stop:
-    inc lifes
+    jsr apply_bonus_p
 
     ; Add 50.000pts to new powerup score.
     lda #<score_50000
