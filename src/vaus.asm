@@ -1,3 +1,21 @@
+get_vaus_index_in_x:
+    ldx #@(-- num_sprites)
+l:  lda sprites_i,x
+    and #is_vaus
+    bne +r
+    dex
+    bpl -l
+r:  rts
+
+get_vaus_index_in_y:
+    ldy #@(-- num_sprites)
+l:  lda sprites_i,y
+    and #is_vaus
+    bne +r
+    dey
+    bpl -l
+r:  rts
+
 ctrl_dummy:
     rts
 
@@ -193,12 +211,9 @@ n:  lda #@(* (- screen_columns 1) 8)
     sta sprites_x,x
 r:  rts
 
-spriteidx_vaus = @(- num_sprites 1)
-
 make_vaus:
-    ldx #spriteidx_vaus
     ldy #@(- vaus_init sprite_inits)
-    jsr replace_sprite 
+    jsr add_sprite
 
 set_vaus_color:
     lda mode
@@ -209,5 +224,9 @@ set_vaus_color:
     lsr
     bcs +n
     ldy #<gfx_vaus_laser
-n:  sty @(+ sprites_gl spriteidx_vaus)   ; TODO: dynamic index
+n:  tya
+    pha
+    jsr get_vaus_index_in_y
+    pla
+    sta sprites_gl,y
 r:  rts

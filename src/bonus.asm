@@ -41,7 +41,7 @@ n:
     bne +n
     txa
     pha
-    ldx #spriteidx_vaus
+    jsr get_vaus_index_in_x
     lda #<gfx_vaus
     sta sprites_gl,x
     lda #>gfx_vaus
@@ -97,7 +97,7 @@ apply_bonus_l:
     rts
 
 apply_bonus_e:
-    ldy #spriteidx_vaus
+    jsr get_vaus_index_in_y
     lda sprites_x,y
     sec
     sbc #4
@@ -162,13 +162,13 @@ f:  lda sprites_x,y                     ; Copy coordinates of current ball.
     sta @(+ ball_init sprite_init_x)
     lda sprites_y,y
     sta @(+ ball_init sprite_init_y)
-    sty tmp3
+    sty tmp4
     lda sprites_d,y
     jsr turn_counterclockwise
     sta @(+ ball_init sprite_init_data)
     ldy #@(- ball_init sprite_inits)
     jsr add_sprite
-    ldy tmp3
+    ldy tmp4
     lda sprites_d,y
     jsr turn_clockwise
     sta @(+ ball_init sprite_init_data)

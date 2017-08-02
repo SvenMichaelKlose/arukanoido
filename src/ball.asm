@@ -48,6 +48,7 @@ turn_counterclockwise:
     dey
     jmp -l
 
+
 n:  jsr determine_reflection_sound
     jmp play_reflection_sound
 
@@ -104,6 +105,8 @@ e:  pla
 ctrl_ball_vaus:
     lda #0
     sta has_hit_vaus
+    jsr get_vaus_index_in_y
+    sty tmp3
 
     ; Test on vertical collision with Vaus.
     lda sprites_y,x
@@ -116,7 +119,9 @@ ctrl_ball_vaus:
     ldy sprites_x,x
     iny
     sty tmp
-    ldy @(+ sprites_x (-- num_sprites))     ; Vaus position left.
+    ldy tmp3
+    lda sprites_x,y
+    tay
     dey                 ; Allow one pixel off to the left.
     sty tmp2
     cpy tmp
