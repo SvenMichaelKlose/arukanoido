@@ -70,21 +70,19 @@ ctrl_ball:
     bcc +ball_loop
 
     dec balls
-    bne still_balls_left
-
+    bne +n
     lda #0
     sta is_running_game
     lda #snd_miss
     jmp play_sound
+n:
 
-still_balls_left:
     lda balls
     cmp #1
-    bne +m
+    bne +n
     lda #0              ; Reset from disruption bonus.
     sta mode
-m:  jmp remove_sprite
-n:
+n:  jmp remove_sprite
 
     ; Call the ball controller ball_speed times.
 ball_loop:
@@ -158,7 +156,7 @@ m:  sta sprites_d,x
 
     lda mode
     cmp #mode_catching
-    bne +n
+    bne +r
 
     ; Catch ball.
     stx caught_ball
@@ -174,9 +172,7 @@ m:  sta sprites_d,x
     lda #snd_caught_ball
     jmp play_sound
 
-n:  rts
-
-jmp applied_reflection
+r:  rts
 
 ctrl_ball_subpixel:
     jsr reflect
@@ -185,9 +181,8 @@ ctrl_ball_subpixel:
     jsr check_hit_with_obstacle
     jsr avoid_endless_flight
     jmp move_ball
-n:
 
-    lda has_hit_brick
+n:  lda has_hit_brick
     beq hit_solid
 
     lda #0
@@ -369,9 +364,8 @@ n:  cmp #7
     bcs +n
     lda #8
     sta sprites_x,y
-n:
 
-    lda #255
+n:  lda #255
     sta caught_ball
     lda #snd_reflection_low
     jsr play_sound
