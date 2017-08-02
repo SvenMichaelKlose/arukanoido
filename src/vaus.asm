@@ -1,3 +1,6 @@
+ctrl_dummy:
+    rts
+
 test_vaus_hit_right:
     ldy mode
     cpy #mode_extended
@@ -68,6 +71,10 @@ n:  sec
 n:  lda joystick_status
     and #joy_left
     beq do_fire
+
+done:
+    lda sprites_x,x
+    sta vaus_last_x
     rts
 
 handle_joystick:
@@ -89,6 +96,9 @@ n:  lda joystick_status
     jsr sprite_left
     ldx tmp
     jmp handle_joystick_fire
+
+done2:
+    jmp -done
 
     ; Joystick right.
 n:  lda #0          ;Fetch rest of joystick status.
@@ -112,12 +122,21 @@ n:  lda #0          ;Fetch rest of joystick status.
 handle_joystick_fire:
     lda joystick_status
     and #joy_fire
-    bne +r
+    bne -done
 
 do_fire:
     ldy caught_ball
     bmi +n
-    lda #@(- (* 29 8) 5)
+    lda sprites_d,y
+    cmp #default_ball_direction
+    bne +m
+    lda vaus_last_x
+    cmp sprites_x,x
+    bcs +m
+    beq +m
+    lda #default_ball_direction_skewed
+    sta sprites_d,y
+m:  lda #@(- (* 29 8) 5)
     sta sprites_y,y
     lda #<gfx_ball
     sta sprites_gl,y
@@ -130,7 +149,7 @@ n:  lda #255
 
     lda mode
     cmp #mode_laser
-    bne +r
+    bne -done2
 
     lda is_firing
     beq +n
@@ -147,9 +166,6 @@ n:  lda #snd_laser
     sta @(+ laser_init sprite_init_x)
     ldy #@(- laser_init sprite_inits)
     jmp add_sprite
-
-ctrl_dummy:
-r:  rts
 
 handle_break_mode:
     lda mode_break
@@ -175,7 +191,7 @@ n:  lda #@(* (- screen_columns 1) 8)
     sec
     sbc vaus_width
     sta sprites_x,x
-    rts
+r:  rts
 
 spriteidx_vaus = @(- num_sprites 1)
 
