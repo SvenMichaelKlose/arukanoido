@@ -222,8 +222,8 @@ play_reflection_sound:
     beq +r
     lda snd_reflection
     beq +r
-    ldx #0
-    stx snd_reflection
+    ldy #0
+    sty snd_reflection
     jmp play_sound
 r:  rts
 
