@@ -44,18 +44,18 @@ sound_priorities:
     1 ; 17
 
 play_sound:
-    sta tmp
+    sta tmp4
     txa
     pha
     tya
     pha
-    ldx tmp
+    ldx tmp4
     ldy current_song
     lda sound_priorities,y
     cmp sound_priorities,x
     beq +m
     bcs +n
-m:  lda tmp
+m:  lda tmp4
     sta requested_song
 n:  pla
     tay

@@ -29,6 +29,7 @@ current_level:        0 0 ; Pointer to next level's data.
 tmp:                  0
 tmp2:                 0
 tmp3:                 0
+tmp4:                 0
 
 ; Temporary stores for index registers.
 p_x:
@@ -89,8 +90,6 @@ has_collision:        0
 ball_x:               0
 ball_y:               0
 
-current_half:         0
-
 has_hit_brick:        0
 has_hit_golden_brick: 0
 has_hit_vaus:         0
@@ -144,15 +143,11 @@ is_testing_laser_hit: 0
 has_new_score:        0
 has_hiscore:          0
 scorechar_start:      0
-
-scrx2:      0
-
-; Initialised with 20.000 at game start and then 50.000 are
-; added with each extra life.
-next_powerup_score: fill num_score_digits
-
-; Initialised with 0 and then increased by 50 before each level.
+next_powerup_score:   fill num_score_digits
 score_silver:       fill num_score_digits
+
+current_half:         0
+scrx2:      0
 
     end
 

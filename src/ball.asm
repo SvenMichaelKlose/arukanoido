@@ -1,7 +1,7 @@
 vaus_directions:
     168
     168 168 168 168
-    138 138 138 138
+    140 140 140 140
     116 116 116 116
     88 88 88 88
     88
@@ -9,12 +9,44 @@ vaus_directions:
 vaus_directions_extended:
     168
     168 168 168 168
-    138 138 138 138
-    138 138 138 138
+    140 140 140 140
+    140 140 140 140
     116 116 116 116
     116 116 116 116
     88 88 88 88
     88
+
+used_ball_directions:
+    168
+    140
+    116
+    88
+    @(byte (+ 128 168))
+    @(byte (+ 128 140))
+    @(byte (+ 128 116))
+    @(byte (+ 128 88))
+
+get_used_ball_direction:
+    ldy #7
+l:  cmp used_ball_directions,y
+    beq +r
+    dey
+    jmp -l
+r:  rts
+
+turn_clockwise:
+    jsr get_used_ball_direction
+    iny
+l:  tya
+    and #7
+    tay
+    lda used_ball_directions,y
+    rts
+
+turn_counterclockwise:
+    jsr get_used_ball_direction
+    dey
+    jmp -l
 
 n:  jsr determine_reflection_sound
     jmp play_reflection_sound
@@ -223,18 +255,15 @@ avoid_endless_flight:
     lda reflections_since_last_vaus_hit
     cmp #32
     bcc +r
+    lda framecounter
+    lsr
+    bcc +n
     lda sprites_d,x
-    and #%00100000
-    bne +n
-    lda sprites_d,x
-    clc
-    adc #8
-    sta sprites_d,x
-    rts
+    jsr turn_clockwise
+    jmp +l
 n:  lda sprites_d,x
-    sec
-    sbc #8
-    sta sprites_d,x
+    jsr turn_counterclockwise
+l:  sta sprites_d,x
 r:  rts
 
 ball_step:
