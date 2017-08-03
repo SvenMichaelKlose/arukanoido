@@ -92,10 +92,9 @@ end
     sta @(++ current_level)
 
 next_level:
-    jsr wait_sound
-
-q:  lda #0
+    lda #0
     sta is_running_game
+
     inc level
     lda level
     cmp #34
@@ -205,6 +204,7 @@ mainloop:
     lda bricks_left
     bne +n
     jsr draw_sprites
+    jsr wait_sound
     jmp next_level
 n:
 
