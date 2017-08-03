@@ -29,6 +29,7 @@ n:
     jsr hit_brick
     bcs +o              ; No brick hit.
     inc laser_has_hit
+    jsr make_bonus
 
     ; Check on collision on the right hand side.
 o:  lda sprites_x,x
@@ -38,7 +39,7 @@ o:  lda sprites_x,x
     jsr get_soft_collision
     bne +m
     jsr hit_brick
-    bcc +n              ; We hit a brick…
+    bcc +f              ; We hit a brick…
 
     ; Move laser up unless it hit a brick with its left.
 m:  lda laser_has_hit
@@ -48,6 +49,7 @@ m:  lda laser_has_hit
     jsr sprite_up
     jmp +done
 
+f:  jsr make_bonus
 n:  jsr remove_sprite   ; Remove laser sprite.
 
 done:
