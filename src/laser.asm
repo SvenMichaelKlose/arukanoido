@@ -15,7 +15,6 @@ n:
     ; We check two collisions, on the left and the right, so we need this flag.
     lda #0              ; No brick hit.
     sta laser_has_hit
-    sta has_hit_golden_brick
 
     lda sprites_y,x
     cmp #24

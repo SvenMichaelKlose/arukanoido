@@ -1,6 +1,8 @@
 hit_brick:
     lda #0
     sta has_removed_brick
+    sta has_hit_silver_brick
+    sta has_hit_golden_brick
 
     ; Get pointer into 'bricks'.
     lda scr
@@ -16,6 +18,7 @@ hit_brick:
     cmp #b_golden
     beq +golden
     bcc remove_brick
+    inc has_hit_silver_brick
     cmp #b_silver
     beq remove_silver
 

@@ -90,6 +90,7 @@ ball_x:               0
 ball_y:               0
 
 has_hit_brick:        0
+has_hit_silver_brick: 0 ; TODO: Perhaps merge with has_golden_brick.
 has_hit_golden_brick: 0
 has_hit_vaus:         0
 num_brick_hits:       0

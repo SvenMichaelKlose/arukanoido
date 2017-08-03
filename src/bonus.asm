@@ -288,6 +288,7 @@ make_bonus_p:
 
 make_bonus:
     lda has_bonus_on_screen
+    ora has_hit_silver_brick
     bne -r
 
 a:  jsr random
