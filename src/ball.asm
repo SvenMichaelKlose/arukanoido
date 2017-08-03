@@ -186,6 +186,9 @@ n:  lda has_hit_brick
     lda #0
     sta reflections_since_last_vaus_hit
 
+    lda has_removed_brick
+    beq do_apply_reflection
+
     ; Make bonus.
     lda mode
     cmp #mode_disruption    ; No bonuses in disruption mode.

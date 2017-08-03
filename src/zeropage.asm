@@ -149,6 +149,8 @@ score_silver:         fill num_score_digits
 current_half:         0
 scrx2:      0
 
+has_removed_brick:  0
+
     end
 
 ; Minigrafik viewer

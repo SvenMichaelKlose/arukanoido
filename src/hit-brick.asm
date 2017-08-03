@@ -1,4 +1,7 @@
 hit_brick:
+    lda #0
+    sta has_removed_brick
+
     ; Get pointer into 'bricks'.
     lda scr
     sta tmp
@@ -50,6 +53,8 @@ n:
 o:  jsr add_to_score
 
     dec bricks_left
+    inc has_removed_brick
+
     lda #0
     ldy scrx
     sta (scr),y
