@@ -65,7 +65,6 @@ vaus_last_x:          0
 
 level:                0
 bricks_left:          0
-bricks_until_bonus:   0
 num_obstacles:        0
 
 joystick_status:      0

@@ -164,7 +164,6 @@ retry:
     lda #1
     sta balls
     sta sfx_reflection
-    sta bricks_until_bonus
     lda #default_ball_speed
     sta ball_speed
     lda #16

@@ -15,9 +15,6 @@ bonus_colors:
     @(+ multicolor cyan)
     @(+ multicolor white)
 
-bonus_probabilities:    ; TODO: Use this.
-    $07 $df $3d $b9 $1b $5e   ; S C E D L B – P ???
-
 ctrl_bonus:
     lda sprites_y,x
     beq +r              ; Bonus left playfield…
@@ -70,9 +67,9 @@ n:
     sta mode
 
     ldy sprites_d,x
-    lda bonus_funs_l,y
+    lda @(-- bonus_funs_l),y
     sta @(+ +selfmod 1)
-    lda bonus_funs_h,y
+    lda @(-- bonus_funs_h),y
     sta @(+ +selfmod 2)
 selfmod:
     jsr $1234
@@ -279,13 +276,51 @@ n:  dex
     tax
 r:  rts
 
+bonus_p_probabilities:
+    $07 $df $3d $b9 $1b $5e
+
+make_bonus_p:
+    lda #bonus_p
+    cpy #3
+    bcc +ok
+    lda #bonus_d
+    jmp +ok
+
 make_bonus:
-    dec bricks_until_bonus
-    bne -r
     lda has_bonus_on_screen
     bne -r
-    lda #8
-    sta bricks_until_bonus
+
+a:  jsr random
+
+    ; Check for bonus P.
+    ldy #6
+l:  cmp @(-- bonus_p_probabilities),y
+    beq make_bonus_p
+    dey
+    bpl -l
+
+    and #7
+    bne +n
+    lda #bonus_e
+n:  cmp current_bonus
+    beq -a              ; Bonus already active…
+    cmp #bonus_s        ; Bonus S is useless at minimum ball speed.
+    bne +ok
+    ldy ball_speed
+    cpy #min_ball_speed
+    beq -a
+ok: sta @(+ bonus_init sprite_init_data)
+    sec
+    sbc #1
+    tay
+    asl
+    asl
+    asl
+    clc
+    adc #<gfx_bonus_l
+    sta @(+ bonus_init sprite_init_gfx_l)
+    lda bonus_colors,y
+    sta @(+ bonus_init sprite_init_color)
 
     lda scrx
     asl
@@ -297,31 +332,7 @@ make_bonus:
     asl
     asl
     sta @(+ bonus_init sprite_init_y)
-a:  jsr random
-    and #%111
-    cmp #%111
-    beq -a      ; Only seven bonuses available.
-    cmp current_bonus
-    beq -a
-    ldy mode_disruption
-    beq +n
-    cmp #bonus_d
-    beq -a
-n:  cmp #bonus_s
-    bne +n
-    ldy ball_speed
-    cpy #min_ball_speed
-    beq -a
-n:  sta @(+ bonus_init sprite_init_data)
-    tay
-    asl
-    asl
-    asl
-    clc
-    adc #<gfx_bonus_l
-    sta @(+ bonus_init sprite_init_gfx_l)
-    lda bonus_colors,y
-    sta @(+ bonus_init sprite_init_color)
+
     ldy #@(- bonus_init sprite_inits)
     inc has_bonus_on_screen
     jmp add_sprite
