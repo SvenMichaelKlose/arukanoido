@@ -1,5 +1,5 @@
 reflect_obstacle_h:
-    lda sprites_y,x
+    lda sprites_x,x
     and #7
     bne +r
 
@@ -63,7 +63,7 @@ reflect_obstacle:
     jsr reflect_obstacle_h
 
 reflect_obstacle_v:
-    lda sprites_x,x
+    lda sprites_y,x
     and #7
     bne -r
 

@@ -7,7 +7,7 @@ control_obstacles:
     ldy #@(- obstacle_cone_init sprite_inits)
     jsr add_sprite
     tax
-    lda #48        ; Direction
+    lda #direction_down
     sta sprites_d,x
     inc num_obstacles
 done:
@@ -23,7 +23,7 @@ ctrl_obstacle:
 r:  rts
 n:
 
-    ; Animate obstacle.
+    ; Animate.
     lda framecounter
     and #7
     bne +n
@@ -43,11 +43,25 @@ n:
     sta sprites_gh,x
 n:
 
+    ; Move.
     jsr ball_step
     jsr reflect_obstacle
     lda has_collision
     beq +n
-    jmp apply_reflection
+
+    ; Step back in opposite direction.
+    lda sprites_d,x
+    clc
+    adc #128
+    sta sprites_d,x
+    jsr ball_step
+
+    ; Turn counter clockwise by 22.5°.
+    lda sprites_d,x
+    clc
+    adc #160
+    sta sprites_d,x
+
 n:  rts
 
 ; Y: Sprite index
@@ -62,5 +76,4 @@ remove_obstacle:
     jsr play_sound
     pla
     tax
-done:
     rts
