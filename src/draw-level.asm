@@ -129,6 +129,11 @@ l:  pha
     sta (scr),y
     ldy #14
     sta (scr),y
+    pha
+    lda #@(+ multicolor white)
+    ldy #14
+    sta (col),y
+    pla
     clc
     adc #1
     inc scry
