@@ -146,10 +146,11 @@ scorechar_start:      0
 next_powerup_score:   fill num_score_digits
 score_silver:         fill num_score_digits
 
-current_half:         0
-scrx2:      0
+current_half:       0
+scrx2:              0
 
-has_removed_brick:  0
+has_removed_brick:      0
+has_bonus_on_screen:    0
 
     end
 

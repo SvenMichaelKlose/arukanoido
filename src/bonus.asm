@@ -76,7 +76,8 @@ n:
     sta @(+ +selfmod 2)
 selfmod:
     jsr $1234
-r:  jmp remove_sprite
+r:  dec has_bonus_on_screen
+    jmp remove_sprite
     
 m:  lda #1
     jmp sprite_down
@@ -281,6 +282,8 @@ r:  rts
 make_bonus:
     dec bricks_until_bonus
     bne -r
+    lda has_bonus_on_screen
+    bne -r
     lda #8
     sta bricks_until_bonus
 
@@ -320,4 +323,5 @@ n:  sta @(+ bonus_init sprite_init_data)
     lda bonus_colors,y
     sta @(+ bonus_init sprite_init_color)
     ldy #@(- bonus_init sprite_inits)
+    inc has_bonus_on_screen
     jmp add_sprite
