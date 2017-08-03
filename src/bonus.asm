@@ -294,8 +294,8 @@ make_bonus:
 a:  jsr random
 
     ; Check for bonus P.
-    ldy #6
-l:  cmp @(-- bonus_p_probabilities),y
+    ldy #5
+l:  cmp bonus_p_probabilities,y
     beq make_bonus_p
     dey
     bpl -l
