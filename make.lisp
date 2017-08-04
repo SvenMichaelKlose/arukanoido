@@ -650,6 +650,7 @@
                           ,@(unless *shadowvic?*
                               '("round-intro.asm"))
                           "hiscore.asm"
+                          "game.asm"
                           "main.asm"
                           "debug.asm"
 
