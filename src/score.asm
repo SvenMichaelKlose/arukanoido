@@ -70,17 +70,25 @@ n:
 
     jsr apply_bonus_p
 
-    ; Add 50.000pts to new powerup score.
-    lda #<score_50000
+    ; Set next extra life score.
+    lda num_lifes_by_score
+    bne +n
+    lda #<score_40000
     sta s
-    lda #>score_50000
+    lda #>score_40000
     sta @(++ s)
-    lda #<next_powerup_score
+    jmp +l
+n:  lda #<score_60000
+    sta s
+    lda #>score_60000
+    sta @(++ s)
+l:  lda #<next_powerup_score
     sta d
     lda #>next_powerup_score
     sta @(++ d)
     ldy #@(-- num_score_digits)
     jsr bcd_add
+    inc num_lifes_by_score
 
 n:  pla
     tax

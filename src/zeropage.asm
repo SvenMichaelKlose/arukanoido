@@ -152,6 +152,8 @@ scrx2:              0
 has_removed_brick:      0
 has_bonus_on_screen:    0
 
+num_lifes_by_score:     0
+
     end
 
 ; Minigrafik viewer
