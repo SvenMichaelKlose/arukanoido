@@ -37,5 +37,15 @@ start:
     lda #snd_bonus_life ; Tell that the tape has finished loading.
     jsr play_sound
     jsr wait_sound
+
+toplevel:
+    jsr init_game_mode
+    jsr clear_screen
+    jsr init_score
+    jsr make_score_screen
+    jsr display_score
+
+    jsr wait_fire
+
 l:  jsr game
     jmp -l

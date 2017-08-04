@@ -51,17 +51,32 @@ display_score:
 
 ; scrx2/scry: Text position
 ; curchar: Character to print into.
+print_score_tmp:    0
 print_score_string:
+    lda #0
+    sta print_score_tmp
     ldx #num_score_digits
     ldy #0
-l:  tya
+l:  txa
+    pha
+    tya
     pha
     lda (s),y
-    clc
+    ora print_score_tmp
+    sta print_score_tmp
+    lda (s),y
+    bne +n
+    ldx print_score_tmp
+    bne +n
+    cpy #@(- num_score_digits 2)
+    bcc +m
+n:  clc
     adc #score_char0
-    jsr print4x8_dynalloc
+m:  jsr print4x8_dynalloc
     pla
     tay
+    pla
+    tax
     iny
     dex
     bne -l
