@@ -11,10 +11,13 @@ l:  lda score_20000,x
     rts
 
 init_hiscore:
-    0
-    c_setmb <hiscore >hiscore num_score_digits 0
-    0
+    ldx #@(-- num_score_digits)
+l:  lda score_50000,x
+    sta hiscore,x
+    dex
+    bpl -l
     rts
+
 
 ; s: Score to add.
 add_to_score:
