@@ -34,18 +34,33 @@ start:
     jsr start_irq
     lda #0
     sta @(++ requested_song)
-    lda #snd_bonus_life ; Tell that the tape has finished loading.
-    jsr play_sound
-    jsr wait_sound
+
+    jsr init_score
 
 toplevel:
     jsr init_game_mode
+    lda #8
+    sta $900f
     jsr clear_screen
-    jsr init_score
     jsr make_score_screen
     jsr display_score
+
+    lda #1
+    sta curchar
+    lda #<txt_credits
+    sta s
+    lda #>txt_credits
+    sta @(++ s)
+    lda #20
+    sta scrx2
+    lda #31
+    sta scry
+    jsr print_string
 
     jsr wait_fire
 
 l:  jsr game
     jmp -l
+
+txt_credits:
+    @(string4x8 "CREDITS  0") 255
