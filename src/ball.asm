@@ -326,6 +326,8 @@ avoid_endless_flight:
     lda reflections_since_last_vaus_hit
     cmp #32
     bcc +r
+    lda #0
+    sta reflections_since_last_vaus_hit
     lda framecounter
     lsr
     bcc +n
