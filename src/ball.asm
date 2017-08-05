@@ -264,18 +264,48 @@ play_reflection_sound:
 r:  rts
 
 check_hit_with_obstacle:
+    ; Get centre of ball.
+    ldy sprites_x,x
+    iny
+    sty tmp
+    ldy sprites_y,x
+    iny
+    iny
+    sty tmp2
+    
     ; Hit obstacle?
-    jsr find_hit
-    bcs -r
-    lda sprites_i,y
+    ldy #@(-- num_sprites)
+l:  lda sprites_i,y
     and #is_obstacle
-    beq -r
+    beq +n
+f:  lda sprites_x,y
+    cmp tmp
+    bcs +n
+    lda sprites_y,y
+    cmp tmp2
+    bcs +n
+    lda sprites_x,y
+    clc
+    adc #8
+    cmp tmp
+    bcc +n
+    lda sprites_y,y
+    clc
+    adc #16
+    cmp tmp2
+    bcc +n
+
     lda #0
     sta reflections_since_last_vaus_hit
     jsr reflect_ball_obstacle
     jsr apply_reflection
     jsr remove_obstacle
     jmp increase_ball_speed
+
+n:  dey
+    bpl -l
+    rts
+
 
 determine_reflection_sound:
     ; Determine reflection sound.
