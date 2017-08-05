@@ -81,8 +81,8 @@ toplevel:
 
     jsr wait_fire
 
-l:  jsr game
-    jmp -l
+    jsr game
+    jmp toplevel
 
 txt_copyright:  @(string4x8 "[\\ 2017 TAYTO CORP JAPAN") 255
 txt_rights:     @(string4x8 "ALL RIGHTS RESERVED") 255
