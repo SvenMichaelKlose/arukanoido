@@ -305,7 +305,12 @@ l:  cmp bonus_p_probabilities,y
     lda #bonus_e
 n:  cmp current_bonus
     beq -a              ; Bonus already active…
-    cmp #bonus_s        ; Bonus S is useless at minimum ball speed.
+    cmp #bonus_b
+    bne +n
+    ldy mode_break
+    beq +ok
+    bne -a
+n:  cmp #bonus_s        ; Bonus S is useless at minimum ball speed.
     bne +ok
     ldy ball_speed
     cpy #min_ball_speed
