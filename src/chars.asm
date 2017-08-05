@@ -1,3 +1,11 @@
+init_foreground:
+    ldx #@(- gfx_background_end gfx_background)
+l:  lda @(-- gfx_background),x
+    sta @(-- (+ charset (* bg_start 8))),x
+    dex
+    bne -l
+    rts
+
 ; Reuse char already allocated by another sprite.
 reuse_char:
     lda curcol

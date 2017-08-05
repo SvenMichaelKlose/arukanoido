@@ -579,13 +579,14 @@
                           "init.asm"    ; Used only to start up.
 
                           ; Graphics
+                          "font-4x8.asm"
                           "gfx-background.asm"
-                          "gfx-sprites.asm"
+                          "gfx-doh.asm"
+                          "gfx-explosion.asm"
                           "gfx-obstacle-cone.asm"
                           "gfx-obstacle-cube.asm"
-                          "gfx-explosion.asm"
-                          "charset-4x8.asm"
-                          "gfx-doh.asm"
+                          "gfx-sprites.asm"
+                          "gfx-taito.asm"
 
                           ; Level data
                           "level-data.asm"
@@ -606,22 +607,20 @@
 
                           ; Library
                           "bcd.asm"
-                          "chars.asm"
-                          "screen.asm"
                           "blitter.asm"
-                          "random.asm"
+                          "chars.asm"
+                          "digisound.asm"
+                          "draw-bitmap.asm"
+                          "joystick.asm"
                           "math.asm"
-                          "gfx.asm"
+                          "music.asm"
+                          "screen.asm"
+                          "random.asm"
                           "print.asm"
-;                          ,@(unless *shadowvic?*
-;                              '("../bender/vic-20/minigrafik-display.asm"))
                           "sprites.asm"
                           "sprites-vic-common.asm"
                           "sprites-vic.asm"
                           "sprites-vic-huge.asm"
-                          "music.asm"
-                          "digisound.asm"
-                          "joystick.asm"
 
                           ; Level display
                           "lifes.asm"

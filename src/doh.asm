@@ -1,3 +1,13 @@
+init_doh_charset:
+    ldx #@(* 15 16)
+l:  lda @(-- gfx_doh_a),x
+    sta @(-- (+ charset (* 8 (+ foreground (half foreground))))),x
+    lda @(-- gfx_doh_b),x
+    sta @(-- (+ charset (* 8 (+ framechars foreground (half foreground))))),x
+    dex
+    bne -l
+    rts
+
 draw_doh:
     lda #@(+ foreground (half foreground))
     sta tmp

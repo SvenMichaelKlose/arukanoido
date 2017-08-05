@@ -5,7 +5,6 @@ l:  cpx #@(-- hiscore)
     bcs +n
     sta 0,x
 n:  sta $200,x
-if @*debug?*
     sta charset,x
     sta @(+ 256 charset),x
     sta @(+ 512 charset),x
@@ -14,7 +13,6 @@ if @*debug?*
     sta @(+ 1024 256 charset),x
     sta @(+ 1024 512 charset),x
     sta @(+ 1024 768 charset),x
-end
     dex
     bne -l
     rts
@@ -22,7 +20,6 @@ end
 start:
     ldx #$ff
     txs
-    jsr clear_data
 
     ; Init VCPU.
     lda #<exec_script
@@ -38,29 +35,55 @@ start:
     jsr init_score
 
 toplevel:
-    jsr init_game_mode
-    lda #8
-    sta $900f
+    jsr clear_data
+    jsr init_screen
     jsr clear_screen
-    jsr make_score_screen
-    jsr display_score
-
     lda #1
     sta curchar
-    lda #<txt_credits
-    sta s
-    lda #>txt_credits
-    sta @(++ s)
+    jsr make_score_screen_title
+    jsr display_score
+
+    lda #red
+    sta curcol
+    lda #5
+    sta scrx
+    lda #20
+    sta scry
+    lda #<gfx_taito
+    ldy #>gfx_taito
+    jsr draw_bitmap
+
+    lda #white
+    sta curcol
+    lda #3
+    sta scrx2
+    lda #23
+    sta scry
+    lda #<txt_copyright
+    ldy #>txt_copyright
+    jsr print_string_ay
+
+    lda #6
+    sta scrx2
+    lda #25
+    sta scry
+    lda #<txt_rights
+    ldy #>txt_rights
+    jsr print_string_ay
+
     lda #20
     sta scrx2
     lda #31
     sta scry
-    jsr print_string
+    lda #<txt_credits
+    ldy #>txt_credits
+    jsr print_string_ay
 
     jsr wait_fire
 
 l:  jsr game
     jmp -l
 
-txt_credits:
-    @(string4x8 "CREDITS  0") 255
+txt_copyright:  @(string4x8 "[\\ 2017 TAYTO CORP JAPAN") 255
+txt_rights:     @(string4x8 "ALL RIGHTS RESERVED") 255
+txt_credits:    @(string4x8 "CREDITS  0") 255

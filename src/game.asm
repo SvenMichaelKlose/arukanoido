@@ -24,12 +24,9 @@ r:  rts
 
 game:
     jsr clear_data
-
-if @(not *shadowvic?*)
+    jsr init_screen
+    jsr init_foreground
     jsr roundintro
-end
-
-    jsr init_game_mode
 
     ; Prepare paddle auto–detection.
     lda $9008

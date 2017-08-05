@@ -1,9 +1,10 @@
 make_score_screen:
+    lda #foreground
+    sta curchar
+make_score_screen_title:
     ; Print "HIGH SCORE".
     lda #red
     sta curcol
-    lda #foreground
-    sta curchar
     lda #10
     sta scrx2
     lda #0
@@ -14,9 +15,9 @@ make_score_screen:
     lda #>txt_hiscore
     sta @(++ s)
     jsr print_string
-    ldy curchar
-    iny
-    sty scorechar_start
+    inc curchar
+    lda curchar
+    sta scorechar_start
     rts
 
 display_score:
@@ -46,6 +47,7 @@ display_score:
     lda #>hiscore
     sta @(++ s)
     jsr print_score_string
+    inc curchar
     cli
     rts
 
@@ -81,79 +83,3 @@ m:  jsr print4x8_dynalloc
     dex
     bne -l
 r:  rts
-
-; X: Number of chars
-; scrx2/scry: Text position
-; curchar: Character to print into.
-print_string:
-    ldy #0
-l:  tya
-    pha
-    lda (s),y
-    bmi +r
-    jsr print4x8_dynalloc
-    pla
-    tay
-    iny
-    dex
-    bne -l
-    rts
-r:  pla
-    rts
-
-print4x8_dynalloc:
-    pha
-
-    ; Get char address.
-    lda curchar
-    sta d
-    lda #0
-    asl d
-    rol
-    asl d
-    rol
-    asl d
-    rol
-    clc
-    adc #>charset
-    sta @(++ d)
-
-    ; Clear char if left half is being printed to.
-    lda scrx2
-    lsr
-    sta scrx
-    bcs +n
-    ldy #7
-    lda #0
-l:  sta (d),y
-    dey
-    bpl -l
-n:
-
-    ; Plot char.
-    jsr scrcoladdr
-    lda curchar
-    sta (scr),y
-    lda curcol
-    sta (col),y
-
-    lda scrx2
-    lsr
-    pla
-    jsr print4x8
-
-    ; Step to next char if required.
-    lda scrx2
-    lsr
-    bcc +r
-    inc curchar
-    lda d
-    clc
-    adc #8
-    sta d
-    lda @(++ d)
-    adc #0
-    sta @(++ d)
-
-r:  inc scrx2
-    rts
