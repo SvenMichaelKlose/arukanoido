@@ -7,7 +7,11 @@ control_obstacles:
     ldy #@(- obstacle_cone_init sprite_inits)
     jsr add_sprite
     tax
-    lda #direction_down
+    lsr
+    bcs +n
+    lda #@(+ 4 (* 10 8))
+    sta sprites_x,x
+n:  lda #direction_down
     sta sprites_d,x
     inc num_obstacles
 done:
