@@ -48,7 +48,19 @@ n:
     jsr reflect_obstacle
     lda has_collision
     beq +n
+    jsr turn_sprite
 
+n:  ldy #@(-- num_sprites)
+    jsr find_hit
+    bcs +r
+    bcc +l2
+l:  jsr find_hit_next
+    bcs +r
+l2: lda sprites_i,y
+    and #is_obstacle
+    beq -l
+
+turn_sprite:
     ; Step back in opposite direction.
     lda sprites_d,x
     clc
@@ -56,13 +68,17 @@ n:
     sta sprites_d,x
     jsr ball_step
 
-    ; Turn counter clockwise by 22.5°.
-    lda sprites_d,x
-    clc
-    adc #160
+    ; Turn by 22.5°.
+    txa
+    lsr
+    bcc +n
+    lda #160        ; clockwise
+    jmp +l
+n:  lda #96         ; counterclockwise
+l:  clc
+    adc sprites_d,x
     sta sprites_d,x
-
-n:  rts
+r:  rts
 
 ; Y: Sprite index
 remove_obstacle:

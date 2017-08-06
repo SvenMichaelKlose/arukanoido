@@ -166,6 +166,7 @@ l:  cpy find_hit_tmp    ; Skip same sprite.
     clc
     rts
 
+find_hit_next:
 n:  dey
     bpl -l
     sec
