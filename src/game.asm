@@ -53,7 +53,12 @@ next_level:
 if @*demo?*
     cmp #9
     bne +n
+    lda #0
+    sta mode_break
     jsr clear_screen
+    jsr init_doh_charset
+    lda #1
+    sta curchar
     jsr draw_doh
     lda #white
     sta curcol
@@ -87,6 +92,7 @@ end
     lda level
     cmp #33
     bne +n
+    jsr init_doh_charset
     jsr draw_doh
     lda #16
     sta bricks_left

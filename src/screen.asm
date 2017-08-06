@@ -27,6 +27,16 @@ scrcoladdr:
     ldy scrx
     rts
 
+plot:
+    sta scrx
+    sty scry
+    jsr scrcoladdr
+    lda curchar
+    sta (scr),y
+    lda curcol
+    sta (col),y
+    rts
+
 clear_screen:
     0
     c_clrmw <screen >screen @(low 512) @(high 512)
