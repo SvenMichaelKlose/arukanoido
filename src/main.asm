@@ -81,6 +81,7 @@ toplevel:
 
     jsr wait_fire
 
+    jsr round_intro
     jsr game
     jmp toplevel
 

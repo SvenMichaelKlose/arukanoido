@@ -4,7 +4,7 @@
 (var *add-charset-base?* t)
 (var *show-cpu?* nil)
 (var *debug?* nil)
-(var *demo?* nil)
+(var *demo?* t)
 
 (fn gen-sprite-nchars ()
   (with-queue q
@@ -585,6 +585,7 @@
                           "gfx-explosion.asm"
                           "gfx-obstacle-cone.asm"
                           "gfx-obstacle-cube.asm"
+                          "gfx-ship.asm"
                           "gfx-sprites.asm"
                           "gfx-taito.asm"
 

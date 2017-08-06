@@ -26,7 +26,6 @@ game:
     jsr clear_data
     jsr init_screen
     jsr init_foreground
-    jsr roundintro
 
     ; Prepare paddle auto–detection.
     lda $9008
@@ -78,8 +77,7 @@ if @*demo?*
     sta scry
     ldx #255
     jsr print_string
-    jsr wait_fire
-    jmp restart
+    jmp wait_fire
 n:
 end
 
