@@ -109,7 +109,6 @@ retry:
     sta mode
     sta mode_break
     sta reflections_since_last_vaus_hit
-    sta snd_reflection
     sta framecounter
     sta @(++ framecounter)
     sta num_obstacles
@@ -117,7 +116,6 @@ retry:
     sta has_bonus_on_screen
     lda #1
     sta balls
-    sta sfx_reflection
     lda #default_ball_speed
     sta ball_speed
     lda #16

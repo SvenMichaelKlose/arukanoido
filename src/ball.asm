@@ -49,8 +49,7 @@ turn_counterclockwise:
     jmp -l
 
 
-n:  jsr determine_reflection_sound
-    jmp play_reflection_sound
+n:  jmp play_reflection_sound
 
 l:  dec ball_release_timer
     bne +r
@@ -211,7 +210,6 @@ hit_solid:
 
 do_apply_reflection:
     jsr apply_reflection
-    jsr determine_reflection_sound
     jsr play_reflection_sound
 
 move_ball:
@@ -262,15 +260,19 @@ n:  sta sprites_dy,x
 
 
 play_reflection_sound:
-    lda has_hit_brick
-    ora has_hit_golden_brick
-    ora has_hit_vaus
+    lda has_hit_vaus
+    beq +n
+    lda #snd_reflection_low
+    bne +l
+n:  lda has_hit_brick
     beq +r
-    lda snd_reflection
-    beq +r
-    ldy #0
-    sty snd_reflection
-    jmp play_sound
+    lda has_hit_golden_brick
+    ora has_hit_silver_brick
+    beq +n
+    lda #snd_reflection_silver
+    bne +l
+n:  lda #snd_reflection_high
+l:  jmp play_sound
 r:  rts
 
 check_hit_with_obstacle:
@@ -316,21 +318,6 @@ n:  dey
     bpl -l
     rts
 
-
-determine_reflection_sound:
-    ; Determine reflection sound.
-    lda has_hit_brick
-    ora has_hit_vaus
-    beq +r
-    lda snd_reflection
-    bne +n
-    lda sfx_reflection
-    and #1
-    clc
-    adc #snd_reflection_low
-    sta snd_reflection
-n:  inc sfx_reflection
-r:  rts
 
 avoid_endless_flight:
     lda reflections_since_last_vaus_hit
@@ -410,6 +397,4 @@ n:  lda #255
     sta caught_ball
     lda #snd_reflection_low
     jsr play_sound
-    lda #0
-    sta sfx_reflection
     rts

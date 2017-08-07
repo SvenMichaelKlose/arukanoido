@@ -22,9 +22,6 @@ hit_brick:
     cmp #b_silver
     beq remove_silver
 
-    lda #snd_reflection_silver
-    sta snd_reflection
-
     ; Degrade silver brick.
     lda (tmp),y
     sec
@@ -70,7 +67,5 @@ modify_brick:
 
 golden:
     inc has_hit_golden_brick
-    lda #snd_reflection_silver
-    sta snd_reflection
 r:  sec
     rts

@@ -80,8 +80,6 @@ has_moved_sprites:    0
 ball_speed:           0
 is_firing:            0   ; Laser interval countdown.
 is_using_paddle:      0
-sfx_reflection:       0
-snd_reflection:       0
 old_paddle_value:     0
 digisound_counter:    0 0
 
