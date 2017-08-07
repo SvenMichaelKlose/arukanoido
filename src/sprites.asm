@@ -7,10 +7,10 @@ add_sprite:
     sty add_sprite_y
 
     ldy #@(-- num_sprites)
-l:  lda sprite_rr
+l:  dec sprite_rr
+    lda sprite_rr
     and #@(-- num_sprites)
     tax
-    inc sprite_rr
     lda sprites_i,x     ; Decorative?
     bmi replace_sprite2 ; Yes…
     dey
