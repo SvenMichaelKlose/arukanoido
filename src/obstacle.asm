@@ -14,6 +14,23 @@ control_obstacles:
 n:  lda #direction_down
     sta sprites_d,x
     inc num_obstacles
+
+    ldy level
+    dey
+    tya
+    and #1
+    bne +n
+    lda #cyan
+    sta sprites_c,x
+    lda #<gfx_obstacle_cone
+    ldy #>gfx_obstacle_cone
+    jmp +l
+n:  lda #red
+    sta sprites_c,x
+    lda #<gfx_obstacle_cube
+    ldy #>gfx_obstacle_cube
+l:  sta sprites_gl,x
+    sty sprites_gh,x
 done:
     rts
 
@@ -30,16 +47,31 @@ n:
     ; Animate.
     lda framecounter
     and #7
-    bne +n
+    bne +l
     lda sprites_gl,x
     clc
     adc #16
     sta sprites_gl,x
-    lda sprites_gh,x
-    adc #0
-    sta sprites_gh,x
+    bcc +m
+    inc sprites_gh,x
+m:
+
     lda sprites_gl,x
-    cmp #<gfx_obstacle_cone_end
+    cmp #<gfx_obstacle_cube_end
+    bne +n
+    lda sprites_gh,x
+    cmp #>gfx_obstacle_cube_end
+    bne +n
+    lda #<gfx_obstacle_cube
+    sta sprites_gl,x
+    lda #>gfx_obstacle_cube
+    sta sprites_gh,x
+    jmp +l
+
+n:  cmp #<gfx_obstacle_cone_end
+    bne +n
+    lda sprites_gh,x
+    cmp #>gfx_obstacle_cone_end
     bne +n
     lda #<gfx_obstacle_cone
     sta sprites_gl,x
@@ -48,7 +80,7 @@ n:
 n:
 
     ; Move.
-    jsr ball_step
+l:  jsr ball_step
     jsr reflect_obstacle
     lda has_collision
     beq +n
