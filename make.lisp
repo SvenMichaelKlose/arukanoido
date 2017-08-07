@@ -631,6 +631,7 @@
                           ; Display object interactions
                           "score.asm"
                           "reflect.asm"
+                          "reflect-edge.asm"
                           "reflect-obstacle.asm"
                           "reflect-ball-obstacle.asm"
                           "hit-brick.asm"

@@ -176,9 +176,19 @@ ctrl_ball_subpixel:
     jsr reflect
     lda has_collision
     bne +n
+    jsr reflect_edge
+    lda has_collision
+    bne +m
     jsr check_hit_with_obstacle
     jsr avoid_endless_flight
     jmp move_ball
+
+m:  lda #0
+    sta has_collision
+    lda sprites_d,x
+    clc
+    adc #$80
+    sta sprites_d,x
 
 n:  lda has_hit_brick
     beq hit_solid
