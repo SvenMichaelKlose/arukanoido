@@ -94,4 +94,4 @@ id_patch:           @(make-reverse-patch-id)
 id_patch_end:
 txt_hardware_check: @(string4x8 "HARDWARE CHECK") 255
 txt_wait:           @(string4x8 "WAIT UNTIL TIMER REACHES '0'") 255
-txt_counter:        0 0 255
+txt_counter:        @(string4x8 "0") 0 255
