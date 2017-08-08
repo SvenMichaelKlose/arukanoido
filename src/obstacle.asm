@@ -1,18 +1,30 @@
 gfx_obstacles_gl:
     <gfx_obstacle_cone
-    <gfx_obstacle_cone
+    <gfx_obstacle_pyramid
     <gfx_obstacle_spheres
     <gfx_obstacle_cube
 
 gfx_obstacles_gh:
     >gfx_obstacle_cone
-    >gfx_obstacle_cone
+    >gfx_obstacle_pyramid
     >gfx_obstacle_spheres
     >gfx_obstacle_cube
 
+gfx_obstacles_gl_end:
+    <gfx_obstacle_cone_end
+    <gfx_obstacle_pyramid_end
+    <gfx_obstacle_spheres_end
+    <gfx_obstacle_cube_end
+
+gfx_obstacles_gh_end:
+    >gfx_obstacle_cone_end
+    >gfx_obstacle_pyramid_end
+    >gfx_obstacle_spheres_end
+    >gfx_obstacle_cube_end
+
 gfx_obstacles_c:
     cyan
-    cyan
+    green
     white
     red
 
@@ -69,38 +81,22 @@ n:
     inc sprites_gh,x
 m:
 
-    lda sprites_gl,x
-    cmp #<gfx_obstacle_cube_end
+    ; Reset animation sequence when at end.
+    ldy #3
+l:  lda sprites_gl,x
+    cmp gfx_obstacles_gl_end,y
     bne +n
     lda sprites_gh,x
-    cmp #>gfx_obstacle_cube_end
+    cmp gfx_obstacles_gh_end,y
     bne +n
-    lda #<gfx_obstacle_cube
+    lda gfx_obstacles_gl,y
     sta sprites_gl,x
-    lda #>gfx_obstacle_cube
+    lda gfx_obstacles_gh,y
     sta sprites_gh,x
     jmp +l
-
-n:  cmp #<gfx_obstacle_cone_end
-    bne +n
-    lda sprites_gh,x
-    cmp #>gfx_obstacle_cone_end
-    bne +n
-    lda #<gfx_obstacle_cone
-    sta sprites_gl,x
-    lda #>gfx_obstacle_cone
-    sta sprites_gh,x
-
-n:  cmp #<gfx_obstacle_spheres_end
-    bne +n
-    lda sprites_gh,x
-    cmp #>gfx_obstacle_spheres_end
-    bne +n
-    lda #<gfx_obstacle_spheres
-    sta sprites_gl,x
-    lda #>gfx_obstacle_spheres
-    sta sprites_gh,x
-n:
+n:  dey
+    bpl -l
+l:
 
     ; Move.
 l:  jsr ball_step

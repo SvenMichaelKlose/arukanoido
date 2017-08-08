@@ -585,6 +585,7 @@
                           "gfx-explosion.asm"
                           "gfx-obstacle-cone.asm"
                           "gfx-obstacle-cube.asm"
+                          "gfx-obstacle-pyramid.asm"
                           "gfx-obstacle-spheres.asm"
                           "gfx-ship.asm"
                           "gfx-sprites.asm"
