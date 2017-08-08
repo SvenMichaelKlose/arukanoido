@@ -15,6 +15,14 @@ hit_brick:
     lda (tmp),y
     beq +r              ; No brick hit…
 
+    pha
+    lda is_testing_laser_hit
+    bne +n
+    inc num_brick_hits
+    jsr adjust_ball_speed
+n:  pla
+    ldy scrx
+
     cmp #b_golden
     beq +golden
     bcc remove_brick
@@ -37,12 +45,6 @@ remove_silver:
     jmp +o
 
 remove_brick:
-    lda is_testing_laser_hit
-    bne +n
-    inc num_brick_hits
-    jsr adjust_ball_speed
-n:
-
     ldy scrx
     lda (tmp),y
     tay
