@@ -1,3 +1,21 @@
+gfx_obstacles_gl:
+    <gfx_obstacle_cone
+    <gfx_obstacle_cone
+    <gfx_obstacle_spheres
+    <gfx_obstacle_cube
+
+gfx_obstacles_gh:
+    >gfx_obstacle_cone
+    >gfx_obstacle_cone
+    >gfx_obstacle_spheres
+    >gfx_obstacle_cube
+
+gfx_obstacles_c:
+    cyan
+    cyan
+    white
+    red
+
 control_obstacles:
     lda num_obstacles
     cmp #3
@@ -18,19 +36,14 @@ n:  lda #direction_down
     ldy level
     dey
     tya
-    and #1
-    bne +n
-    lda #cyan
+    and #3
+    tay
+    lda gfx_obstacles_c,y
     sta sprites_c,x
-    lda #<gfx_obstacle_cone
-    ldy #>gfx_obstacle_cone
-    jmp +l
-n:  lda #red
-    sta sprites_c,x
-    lda #<gfx_obstacle_cube
-    ldy #>gfx_obstacle_cube
-l:  sta sprites_gl,x
-    sty sprites_gh,x
+    lda gfx_obstacles_gl,y
+    sta sprites_gl,x
+    lda gfx_obstacles_gh,y
+    sta sprites_gh,x
 done:
     rts
 
@@ -76,6 +89,16 @@ n:  cmp #<gfx_obstacle_cone_end
     lda #<gfx_obstacle_cone
     sta sprites_gl,x
     lda #>gfx_obstacle_cone
+    sta sprites_gh,x
+
+n:  cmp #<gfx_obstacle_spheres_end
+    bne +n
+    lda sprites_gh,x
+    cmp #>gfx_obstacle_spheres_end
+    bne +n
+    lda #<gfx_obstacle_spheres
+    sta sprites_gl,x
+    lda #>gfx_obstacle_spheres
     sta sprites_gh,x
 n:
 
