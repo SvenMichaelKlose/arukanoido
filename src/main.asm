@@ -18,15 +18,6 @@ n:  sta $200,x
     rts
 
 start:
-    ldx #$ff
-    txs
-
-    ; Init VCPU.
-    lda #<exec_script
-    sta $316
-    lda #>exec_script
-    sta $317
-
     jsr init_hiscore
     jsr start_irq
     lda #0

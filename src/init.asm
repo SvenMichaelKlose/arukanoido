@@ -1,7 +1,3 @@
-if @*shadowvic?*
-    org $2000
-end
-
 main:
     sei
     lda #$7f
@@ -12,6 +8,15 @@ main:
     ; Blank screen.
     lda #0
     sta $9002
+
+    ldx #$ff
+    txs
+
+    ; Init VCPU.
+    lda #<exec_script
+    sta $316
+    lda #>exec_script
+    sta $317
 
 music_player_size = @(length (fetch-file "sound-beamrider/MusicTester.prg"))
 loaded_music_player_end = @(+ loaded_music_player (-- music_player_size))
@@ -49,6 +54,4 @@ n:
     cmp #255
     bne -l
  
-    jmp start       ; Start the game…
-
-    fill @(- #x2000 *pc*)
+    jmp patch

@@ -23,6 +23,9 @@
 (fn string4x8 (x)
   (@ [- (char-code _) 32] (string-list x)))
 
+(fn make-reverse-patch-id ()
+  (string4x8 (list-string (reverse (string-list "ARUKANOIDO PATCH")))))
+
 (const *bricks* '(#\  #\w #\o #\c #\g #\r #\b #\p #\y #\x #\s))
 
 (const *levels* `(
@@ -576,7 +579,8 @@
                           "zeropage.asm"
                           ,@(unless *shadowvic?*
                               '("../bender/vic-20/basic-loader.asm"))
-                          "init.asm"    ; Used only to start up.
+                          "init.asm"
+                          "gap.asm"
 
                           ; Graphics
                           "font-4x8.asm"
@@ -659,6 +663,8 @@
 
                           ; Imported music player binary.
                           "music-player.asm"
+
+                          "patch.asm"
 
                           "end.asm"))
         cmds))
