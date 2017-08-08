@@ -68,8 +68,7 @@ n:
     sta @(++ d)
     ldx #@(-- num_score_digits)
     jsr bcd_cmp
-    bcc +n
-    bne +n
+    bcc +r
 
     jsr apply_bonus_p
 
@@ -93,7 +92,7 @@ l:  lda #<next_powerup_score
     jsr bcd_add
     inc num_lifes_by_score
 
-n:  pla
+r:  pla
     tax
     rts
 

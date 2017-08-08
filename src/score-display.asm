@@ -42,9 +42,9 @@ display_score:
     inc curchar
     lda #12
     sta scrx2
-    lda #<hiscore
+    lda #<next_powerup_score ;hiscore
     sta s
-    lda #>hiscore
+    lda #>next_powerup_score ;hiscore
     sta @(++ s)
     jsr print_score_string
     inc curchar

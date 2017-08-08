@@ -24,4 +24,6 @@ l:  lda (s),y
 n:  iny
     dex
     bpl -l
+    lda #0
+    clc
     rts
