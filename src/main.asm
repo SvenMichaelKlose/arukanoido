@@ -70,8 +70,35 @@ toplevel:
     ldy #>txt_credits
     jsr print_string_ay
 
-    jsr wait_fire
+    sei
 
+l:  jsr test_fire
+    beq +f
+
+    jsr poll_keypress
+    bcc -l
+
+    cmp #keycode_h
+    bne +n
+    dec $9000
+    jmp -l
+n:
+    cmp #keycode_l
+    bne +n
+    inc $9000
+    jmp -l
+n:
+    cmp #keycode_k
+    bne +n
+    dec $9001
+    jmp -l
+n:
+    cmp #keycode_j
+    bne -l
+    inc $9001
+    jmp -l
+
+f:  cli
     lda #snd_coin
     jsr play_sound
     jsr wait_sound

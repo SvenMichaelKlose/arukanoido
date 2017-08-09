@@ -619,6 +619,7 @@
                           "digisound.asm"
                           "draw-bitmap.asm"
                           "joystick.asm"
+                          "keyboard.asm"
                           "math.asm"
                           "music.asm"
                           "screen.asm"

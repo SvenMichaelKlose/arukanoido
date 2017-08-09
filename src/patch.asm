@@ -84,7 +84,13 @@ m:  lda $9004
     ldy #>txt_counter
     jsr print_string_ay
 
-    pla
+    jsr poll_keypress
+    bcc +n
+    ldx #$ff
+    txs
+    jmp start
+
+n:  pla
     tay
     pla
     tax
