@@ -138,7 +138,7 @@ apply_bonus_s:
     rts
 
 apply_bonus_b:
-    inc mode_break
+    dec mode_break
     lda #14
     sta scrx
     lda #27

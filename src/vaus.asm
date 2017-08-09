@@ -30,8 +30,28 @@ n:  cmp #@(* (- screen_columns 3) 8)
 r:  rts
 
 ctrl_vaus:
+    lda mode_break
+    beq +n
+    bmi +n
+
+    lda framecounter
+    and #7
+    bne +m
+    lda #2
+    jsr sprite_right
+m:  lda #<score_100
+    sta s
+    lda #>score_100
+    sta @(++ s)
+    jsr add_to_score
+    dec mode_break
+    bne -r
+    lda #0
+    sta bricks_left
+    rts
+
     ; Check on collision with obstacle.
-    jsr find_hit
+n:  jsr find_hit
     bcs +n
     lda sprites_i,y
     and #is_obstacle
@@ -199,11 +219,10 @@ l:  lda sprites_i,y
 m:  dey
     bpl -l
 
+    lda #100
+    sta mode_break
     lda #snd_round_break
-    jsr play_sound
-    lda #0
-    sta bricks_left
-    rts
+    jmp play_sound
 
 n:  lda #@(* (- screen_columns 1) 8)
     sec
