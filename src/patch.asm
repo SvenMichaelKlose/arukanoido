@@ -84,8 +84,12 @@ m:  lda $9004
     ldy #>txt_counter
     jsr print_string_ay
 
+    jsr test_fire
+    beq +r
     jsr poll_keypress
     bcc +n
+r:  jsr wait_fire_released
+    jsr wait_keyunpress
     ldx #$ff
     txs
     jmp start
