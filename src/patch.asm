@@ -36,10 +36,10 @@ l2: lda (tmp3),y
     iny
     dex
     bpl -l2
-    ldy #@(- id_patch_end id_patch)
+    ldy #@(++ (- id_patch_end id_patch))
     lda (tmp3),y
     pha
-    iny
+    dey
     lda (tmp3),y
     pha
     rts
