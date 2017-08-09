@@ -149,7 +149,7 @@ m:  sta sprites_d,x
     sta sprites_y,x
 
     lda #0
-    sta reflections_since_last_vaus_hit
+    sta sprites_d2,x
 
     lda mode
     cmp #mode_catching
@@ -193,7 +193,7 @@ n:  lda has_hit_brick
     beq hit_solid
 
     lda #0
-    sta reflections_since_last_vaus_hit
+    sta sprites_d2,x
 
     lda has_removed_brick
     beq do_apply_reflection
@@ -206,7 +206,7 @@ n:  lda has_hit_brick
     jmp do_apply_reflection
 
 hit_solid:
-    inc reflections_since_last_vaus_hit
+    inc sprites_d2,x
 
 do_apply_reflection:
     jsr apply_reflection
@@ -308,7 +308,7 @@ f:  lda sprites_x,y
     bcc +n
 
     lda #0
-    sta reflections_since_last_vaus_hit
+    sta sprites_d2,x
     jsr reflect_ball_obstacle
     jsr apply_reflection
     jsr remove_obstacle
@@ -318,13 +318,12 @@ n:  dey
     bpl -l
     rts
 
-
 avoid_endless_flight:
-    lda reflections_since_last_vaus_hit
-    cmp #32
+    lda sprites_d2,x
+    cmp #64
     bcc +r
     lda #0
-    sta reflections_since_last_vaus_hit
+    sta sprites_d2,x
     lda framecounter
     lsr
     bcc +n
@@ -351,6 +350,8 @@ make_ball:
     sta sprites_gh,x
     lda #default_ball_direction
     sta sprites_d,x
+    lda #0
+    sta sprites_d2,x
     lda #initial_delay_until_ball_is_released
     sta ball_release_timer
     rts

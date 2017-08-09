@@ -59,7 +59,6 @@ current_bonus:        0
 side_degrees:         0
 caught_ball:          0
 ball_release_timer:   0
-reflections_since_last_vaus_hit: 0
 vaus_width:           0
 vaus_last_x:          0
 
@@ -113,16 +112,17 @@ hiscore:    fill num_score_digits
 
     org $200
 
-sprites_dx:     fill num_sprites ; Whatever the controllers want.
-sprites_dy:     fill num_sprites ; Whatever the controllers want.
-sprites_ox:     fill num_sprites ; Former X positions for cleaning up.
-sprites_oy:     fill num_sprites ; Former Y positions for cleaning up.
-sprites_iw:     fill num_sprites ; Width in chars.
-sprites_ih:     fill num_sprites ; Height in rows.
-sprites_w:      fill num_sprites ; Total width in chars.
-sprites_h:      fill num_sprites ; Total height in rows.
-sprites_ow:     fill num_sprites ; Width in chars.
-sprites_oh:     fill num_sprites ; Height in rows.
+sprites_d2:     fill num_sprites ; Whatever the controllers want.
+sprites_dx:     fill num_sprites ; Ball subpixel position
+sprites_dy:     fill num_sprites
+sprites_iw:     fill num_sprites ; Dimensions in chars.
+sprites_ih:     fill num_sprites
+sprites_w:      fill num_sprites ; Total dimensions in chars (after shift).
+sprites_h:      fill num_sprites
+sprites_ox:     fill num_sprites ; Old position for cleanup.
+sprites_oy:     fill num_sprites
+sprites_ow:     fill num_sprites ; Old dimensions for cleanup (after shift).
+sprites_oh:     fill num_sprites
 
 ; Currently processed sprite
 sprite_char:        0   ; First char.

@@ -108,7 +108,7 @@ retry:
     sta is_firing
     sta mode
     sta mode_break
-    sta reflections_since_last_vaus_hit
+    sta sprites_d2,x
     sta framecounter
     sta @(++ framecounter)
     sta num_obstacles
