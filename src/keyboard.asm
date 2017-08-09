@@ -24,8 +24,6 @@ wait_keyunpress:
     lda #0
     sta via2_portb0
     lda via2_porta0
-    cmp via2_porta0
-    bne wait_keyunpress
     cmp #$ff
     bne wait_keyunpress
     rts
