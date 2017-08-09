@@ -4,7 +4,7 @@
 (var *add-charset-base?* t)
 (var *show-cpu?* nil)
 (var *debug?* nil)
-(var *demo?* nil)
+(var *demo?* t)
 
 (fn gen-sprite-nchars ()
   (with-queue q
