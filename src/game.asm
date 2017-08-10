@@ -179,11 +179,16 @@ n:  ; Toggle sprite frame.
 n:  jsr get_keypress
     bcc +l
     cmp #keycode_p
-    bne +l
+    bne +n
     lda #1
     eor has_paused
     sta has_paused
 m:  jsr wait_keyunpress
+n:  cmp #keycode_n
+    bne +l
+    lda #0
+    sta bricks_left
+    jmp next_level
 
 l:  jsr random              ; Improve randomness and avoid CRTC hsync wobble.
     lda has_moved_sprites
