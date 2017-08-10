@@ -137,7 +137,7 @@ done2:
     jmp -done
 
     ; Joystick right.
-n:  lda #0          ;Fetch rest of joystick status.
+n:  lda #0          ; Fetch rest of joystick status.
     sta $9122
     ldy #255
     lda $9120
