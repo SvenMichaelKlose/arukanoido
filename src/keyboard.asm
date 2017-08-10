@@ -2,6 +2,7 @@ keycode_h  = $14
 keycode_j  = $2b
 keycode_k  = $13
 keycode_l  = $2a
+keycode_p  = $32
 
 keycode_0  = $03
 keycode_1  = $3f
@@ -29,7 +30,10 @@ wait_keyunpress:
     rts
 
 get_keypress:
+    lda #255            ; Set port B to output.
+    sta $9122
     lda #0
+    sta $9123           ; Set port A to input.
     sta via2_portb0
     lda via2_porta0
     cmp via2_porta0

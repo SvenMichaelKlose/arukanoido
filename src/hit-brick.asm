@@ -21,7 +21,7 @@ hit_brick:
     inc num_brick_hits
     jsr adjust_ball_speed
 n:  pla
-    ldy scrx
+    ldy scrx            ; TODO: Remove?
 
     cmp #b_golden
     beq +golden

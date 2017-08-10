@@ -70,8 +70,6 @@ toplevel:
     ldy #>txt_credits
     jsr print_string_ay
 
-    sei
-
 l:  jsr test_fire
     beq +f
 
@@ -98,8 +96,7 @@ n:
     inc $9001
     jmp -l
 
-f:  cli
-    lda #snd_coin
+f:  lda #snd_coin
     jsr play_sound
     jsr wait_sound
     jsr round_intro

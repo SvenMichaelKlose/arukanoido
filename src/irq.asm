@@ -36,6 +36,9 @@ if @*show-cpu?*
     sta $900f
 end
 
+    lda has_paused
+    bne +m
+
     inc framecounter
     bne +n
     inc @(++ framecounter)
@@ -67,6 +70,7 @@ n:  jsr play_music
     jsr rotate_bonuses
     jsr control_obstacles
 
+m:
 n:  lda #$7f        ; Acknowledge IRQ.
     sta $912d
 

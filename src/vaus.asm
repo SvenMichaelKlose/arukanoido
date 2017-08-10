@@ -59,8 +59,6 @@ n:  jsr find_hit
     jsr remove_obstacle
 n:
 
-    lda #0              ; Fetch joystick status.
-    sta $9113
     lda $9111
     sta joystick_status
 
@@ -141,7 +139,9 @@ done2:
     ; Joystick right.
 n:  lda #0          ;Fetch rest of joystick status.
     sta $9122
+    ldy #255
     lda $9120
+    sty $9122
     bmi handle_joystick_fire
     lda sprites_x,x
     jsr test_vaus_hit_right

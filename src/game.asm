@@ -176,7 +176,16 @@ n:  ; Toggle sprite frame.
     ora #first_sprite_char
     sta next_sprite_char
 
-n:  jsr random              ; Improve randomness and avoid CRTC hsync wobble.
+n:  jsr get_keypress
+    bcc +l
+    cmp #keycode_p
+    bne +l
+    lda #1
+    eor has_paused
+    sta has_paused
+m:  jsr wait_keyunpress
+
+l:  jsr random              ; Improve randomness and avoid CRTC hsync wobble.
     lda has_moved_sprites
     beq -n
     lda #0
