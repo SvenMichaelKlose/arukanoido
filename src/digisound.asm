@@ -36,8 +36,6 @@ n:  pla
 stop_digisound:
     lda #$7f    ; TODO: Only stop NMI.
     sta $911e
-    sta $912e
-    sta $912d
     rts
 
 start_digisound:
