@@ -124,6 +124,7 @@ n:  lda joystick_status
     lda #2
     jsr sprite_left
 
+    ; Move caught ball with Vaus.
     lda caught_ball
     bmi handle_joystick_fire
     stx tmp
@@ -149,6 +150,7 @@ n:  lda #0          ; Fetch rest of joystick status.
     lda #2
     jsr sprite_right
 
+    ; Move caught ball with Vaus.
     lda caught_ball
     bmi handle_joystick_fire
     stx tmp
@@ -163,6 +165,7 @@ handle_joystick_fire:
     bne -done
 
 do_fire:
+    ; Release caught ball. Shallow ball angle when moving to the right.
     ldy caught_ball
     bmi +n
     lda sprites_d,y
@@ -182,10 +185,11 @@ m:  lda #@(- (* 29 8) 5)
     sta sprites_gh,y
     lda #snd_reflection_low
     jsr play_sound
-n:  lda #255
+    lda #255
     sta caught_ball
+    jmp -done
 
-    lda mode
+n:  lda mode
     cmp #mode_laser
     bne -done2
 
@@ -203,7 +207,8 @@ n:  lda #snd_laser
     adc #4
     sta @(+ laser_init sprite_init_x)
     ldy #@(- laser_init sprite_inits)
-    jmp add_sprite
+    jsr add_sprite
+    jmp -done
 
 handle_break_mode:
     lda mode_break
