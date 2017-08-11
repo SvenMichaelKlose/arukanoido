@@ -68,7 +68,7 @@ n:  jsr play_music
     lda mode_break
     bne +n
     jsr rotate_bonuses
-    jsr control_obstacles
+    jsr add_missing_obstacle
 
 m:
 n:  lda #$7f        ; Acknowledge IRQ.

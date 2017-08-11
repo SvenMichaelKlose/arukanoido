@@ -28,7 +28,7 @@ gfx_obstacles_c:
     white
     red
 
-control_obstacles:
+add_missing_obstacle:
     lda num_obstacles
     cmp #3
     beq +done
@@ -96,14 +96,13 @@ l:  lda sprites_gl,x
     jmp +l
 n:  dey
     bpl -l
-l:
 
     ; Move.
 l:  jsr ball_step
     jsr reflect_obstacle
     lda has_collision
     beq +n
-    jsr turn_sprite
+    jsr turn_obstacle
 
 n:  ldy #@(-- num_sprites)
     jsr find_hit
@@ -115,7 +114,7 @@ l2: lda sprites_i,y
     and #is_obstacle
     beq -l
 
-turn_sprite:
+turn_obstacle:
     ; Step back in opposite direction.
     lda sprites_d,x
     clc
