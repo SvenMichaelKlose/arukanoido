@@ -76,11 +76,10 @@ n:  lda #15         ; Number of columns.
     sta $9003
     lda #@(+ vic_screen_1000 vic_charset_1400)
     sta $9005
-    lda $900e
-    and #$0f
-    ora #@(* light_cyan 16) ; Auxiliary color.
-    sta $900e
     lda #@(+ reverse red)   ; Screen and border color.
     sta $900f
 
+reset_volume:
+    lda #@(* light_cyan 16) ; Auxiliary color.
+    sta $900e
     rts
