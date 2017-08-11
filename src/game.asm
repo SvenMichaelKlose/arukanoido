@@ -156,6 +156,7 @@ end
 mainloop:
     lda bricks_left
     bne +n
+    jsr remove_sprites
     jsr draw_sprites
     jsr wait_sound
     jmp next_level

@@ -13,11 +13,12 @@ end
     jsr draw_huge_sprite
     lda sprites_i,x
     ora foreground_collision
+    and #@(bit-xor 255 was_cleared)
     sta sprites_i,x
 n:
 
-    cmp #@(+ is_inactive was_cleared)
-    beq +n
+    and #was_cleared
+    bne +n
 
 if @*show-cpu?*
     lda #@(+ 8 1)
