@@ -15,8 +15,23 @@ end
     ora foreground_collision
     and #@(bit-xor 255 was_cleared)
     sta sprites_i,x
-n:
 
+    lda sprites_x,x
+    lsr
+    lsr
+    lsr
+    sta sprites_sx,x
+    lda sprites_y,x
+    lsr
+    lsr
+    lsr
+    sta sprites_sx,x
+    lda sprites_w,x
+    sta sprites_sw,x
+    lda sprites_h,x
+    sta sprites_sh,x
+
+n:  lda sprites_i,x
     and #was_cleared
     bne +n
 
@@ -46,19 +61,13 @@ l3: jsr scraddr_clear_char
     bpl -l2
 
     ; Save current position as old one.
-    lda sprites_x,x
-    lsr
-    lsr
-    lsr
+    lda sprites_sx,x
     sta sprites_ox,x
-    lda sprites_y,x
-    lsr
-    lsr
-    lsr
+    lda sprites_sy,x
     sta sprites_oy,x
-    lda sprites_w,x
+    lda sprites_sw,x
     sta sprites_ow,x
-    lda sprites_h,x
+    lda sprites_sh,x
     sta sprites_oh,x
 
     lda sprites_i,x

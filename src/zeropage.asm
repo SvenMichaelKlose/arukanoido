@@ -119,9 +119,13 @@ sprites_iw:     fill num_sprites ; Dimensions in chars.
 sprites_ih:     fill num_sprites
 sprites_w:      fill num_sprites ; Total dimensions in chars (after shift).
 sprites_h:      fill num_sprites
-sprites_ox:     fill num_sprites ; Old position for cleanup.
+sprites_sx:     fill num_sprites ; Screen position and dimensions in chars.
+sprites_sy:     fill num_sprites
+sprites_sw:     fill num_sprites
+sprites_sh:     fill num_sprites
+sprites_ox:     fill num_sprites ; Old screen position and dimensions in chars.
 sprites_oy:     fill num_sprites
-sprites_ow:     fill num_sprites ; Old dimensions for cleanup (after shift).
+sprites_ow:     fill num_sprites
 sprites_oh:     fill num_sprites
 
 ; Currently processed sprite
