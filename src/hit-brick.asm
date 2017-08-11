@@ -21,7 +21,7 @@ hit_brick:
     inc num_brick_hits
     jsr adjust_ball_speed
 n:  pla
-    ldy scrx            ; TODO: Remove?
+    inc has_hit_brick
 
     cmp #b_golden
     beq +golden
@@ -31,6 +31,7 @@ n:  pla
     beq remove_silver
 
     ; Degrade silver brick.
+    ldy scrx
     lda (tmp),y
     sec
     sbc #1
@@ -62,7 +63,6 @@ o:  jsr add_to_score
     sta (scr),y
 
 modify_brick:
-    ldy scrx
     sta (tmp),y
     clc
     rts

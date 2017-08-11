@@ -50,7 +50,6 @@ reflect:
     lda #0
     sta side_degrees
     sta has_collision
-    sta has_hit_brick
 
     ; Get centre position of ball.
     ldy sprites_x,x

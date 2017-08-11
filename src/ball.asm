@@ -172,16 +172,20 @@ r:  inc has_hit_vaus
     rts
 
 ctrl_ball_subpixel:
+    lda #0
+    sta has_hit_brick
     jsr reflect
     lda has_collision
     bne +n
     jsr reflect_edge
     lda has_collision
     bne +m
+
     jsr check_hit_with_obstacle
     jsr avoid_endless_flight
     jmp move_ball
 
+    ; Deal with edge collision.
 m:  lda #0
     sta has_collision
     lda sprites_d,x
@@ -189,27 +193,26 @@ m:  lda #0
     adc #$80
     sta sprites_d,x
 
-n:  lda has_hit_brick
-    beq hit_solid
-
-    lda #0
-    sta sprites_d2,x
-
-    lda has_removed_brick
-    beq do_apply_reflection
+n:  lda has_removed_brick
+    beq +n
 
     ; Make bonus.
     lda mode
     cmp #mode_disruption    ; No bonuses in disruption mode.
-    beq do_apply_reflection
+    beq +l
     jsr make_bonus
-    jmp do_apply_reflection
+    jmp +l
 
-hit_solid:
-    inc sprites_d2,x
+n:  lda has_hit_silver_brick
+    ora has_hit_golden_brick
+    bne +f
+    lda #0
+    sta sprites_d2,x
+    jmp +l
 
-do_apply_reflection:
-    jsr apply_reflection
+f:  inc sprites_d2,x
+
+l:  jsr apply_reflection
     jsr play_reflection_sound
 
 move_ball:

@@ -2,7 +2,6 @@ reflect_edge:
     lda #0
     sta side_degrees
     sta has_collision
-    sta has_hit_brick
 
     ; Bounce back from bottom right.
     lda sprites_d,x
