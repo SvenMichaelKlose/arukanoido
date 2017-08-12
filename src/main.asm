@@ -4,6 +4,12 @@ clear_data:
 l:  cpx #@(-- hiscore)
     bcs +n
     sta 0,x
+n:  cpx #$e0
+    bcs +n
+    sta $320,x
+n:  cpx #$13
+    bcs +n
+    sta $300,x
 n:  sta $200,x
     sta charset,x
     sta @(+ 256 charset),x
@@ -99,7 +105,7 @@ n:
 f:  lda #snd_coin
     jsr play_sound
     jsr wait_sound
-    jsr round_intro
+;    jsr round_intro
     jsr game
     jmp toplevel
 

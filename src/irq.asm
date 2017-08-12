@@ -70,6 +70,7 @@ n:  jsr play_music
     bpl +done
 n:  jsr rotate_bonuses
     jsr add_missing_obstacle
+    jsr dyn_brick_fx
 
 done:
     lda #$7f        ; Acknowledge IRQ.

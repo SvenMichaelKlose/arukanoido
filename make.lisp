@@ -629,10 +629,12 @@
                           "sprites-vic-common.asm"
                           "sprites-vic.asm"
                           "sprites-vic-huge.asm"
+                          "wait.asm"
 
                           ; Level display
-                          "lifes.asm"
+                          "brick-fx.asm"
                           "draw-level.asm"
+                          "lifes.asm"
                           "score-display.asm"
 
                           ; Display object interactions
@@ -644,23 +646,22 @@
                           "hit-brick.asm"
 
                           ; Sprite controllers
-                          "doh.asm"
-                          "vaus.asm"
-                          "laser.asm"
                           "ball.asm"
                           "bonus.asm"
-                          "obstacle.asm"
+                          "doh.asm"
                           "explosion.asm"
+                          "laser.asm"
+                          "obstacle.asm"
+                          "vaus.asm"
 
                           ; Top level
-                          "irq.asm"
-                          "round-start.asm"
-                          ,@(unless *shadowvic?*
-                              '("round-intro.asm"))
-                          "hiscore.asm"
-                          "game.asm"
-                          "main.asm"
                           "debug.asm"
+                          "irq.asm"
+                          "game.asm"
+                          "hiscore.asm"
+                          "main.asm"
+                          "round-intro.asm"
+                          "round-start.asm"
 
                           ; Imported music player binary.
                           "music-player.asm"

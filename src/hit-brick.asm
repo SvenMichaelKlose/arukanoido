@@ -35,7 +35,10 @@ n:  pla
     lda (tmp),y
     sec
     sbc #1
-    jmp modify_brick
+    sta (tmp),y
+    jsr add_brick_fx
+    clc
+    rts
 
     ; Silver brick's score is 50 multiplied by round number.
 remove_silver:
@@ -61,13 +64,12 @@ o:  jsr add_to_score
     lda #0
     ldy scrx
     sta (scr),y
-
-modify_brick:
     sta (tmp),y
     clc
     rts
 
 golden:
+    jsr add_brick_fx
     inc has_hit_golden_brick
 r:  sec
     rts

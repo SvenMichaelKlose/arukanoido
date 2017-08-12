@@ -38,3 +38,47 @@ brick_fx:
 n:  bne +r
     lda #bg_brick_special
 r:  rts
+
+add_brick_fx:
+    stx tmp
+    lda brickfx_end
+    and #@(-- num_sprites)
+    tax
+    lda scrx
+    sta brickfx_x,x
+    tay
+    lda #bg_brick_fx
+    sta (scr),y
+    lda scry
+    sta brickfx_y,x
+    lda brickfx_end
+    clc
+    adc #1
+    and #@(-- num_sprites)
+    sta brickfx_end
+    ldx tmp
+    rts
+
+dyn_brick_fx:
+    ldx brickfx_pos
+l:  lda brickfx_x,x
+    beq +n
+    sta scrx
+    lda brickfx_y,x
+    sta scry
+    jsr scraddr
+    lda (scr),y
+    jsr brick_fx
+    sta (scr),y
+    cmp #bg_brick_special
+    bne +n
+    lda #0
+    sta brickfx_x,x
+    inc brickfx_pos
+n:  inx
+    txa
+    and #@(-- num_sprites)
+    tax
+    cpx brickfx_end
+    bne -l
+    rts

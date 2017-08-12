@@ -65,7 +65,7 @@ screen_ready = @(+ screen (* 15 24) 6)
     jsr start_brick_fx
     lda #8
     sta tmp
-l:  ldx #4
+l:  ldx #1
     jsr wait
     jsr do_brick_fx
     dec tmp

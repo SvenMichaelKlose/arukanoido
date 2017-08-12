@@ -162,6 +162,11 @@ has_paused:         0
 sprites_sf:     fill num_sprites
 sprites_of:     fill num_sprites
 
+brickfx_x:      fill num_sprites
+brickfx_y:      fill num_sprites
+brickfx_pos:    0
+brickfx_end:    0
+
     end
 
 ; Minigrafik viewer
