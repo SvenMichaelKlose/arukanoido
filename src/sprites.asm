@@ -33,13 +33,9 @@ replace_sprite2:
 ;
 ; X: sprite index
 remove_sprite:
-    stx add_sprite_x
-    sty add_sprite_y
-
-remove_sprite_regs_already_saved:
     lda #is_inactive
     sta sprites_i,x
-    jmp -r
+    rts
 
 ; Replace sprite by another.
 ;

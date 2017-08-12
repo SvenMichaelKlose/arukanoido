@@ -138,8 +138,6 @@ n:  pla
     rts
 
 on_foreground:
-    lda #fg_collision
-    sta foreground_collision
 cant_use_position:
     lda #$f0            ; Draw into ROM.
     sta @(++ d)

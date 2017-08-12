@@ -11,7 +11,6 @@ sprite_init_data        = 9
 
 is_inactive  = 128
 was_cleared  = 64
-fg_collision = 32
 is_ball      = 8
 is_obstacle  = 4
 is_bonus     = 2

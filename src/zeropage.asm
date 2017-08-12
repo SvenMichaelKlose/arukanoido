@@ -46,7 +46,6 @@ sprite_data_bottom:   0   ; Start of sprite data in lower chars.
 sprite_height_top:    0   ; Number of sprite lines in upper chars.
 spriteframe:          0   ; Character offset into lower or upper half of charset.
 sprite_rr:            0   ; Round-robin sprite allocation index.
-foreground_collision: 0   ; Set if a sprite collision has been detected.
 
 mode_laser      = 1
 mode_catching   = 2

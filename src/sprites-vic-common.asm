@@ -12,11 +12,8 @@ end
     and #was_cleared
     beq +n
 
-    lda #0  ; TODO: Remove.
-    sta foreground_collision
     jsr draw_huge_sprite
     lda sprites_i,x
-    ora foreground_collision    ; TODO: Remove.
     and #@(bit-xor 255 was_cleared)
     sta sprites_i,x
 
