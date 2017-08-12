@@ -98,7 +98,7 @@ n:  dey
     bpl -l
 
     ; Move.
-l:  jsr ball_step
+l:  jsr half_step_smooth
     jsr reflect_obstacle
     lda has_collision
     beq +n
@@ -120,7 +120,7 @@ turn_obstacle:
     clc
     adc #128
     sta sprites_d,x
-    jsr ball_step
+    jsr half_step_smooth
 
     ; Turn by 22.5°.
     txa
