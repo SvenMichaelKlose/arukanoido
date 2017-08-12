@@ -37,7 +37,7 @@ if @*show-cpu?*
 end
 
     lda has_paused
-    bne +m
+    bne +done
 
     inc framecounter
     bne +n
@@ -59,19 +59,20 @@ n:
 n:  jsr play_music
     jsr set_vaus_color
     lda is_running_game
-    beq +n
+    beq +done
 
     jsr call_sprite_controllers
     lda #1
     sta has_moved_sprites
 
     lda mode_break
-    bne +n
-    jsr rotate_bonuses
+    beq +n
+    bpl +done
+n:  jsr rotate_bonuses
     jsr add_missing_obstacle
 
-m:
-n:  lda #$7f        ; Acknowledge IRQ.
+done:
+    lda #$7f        ; Acknowledge IRQ.
     sta $912d
 
 if @*show-cpu?*
