@@ -62,12 +62,12 @@ toplevel:
     ldy #>txt_rights
     jsr print_string_ay
 
-    lda #20
+    lda #21
     sta scrx2
     lda #31
     sta scry
-    lda #<txt_credits
-    ldy #>txt_credits
+    lda #<txt_credit
+    ldy #>txt_credit
     jsr print_string_ay
 
 l:  jsr test_fire
@@ -105,4 +105,4 @@ f:  lda #snd_coin
 
 txt_copyright:  @(string4x8 "[\\ 2017 TAYTO CORP JAPAN") 255
 txt_rights:     @(string4x8 "ALL RIGHTS RESERVED") 255
-txt_credits:    @(string4x8 "CREDITS  0") 255
+txt_credit:     @(string4x8 "CREDIT  0") 255
