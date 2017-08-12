@@ -85,7 +85,7 @@ brick_to_char:
     lda #bg_brick
     cpx #b_golden
     bcc +r
-    lda #bg_brick_special1
+    lda #bg_brick_special
 r:  rts
 
 draw_walls:
