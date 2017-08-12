@@ -52,18 +52,6 @@ n:  lda #130
     ldx #255
     jsr print_string
 
-    jsr start_brick_fx
-
-    lda #7
-    sta tmp
-l:  ldx #4
-    jsr wait
-    jsr do_brick_fx
-    dec tmp
-    bne -l
-
-    jsr end_brick_fx
-
     jsr wait_sound
 
     ; Remove message.
@@ -73,61 +61,17 @@ screen_ready = @(+ screen (* 15 24) 6)
     c_clrmb <screen_round >screen_round 5
     c_clrmb <screen_ready >screen_ready 5
     0
-    rts
 
-start_brick_fx:
-    ldx #0
-l:  lda screen,x
-    jsr +f
-    sta screen,x
-    lda @(+ 256 screen),x
-    jsr +f
-    sta @(+ 256 screen),x
-    dex
+    jsr start_brick_fx
+    lda #8
+    sta tmp
+l:  ldx #4
+    jsr wait
+    jsr do_brick_fx
+    dec tmp
     bne -l
+
     rts
-
-f:  cmp #bg_brick_special
-    bne +n
-    lda #bg_brick_fx
-n:  rts
-
-do_brick_fx:
-    ldx #0
-l:  lda screen,x
-    jsr +f
-    sta screen,x
-    lda @(+ 256 screen),x
-    jsr +f
-    sta @(+ 256 screen),x
-    dex
-    bne -l
-    rts
-
-f:  cmp #@bg_brick_fx
-    bcc +n
-    cmp #bg_brick_fx_end
-    bcs +n
-    clc 
-    adc #1
-n:  rts
-
-end_brick_fx:
-    ldx #0
-l:  lda screen,x
-    jsr +f
-    sta screen,x
-    lda @(+ 256 screen),x
-    jsr +f
-    sta @(+ 256 screen),x
-    dex
-    bne -l
-    rts
-
-f:  cmp #bg_brick_fx_end
-    bne +n
-    lda #bg_brick_special
-n:  rts
 
 txt_round_nn:   @(string4x8 " ROUND  XX") 255
 txt_ready:      @(string4x8 " READY") 255
