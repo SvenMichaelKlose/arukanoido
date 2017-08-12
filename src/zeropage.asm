@@ -158,6 +158,8 @@ num_lifes_by_score:     0
 
 has_paused:         0
 
+    org $320
+
     end
 
 ; Minigrafik viewer

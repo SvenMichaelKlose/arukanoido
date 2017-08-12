@@ -7,6 +7,8 @@ if @*show-cpu?*
 end
     lda sprites_i,x
     bmi +n
+    and #was_cleared
+    beq +n
 
     lda #0
     sta foreground_collision
@@ -15,17 +17,10 @@ end
     ora foreground_collision
     and #@(bit-xor 255 was_cleared)
     sta sprites_i,x
-
     lda sprites_x,x
-    lsr
-    lsr
-    lsr
     sta sprites_sx,x
     lda sprites_y,x
-    lsr
-    lsr
-    lsr
-    sta sprites_sx,x
+    sta sprites_sy,x
     lda sprites_w,x
     sta sprites_sw,x
     lda sprites_h,x
@@ -62,8 +57,14 @@ l3: jsr scraddr_clear_char
 
     ; Save current position as old one.
     lda sprites_sx,x
+    lsr
+    lsr
+    lsr
     sta sprites_ox,x
     lda sprites_sy,x
+    lsr
+    lsr
+    lsr
     sta sprites_oy,x
     lda sprites_sw,x
     sta sprites_ow,x
@@ -82,8 +83,9 @@ end
     cli
 
     dex
-    bpl -l
+    bpl +l2
     rts
+l2:jmp -l
 
 clear_sprites:
     ldx #0
