@@ -50,14 +50,14 @@ n:  cmp #253
     beq +m
 
     ldx #2
-    jsr wait
+    jsr ship_flicker
 
     jmp -l2
 
 r:  rts
 
 m:  ldx #15
-    jsr wait
+    jsr ship_flicker
 
     jsr clear_intro_text
 
@@ -107,14 +107,14 @@ l3: sta @(+ screen (* screen_columns 3)),x
     bpl -l3
     rts
 
-wait_tmp: 0
+ship_flicker_tmp: 0
 
-wait:
+ship_flicker:
 l4: lda $9004
     beq -l4
 
-    inc wait_tmp
-    lda wait_tmp
+    inc ship_flicker_tmp
+    lda ship_flicker_tmp
     lsr
     ldy #@(* orange 16)
     bcc +n

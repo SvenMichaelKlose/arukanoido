@@ -35,17 +35,9 @@ n:  clc
     bne +n
     lda #snd_doh_round
     jsr play_sound
-n:
 
-    ldx #130
-l:  lda $9004
-    lsr
-    bne -l
-n:  lda $9004
-    lsr
-    bne -n
-    dex
-    bne -l
+n:  lda #130
+    jsr wait
 
     ; Print "READY".
     inc curchar
@@ -60,6 +52,18 @@ n:  lda $9004
     ldx #255
     jsr print_string
 
+    jsr start_brick_fx
+
+    lda #7
+    sta tmp
+l:  ldx #4
+    jsr wait
+    jsr do_brick_fx
+    dec tmp
+    bne -l
+
+    jsr end_brick_fx
+
     jsr wait_sound
 
     ; Remove message.
@@ -71,15 +75,59 @@ screen_ready = @(+ screen (* 15 24) 6)
     0
     rts
 
-make_4x8_line:
-    ldy #0
-l:  sta (d),y
-    clc
-    adc #1
-    iny
+start_brick_fx:
+    ldx #0
+l:  lda screen,x
+    jsr +f
+    sta screen,x
+    lda @(+ 256 screen),x
+    jsr +f
+    sta @(+ 256 screen),x
     dex
     bne -l
     rts
+
+f:  cmp #bg_brick_special
+    bne +n
+    lda #bg_brick_fx
+n:  rts
+
+do_brick_fx:
+    ldx #0
+l:  lda screen,x
+    jsr +f
+    sta screen,x
+    lda @(+ 256 screen),x
+    jsr +f
+    sta @(+ 256 screen),x
+    dex
+    bne -l
+    rts
+
+f:  cmp #@bg_brick_fx
+    bcc +n
+    cmp #bg_brick_fx_end
+    bcs +n
+    clc 
+    adc #1
+n:  rts
+
+end_brick_fx:
+    ldx #0
+l:  lda screen,x
+    jsr +f
+    sta screen,x
+    lda @(+ 256 screen),x
+    jsr +f
+    sta @(+ 256 screen),x
+    dex
+    bne -l
+    rts
+
+f:  cmp #bg_brick_fx_end
+    bne +n
+    lda #bg_brick_special
+n:  rts
 
 txt_round_nn:   @(string4x8 " ROUND  XX") 255
 txt_ready:      @(string4x8 " READY") 255
