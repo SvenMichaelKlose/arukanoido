@@ -160,6 +160,9 @@ has_paused:         0
 
     org $320
 
+sprites_sf:     fill num_sprites
+sprites_of:     fill num_sprites
+
     end
 
 ; Minigrafik viewer
