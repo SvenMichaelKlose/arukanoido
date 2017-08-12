@@ -206,6 +206,8 @@ n:  lda has_removed_brick
 n:  lda has_hit_silver_brick
     ora has_hit_golden_brick
     bne +f
+    lda has_hit_brick
+    bne +f
     lda #0
     sta sprites_d2,x
     jmp +l
