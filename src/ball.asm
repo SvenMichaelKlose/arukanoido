@@ -183,7 +183,7 @@ ctrl_ball_subpixel:
 
     jsr check_hit_with_obstacle
     jsr avoid_endless_flight
-    jmp move_ball
+    jmp step_smooth
 
     ; Deal with edge collision.
 m:  lda #0
@@ -216,9 +216,7 @@ f:  inc sprites_d2,x
 
 l:  jsr apply_reflection
     jsr play_reflection_sound
-
-move_ball:
-    jmp step_arcade
+    jmp step_smooth
 
 play_reflection_sound:
     lda has_hit_vaus

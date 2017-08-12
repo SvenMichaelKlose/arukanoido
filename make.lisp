@@ -653,7 +653,6 @@
                           "laser.asm"
                           "obstacle.asm"
                           "step-smooth.asm"
-                          "step-arcade.asm"
                           "vaus.asm"
 
                           ; Top level
