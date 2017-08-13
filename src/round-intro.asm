@@ -48,12 +48,15 @@ n:  cmp #253
     beq +r
     cmp #255
     beq +m
+    jsr test_fire
+    beq +r2
 
     ldx #2
     jsr ship_flicker
 
     jmp -l2
 
+r2: jsr wait_fire_released
 r:  rts
 
 m:  ldx #15

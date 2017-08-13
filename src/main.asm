@@ -105,7 +105,7 @@ n:
 f:  lda #snd_coin
     jsr play_sound
     jsr wait_sound
-;    jsr round_intro
+    jsr round_intro
     jsr game
     jmp toplevel
 
