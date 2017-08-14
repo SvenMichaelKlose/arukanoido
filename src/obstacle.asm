@@ -95,7 +95,7 @@ n:
     inc sprites_gh,x
 m:
 
-    ; Reset animation sequence when at end.
+    ; Repeat animation.
     ldy #3
 l:  lda sprites_gl,x
     cmp gfx_obstacles_gl_end,y
@@ -111,19 +111,20 @@ l:  lda sprites_gl,x
 n:  dey
     bpl -l
 
-
 ; When nothing is touched, move downwards, do a circle.
 ; When touching something on the way down, go sideways.
 ; When touching something going sideways, try going up.
 ; When touching something going up, go back down but reverse sideways.
 l:  jsr half_step_smooth
 
+    ; Remove obstacle if it left the screen at the bottom.
     lda sprites_y,x
     cmp #@(-- (* 8 screen_rows))
     bcc +n
     dec num_obstacles
     jmp remove_sprite
 
+    ; Check if another obstacle was hit.
 n:  lda #0
     sta obstacle_hit_obstacle
     ldy #@(-- num_sprites)
@@ -136,26 +137,16 @@ l2: lda sprites_i,y
     and #is_obstacle
     beq -l
     inc obstacle_hit_obstacle
-n:
 
-    lda sprites_x,x
-    lsr
-    lsr
-    lsr
-    sta scrx
-
-    lda sprites_y,x
-    lsr
-    lsr
-    lsr
-    sta scry
-
-    lda sprites_d,x
-    bne +not_down       ; Not doing down.
+n:  jsr get_sprite_screen_position
 
     lda sprites_y,x
     and #7
-    bne +r
+    bne +not_up         ; No vertical movement to check.
+
+    ; Move down.
+    lda sprites_d,x
+    bne +not_down       ; Not doing down.
 
     inc scry
     inc scry
@@ -168,27 +159,60 @@ n:
     bcc +n
     ldy #direction_right
 n:  sty sprites_d,x
-    rts
+r:  rts
 
 not_down:
-    cmp #128
+    ; Move up.
+    cmp #direction_up
     bne +not_up
 
-    dec scrx
+    dec scry
     jsr get_hard_collision
-    bne +r
+    bne +n
     lda sprites_d2,x
     eor #1
     sta sprites_d2,x
 l:  lda #direction_down
-    sta sprites_d,x
+f:  sta sprites_d,x
 r:  rts
 
+    ; Check on gap left or right.
+n:  lda sprites_d2,x
+    lsr
+    bcs +n
+
+    jsr get_sprite_screen_position
+    dec scrx
+    jsr get_hard_collision
+    bne -r
+    inc scry
+    jsr get_hard_collision
+    bne -r
+    lda #direction_left
+    jmp -f
+
+n:  jsr get_sprite_screen_position
+    inc scrx
+    jsr get_hard_collision
+    bne -r
+    inc scry
+    jsr get_hard_collision
+    bne -r
+    lda #direction_right
+    jmp -f
+
 not_up:
+    ; Move sideways.
     lda sprites_x,x
     and #7
-    bne +r
+    bne +r              ; No on char boundary.
+    lda sprites_d,x
+    cmp #direction_up
+    beq +r
+    cmp #direction_down
+    beq +r
 
+    ; Move down if there is a gap.
     inc scry
     inc scry
     jsr get_hard_collision
@@ -196,11 +220,12 @@ not_up:
     dec scry
     dec scry
 
+    ; Move left.
     lda sprites_d,x
     bpl +not_left
 
     dec scrx
-    jsr get_hard_collision
+l:  jsr get_hard_collision
     beq +f
     inc scry
     jsr get_hard_collision
@@ -210,15 +235,8 @@ f:  lda #direction_up
 r:  rts
 
 not_left:
+    ; Move right.
     inc scrx
-    jsr get_hard_collision
-    beq +f
-    inc scry
-    jsr get_hard_collision
-    bne +r
-f:  lda #direction_up
-    sta sprites_d,x
-
-r:  rts
+    jmp -l
 
 obstacle_hit_obstacle:  0

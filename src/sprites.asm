@@ -184,3 +184,17 @@ m1: jsr $1234
 n1: dex
     bpl -l1
     rts
+
+get_sprite_screen_position:
+    lda sprites_x,x
+    lsr
+    lsr
+    lsr
+    sta scrx
+
+    lda sprites_y,x
+    lsr
+    lsr
+    lsr
+    sta scry
+    rts
