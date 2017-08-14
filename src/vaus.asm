@@ -221,6 +221,11 @@ l:  lda sprites_i,y
     bne +m
     lda #is_inactive
     sta sprites_i,y
+    tya
+    pha
+    jsr clear_removed_sprite
+    pla
+    tay
 m:  dey
     bpl -l
 

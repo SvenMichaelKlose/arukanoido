@@ -35,7 +35,7 @@ replace_sprite2:
 remove_sprite:
     lda #is_inactive
     sta sprites_i,x
-    rts
+    jmp clear_removed_sprite
 
 ; Replace sprite by another.
 ;

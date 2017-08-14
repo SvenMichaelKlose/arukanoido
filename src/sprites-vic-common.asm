@@ -102,6 +102,38 @@ end
 
     rts
 
+; TODO: Find out why this is required.
+clear_removed_sprite:
+    lda spriteframe
+    pha
+    lda sprites_sf,x
+    eor #framemask
+    sta spriteframe
+    lda sprites_sx,x
+    lsr
+    lsr
+    lsr
+    sta scrx
+    lda sprites_sw,x
+    sta sprite_cols
+l2: lda sprites_sy,x
+    lsr
+    lsr
+    lsr
+    sta scry
+    lda sprites_sh,x
+    sta sprite_rows
+l3: jsr scraddr_clear_char
+    inc scry
+    dec sprite_rows
+    bpl -l3
+    inc scrx
+    dec sprite_cols
+    bpl -l2
+    pla
+    sta spriteframe
+    rts
+
 clear_sprites:
     ldx #0
 l:  lda screen,x
