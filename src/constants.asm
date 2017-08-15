@@ -31,8 +31,8 @@ first_sprite_char   = 1
 foreground          = @(half framechars)
 
 ; Ball directions
-deg_steep   = 21
-deg_shallow = 42
+deg_steep   = 20
+deg_shallow = 41
 direction_ls    = @(+ 128 deg_shallow)
 direction_l     = @(+ 128 deg_steep)
 direction_r     = @(- 128 deg_steep)
