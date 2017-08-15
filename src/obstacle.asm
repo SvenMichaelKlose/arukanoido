@@ -37,6 +37,7 @@ add_missing_obstacle:
     ldy #@(- obstacle_cone_init sprite_inits)
     jsr add_sprite
     tax
+    jsr random
     lsr
     bcs +n
     lda #@(+ 4 (* 10 8))
