@@ -30,6 +30,14 @@ framechars          = @(half num_chars)
 first_sprite_char   = 1
 foreground          = @(half framechars)
 
+; Ball directions
+deg_steep   = 21
+deg_shallow = 42
+direction_ls    = @(+ 128 deg_shallow)
+direction_l     = @(+ 128 deg_steep)
+direction_r     = @(- 128 deg_steep)
+direction_rs    = @(- 128 deg_shallow)
+
 ; Game settings
 
 default_num_lifes       = 3
@@ -37,8 +45,8 @@ default_ball_speed      = 3
 min_ball_speed          = 2
 max_ball_speed          = 6
 max_ball_speed_joystick = 3
-default_ball_direction          = 112
-default_ball_direction_skewed   = 85
+default_ball_direction          = direction_r
+default_ball_direction_skewed   = direction_rs
 ball_width              = 3
 ball_height             = 5
 vaus_edge_distraction   = 16

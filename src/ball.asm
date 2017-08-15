@@ -1,30 +1,30 @@
 vaus_directions:
-    171
-    171 171 171 171
-    144 144 144 144
-    112 112 112 112
-    85 85 85 85
-    85
+    direction_ls
+    direction_ls direction_ls direction_ls direction_ls
+    direction_l direction_l direction_l direction_l
+    direction_r direction_r direction_r direction_r
+    direction_rs direction_rs direction_rs direction_rs
+    direction_rs
 
 vaus_directions_extended:
-    171
-    171 171 171 171
-    144 144 144 144
-    144 144 144 144
-    112 112 112 112
-    112 112 112 112
-    85 85 85 85
-    85
+    direction_ls
+    direction_ls direction_ls direction_ls direction_ls
+    direction_l direction_l direction_l direction_l
+    direction_l direction_l direction_l direction_l
+    direction_r direction_r direction_r direction_r
+    direction_r direction_r direction_r direction_r
+    direction_rs direction_rs direction_rs direction_rs
+    direction_rs
 
 used_ball_directions:
-    171
-    144
-    112
-    85
-    @(byte (+ 128 171))
-    @(byte (+ 128 144))
-    @(byte (+ 128 112))
-    @(byte (+ 128 85))
+    direction_ls
+    direction_l
+    direction_r
+    direction_rs
+    @(byte (+ 128 direction_ls))
+    @(byte (+ 128 direction_l))
+    @(byte (+ 128 direction_r))
+    @(byte (+ 128 direction_rs))
 
 get_used_ball_direction:
     ldy #7
@@ -299,7 +299,7 @@ make_ball:
     jsr add_sprite
     sta caught_ball
     tax
-    lda #58
+    lda #59
     sta sprites_x,x
     lda #@(* 28 8)
     sta sprites_y,x

@@ -560,13 +560,18 @@
 
 (define-filter bytes #'byte)
 
+(fn round2 (x)
+  (? (< x 0.5)
+     (integer x)
+     (++ (integer x))))
+
 (fn ball-directions-x ()
   (let m (/ 360 +degrees+)
-    (bytes (full-sin-wave (maptimes [integer (* smax (degree-sin (* m _)) 0.5)] (/ +degrees+ 4))))))
+    (bytes (maptimes [round2 (* smax (degree-sin (* m _)) 0.5)] +degrees+))))
 
 (fn ball-directions-y ()
   (let m (/ 360 +degrees+)
-    (bytes (full-cos-wave (maptimes [integer (* smax (degree-cos (* m _)))] (/ +degrees+ 4))))))
+    (bytes (maptimes [round2 (* smax (degree-cos (* m _)))] +degrees+))))
 
 (fn make (to files cmds)
   (apply #'assemble-files to files)
@@ -706,4 +711,8 @@
 (sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-t52" "-x1" "-o" "arukanoido/arukanoido.prg" "arukanoido.prg")
                     :pty cl:*standard-output*)
 
+(print (get-label 'direction_ls))
+(print (get-label 'direction_l))
+(print (get-label 'direction_r))
+(print (get-label 'direction_rs))
 (quit)
