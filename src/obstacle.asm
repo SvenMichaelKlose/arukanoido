@@ -181,10 +181,10 @@ not_down:
     beq +f
     lda sprites_x,x
     and #7
-    beq +r
+    beq +n
     inc scrx
     jsr get_hard_collision
-    bne +r
+    bne +n
 
 f:  lda sprites_d2,x
     eor #1
@@ -203,10 +203,10 @@ n:  lda sprites_d2,x
     jsr get_sprite_screen_position
     dec scrx
     jsr get_hard_collision
-    bne +r
+    beq +r
     inc scry
     jsr get_hard_collision
-    bne +r
+    beq +r
     lda #direction_left
     sta sprites_d,x
 r:  rts
@@ -215,10 +215,10 @@ r:  rts
 n:  jsr get_sprite_screen_position
     inc scrx
     jsr get_hard_collision
-    bne +r
+    beq +r
     inc scry
     jsr get_hard_collision
-    bne +r
+    beq +r
     lda #direction_right
     sta sprites_d,x
 r:  rts
