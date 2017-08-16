@@ -44,7 +44,11 @@ end
     inc @(++ framecounter)
 n:
 
-    lda mode_break
+    lda is_firing
+    beq +n
+    dec is_firing
+
+n:  lda mode_break
     beq +n
     lda framecounter
     lsr

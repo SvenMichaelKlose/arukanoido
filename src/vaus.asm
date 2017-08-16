@@ -194,14 +194,17 @@ n:  lda mode
     bne -done2
 
     lda is_firing
-    beq +n
-    dec is_firing
     bne +r
 
 n:  lda #snd_laser
     jsr play_sound
-    lda #9              ;  TODO: constant fire_delay
-    sta is_firing
+    ldy #laser_delay_short
+    lda laser_delay_type
+    lsr
+    bcc +n
+    ldy #laser_delay_long
+n:  sty is_firing
+    inc laser_delay_type
     lda sprites_x,x
     clc
     adc #4

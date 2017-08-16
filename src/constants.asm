@@ -31,6 +31,7 @@ first_sprite_char   = 1
 foreground          = @(half framechars)
 
 ; Ball directions
+
 deg_steep   = 20
 deg_shallow = 41
 direction_ls    = @(+ 128 deg_shallow)
@@ -50,6 +51,8 @@ default_ball_direction_skewed   = direction_rs
 ball_width              = 3
 ball_height             = 5
 vaus_edge_distraction   = 16
+laser_delay_short       = 8
+laser_delay_long        = 20
 
 initial_delay_until_ball_is_released = $a0
 delay_until_ball_is_released = $80

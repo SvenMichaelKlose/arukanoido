@@ -114,6 +114,7 @@ retry:
     sta num_obstacles
     sta num_brick_hits
     sta has_bonus_on_screen
+    sta laser_delay_type
     lda #1
     sta balls
     lda #default_ball_speed

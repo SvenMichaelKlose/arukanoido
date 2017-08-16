@@ -77,6 +77,7 @@ has_moved_sprites:    0
 
 ball_speed:           0
 is_firing:            0   ; Laser interval countdown.
+laser_delay_type:     0   ; 0: short, 1: long
 is_using_paddle:      0
 old_paddle_value:     0
 digisound_counter:    0 0
