@@ -141,6 +141,7 @@ l2: lda sprites_i,y
 
 n:  jsr get_sprite_screen_position
 
+    ; Skip testing vertical collision if not on Y char boundary.
     lda sprites_y,x
     and #7
     bne +not_up         ; No vertical movement to check.
@@ -149,6 +150,7 @@ n:  jsr get_sprite_screen_position
     lda sprites_d,x
     bne +not_down       ; Not doing down.
 
+    ; Test on collision at bottom.
     inc scry
     inc scry
     jsr get_hard_collision
@@ -160,7 +162,7 @@ n:  jsr get_sprite_screen_position
     jsr get_hard_collision
     bne +r
 
-    ldy #direction_left
+f:  ldy #direction_left
     lda sprites_d2,x
     lsr
     bcc +n
@@ -173,6 +175,7 @@ not_down:
     cmp #direction_up
     bne +not_up
 
+    ; Check collision upwards.
     dec scry
     jsr get_hard_collision
     beq +f
@@ -183,10 +186,11 @@ not_down:
     jsr get_hard_collision
     bne +r
 
-    lda sprites_d2,x
+f:  lda sprites_d2,x
     eor #1
     sta sprites_d2,x
-l:  lda #direction_down
+turn_downwards:
+    lda #direction_down
 f:  sta sprites_d,x
 r:  rts
 
@@ -195,32 +199,37 @@ n:  lda sprites_d2,x
     lsr
     bcs +n
 
+    ; Gap left?
     jsr get_sprite_screen_position
     dec scrx
     jsr get_hard_collision
-    bne -r
+    bne +r
     inc scry
     jsr get_hard_collision
-    bne -r
+    bne +r
     lda #direction_left
-    jmp -f
+    sta sprites_d,x
+r:  rts
 
+    ; Gap right?
 n:  jsr get_sprite_screen_position
     inc scrx
     jsr get_hard_collision
-    bne -r
+    bne +r
     inc scry
     jsr get_hard_collision
-    bne -r
+    bne +r
     lda #direction_right
-    jmp -f
+    sta sprites_d,x
+r:  rts
 
 not_up:
-    ; Move sideways.
+    ; Skip testing horizontaal collision if not on Y char boundary.
     lda sprites_x,x
     and #7
     bne +r              ; No on char boundary.
     lda sprites_d,x
+    ; Skip testing horizontal collision if direction is vertical.
     cmp #direction_up
     beq +r
     cmp #direction_down
@@ -230,7 +239,7 @@ not_up:
     inc scry
     inc scry
     jsr get_hard_collision
-    bne -l
+    bne -turn_downwards
     dec scry
     dec scry
 

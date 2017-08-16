@@ -638,11 +638,12 @@
                           "score-display.asm"
 
                           ; Display object interactions
-                          "score.asm"
+                          "get-collision.asm"
+                          "hit-brick.asm"
                           "reflect.asm"
                           "reflect-edge.asm"
                           "reflect-ball-obstacle.asm"
-                          "hit-brick.asm"
+                          "score.asm"
 
                           ; Sprite controllers
                           "ball.asm"
