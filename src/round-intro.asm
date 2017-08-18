@@ -116,18 +116,6 @@ ship_flicker:
 l4: lda $9004
     beq -l4
 
-    inc ship_flicker_tmp
-    lda ship_flicker_tmp
-    lsr
-    ldy #@(* orange 16)
-    bcc +n
-    ldy #@(* light_cyan 16)
-n:  sty tmp
-    lda $900e
-    and #15
-    ora tmp
-    sta $900e
-
 l3: lda $9004
     bne -l3
 
