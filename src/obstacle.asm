@@ -87,7 +87,7 @@ n:
     ; Animate.
     lda framecounter
     and #7
-    bne +l
+    bne +l2
     lda sprites_gl,x
     clc
     adc #16
@@ -116,7 +116,7 @@ n:  dey
 ; When touching something on the way down, go sideways.
 ; When touching something going sideways, try going up.
 ; When touching something going up, go back down but reverse sideways.
-l:  jsr half_step_smooth
+l2: jsr half_step_smooth
 
     ; Remove obstacle if it left the screen at the bottom.
     lda sprites_y,x
