@@ -23,7 +23,7 @@ charsetsize         = @(* num_chars 8)
 
 ; Sprite/frame settings
 
-num_sprites         = 16
+num_sprites         = 8
 charsetmask         = @(-- num_chars)
 framemask           = @(half num_chars)
 framechars          = @(half num_chars)
