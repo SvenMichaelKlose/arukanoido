@@ -27,10 +27,8 @@ laser_init:
     0 vaus_y  0           yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
 bonus_init:
     0 0       is_bonus    black      0 >gfx_bonus_l         <ctrl_bonus >ctrl_bonus 9 0
-obstacle_cube_init:
-    28 12     is_obstacle purple      <gfx_obstacle_cube >gfx_obstacle_cube <ctrl_obstacle >ctrl_obstacle 17 0
-obstacle_cone_init:
-    28 12     is_obstacle cyan        <gfx_obstacle_cone >gfx_obstacle_cone <ctrl_obstacle >ctrl_obstacle 17 0
+obstacle_init:
+    28 @(* playfield_y 8) is_obstacle cyan <gfx_obstacle_cone >gfx_obstacle_cone <ctrl_obstacle >ctrl_obstacle 17 0
 dummy_init:
     0 0       is_inactive  black     0 0           <ctrl_dummy >ctrl_dummy 9 0
 sprite_inits_end:

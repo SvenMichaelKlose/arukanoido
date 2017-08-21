@@ -34,7 +34,7 @@ add_missing_obstacle:
     beq +done
     lda framecounter
     bne +done
-    ldy #@(- obstacle_cone_init sprite_inits)
+    ldy #@(- obstacle_init sprite_inits)
     jsr add_sprite
     tax
     jsr random
