@@ -76,7 +76,7 @@ remove_obstacle:
 
 ctrl_obstacle:
     lda sprites_y,x
-    cmp #23
+    cmp #@(-- (* (++ playfield_y) 8))
     bcs +n
 
     ; Move obstacle in.

@@ -1,20 +1,13 @@
 ; Fixed addresses
 
 music_player = $7000
-bricks       = $1200
+bricks       = $1c00
 
 ; VIC settings
 
 screen       = $1000
 charset      = $1400
 colors       = $9400
-
-; Screen settings
-
-screen_columns  = 15
-screen_rows     = 32
-screen_width    = @(* screen_columns 8)
-screen_height   = @(* screen_rows 8)
 
 ; Charset settings
 
@@ -65,3 +58,40 @@ score_char0         = 16    ; Digit '0' in 4x8 charset.
 ; Miscellaneous
 
 num_brickfx     = 24
+
+; PAL
+if @(eq *tv* :pal)
+screen_columns      = 15
+screen_rows         = 32
+screen_origin_x     = 20
+screen_origin_y     = 21
+txt_round_nn_y      = 22
+vaus_y              = @(* 29 8)
+playfield_y         = 2
+txt_hiscore_x       = 10
+txt_hiscore_y       = 0
+hiscore_x           = 12
+hiscore_y           = 1
+score_x             = 0
+score_y             = 1
+end
+
+; NTSC
+if @(eq *tv* :ntsc)
+screen_columns      = 21
+screen_rows         = 28
+screen_origin_x     = 5
+screen_origin_y     = 16
+txt_round_nn_y      = 20
+vaus_y              = @(* 27 8)
+playfield_y         = 0
+txt_hiscore_x       = 31
+txt_hiscore_y       = 2
+hiscore_x           = 33
+hiscore_y           = 3
+score_x             = 33
+score_y             = 1
+end
+
+screen_width    = @(* screen_columns 8)
+screen_height   = @(* screen_rows 8)

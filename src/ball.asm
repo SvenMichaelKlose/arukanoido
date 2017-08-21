@@ -65,7 +65,7 @@ ctrl_ball:
 
     ; Deal with lost ball.
     lda sprites_y,x
-    cmp #@(- (* 8 screen_rows) 4)
+    cmp #@(- (* 8 (+ playfield_y 30)) 4)
     bcc +ball_loop
 
     dec balls
@@ -161,7 +161,7 @@ m:  sta sprites_d,x
     sta sprites_gl,x
     lda #>gfx_ball_caught
     sta sprites_gh,x
-    lda #@(* 28 8)
+    lda #@(- vaus_y 8)
     sta sprites_y,x
     lda #delay_until_ball_is_released
     sta ball_release_timer
@@ -301,7 +301,7 @@ make_ball:
     tax
     lda #59
     sta sprites_x,x
-    lda #@(* 28 8)
+    lda #@(- vaus_y 8)
     sta sprites_y,x
     lda #<gfx_ball_caught
     sta sprites_gl,x

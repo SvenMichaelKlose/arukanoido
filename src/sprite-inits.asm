@@ -16,7 +16,6 @@ is_obstacle  = 4
 is_bonus     = 2
 is_vaus      = 1
 
-vaus_y      = @(* 29 8)
 multiwhite  = @(+ multicolor white)
 
 sprite_inits:

@@ -11,7 +11,7 @@ round_intro:
     sta curcol
     lda #0
     sta scrx
-    lda #18
+    lda #@(+ playfield_y 16)
     sta scry
     lda #<gfx_ship
     ldy #>gfx_ship
@@ -30,7 +30,7 @@ round_intro:
     lda #snd_theme
     jsr play_sound
 
-l5: lda #3
+l5: lda #@(++ playfield_y)
     sta scry
     lda tmp4
     sta curchar
@@ -77,10 +77,14 @@ make_stars:
     lda #64
     sta make_stars_tmp
 l1: jsr random
-    cmp #@(-- screen_columns)
+    cmp #14
     bcs -l1
     sta scrx
 l:  jsr random
+if @(eq *tv* :pal)
+    cmp #playfield_y
+    bcc -l               ; Don't plot into score area…
+end
     cmp #@(-- screen_rows)
     bcs -l
     sta scry
@@ -100,12 +104,12 @@ n:  sty curcol
     bne -l1
 
 clear_intro_text:
-    ldx #@(-- screen_columns)
+    ldx #14
     lda #0
-l3: sta @(+ screen (* screen_columns 3)),x
-    sta @(+ screen (* screen_columns 5)),x
-    sta @(+ screen (* screen_columns 7)),x
-    sta @(+ screen (* screen_columns 9)),x
+l3: sta @(+ screen (* screen_columns (+ playfield_y 1))),x
+    sta @(+ screen (* screen_columns (+ playfield_y 3))),x
+    sta @(+ screen (* screen_columns (+ playfield_y 5))),x
+    sta @(+ screen (* screen_columns (+ playfield_y 7))),x
     dex
     bpl -l3
     rts

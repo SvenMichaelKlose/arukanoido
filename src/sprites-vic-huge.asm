@@ -199,12 +199,14 @@ l2: lda sprite_y
     sta draw_sprites_tmp2
 
 l:  lda scry
-    cmp #2
+if @(eq *tv* :pal)
+    cmp #playfield_y
     bcc +n               ; Don't plot into score area…
+end
     cmp #screen_rows
     bcs +n               ; Don't plot over the bottom…
     lda scrx
-    cmp #screen_columns
+    cmp #15
     bcs +n               ; Don't plot over the right…
     jsr scrcoladdr
     lda (scr),y

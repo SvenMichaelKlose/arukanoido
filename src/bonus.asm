@@ -160,6 +160,7 @@ apply_bonus_b:
     sta (col),y
     inc scry
     jsr scrcoladdr
+if @(eq *tv* :pal)
     lda #0
     sta (scr),y
     lda #white
@@ -168,6 +169,7 @@ apply_bonus_b:
     jsr scrcoladdr
     lda #@(+ bg_side 2)
     sta (scr),y
+end
     rts
 
 apply_bonus_d:

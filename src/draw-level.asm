@@ -10,6 +10,10 @@ l:  sta bricks,x
     lda #0
     sta bricks_left
     jsr fetch_brick
+if @(eq *tv* :ntsc)
+    sec
+    sbc #2
+end
     sta scry
 
 m:  lda #1
@@ -95,34 +99,34 @@ draw_walls:
     ; Draw top border without connectors.
     ldx #13
     lda #bg_top_1
-l:  sta @(+ screen 30),x
+l:  sta @(+ screen (* playfield_y screen_columns)),x
     dex
     bne -l
 
     ; Draw top border connectors.
     lda #bg_top_2
-    sta @(+ screen 30 3),x
-    sta @(+ screen 30 10),x
+    sta @(+ screen (* playfield_y screen_columns) 3),x
+    sta @(+ screen (* playfield_y screen_columns) 10),x
     lda #bg_top_3
-    sta @(+ screen 30 4),x
-    sta @(+ screen 30 11),x
+    sta @(+ screen (* playfield_y screen_columns) 4),x
+    sta @(+ screen (* playfield_y screen_columns) 11),x
 
     ; Draw corners.
     lda #bg_corner_left
-    sta @(+ screen 30)
+    sta @(+ screen (* playfield_y screen_columns))
     lda #bg_corner_right
-    sta @(+ screen 30 14)
+    sta @(+ screen (* playfield_y screen_columns) 14)
     
     ; Draw sides.
     lda #0
     sta scrx
-    lda #3
+    lda #@(++ playfield_y)
     sta scry
 a:  ldx #5
     lda #bg_side
 l:  pha
     lda scry
-    cmp #32
+    cmp #screen_rows
     beq +done
     jsr scrcoladdr
     pla

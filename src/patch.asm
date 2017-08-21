@@ -7,7 +7,12 @@ patch:
     lda #white
     sta curcol
 
+if @(eq *tv* :pal)
     lda #8
+end
+if @(eq *tv* :ntsc)
+    lda #14
+end
     sta scrx2
     lda #14
     sta scry
@@ -15,7 +20,12 @@ patch:
     ldy #>txt_hardware_check
     jsr print_string_ay
 
+if @(eq *tv* :pal)
     lda #1
+end
+if @(eq *tv* :ntsc)
+    lda #7
+end
     sta scrx2
     lda #16
     sta scry
@@ -76,7 +86,12 @@ m:  lda $9004
 
     lda #128
     sta curchar
+if @(eq *tv* :pal)
     lda #14
+end
+if @(eq *tv* :ntsc)
+    lda #20
+end
     sta scrx2
     lda #18
     sta scry

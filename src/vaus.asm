@@ -23,10 +23,10 @@ test_vaus_hit_right:
     ldy mode
     cpy #mode_extended
     bne +n
-    cmp #@(* (- screen_columns 4) 8)
+    cmp #@(* (- 15 4) 8)
     bcs +r
     bcc +r
-n:  cmp #@(* (- screen_columns 3) 8)
+n:  cmp #@(* (- 15 3) 8)
 r:  rts
 
 ctrl_vaus:
@@ -87,7 +87,7 @@ handle_paddle:
     sta bricks_left
     rts
 
-m:  lda #@(* (- screen_columns 1) 8)
+m:  lda #@(* 14 8)
     sec
     sbc vaus_width
 n:  sec
@@ -177,7 +177,7 @@ do_fire:
     beq +m
     lda #default_ball_direction_skewed
     sta sprites_d,y
-m:  lda #@(- (* 29 8) 5)
+m:  lda #@(- vaus_y 5)
     sta sprites_y,y
     lda #<gfx_ball
     sta sprites_gl,y
@@ -234,7 +234,7 @@ m:  dey
     lda #snd_round_break
     jmp play_sound
 
-n:  lda #@(* (- screen_columns 1) 8)
+n:  lda #@(* 14 8)
     sec
     sbc vaus_width
     sta sprites_x,x

@@ -19,7 +19,7 @@ n:  clc
     sta curchar
     lda #10
     sta scrx2
-    lda #22
+    lda #txt_round_nn_y
     sta scry
     lda #<txt_round_nn
     sta s
@@ -43,7 +43,7 @@ n:  lda #130
     inc curchar
     lda #12
     sta scrx2
-    lda #24
+    lda #@(+ txt_round_nn_y 2)
     sta scry
     lda #<txt_ready
     sta s
@@ -55,8 +55,8 @@ n:  lda #130
     jsr wait_sound
 
     ; Remove message.
-screen_round = @(+ screen (* 15 22) 5)
-screen_ready = @(+ screen (* 15 24) 6)
+screen_round = @(+ screen (* screen_columns txt_round_nn_y) 5)
+screen_ready = @(+ screen (* screen_columns (+ txt_round_nn_y 2)) 6)
     0
     c_clrmb <screen_round >screen_round 5
     c_clrmb <screen_ready >screen_ready 5

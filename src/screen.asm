@@ -1,27 +1,20 @@
 ; Calculate line address in screen.
 scraddr:
     ldy scry
-    lda line_addresses,y
+    lda line_addresses_l,y
     sta scr
-    sta col
-    cpy #@(++ (/ 256 screen_columns))
-    lda #@(half (high screen))
-    rol
+    lda line_addresses_h,y
     sta @(++ scr)
     ldy scrx
     rts
 
-; Calculate line address in screen and colour memory.
 scrcoladdr:
     ldy scry
-    lda line_addresses,y
+    lda line_addresses_l,y
     sta scr
     sta col
-    cpy #@(++ (/ 256 screen_columns))
-    lda #@(half (high screen))
-    rol
+    lda line_addresses_h,y
     sta @(++ scr)
-    and #1
     ora #>colors
     sta @(++ col)
     ldy scrx
@@ -30,6 +23,7 @@ scrcoladdr:
 plot:
     sta scrx
     sty scry
+plot_scr:
     jsr scrcoladdr
     lda curchar
     sta (scr),y
@@ -52,28 +46,16 @@ l:  sta charset,x
     dex
     bpl -l
 
-    ; Check if it's NTSC or PAL.
-    lda $ede4
-    cmp #$0c
-    beq +pal
-
-ntsc:
-    lda #12         ; Horizontal screen origin.
+    lda #screen_origin_x
     sta $9000
-    lda #5          ; Vertical screen origin.
-    sta $9001
-    jmp +n
-
-pal:
-    lda #20         ; Horizontal screen origin.
-    sta $9000
-    lda #21         ; Vertical screen origin.
+    lda #screen_origin_y
     sta $9001
 
-n:  lda #15         ; Number of columns.
+    lda #screen_columns
     sta $9002
-    lda #@(* 32 2)  ; Number of rows.
+    lda #@(* screen_rows 2)
     sta $9003
+
     lda #@(+ vic_screen_1000 vic_charset_1400)
     sta $9005
     lda #@(+ reverse red)   ; Screen and border color.

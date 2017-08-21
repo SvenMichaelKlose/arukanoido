@@ -1,10 +1,11 @@
 (load "gen-vcpu-tables.lisp")
 
+(var *demo?* nil)
 (var *shadowvic?* nil)
 (var *add-charset-base?* t)
 (var *show-cpu?* nil)
 (var *debug?* nil)
-(var *demo?* nil)
+(var *tv* nil)
 
 (fn gen-sprite-nchars ()
   (with-queue q
@@ -700,11 +701,17 @@
 ;(with-temporary *shadowvic?* t
 ;  (make-game :prg "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
 (unix-sh-mkdir "arukanoido")
-(make-game :prg "arukanoido.prg" "arukanoido.vice.txt")
+(with-temporary *tv* :pal
+  (make-game :prg "arukanoido.pal.prg" "arukanoido.pal.vice.txt"))
+(with-temporary *tv* :ntsc
+  (make-game :prg "arukanoido.ntsc.prg" "arukanoido.ntsc.vice.txt"))
 
 (format t "Level data: ~A B~%" (length +level-data+))
 
-(sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-t52" "-x1" "-o" "arukanoido/arukanoido.prg" "arukanoido.prg")
+(sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-t52" "-x1" "-o" "arukanoido/arukanoido.pal.prg" "arukanoido.pal.prg")
+                    :pty cl:*standard-output*)
+
+(sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-t52" "-x1" "-o" "arukanoido/arukanoido.ntsc.prg" "arukanoido.ntsc.prg")
                     :pty cl:*standard-output*)
 
 (quit)

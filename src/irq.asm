@@ -14,14 +14,15 @@ l:  lda $9004
     sta $315
 
     ; Initialise VIA2 Timer 1.
+if @(eq *tv* :pal)
     ldx #<frame_timer_pal
     ldy #>frame_timer_pal
-    lda $ede4
-    cmp #$0c
-    beq +p
+end
+if @(eq *tv* :ntsc)
     ldx #<frame_timer_ntsc
     ldy #>frame_timer_ntsc
-p:  stx $9124
+end
+    stx $9124
     sty $9125
     lda #%01000000  : free-running
     sta $912b
@@ -55,9 +56,9 @@ n:  lda mode_break
     and #1
     clc
     adc #bg_break
-    sta @(+ screen (* 15 28) 14)
-    sta @(+ screen (* 15 29) 14)
-    sta @(+ screen (* 15 30) 14)
+    sta @(+ screen (* screen_columns (+ playfield_y 26)) 14)
+    sta @(+ screen (* screen_columns (+ playfield_y 27)) 14)
+    sta @(+ screen (* screen_columns (+ playfield_y 28)) 14)
 n:
 
 n:  jsr play_music
