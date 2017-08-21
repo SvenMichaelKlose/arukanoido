@@ -92,54 +92,6 @@ has_hit_golden_brick:   0
 has_hit_vaus:           0
 num_brick_hits:         0 ; Used to increase the ball speed.
 
-score:      fill num_score_digits
-
-sprites_x:          fill num_sprites  ; X positions.
-sprites_y:          fill num_sprites  ; Y positions.
-sprites_i:          fill num_sprites  ; Flags.
-sprites_c:          fill num_sprites  ; Colors.
-sprites_gl:         fill num_sprites  ; Low character addresses.
-sprites_gh:         fill num_sprites  ; High character addresses.
-sprites_fl:         fill num_sprites  ; Function controlling the sprite (low).
-sprites_fh:         fill num_sprites  ; Function controlling the sprite (high).
-sprites_dimensions: fill num_sprites  ; %0000rrcc
-sprites_d:          fill num_sprites  ; Whatever the controllers want.
-
-    @(check-zeropage-size (- #x00fc num_score_digits))
-    org @(- #x00fc num_score_digits)
-
-hiscore:    fill num_score_digits
-
-    org $200
-
-sprites_d2:     fill num_sprites ; Whatever the controllers want.
-sprites_dx:     fill num_sprites ; Ball subpixel position
-sprites_dy:     fill num_sprites
-sprites_iw:     fill num_sprites ; Dimensions in chars.
-sprites_ih:     fill num_sprites
-sprites_w:      fill num_sprites ; Total dimensions in chars (after shift).
-sprites_h:      fill num_sprites
-sprites_sx:     fill num_sprites ; Screen position and dimensions in chars.
-sprites_sy:     fill num_sprites
-sprites_sw:     fill num_sprites
-sprites_sh:     fill num_sprites
-sprites_ox:     fill num_sprites ; Old screen position and dimensions in chars.
-sprites_oy:     fill num_sprites
-sprites_ow:     fill num_sprites
-sprites_oh:     fill num_sprites
-
-; Currently processed sprite
-sprite_char:        0   ; First char.
-sprite_x:           0   ; X position (text).
-sprite_y:           0   ; Y position (text).
-sprite_cols:        0   ; total width in chars.
-sprite_inner_cols:  0   ; width in chars.
-sprite_rows:        0   ; total height in chars.
-sprite_inner_rows:  0   ; height in chars.
-sprite_width:       0   ; Width in pixels.
-sprite_lines:       0   ; total height in lines.
-sprite_inner_lines: 0   ; height in lines.
-
 laser_has_hit:        0   ; For the laser controller to remember if it hit one the left.
 is_testing_laser_hit: 0
 has_new_score:        0
@@ -158,13 +110,62 @@ num_lifes_by_score:     0
 
 has_paused:         0
 
-    org $320
+; Currently processed sprite
+sprite_char:        0   ; First char.
+sprite_x:           0   ; X position (text).
+sprite_y:           0   ; Y position (text).
+sprite_cols:        0   ; total width in chars.
+sprite_inner_cols:  0   ; width in chars.
+sprite_rows:        0   ; total height in chars.
+sprite_inner_rows:  0   ; height in chars.
+sprite_width:       0   ; Width in pixels.
+sprite_lines:       0   ; total height in lines.
+sprite_inner_lines: 0   ; height in lines.
 
+sprites_x:          fill num_sprites  ; X positions.
+sprites_y:          fill num_sprites  ; Y positions.
+sprites_i:          fill num_sprites  ; Flags.
+sprites_c:          fill num_sprites  ; Colors.
+sprites_gl:         fill num_sprites  ; Low character addresses.
+sprites_gh:         fill num_sprites  ; High character addresses.
+sprites_fl:         fill num_sprites  ; Function controlling the sprite (low).
+sprites_fh:         fill num_sprites  ; Function controlling the sprite (high).
+sprites_dimensions: fill num_sprites  ; %0000rrcc
+sprites_d:          fill num_sprites  ; Whatever the controllers want.
+
+sprites_dx:     fill num_sprites ; Ball subpixel position
+sprites_dy:     fill num_sprites
+sprites_iw:     fill num_sprites ; Dimensions in chars.
+sprites_ih:     fill num_sprites
+sprites_w:      fill num_sprites ; Total dimensions in chars (after shift).
+sprites_h:      fill num_sprites
+
+score:      fill num_score_digits
+
+    @(check-zeropage-size (- #x00fc num_score_digits))
+    org @(- #x00fc num_score_digits)
+
+hiscore:    fill num_score_digits
+
+    org $200
+
+sprites_d2:     fill num_sprites ; Whatever the controllers want.
+
+sprites_sx:     fill num_sprites ; Screen position, dimensions in chars and frame.
+sprites_sy:     fill num_sprites
+sprites_sw:     fill num_sprites
+sprites_sh:     fill num_sprites
 sprites_sf:     fill num_sprites
+sprites_ox:     fill num_sprites ; Old screen position and dimensions in chars and frame.
+sprites_oy:     fill num_sprites
+sprites_ow:     fill num_sprites
+sprites_oh:     fill num_sprites
 sprites_of:     fill num_sprites
 
-brickfx_x:      fill num_sprites
-brickfx_y:      fill num_sprites
+    org $320
+
+brickfx_x:      fill num_brickfx
+brickfx_y:      fill num_brickfx
 brickfx_pos:    0
 brickfx_end:    0
 

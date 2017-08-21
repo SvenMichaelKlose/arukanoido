@@ -538,7 +538,7 @@
 (fn check-zeropage-size (x)
   (? (< x *pc*)
      (error "Address ~A overflown by ~A bytes." x (abs (- *pc* x)))
-     (format t "~A bytes free till address ~A.~%" (- x *pc*) x)))
+     (format t "~A bytes free until address ~A.~%" (- x *pc*) x)))
 
 (const +degrees+ 256)
 (const smax 127)

@@ -61,3 +61,7 @@ delay_until_ball_is_released = $80
 
 num_score_digits    = 7
 score_char0         = 16    ; Digit '0' in 4x8 charset.
+
+; Miscellaneous
+
+num_brickfx     = 24
