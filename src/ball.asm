@@ -196,6 +196,7 @@ m:  lda #0
     sta sprites_d,x
 
 n:  jsr adjust_ball_speed
+    jsr adjust_ball_speed_hitting_top
     lda has_removed_brick
     beq +n
 
@@ -320,6 +321,36 @@ make_ball:
 ball_accelerations_after_brick_hits:
     $00 $19 $19 $23 $23 $2d $3c $50 $78 $8c $a0 $b4 $c8 $dc $f0 $ff
 
+; From arcade ROM (check code at 0x1442 and this table at 0x1462).
+minimum_ball_speed_when_hit_top_per_round:
+    7 7 8 0 7 7 7 0 7 5
+    7 7 8 6 7 5 7 7 7 0
+    7 0 0 0 0 7 8 7 0 7
+    0 0 0 0
+
+adjust_ball_speed_hitting_top:
+    lda sprites_y,x
+    cmp #@(- (* (++ playfield_y) 8) 2) ; (Centre of ball hitting top.)
+    bne +n
+    ldy level
+    dey
+    lda minimum_ball_speed_when_hit_top_per_round,y
+    lsr
+    adc #0
+    cmp ball_speed
+    bcc +n
+    ldy is_using_paddle
+    bne +m
+    cmp #max_ball_speed_joystick_top
+    bcc +l
+    lda #max_ball_speed_joystick_top
+    bne +l      ; (jmp)
+m:  cmp #max_ball_speed
+    bcc +l
+    lda #max_ball_speed
+l:  sta ball_speed
+n:  rts
+
 adjust_ball_speed:
     inc num_hits
     ldy #0
@@ -327,12 +358,12 @@ l:  lda ball_accelerations_after_brick_hits,y
     cmp #$ff
     beq +n
     cmp num_hits
-    beq +l
+    beq increase_ball_speed
     iny
     jmp -l
 
 increase_ball_speed:
-l:  lda ball_speed
+    lda ball_speed
     ldy is_using_paddle
     bne +m
     cmp #max_ball_speed_joystick
