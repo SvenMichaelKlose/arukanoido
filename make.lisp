@@ -653,6 +653,7 @@
                           "explosion.asm"
                           "laser.asm"
                           "obstacle.asm"
+                          "step-arcade.asm"
                           "step-smooth.asm"
                           "vaus.asm"
 

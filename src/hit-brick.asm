@@ -18,7 +18,6 @@ hit_brick:
     pha
     lda is_testing_laser_hit
     bne +n
-    inc num_brick_hits
     jsr adjust_ball_speed
 n:  pla
     inc has_hit_brick

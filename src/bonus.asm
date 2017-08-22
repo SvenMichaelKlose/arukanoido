@@ -137,7 +137,7 @@ apply_bonus_s:
     lda #min_ball_speed
     sta ball_speed
     lda #0              ; Time acceleration back to default.
-    sta num_brick_hits
+    sta num_hits
     rts
 
 apply_bonus_b:

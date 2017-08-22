@@ -131,6 +131,8 @@ ctrl_ball_vaus:
     cmp tmp
     bcc -r
 
+    jsr adjust_ball_speed
+
     ; Get reflection from Vaus.
     lda tmp
     sec
@@ -193,7 +195,8 @@ m:  lda #0
     adc #$80
     sta sprites_d,x
 
-n:  lda has_removed_brick
+n:  jsr adjust_ball_speed
+    lda has_removed_brick
     beq +n
 
     ; Make bonus.
@@ -270,8 +273,7 @@ f:  lda sprites_x,y
     sta sprites_d2,x
     jsr reflect_ball_obstacle
     jsr apply_reflection
-    jsr remove_obstacle
-    jmp increase_ball_speed
+    jmp remove_obstacle
 
 n:  dey
     bpl -l
@@ -316,14 +318,15 @@ make_ball:
     rts
 
 ball_accelerations_after_brick_hits:
-    $00 $0a $0f $14 $1e $28 $37 $50 $6e $87 $a0 $b9 $d2 $e6 $f5 $ff ; TODO: Check if $ff really terminates.
+    $00 $19 $19 $23 $23 $2d $3c $50 $78 $8c $a0 $b4 $c8 $dc $f0 $ff
 
 adjust_ball_speed:
+    inc num_hits
     ldy #0
 l:  lda ball_accelerations_after_brick_hits,y
     cmp #$ff
     beq +n
-    cmp num_brick_hits
+    cmp num_hits
     beq +l
     iny
     jmp -l

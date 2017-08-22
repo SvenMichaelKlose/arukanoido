@@ -112,7 +112,7 @@ retry:
     sta framecounter
     sta @(++ framecounter)
     sta num_obstacles
-    sta num_brick_hits
+    sta num_hits
     sta has_bonus_on_screen
     sta laser_delay_type
     lda #1
