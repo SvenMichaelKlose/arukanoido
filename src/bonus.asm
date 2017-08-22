@@ -17,6 +17,9 @@ bonus_colors:
 
 ctrl_bonus:
     lda sprites_y,x
+if @(eq *tv* :ntsc)
+    cmp #@(* screen_rows 8)
+end
     beq +r              ; Bonus left playfield…
     jsr find_hit
     bcs +m              ; Nothing hit…
