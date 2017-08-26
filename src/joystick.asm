@@ -5,6 +5,12 @@ l:  lda $9111
     beq +r
     txa
     and #joy_left
+    beq +r
+    jsr get_keypress
+    bcc +n
+    cmp #keycode_space
+    jmp +r
+n:  lda #1
 r:  rts
 
 ; Wait for joystick or paddle fire.

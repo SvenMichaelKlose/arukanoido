@@ -37,7 +37,7 @@ keycode_8  = $04
 keycode_9  = $3b
 
 keycode_enter  = $60
-keycode_space  = $37
+keycode_space  = $1f
 
 via2_portb0 = $9120
 via2_porta0 = $9121
@@ -50,7 +50,10 @@ wait_keyunpress:
     bne wait_keyunpress
     rts
 
+get_keypress_x: 0
+
 get_keypress:
+    stx get_keypress_x
     lda #255            ; Set port B to output.
     sta $9122
     lda #0
@@ -80,6 +83,7 @@ next_row:
     bpl next_column
 
 no_keypress:
+    ldx get_keypress_x
     clc
     rts
 
@@ -90,6 +94,7 @@ got_row:
     asl
     asl
     ora tmp
+    ldx get_keypress_x
     sec
     rts
 

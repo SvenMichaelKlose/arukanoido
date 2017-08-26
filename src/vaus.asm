@@ -118,24 +118,8 @@ handle_joystick:
 n:  lda joystick_status
     and #joy_left
     bne +n
-    lda sprites_x,x
-    cmp #9
-    bcc +n
-    lda #2
-    jsr sprite_left
-
-    ; Move caught ball with Vaus.
-    lda caught_ball
-    bmi handle_joystick_fire
-    stx tmp
-    tax
-    lda #2
-    jsr sprite_left
-    ldx tmp
+    jsr move_vaus_left
     jmp handle_joystick_fire
-
-done2:
-    jmp -done
 
     ; Joystick right.
 n:  lda #0          ; Fetch rest of joystick status.
@@ -144,24 +128,30 @@ n:  lda #0          ; Fetch rest of joystick status.
     lda $9120
     sty $9122
     bmi handle_joystick_fire
-    lda sprites_x,x
-    jsr test_vaus_hit_right
-    bcs handle_break_mode
-    lda #2
-    jsr sprite_right
-
-    ; Move caught ball with Vaus.
-    lda caught_ball
-    bmi handle_joystick_fire
-    stx tmp
-    tax
-    lda #2
-    jsr sprite_right
-    ldx tmp
+    jsr move_vaus_right
 
 handle_joystick_fire:
     lda joystick_status
     and #joy_fire
+    beq do_fire
+
+    jsr get_keypress
+    bcc -done
+    cmp #keycode_s
+    beq +l
+    cmp #keycode_j
+    bne +n
+l:  jsr move_vaus_left
+    jmp -done
+
+n:  cmp #keycode_d
+    beq +l
+    cmp #keycode_k
+    bne +n
+l:  jsr move_vaus_right
+    jmp -done
+
+n:  cmp #keycode_space
     bne -done
 
 do_fire:
@@ -187,6 +177,7 @@ m:  lda #@(- vaus_y 5)
     jsr play_sound
     lda #255
     sta caught_ball
+done2:
     jmp -done
 
 n:  lda mode
@@ -239,6 +230,40 @@ n:  lda #@(* 14 8)
     sbc vaus_width
     sta sprites_x,x
 r:  rts
+
+move_vaus_left:
+    lda sprites_x,x
+    cmp #9
+    bcc +n
+    lda #2
+    jsr sprite_left
+
+    ; Move caught ball with Vaus.
+    lda caught_ball
+    bmi +n
+    stx tmp
+    tax
+    lda #2
+    jsr sprite_left
+    ldx tmp
+n:  rts
+
+move_vaus_right:
+    lda sprites_x,x
+    jsr test_vaus_hit_right
+    bcs handle_break_mode
+    lda #2
+    jsr sprite_right
+
+    ; Move caught ball with Vaus.
+    lda caught_ball
+    bmi +n
+    stx tmp
+    tax
+    lda #2
+    jsr sprite_right
+    ldx tmp
+n:  rts
 
 make_vaus:
     ldy #@(- vaus_init sprite_inits)
