@@ -54,4 +54,10 @@ n:
     cmp #255
     bne -l
  
+    ; Set default screen origin.
+    lda #screen_origin_x
+    sta user_screen_origin_x
+    lda #screen_origin_y
+    sta user_screen_origin_y
+
     jmp patch

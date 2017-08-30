@@ -619,6 +619,7 @@
                           "chars.asm"
                           "digisound.asm"
                           "draw-bitmap.asm"
+;                          "exomizer-stream-decrunsh.asm"
                           "joystick.asm"
                           "keyboard.asm"
                           "math.asm"

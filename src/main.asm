@@ -4,9 +4,6 @@ clear_data:
 l:  cpx #@(-- hiscore)
     bcs +n
     sta 0,x
-n:  cpx #$e0
-    bcs +n
-    sta $320,x
 n:  cpx #$13
     bcs +n
     sta $300,x
@@ -28,7 +25,6 @@ start:
     jsr start_irq
     lda #0
     sta @(++ requested_song)
-
     jsr init_score
 
 toplevel:
@@ -85,21 +81,25 @@ l:  jsr test_fire
     cmp #keycode_h
     bne +n
     dec $9000
+    dec user_screen_origin_x
     jmp -l
 n:
     cmp #keycode_l
     bne +n
     inc $9000
+    inc user_screen_origin_x
     jmp -l
 n:
     cmp #keycode_k
     bne +n
     dec $9001
+    dec user_screen_origin_y
     jmp -l
 n:
     cmp #keycode_j
     bne -l
     inc $9001
+    inc user_screen_origin_y
     jmp -l
 
 f:  lda #snd_coin

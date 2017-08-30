@@ -169,6 +169,9 @@ brickfx_y:      fill num_brickfx
 brickfx_pos:    0
 brickfx_end:    0
 
+user_screen_origin_x:   0
+user_screen_origin_y:   0
+
     end
 
 ; Minigrafik viewer

@@ -46,9 +46,9 @@ l:  sta charset,x
     dex
     bpl -l
 
-    lda #screen_origin_x
+    lda user_screen_origin_x
     sta $9000
-    lda #screen_origin_y
+    lda user_screen_origin_y
     sta $9001
 
     lda #screen_columns
