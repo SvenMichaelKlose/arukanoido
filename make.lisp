@@ -697,6 +697,20 @@
 
 (= *model* :vic-20+xk)
 
+(unix-sh-mkdir "obj")
+
+(fn packed-font ()
+  (assemble-files "obj/font-4x8.bin" "media/font-4x8.asm")
+  (mapcan [maptimes #'((i)
+                                 (!= (? (== (length _) 16)
+                                        _
+                                        (+ _ (maptimes [identity 0] 8)))
+                                   (+ (elt ! i) (<< (elt ! (+ i 8)) 4))))
+                    8]
+          (group (filter #'char-code (string-list (fetch-file "obj/font-4x8.bin"))) 16)))
+
+(put-file "obj/font-4x8-packed.bin" (list-string (@ #'code-char (packed-font))))
+
 (gen-vcpu-tables "src/_vcpu.asm")
 ;(with-temporary *show-cpu?* t
 ;  (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt"))

@@ -1,15 +1,16 @@
 ; d: Destination
 ; A: char
 ; C: 0: left half, 1: right half
+print4x8_char:  0
 print4x8:
+    sta print4x8_char
     stx p_x
     sty p_y
     php
 
+    and #%11111110
     ldy #0
     sty tmp2
-    asl
-    rol tmp2
     asl
     rol tmp2
     asl
@@ -21,15 +22,22 @@ print4x8:
     adc #>charset4x8
     sta tmp2
 
+    lda print4x8_char
+    and #1
+    sta print4x8_char
+
     plp
     bcs +n
 
     ldy #7
 l:  lda (tmp),y
+    ldx print4x8_char
+    bne +m
     asl
     asl
     asl
     asl
+m:  and #$f0
     sta (d),y
     dey
     bpl -l
@@ -37,6 +45,13 @@ l:  lda (tmp),y
 
 n:  ldy #7
 l:  lda (tmp),y
+    ldx print4x8_char
+    beq +m
+    lsr
+    lsr
+    lsr
+    lsr
+m:  and #$0f
     ora (d),y
     sta (d),y
     dey
