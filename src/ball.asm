@@ -200,6 +200,10 @@ n:  jsr adjust_ball_speed
     lda has_removed_brick
     beq +n
 
+    lda level
+    cmp #33
+    beq +n
+
     ; Make bonus.
     lda mode
     cmp #mode_disruption    ; No bonuses in disruption mode.
@@ -231,7 +235,7 @@ n:  lda has_hit_brick
     beq +r
     lda has_hit_golden_brick
     ora has_hit_silver_brick
-    beq +n
+    beq +r
     lda #snd_reflection_silver
     bne +l
 n:  lda #snd_reflection_high
