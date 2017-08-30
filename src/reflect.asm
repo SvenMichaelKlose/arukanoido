@@ -56,6 +56,7 @@ n:  lda ball_x
     jsr get_soft_collision
     bne +r
 j:  lda #128
+
 l:  clc
     adc side_degrees
     sta side_degrees

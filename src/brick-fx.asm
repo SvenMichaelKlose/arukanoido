@@ -40,6 +40,9 @@ n:  bne +r
 r:  rts
 
 add_brick_fx:
+    lda level
+    cmp #33
+    beq -r
     stx tmp
     lda brickfx_end
     and #@(-- num_sprites)

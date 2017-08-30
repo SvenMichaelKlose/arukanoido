@@ -102,6 +102,10 @@ m:  jsr draw_walls
     jsr make_score_screen
     jsr display_score
 
+;lda level
+;cmp #33
+;bne next_level
+
 retry:
     lda #0
     sta is_running_game

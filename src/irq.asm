@@ -73,7 +73,10 @@ n:  jsr play_music
     lda mode_break
     beq +n
     bpl +done
-n:  jsr rotate_bonuses
+n:  lda level
+    cmp #33
+    beq +done
+    jsr rotate_bonuses
     jsr add_missing_obstacle
     jsr dyn_brick_fx
 

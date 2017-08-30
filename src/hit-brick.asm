@@ -1,8 +1,27 @@
+hit_doh:
+    ldy scrx
+    lda (scr),y
+    and #%01100000
+    cmp #%01100000
+    bne +n
+    dec bricks_left
+    lda #snd_hit_doh
+    jsr play_sound
+    clc
+    rts
+
+n:  sec
+    rts
+
 hit_brick:
     lda #0
     sta has_removed_brick
     sta has_hit_silver_brick
     sta has_hit_golden_brick
+
+    lda level
+    cmp #33
+    beq -hit_doh
 
     ; Get pointer into 'bricks'.
     lda scr
