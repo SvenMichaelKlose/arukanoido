@@ -55,3 +55,17 @@ done:
     lda #0
     sta is_testing_laser_hit
     rts
+
+remove_lasers:
+    txa
+    pha
+    ldx #@(- num_sprites 2)
+l:  lda sprites_i,x
+    and #is_laser
+    beq +n
+    jsr remove_sprite
+n:  dex
+    bpl -l
+    pla
+    tax
+r:  rts

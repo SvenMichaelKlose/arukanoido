@@ -11,6 +11,7 @@ sprite_init_data        = 9
 
 is_inactive  = 128
 was_cleared  = 64
+is_laser     = 16
 is_ball      = 8
 is_obstacle  = 4
 is_bonus     = 2
@@ -24,7 +25,7 @@ vaus_init:
 ball_init:
     0 0       is_ball     white      <gfx_ball >gfx_ball    <ctrl_ball >ctrl_ball 9 0
 laser_init:
-    0 vaus_y  0           yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
+    0 vaus_y  is_laser    yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
 bonus_init:
     0 0       is_bonus    black      0 >gfx_bonus_l         <ctrl_bonus >ctrl_bonus 9 0
 obstacle_init:

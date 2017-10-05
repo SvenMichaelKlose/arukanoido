@@ -177,6 +177,7 @@ end
 
 apply_bonus_d:
     jsr remove_bonuses
+    jsr remove_lasers
 
     ; Find ball.
     ldy #@(-- num_sprites)
