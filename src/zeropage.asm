@@ -98,8 +98,7 @@ has_new_score:        0
 has_hiscore:          0
 scorechar_start:      0
 
-current_half:       0
-scrx2:              0
+scrx2:                  0
 
 has_removed_brick:      0
 has_bonus_on_screen:    0

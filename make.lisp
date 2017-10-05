@@ -89,7 +89,7 @@
 " sbpyw ocgsb "
 " bpywo cgsbp "
 " pywoc gsbpy "
-" ywocg sbpyw ")
+" ywocg sbpyw")
 
 ; Round 05
 (2
@@ -108,7 +108,7 @@
 " s s     s s "
 " s s     s s "
 "    ss ss    "
-"    ss ss    ")
+"    ss ss")
 
 ; Round 06
 (4
@@ -140,7 +140,7 @@
 "   ggccoow   "
 "   gccooww   "
 "    cooww    "
-"     oww     ")
+"     oww")
 
 ; Round 08
 (4
@@ -156,7 +156,7 @@
 "      p      "
 " xx x   x xx "
 " x         x "
-"   x x x x   ")
+"   x x x x")
 
 ; Round 09
 ,@(unless *demo?* `(
@@ -171,7 +171,7 @@
 "    pcccy    "
 "    pgggy    "
 "    prrry    "
-"    pbbby    ")
+"    pbbby")
 
 ; Round 10
 (0
@@ -206,7 +206,7 @@
 " s s     s s "
 " s sssssss s "
 " s         s "
-" sssssssssss ")
+" sssssssssss")
 
 ; Round 12
 (4
@@ -234,7 +234,7 @@
 " ggg rrr ggg "
 " ccc bbb ccc "
 " ooo ppp ooo "
-" www yyy www ")
+" www yyy www")
 
 ; Round 14
 (4
@@ -300,7 +300,7 @@
 "      s      "
 "    x x      "
 "    xxx      "
-"     x       ")
+"     x")
 
 ; Round 18
 (4
@@ -325,7 +325,7 @@
 "  grbpxpbrg  "
 "  grbpxpbrg  "
 "  grbpxpbrg  "
-"  xxxxxxxxx  ")
+"  xxxxxxxxx")
 
 ; Round 20
 (4
@@ -342,7 +342,7 @@
 "  x x xpx x  "
 "  x xpx x x  "
 "   px x x    "
-" p    x      ")
+" p    x")
 
 
 ; Round 21
@@ -360,7 +360,7 @@
 " x xcccccx x "
 " x         x "
 " x         x "
-" xxxxxxxxxxx ")
+" xxxxxxxxxxx")
 
 ; Round 22
 (4
@@ -389,7 +389,7 @@
 "             "
 "sss sss sss  "
 "sbs sbs sbs  "
-"sss sss sss  ")
+"sss sss sss")
 
 ; Round 24
 (7
@@ -428,7 +428,7 @@
 "x bbbbb x    "
 "x  ppp  x    "
 " x     x     "
-"  xxxxx      ")
+"  xxxxx")
 
 ; Round 27
 (11
@@ -453,7 +453,7 @@
 "   bxpppxb   "
 "    bxpxb    "
 "     bpb     "
-"      b      ")
+"      b")
 
 ; Round 29
 (4
@@ -513,7 +513,7 @@
 "  xpppppppp  "
 "  x x x x x  "
 "  yyyyyyyyy  "
-"  sssssssss  ")
+"  sssssssss")
 
 ; Round 33: Unused round 33 that is in the original ROMs but never used.
 ; Not yet actived in Arukanoido.
@@ -531,8 +531,19 @@
 "   pppsspp   "
 "    psspp    "
 "     ssp     "
-"      s      ")
+"      s")
 ))))
+
+(fn get-brick (x)
+  (position x *bricks*))
+
+(const +level-data+ (with-queue q
+                      (dolist (level *levels* (queue-list q))
+                        (enqueue q (+ 3 level.)) ; Y offset of bricks.
+                        (dolist (line .level)
+                          (dolist (brick (string-list line))
+                            (enqueue q (get-brick brick))))
+                        (enqueue q 15))))
 
 (= *model* :vic-20)
 
@@ -577,6 +588,9 @@
                     :pty cl:*standard-output*)
 (apply #'assemble-files "obj/gfx-background.bin" '("media/gfx-background.asm"))
 (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/gfx-background.bin" "-o" "obj/gfx-background.bin.exo")
+                    :pty cl:*standard-output*)
+(put-file "obj/levels.bin" (list-string (@ #'code-char +level-data+)))
+(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/levels.bin" "-o" "obj/levels.bin.exo")
                     :pty cl:*standard-output*)
 
 (fn make (to files cmds)
@@ -684,21 +698,6 @@
 
                           "end.asm"))
         cmds))
-
-(fn get-brick (x)
-  (position x *bricks*))
-
-(const +level-data+ (with-queue q
-                      (dolist (level *levels*)
-                        (enqueue q (+ 3 level.)) ; Y offset of bricks.
-                        (dolist (line .level)
-                          (dolist (brick (string-list line))
-                            (enqueue q (get-brick brick))))
-                        (enqueue q 15))
-                      (with-queue qo
-                        (dolist (j (group (queue-list q) 32) (queue-list qo))
-                          (dolist (i (group j 2))
-                            (enqueue qo (+ (* i. 16) (| .i. 0))))))))
 
 (fn paddle-xlat ()
   (maptimes [bit-and (integer (+ 8 (/ (- 255 _) ; TODO: Häh?

@@ -37,8 +37,11 @@ game:
 
     ; Reset level data stream.
     lda #<level_data
+    ldy #>level_data
+    jsr init_decruncher
+    lda s
     sta current_level
-    lda #>level_data
+    lda @(++ s)
     sta @(++ current_level)
 
 next_level:

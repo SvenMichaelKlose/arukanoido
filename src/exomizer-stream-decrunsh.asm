@@ -66,7 +66,7 @@ get_crunched_byte:
     pha
     ldy #0
     lda (s),y
-    sta tmp
+    sta get_crunched_byte_tmp
     inc s
     bne +n
     inc @(++ s)
@@ -75,8 +75,10 @@ n:  pla
     pla
     tax
     plp
-    lda tmp
+    lda get_crunched_byte_tmp
     rts
+
+get_crunched_byte_tmp: 0
 
 ; -------------------------------------------------------------------
 ; zero page addresses used
@@ -163,12 +165,12 @@ _init_shortcut:
 	rts
 
 _do_exit:
-    sta tmp
+    sta get_crunched_byte_tmp
     pla
     tay
     pla
     tax
-    lda tmp
+    lda get_crunched_byte_tmp
 	rts
 ; -------------------------------------------------------------------
 ; decrunch one byte
@@ -355,7 +357,7 @@ _bit_bits_done:
 ; this 156 byte table area may be relocated. It may also be clobbered
 ; by other data between decrunches.
 ; -------------------------------------------------------------------
-decrunch_table = @(- #x400 156)
+decrunch_table = @(- #x1f00 156)
 ;    fill 156
 ; -------------------------------------------------------------------
 ; end of decruncher

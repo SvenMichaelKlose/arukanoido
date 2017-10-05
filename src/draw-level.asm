@@ -1,4 +1,9 @@
 draw_level:
+    lda current_level
+    sta s
+    ldy @(++ current_level)
+    sty @(++ s)
+
     ; Clear brick map.
     ldx #0
     txa
@@ -9,7 +14,7 @@ l:  sta bricks,x
 
     lda #0
     sta bricks_left
-    jsr fetch_brick
+    jsr get_decrunched_byte
 if @(eq *tv* :ntsc)
     sec
     sbc #2
@@ -24,7 +29,7 @@ l:  jsr scrcoladdr
     lda @(++ scr)
     ora #>bricks
     sta @(++ tmp)
-    jsr fetch_brick
+    jsr get_decrunched_byte
     cmp #0
     beq +o
     cmp #15
@@ -55,27 +60,11 @@ o:  inc scrx
     inc scry
     jmp -m
     
-fetch_brick:
-    ldy #0
-    lda (current_level),y
-    ldx current_half
-    bne +n
-    lsr
-    lsr
-    lsr
-    lsr
-    inc current_half
-    jmp +r
-n:  and #$0f
-    dec current_half
-done:
-    ldx #current_level
-
-inc_zp:
-    inc 0,x
-    bne +r
-    inc 1,x
-r:  rts
+r:  lda s
+    sta current_level
+    lda @(++ s)
+    sta @(++ current_level)
+    rts
 
 brick_to_char:
     tax
