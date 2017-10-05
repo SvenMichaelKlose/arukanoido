@@ -569,6 +569,16 @@
   (let m (/ 360 +degrees+)
     (bytes (maptimes [integer (* smax (degree-cos (* m _)))] +degrees+))))
 
+(apply #'assemble-files "obj/gfx-ship.bin" '("media/gfx-ship.asm"))
+(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/gfx-ship.bin" "-o" "obj/gfx-ship.bin.exo")
+                    :pty cl:*standard-output*)
+(apply #'assemble-files "obj/gfx-taito.bin" '("media/gfx-taito.asm"))
+(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/gfx-taito.bin" "-o" "obj/gfx-taito.bin.exo")
+                    :pty cl:*standard-output*)
+(apply #'assemble-files "obj/gfx-background.bin" '("media/gfx-background.asm"))
+(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/gfx-background.bin" "-o" "obj/gfx-background.bin.exo")
+                    :pty cl:*standard-output*)
+
 (fn make (to files cmds)
   (apply #'assemble-files to files)
   (make-vice-commands cmds "break .stop"))
@@ -592,8 +602,8 @@
                           "gfx-obstacle-cube.asm"
                           "gfx-obstacle-pyramid.asm"
                           "gfx-obstacle-spheres.asm"
-                          "gfx-ship.asm"
                           "gfx-sprites.asm"
+                          "gfx-ship.asm"
                           "gfx-taito.asm"
 
                           ; Level data
@@ -619,7 +629,7 @@
                           "chars.asm"
                           "digisound.asm"
                           "draw-bitmap.asm"
-;                          "exomizer-stream-decrunsh.asm"
+                          "exomizer-stream-decrunsh.asm"
                           "joystick.asm"
                           "keyboard.asm"
                           "math.asm"
@@ -731,5 +741,4 @@
                     :pty cl:*standard-output*)
 
 (format t "~A bytes free.~%" (- #x7000 (get-label 'the_end)))
-
 (quit)

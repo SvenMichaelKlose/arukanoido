@@ -97,8 +97,6 @@ is_testing_laser_hit: 0
 has_new_score:        0
 has_hiscore:          0
 scorechar_start:      0
-next_powerup_score:   fill num_score_digits
-score_silver:         fill num_score_digits
 
 current_half:       0
 scrx2:              0
@@ -142,6 +140,12 @@ sprites_h:      fill num_sprites
 
 score:      fill num_score_digits
 
+zp_src_hi:      0 0 0 0 
+zp_len_lo:      0 0
+zp_bits_lo:     0 0
+zp_dest_hi:     0 0 0 
+
+
     @(check-zeropage-size (- #x00fc num_score_digits))
     org @(- #x00fc num_score_digits)
 
@@ -171,6 +175,9 @@ brickfx_end:    0
 
 user_screen_origin_x:   0
 user_screen_origin_y:   0
+
+next_powerup_score:   fill num_score_digits
+score_silver:         fill num_score_digits
 
     end
 

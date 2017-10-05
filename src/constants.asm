@@ -22,6 +22,7 @@ framemask           = @(half num_chars)
 framechars          = @(half num_chars)
 first_sprite_char   = 1
 foreground          = @(half framechars)
+bg_start            = @(+ framechars foreground)
 
 ; Ball directions
 

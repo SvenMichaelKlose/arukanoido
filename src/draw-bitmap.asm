@@ -6,40 +6,36 @@ draw_bitmap_y:          0
 ; A: Low address
 ; Y: High address
 draw_bitmap:
-    sta s
-    sty @(++ s)
+    jsr init_decruncher
 
-    ldy #0
-    lda (s),y
+    jsr get_decrunched_byte
     sta draw_bitmap_width
-    tax
-    inc s
-    lda (s),y
+    jsr get_decrunched_byte
     sta draw_bitmap_height
-    inc s
 
     lda scry
     sta draw_bitmap_y
 
 l2: lda draw_bitmap_y
     sta scry
-    ldx draw_bitmap_height
+    lda draw_bitmap_height
+    sta tmp2
 l:  jsr scrcoladdr
     lda curcol
     sta (col),y
     lda curchar
     sta (scr),y
     jsr get_char_addr
-    jsr blit_char
-    lda s
-    clc
-    adc #8
-    sta s
-    bcc +n
-    inc @(++ s)
-n:  inc curchar
-    inc scry
+    ldx #8
+    ldy #0
+l3: jsr get_decrunched_byte
+    sta (d),y
+    iny
     dex
+    bne -l3
+    inc curchar
+    inc scry
+    dec tmp2
     bne -l
     inc scrx
     dec draw_bitmap_width
