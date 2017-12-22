@@ -43,28 +43,22 @@ end
     jsr release_ball
 n:
 
-    ; Un-extend Vaus.
-    lda mode
-    cmp #mode_extended
-    bne +n
-    txa
-    pha
-    jsr get_vaus_index_in_x
+    ; Restore default Vaus graphics.
+    jsr get_vaus_index_in_y
     lda #<gfx_vaus
-    sta sprites_gl,x
+    sta sprites_gl,y
     lda #>gfx_vaus
-    sta sprites_gh,x
+    sta sprites_gh,y
+
+    ; Un-extend Vaus.
     lda #10
-    sta sprites_dimensions,x
-    lda sprites_x,x
+    sta sprites_dimensions,y
+    lda sprites_x,y
     clc
     adc #4
-    sta sprites_x,x
+    sta sprites_x,y
     lda #16
     sta vaus_width
-    pla
-    tax
-n:
 
     lda #0
     sta mode
