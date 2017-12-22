@@ -1,13 +1,14 @@
 clear_data:
     lda #0
     tax
-l:  cpx #@(-- hiscore)
+l:  cpx #@(-- uncleaned_zp)
     bcs +n
     sta 0,x
 n:  cpx #$13
     bcs +n
     sta $300,x
-n:  sta $200,x
+n:  sta $320,x
+    sta $200,x
     sta charset,x
     sta @(+ 256 charset),x
     sta @(+ 512 charset),x

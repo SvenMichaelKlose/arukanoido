@@ -144,6 +144,9 @@ zp_len_lo:      0 0
 zp_bits_lo:     0 0
 zp_dest_hi:     0 0 0 
 
+uncleaned_zp:
+user_screen_origin_x:   0
+user_screen_origin_y:   0
 
     @(check-zeropage-size (- #x00fc num_score_digits))
     org @(- #x00fc num_score_digits)
@@ -171,9 +174,6 @@ brickfx_x:      fill num_brickfx
 brickfx_y:      fill num_brickfx
 brickfx_pos:    0
 brickfx_end:    0
-
-user_screen_origin_x:   0
-user_screen_origin_y:   0
 
 next_powerup_score:   fill num_score_digits
 score_silver:         fill num_score_digits
