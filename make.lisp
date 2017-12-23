@@ -672,15 +672,15 @@
                           "score.asm"
 
                           ; Sprite controllers
-                          "ball.asm"
-                          "bonus.asm"
-                          "doh.asm"
-                          "explosion.asm"
-                          "laser.asm"
-                          "obstacle.asm"
                           "step-arcade.asm"
                           "step-smooth.asm"
-                          "vaus.asm"
+                          "ctrl-ball.asm"
+                          "ctrl-bonus.asm"
+                          "ctrl-explosion.asm"
+                          "ctrl-laser.asm"
+                          "ctrl-obstacle.asm"
+                          "ctrl-vaus.asm"
+                          "doh.asm"
 
                           ; Top level
                           "debug.asm"
