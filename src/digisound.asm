@@ -42,12 +42,12 @@ start_digisound:
     stx digisound_src
     sty @(++ digisound_src)
     ldx #<digisound_xlat_low
-    ldy #<digisound_xlat_low
+    ldy #>digisound_xlat_low
     ora #0
     beq +n
     ldx #<digisound_xlat_high
-    ldy #<digisound_xlat_high
-n:  stx @(++ digisound_xlat_src)
+    ldy #>digisound_xlat_high
+n:  stx @(+ 1 digisound_xlat_src)
     sty @(+ 2 digisound_xlat_src)
 
     lda #$40        ; Enable NMI timer and interrupt.

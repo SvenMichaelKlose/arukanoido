@@ -111,13 +111,13 @@ has_paused:         0
 sprite_char:        0   ; First char.
 sprite_x:           0   ; X position (text).
 sprite_y:           0   ; Y position (text).
-sprite_cols:        0   ; total width in chars.
-sprite_inner_cols:  0   ; width in chars.
-sprite_rows:        0   ; total height in chars.
-sprite_inner_rows:  0   ; height in chars.
-sprite_width:       0   ; Width in pixels.
-sprite_lines:       0   ; total height in lines.
-sprite_inner_lines: 0   ; height in lines.
+sprite_cols:        0
+sprite_cols_on_screen:  0
+sprite_rows:        0
+sprite_rows_on_screen:  0
+sprite_width:       0
+sprite_lines:       0
+sprite_lines_on_screen: 0
 
 sprites_x:          fill num_sprites  ; X positions.
 sprites_y:          fill num_sprites  ; Y positions.

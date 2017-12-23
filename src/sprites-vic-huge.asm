@@ -18,55 +18,56 @@ draw_huge_sprite:
     lsr
     sta sprite_y
 
-    ; Determine width and height in chars.
+    ; Determine width.
     lda sprites_dimensions,x
     and #%111
     sta sprite_cols
-    sta sprite_inner_cols
+    sta sprite_cols_on_screen
 
     lda sprites_x,x
     and #%111
     beq +n
-    inc sprite_cols
+    inc sprite_cols_on_screen     ; One more due to shift.
 n:
 
+    ; Determine height.
     lda sprites_dimensions,x
     lsr
     lsr
     lsr
     sta sprite_rows
-    sta sprite_inner_rows
+    sta sprite_rows_on_screen
     asl
     asl
     asl
-    sta sprite_inner_lines
     sta sprite_lines
+    sta sprite_lines_on_screen
 
     lda sprites_y,x
     and #%111
     beq +n
-    inc sprite_rows
-    lda sprite_lines
+    inc sprite_rows_on_screen     ; One more due to shift.
+    lda sprite_lines_on_screen
     clc
     adc #8
-    sta sprite_lines
+    sta sprite_lines_on_screen
 n:
 
     ; Save dimensions for cleanup.
-    lda sprite_cols
+    lda sprite_cols_on_screen
     sta sprites_w,x
-    lda sprite_rows
+    lda sprite_rows_on_screen
     sta sprites_h,x
 
     ; Allocate chars.
     lda next_sprite_char
 l:  sta sprite_char
     jsr get_char_addr
-    lda sprite_rows
+    lda sprite_rows_on_screen
     asl
     asl
     asl
-    ora sprite_cols
+    ora sprite_cols_on_screen
     tay
     lda sprites_nchars,y
     clc
@@ -82,12 +83,12 @@ l:  sta sprite_char
 n:
 
     ; Copy background graphics into allocated chars.
-    lda sprite_cols
+    lda sprite_cols_on_screen
     sta draw_sprites_tmp3
     lda sprite_x
     sta scrx
 
-l2: lda sprite_rows
+l2: lda sprite_rows_on_screen
     sta draw_sprites_tmp2
     lda sprite_y
     sta scry
@@ -145,18 +146,18 @@ n:
     lda sprites_gh,x
     sta @(++ s)
 
-    lda sprite_inner_cols
+    lda sprite_cols
     sta draw_sprites_tmp2
 
     ; Draw left half of sprite column.
-l:  ldy sprite_inner_lines
+l:  ldy sprite_lines
     dey
     jsr _blit_right_loop
 
     ; Step to next screen column.
     lda d
     clc
-    adc sprite_lines
+    adc sprite_lines_on_screen
     sta d
     bcc +n
     inc @(++ d)
@@ -166,7 +167,7 @@ n:
     lda sprites_x,x
     and #%111
     beq +n
-    ldy sprite_inner_lines
+    ldy sprite_lines
     dey
     jsr _blit_left_loop
 n:
@@ -178,7 +179,7 @@ n:
     ; Step to next sprite graphics column.
     lda s
     clc
-    adc sprite_inner_lines
+    adc sprite_lines
     sta s
     bcc -l
     inc @(++ s)
@@ -190,12 +191,10 @@ plot_chars:
     sta draw_sprites_tmp
     lda sprite_x
     sta scrx
-    lda sprite_cols
-    sta draw_sprites_tmp3
 
 l2: lda sprite_y
     sta scry
-    lda sprite_rows
+    lda sprite_rows_on_screen
     sta draw_sprites_tmp2
 
 l:  lda scry
@@ -223,7 +222,7 @@ n:  inc draw_sprites_tmp
     bne -l
 
     inc scrx
-    dec draw_sprites_tmp3
+    dec sprite_cols_on_screen
     bne -l2
 
     rts
