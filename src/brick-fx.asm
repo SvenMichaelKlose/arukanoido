@@ -54,9 +54,9 @@ add_brick_fx:
     sta (scr),y
     lda scry
     sta brickfx_y,x
-    lda brickfx_end
-    clc
-    adc #1
+    ldy brickfx_end
+    iny
+    tya
     and #@(-- num_sprites)
     sta brickfx_end
     ldx tmp
