@@ -5,8 +5,8 @@ reflect_edge:
 
     ; Bounce back from bottom right.
     lda sprites_d,x
-    cmp #63
-    bcs +n
+    and #%11000000
+    bne +n
     ldy ball_x
     iny
     tya
@@ -17,10 +17,8 @@ reflect_edge:
     beq +j
 
     ; Bounce back from top right.
-n:  sec
-    sbc #64
-    cmp #63
-    bcs +n
+n:  cmp #4
+    bne +n
     ldy ball_x
     iny
     tya
@@ -31,10 +29,8 @@ n:  sec
     beq +j
 
     ; Bounce back from top left.
-n:  sec
-    sbc #64
-    cmp #63
-    bcs +n
+n:  cmp #8
+    bne +n
     ldy ball_x
     dey
     tya

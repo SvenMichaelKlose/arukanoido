@@ -198,12 +198,11 @@ ctrl_ball_subpixel:
     jsr avoid_endless_flight
     jmp step_smooth
 
-    ; Deal with edge collision.
+    ; Deal with reflect_edge.
 m:  lda #0
     sta has_collision
     lda sprites_d,x
-    clc
-    adc #$80
+    eor #$80                ; Opposite direction.
     sta sprites_d,x
 
 n:  jsr adjust_ball_speed
@@ -279,7 +278,7 @@ f:  lda sprites_x,y
     lda #0
     sta sprites_d2,x
     jsr reflect_ball_obstacle
-    jsr apply_reflection
+    jsr apply_reflection_unconditionally
     jmp remove_obstacle
 
 n:  dey

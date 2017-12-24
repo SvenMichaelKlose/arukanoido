@@ -77,6 +77,9 @@ m:  lda #@(+ (* 8 playfield_y) 7)
     jmp -j
 
 apply_reflection:
+    lda has_collision
+    beq +r
+apply_reflection_unconditionally:
     lda sprites_d,x     ; Get degrees.
     sec
     sbc side_degrees    ; Rotate back to zero degrees.
@@ -86,4 +89,4 @@ apply_reflection:
     clc
     adc #128            ; Rotate to opposite direction.
     sta sprites_d,x
-    rts
+r:  rts
