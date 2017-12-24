@@ -739,5 +739,5 @@
 (sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-t52" "-x1" "-o" "arukanoido/arukanoido.ntsc.prg" "arukanoido.ntsc.prg")
                     :pty cl:*standard-output*)
 
-(format t "~A bytes free.~%" (- #x7000 (get-label 'the_end)))
+(format t "~A bytes free.~%" (- #x7000 (get-label 'loaded_music_player)))
 (quit)
