@@ -6,6 +6,8 @@ reflect_h:
     dey
     tya
     ldy ball_y
+    cmp #9              ; Avoid over-stepping the walls.
+    bcc +j
     jsr get_soft_collision
     bne +r
     beq +j
@@ -15,6 +17,8 @@ n:  ldy ball_x
     iny
     tya
     ldy ball_y
+    cmp #@(* 8 14)      ; Avoid over-stepping the walls.
+    bcs +j
     jsr get_soft_collision
     bne +r
 j:  lda #64
@@ -37,7 +41,7 @@ reflect:
     jsr reflect_h
 
 reflect_v:
-    ; Bounce back from top.
+    ; Bounce back top.
     lda sprites_d,x         ; Are we flying upwards?
     clc
     adc #64
@@ -45,11 +49,13 @@ reflect_v:
     lda ball_x
     ldy ball_y
     dey
+    cpy #@(* 8 playfield_y) ; Avoid over-stepping the walls.
+    bcc +j
     jsr get_soft_collision
     bne +r
     beq +j
 
-    ; Bounce back from bottom.
+    ; Bounce back bottom.
 n:  lda ball_x
     ldy ball_y
     iny
