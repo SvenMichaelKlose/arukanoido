@@ -37,15 +37,6 @@ reflect:
     sta side_degrees
     sta has_collision
 
-    ; Get centre position of ball.
-    ldy sprites_x,x
-    iny
-    sty ball_x
-    tya
-    ldy sprites_y,x
-    iny
-    iny
-    sty ball_y
     jsr reflect_h
 
 reflect_v:

@@ -176,6 +176,17 @@ r:  inc has_hit_vaus
 ctrl_ball_subpixel:
     lda #0
     sta has_hit_brick
+
+    ; Get centre position of ball.
+    ldy sprites_x,x
+    iny
+    sty ball_x
+    tya
+    ldy sprites_y,x
+    iny
+    iny
+    sty ball_y
+
     jsr reflect
     lda has_collision
     bne +n
@@ -243,35 +254,26 @@ l:  jmp play_sound
 r:  rts
 
 check_hit_with_obstacle:
-    ; Get centre of ball.
-    ldy sprites_x,x
-    iny
-    sty tmp
-    ldy sprites_y,x
-    iny
-    iny
-    sty tmp2
-    
     ; Hit obstacle?
     ldy #@(-- num_sprites)
 l:  lda sprites_i,y
     and #is_obstacle
     beq +n
 f:  lda sprites_x,y
-    cmp tmp
+    cmp ball_x
     bcs +n
     lda sprites_y,y
-    cmp tmp2
+    cmp ball_y
     bcs +n
     lda sprites_x,y
     clc
     adc #8
-    cmp tmp
+    cmp ball_x
     bcc +n
     lda sprites_y,y
     clc
     adc #16
-    cmp tmp2
+    cmp ball_y
     bcc +n
 
     lda #0
