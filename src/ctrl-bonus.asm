@@ -265,7 +265,7 @@ m:  lda #<gfx_bonus_p
 remove_bonuses:
     txa
     pha
-    ldx #@(- num_sprites 2)
+    ldx #@(-- num_sprites)
 l:  lda sprites_i,x
     and #is_bonus
     beq +n
