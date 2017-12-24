@@ -198,6 +198,8 @@ f:  lda sprites_x,y                     ; Copy coordinates of current ball.
     sta @(+ ball_init sprite_init_data)
     ldy #@(- ball_init sprite_inits)
     jsr add_sprite
+    cmp #255
+    beq +err
 
     ; Finish up so the rest of the game knows.
     inc balls
@@ -205,6 +207,8 @@ f:  lda sprites_x,y                     ; Copy coordinates of current ball.
     lda #mode_disruption
     sta mode
     rts
+
+err: jmp -err
 
 apply_bonus_p:
     lda #snd_bonus_life
@@ -328,15 +332,11 @@ ok: sta @(+ bonus_init sprite_init_data)
     lda bonus_colors,y
     sta @(+ bonus_init sprite_init_color)
 
-    lda scrx
-    asl
-    asl
-    asl
+    lda ball_x
+    and #%11111000
     sta @(+ bonus_init sprite_init_x)
-    lda scry
-    asl
-    asl
-    asl
+    lda ball_y
+    and #%11111000
     sta @(+ bonus_init sprite_init_y)
 
     ldy #@(- bonus_init sprite_inits)
