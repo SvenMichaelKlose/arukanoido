@@ -79,8 +79,11 @@ o:  jsr add_to_score
     dec bricks_left
     inc has_removed_brick
 
+    lda scry
+    sta removed_brick_y
     lda #0
     ldy scrx
+    sty removed_brick_x
     sta (scr),y
     sta (tmp),y
     clc

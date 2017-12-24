@@ -148,6 +148,9 @@ uncleaned_zp:
 user_screen_origin_x:   0
 user_screen_origin_y:   0
 
+removed_brick_x:    0
+removed_brick_y:    0
+
     @(check-zeropage-size (- #x00fc num_score_digits))
     org @(- #x00fc num_score_digits)
 

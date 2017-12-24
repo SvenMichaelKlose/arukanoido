@@ -332,11 +332,15 @@ ok: sta @(+ bonus_init sprite_init_data)
     lda bonus_colors,y
     sta @(+ bonus_init sprite_init_color)
 
-    lda ball_x
-    and #%11111000
+    lda removed_brick_x
+    asl
+    asl
+    asl
     sta @(+ bonus_init sprite_init_x)
-    lda ball_y
-    and #%11111000
+    lda removed_brick_y
+    asl
+    asl
+    asl
     sta @(+ bonus_init sprite_init_y)
 
     ldy #@(- bonus_init sprite_inits)
