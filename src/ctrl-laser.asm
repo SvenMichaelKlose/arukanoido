@@ -59,7 +59,7 @@ done:
 remove_lasers:
     txa
     pha
-    ldx #@(- num_sprites 2)
+    ldx #@(- num_sprites 1)
 l:  lda sprites_i,x
     and #is_laser
     beq +n
