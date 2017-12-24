@@ -181,20 +181,32 @@ ctrl_ball_subpixel:
     ldy sprites_x,x
     iny
     sty ball_x
-    tya
     ldy sprites_y,x
     iny
     iny
     sty ball_y
 
-    jsr reflect
+    ; Quick check if foreground collision detection would
+    ; detect something at all.
+    tya
+    and #%111
+    beq +l
+    cmp #%111
+    beq +l
+    lda ball_x
+    and #%111
+    beq +l
+    cmp #%111
+    bne +k
+
+l:  jsr reflect
     lda has_collision
     bne +n
     jsr reflect_edge
     lda has_collision
     bne +m
 
-    jsr check_hit_with_obstacle
+k:  jsr check_hit_with_obstacle
     jsr avoid_endless_flight
     jmp step_smooth
 
