@@ -17,8 +17,8 @@ reflect_edge:
     beq +j
 
     ; Bounce back from top right.
-n:  cmp #4
-    bne +n
+n:  asl
+    bcs +n
     ldy ball_x
     iny
     tya
@@ -29,8 +29,8 @@ n:  cmp #4
     beq +j
 
     ; Bounce back from top left.
-n:  cmp #8
-    bne +n
+n:  asl
+    bcs +n
     ldy ball_x
     dey
     tya
