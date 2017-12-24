@@ -6,8 +6,8 @@ reflect_h:
     dey
     tya
     ldy ball_y
-    cmp #9              ; Avoid over-stepping the walls.
-    bcc +j
+    cmp #7                  ; Avoid over-stepping the walls.
+    bcc +m
     jsr get_soft_collision
     bne +r
     beq +j
@@ -17,12 +17,20 @@ n:  ldy ball_x
     iny
     tya
     ldy ball_y
-    cmp #@(* 8 14)      ; Avoid over-stepping the walls.
-    bcs +j
+    cmp #@(++ (* 8 14))     ; Avoid over-stepping the walls.
+    bcs +k
     jsr get_soft_collision
     bne +r
 j:  lda #64
     jmp +l
+
+m:  lda #7
+    sta sprites_x,x
+    jmp -j
+
+k:  lda #@(* 8 14)
+    sta sprites_x,x
+    jmp -j
 
 reflect:
     lda #0
@@ -49,8 +57,8 @@ reflect_v:
     lda ball_x
     ldy ball_y
     dey
-    cpy #@(* 8 playfield_y) ; Avoid over-stepping the walls.
-    bcc +j
+    cpy #@(+ (* 8 playfield_y) 7) ; Avoid over-stepping the walls.
+    bcc +m
     jsr get_soft_collision
     bne +r
     beq +j
@@ -72,6 +80,10 @@ l:  clc
     inc has_hit_brick
 
 r:  rts
+
+m:  lda #@(+ (* 8 playfield_y) 7)
+    sta sprites_y,x
+    jmp -j
 
 apply_reflection:
     lda sprites_d,x     ; Get degrees.
