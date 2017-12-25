@@ -186,20 +186,17 @@ f:  lda sprites_x,y                     ; Copy coordinates of current ball.
     sta @(+ ball_init sprite_init_x)
     lda sprites_y,y
     sta @(+ ball_init sprite_init_y)
-    sty tmp4
     lda sprites_d,y
+    sta tmp4
     jsr turn_counterclockwise
     sta @(+ ball_init sprite_init_data)
     ldy #@(- ball_init sprite_inits)
     jsr add_sprite
-    ldy tmp4
-    lda sprites_d,y
+    lda tmp4
     jsr turn_clockwise
     sta @(+ ball_init sprite_init_data)
     ldy #@(- ball_init sprite_inits)
     jsr add_sprite
-    cmp #255
-    beq +err
 
     ; Finish up so the rest of the game knows.
     inc balls
@@ -209,6 +206,7 @@ f:  lda sprites_x,y                     ; Copy coordinates of current ball.
     rts
 
 err: jmp -err
+err2: jmp -err2
 
 apply_bonus_p:
     lda #snd_bonus_life
