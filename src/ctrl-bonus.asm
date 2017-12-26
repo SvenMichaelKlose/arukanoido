@@ -205,9 +205,6 @@ f:  lda sprites_x,y                     ; Copy coordinates of current ball.
     sta mode
     rts
 
-err: jmp -err
-err2: jmp -err2
-
 apply_bonus_p:
     lda #snd_bonus_life
     jsr play_sound
