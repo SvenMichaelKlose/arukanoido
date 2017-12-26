@@ -2,6 +2,7 @@
 
 (var *demo?* nil)
 (var *shadowvic?* nil)
+(var *rom?* nil)
 (var *add-charset-base?* t)
 (var *show-cpu?* nil)
 (var *debug?* nil)
@@ -580,19 +581,6 @@
   (let m (/ 360 +degrees+)
     (bytes (maptimes [integer (* smax (degree-cos (* m _)))] +degrees+))))
 
-(apply #'assemble-files "obj/gfx-ship.bin" '("media/gfx-ship.asm"))
-(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/gfx-ship.bin" "-o" "obj/gfx-ship.bin.exo")
-                    :pty cl:*standard-output*)
-(apply #'assemble-files "obj/gfx-taito.bin" '("media/gfx-taito.asm"))
-(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/gfx-taito.bin" "-o" "obj/gfx-taito.bin.exo")
-                    :pty cl:*standard-output*)
-(apply #'assemble-files "obj/gfx-background.bin" '("media/gfx-background.asm"))
-(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/gfx-background.bin" "-o" "obj/gfx-background.bin.exo")
-                    :pty cl:*standard-output*)
-(put-file "obj/levels.bin" (list-string (@ #'code-char +level-data+)))
-(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/levels.bin" "-o" "obj/levels.bin.exo")
-                    :pty cl:*standard-output*)
-
 (fn make (to files cmds)
   (apply #'assemble-files to files)
   (make-vice-commands cmds "break .stop"))
@@ -602,10 +590,14 @@
         (@ [+ "src/" _] `("../bender/vic-20/vic.asm"
                           "constants.asm"
                           "zeropage.asm"
-                          ,@(unless *shadowvic?*
+                          ,@(unless (| *shadowvic?*
+                                       *rom?*)
                               '("../bender/vic-20/basic-loader.asm"))
-                          "init.asm"
-                          "gap.asm"
+                          ,@(unless *rom?*
+                              '("init.asm"
+                                "gap.asm"))
+                          ,@(when *rom?*
+                              '("init-rom.asm"))
 
                           ; Graphics
                           "font-4x8.asm"
@@ -694,7 +686,10 @@
                           ; Imported music player binary.
                           "music-player.asm"
 
-                          "patch.asm"
+                          ,@(unless *rom?*
+                              '("patch.asm"))
+                          ,@(when *rom?*
+                              '("init.asm"))
 
                           "end.asm"))
         cmds))
@@ -707,6 +702,19 @@
 (= *model* :vic-20+xk)
 
 (unix-sh-mkdir "obj")
+
+(apply #'assemble-files "obj/gfx-ship.bin" '("media/gfx-ship.asm"))
+(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/gfx-ship.bin" "-o" "obj/gfx-ship.bin.exo")
+                    :pty cl:*standard-output*)
+(apply #'assemble-files "obj/gfx-taito.bin" '("media/gfx-taito.asm"))
+(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/gfx-taito.bin" "-o" "obj/gfx-taito.bin.exo")
+                    :pty cl:*standard-output*)
+(apply #'assemble-files "obj/gfx-background.bin" '("media/gfx-background.asm"))
+(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/gfx-background.bin" "-o" "obj/gfx-background.bin.exo")
+                    :pty cl:*standard-output*)
+(put-file "obj/levels.bin" (list-string (@ #'code-char +level-data+)))
+(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/levels.bin" "-o" "obj/levels.bin.exo")
+                    :pty cl:*standard-output*)
 
 (fn packed-font ()
   (assemble-files "obj/font-4x8.bin" "media/font-4x8.asm")
@@ -721,23 +729,30 @@
 (put-file "obj/font-4x8-packed.bin" (list-string (@ #'code-char (packed-font))))
 
 (gen-vcpu-tables "src/_vcpu.asm")
-;(with-temporary *show-cpu?* t
-;  (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt"))
-;(with-temporary *shadowvic?* t
-;  (make-game :prg "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
+(with-temporary *tv* :pal
+  (with-temporary *show-cpu?* t
+    (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt"))
+;  (with-temporary *shadowvic?* t
+;    (make-game :prg "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
+)
 (unix-sh-mkdir "arukanoido")
 (with-temporary *tv* :pal
-  (make-game :prg "arukanoido.pal.prg" "arukanoido.pal.vice.txt"))
+  (make-game :prg "arukanoido.pal.prg" "arukanoido.pal.prg.vice.txt"))
 (with-temporary *tv* :ntsc
-  (make-game :prg "arukanoido.ntsc.prg" "arukanoido.ntsc.vice.txt"))
+  (make-game :prg "arukanoido.ntsc.prg" "arukanoido.ntsc.prg.vice.txt"))
+(with-temporary *rom?* t
+  (with-temporary *tv* :pal
+    (make-game :prg "arukanoido.pal.img" "arukanoido.pal.img.vice.txt"))
+  (with-temporary *tv* :ntsc
+    (make-game :prg "arukanoido.ntsc.img" "arukanoido.ntsc.img.vice.txt")))
 
 (format t "Level data: ~A B~%" (length +level-data+))
 
-(sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-t52" "-x1" "-o" "arukanoido/arukanoido.pal.prg" "arukanoido.pal.prg")
-                    :pty cl:*standard-output*)
-
-(sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-t52" "-x1" "-o" "arukanoido/arukanoido.ntsc.prg" "arukanoido.ntsc.prg")
-                    :pty cl:*standard-output*)
+(@ (i '("arukanoido.pal.prg"
+        "ukanoido.ntsc.prg"
+        "arukanoido-cpumon.prg"))
+  (sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-t52" "-x1" "-o" (+ "arukanoido/" i) i)
+                      :pty cl:*standard-output*))
 
 (format t "~A bytes free.~%" (- #x7000 (get-label 'loaded_music_player)))
 (quit)

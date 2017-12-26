@@ -1,3 +1,11 @@
+if @*rom?*
+    fill @(- #x8000 *pc*)
+    org $a000
+    <main >main
+    <main >main
+    "A0" $c3 $c2 $cd
+end
+
 main:
     sei
     lda #$7f
@@ -18,6 +26,7 @@ main:
     lda #>exec_script
     sta $317
 
+if @(not *rom?*)
 music_player_size = @(length (fetch-file "sound-beamrider/MusicTester.prg"))
 loaded_music_player_end = @(+ loaded_music_player (-- music_player_size))
 music_player_end = @(+ music_player (-- music_player_size))
@@ -53,6 +62,7 @@ n:
     lda @(++ c)
     cmp #255
     bne -l
+end
  
     ; Set default screen origin.
     lda #screen_origin_x
@@ -60,4 +70,9 @@ n:
     lda #screen_origin_y
     sta user_screen_origin_y
 
+if @*rom?*
+    jmp start
+end
+if @(not *rom?*)
     jmp patch
+end
