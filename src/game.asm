@@ -15,10 +15,10 @@ game_over:
     lda #snd_game_over
     jsr play_sound
     jsr wait_sound
-    lda has_hiscore
-    beq +r
-    lda #snd_hiscore
-    jmp play_sound
+;    lda has_hiscore
+;    beq +r
+;    lda #snd_hiscore
+;    jmp play_sound
 
 r:  rts
 
