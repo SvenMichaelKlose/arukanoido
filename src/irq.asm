@@ -52,9 +52,8 @@ end
     inc framecounter
     bne +n
     inc @(++ framecounter)
-n:
 
-    lda is_firing
+n:  lda is_firing
     beq +n
     dec is_firing
 
@@ -68,7 +67,6 @@ n:  lda mode_break
     sta @(+ screen (* screen_columns (+ playfield_y 26)) 14)
     sta @(+ screen (* screen_columns (+ playfield_y 27)) 14)
     sta @(+ screen (* screen_columns (+ playfield_y 28)) 14)
-n:
 
 n:  jsr play_music
     jsr set_vaus_color
