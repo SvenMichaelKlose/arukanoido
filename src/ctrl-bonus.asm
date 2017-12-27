@@ -65,16 +65,16 @@ n:
 
     ldy sprites_d,x
     lda @(-- bonus_funs_l),y
-    sta @(+ +selfmod 1)
+    sta d
     lda @(-- bonus_funs_h),y
-    sta @(+ +selfmod 2)
-selfmod:
-    jsr $1234
+    sta @(++ d)
+    jsr +j
 r:  dec has_bonus_on_screen
     jmp remove_sprite
     
 m:  lda #1
     jmp sprite_down
+j:  jmp (d)
 
 bonus_funs_l:
     <apply_bonus_l

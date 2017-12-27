@@ -4,12 +4,15 @@ clear_data:
 l:  cpx #@(-- uncleaned_zp)
     bcs +n
     sta 0,x
-n:  cpx #$13
-    bcs +n
-    sta $300,x
-n:  sta $320,x
     sta $200,x
-    sta charset,x
+n:  cpx #$14
+    bcc +m
+    cpx #$20
+    bcc +n
+    cpx #<lowmem
+    bcs +n
+m:  sta $300,x
+n:  sta charset,x
     sta @(+ 256 charset),x
     sta @(+ 512 charset),x
     sta @(+ 768 charset),x
@@ -19,6 +22,15 @@ n:  sta $320,x
     sta @(+ 1024 768 charset),x
     dex
     bne -l
+
+    ldy #sprite_inits_size
+    ldx #0
+l:  lda loaded_sprite_inits,x
+    sta sprite_inits,x
+    inx
+    dey
+    bne -l
+
     rts
 
 start:

@@ -1,9 +1,5 @@
 sprites_nchars: @(gen-sprite-nchars)
 
-draw_sprites_tmp:   0
-draw_sprites_tmp2:  0
-draw_sprites_tmp3:  0
-
 ; Draw sprite, masking out the background
 draw_huge_sprite:
     ; Get screen position.

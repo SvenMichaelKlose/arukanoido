@@ -5,6 +5,15 @@ start_irq:
     lda #0
     sta is_running_game
 
+    ldx #0
+    ldy #init_music_data_size
+l:  lda init_music_data,x
+    sta $3ce,x
+    inx
+    dey
+    bne -l
+    jsr init_music
+
 l:  lda $9004
     bne -l
 
@@ -90,3 +99,7 @@ if @*show-cpu?*
 end
 
     jmp $eb18       ; CBM ROM IRQ return
+
+init_music_data: @(fetch-file "sound-init.bin")
+init_music_data_end:
+init_music_data_size = @(- init_music_data_end init_music_data)

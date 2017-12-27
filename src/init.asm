@@ -20,59 +20,33 @@ main:
     ldx #$ff
     txs
 
+if @*rom?*
+    lda #<loaded_lowmem
+    sta s
+    lda #>loaded_lowmem
+    sta @(++ s)
+    lda #<lowmem
+    sta d
+    lda #>lowmem
+    sta @(++ d)
+    lda #<lowmem_size
+    sta c
+    lda #>lowmem_size
+    sta @(++ c)
+    lda #0
+    jsr moveram
+end
+
     ; Init VCPU.
     lda #<exec_script
     sta $316
     lda #>exec_script
     sta $317
 
-if @(not *rom?*)
-music_player_size = @(length (fetch-file "sound-beamrider/MusicTester.prg"))
-loaded_music_player_end = @(+ loaded_music_player (-- music_player_size))
-music_player_end = @(+ music_player (-- music_player_size))
-
-    ; Relocate the music player.
-base_loaded_music_player_end = @(- loaded_music_player_end (low (-- music_player_size)))
-base_relocated_music_player_end = @(- music_player_end (low (-- music_player_size)))
-    lda #<base_loaded_music_player_end
-    sta s
-    lda #>base_loaded_music_player_end
-    sta @(++ s)
-    lda #<base_relocated_music_player_end
-    sta d
-    lda #>base_relocated_music_player_end
-    sta @(++ d)
-    ldx #@(low music_player_size)
-    lda #@(high music_player_size)
-    sta @(++ c)
-    ldy #@(low (-- music_player_size))
-l:  inc $900f
-    lda (s),y
-    sta (d),y
-    dey
-    cpy #255
-    bne +n
-    dec @(++ s)
-    dec @(++ d)
-n:
-    dex
-    cpx #255
-    bne -l
-    dec @(++ c)
-    lda @(++ c)
-    cmp #255
-    bne -l
-end
- 
     ; Set default screen origin.
     lda #screen_origin_x
     sta user_screen_origin_x
     lda #screen_origin_y
     sta user_screen_origin_y
 
-if @*rom?*
-    jmp start
-end
-if @(not *rom?*)
     jmp patch
-end

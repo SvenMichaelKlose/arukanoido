@@ -5,11 +5,10 @@ apply:
     dex
     jsr inc_bcp
     lda syscall_vectors_l,x
-    sta @(+ 1 +mod_call)
+    sta apply_tmp
     lda syscall_vectors_h,x
-    sta @(+ 2 +mod_call)
-mod_call:
-    jmp $ffff
+    sta @(++ apply_tmp)
+    jmp (apply_tmp)
 
 ; Set zero page word.
 setzw:

@@ -66,8 +66,6 @@ m:  ldx #15
 
     jmp -l5
 
-make_stars_tmp: 0
-
 make_stars:
     lda #bg_star
     sta curchar
@@ -113,8 +111,6 @@ l3: sta @(+ screen (* screen_columns (+ playfield_y 1))),x
     dex
     bpl -l3
     rts
-
-ship_flicker_tmp: 0
 
 ship_flicker:
 l4: lda $9004

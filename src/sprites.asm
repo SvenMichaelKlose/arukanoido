@@ -42,17 +42,27 @@ remove_sprite:
 ; X: sprite index
 ; Y: low address byte of descriptor of new sprite in sprite_inits
 replace_sprite:
-    lda #sprites_x          ; Copy descriptor to sprite table.
-    sta @(++ +selfmod)
-l:  lda sprite_inits,y
-selfmod:
-    sta sprites_x,x
-    iny
-    lda @(++ -selfmod)
-    cmp #sprites_d
-    beq sprite_added
+    tya
+    clc
+    adc #<sprite_inits
+    sta s
+    lda #>sprite_inits
+    sta @(++ s)
+    txa
+    clc
+    adc #sprites_x
+    sta d
+    ldy #0
+    sty @(++ d)
+l:  lda (s),y
+    sta (d),y
+    inc s
+    lda d
+    clc
     adc #num_sprites
-    sta @(++ -selfmod)
+    sta d
+    cmp #@(+ sprites_d num_sprites)
+    bcs sprite_added
     jmp -l
 
 remove_sprites:
@@ -105,10 +115,6 @@ out:rts
 ; Returns:
 ; C: Clear when a hit was found.
 ; Y: Sprite index of other sprite.
-find_hit_tmp:   0
-find_hit_tmp2:  0
-find_hit_tmp3:  0
-
 find_hit:
     stx find_hit_tmp
 
@@ -174,16 +180,17 @@ call_sprite_controllers:
     ldx #@(-- num_sprites)
 l1: lda sprites_i,x
     bmi +n1
-    lda sprites_fh,x
-    sta @(+ +m1 2)
     lda sprites_fl,x
-    sta @(++ +m1)
+    sta d
+    lda sprites_fh,x
+    sta @(++ d)
     stx call_controllers_x
-m1: jsr $1234
+m1: jsr +j
     ldx call_controllers_x
 n1: dex
     bpl -l1
     rts
+j:  jmp (d)
 
 get_sprite_screen_position:
     lda sprites_x,x

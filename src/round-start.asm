@@ -1,16 +1,25 @@
 roundstart:
+    ldx #0
+l:  lda txt_round_nn,x
+    sta txt_tmp,x
+    cmp #255
+    beq +n
+    inx
+    jmp -l
+n:
+
     ; Copy round number digits into round message.
     lda #score_char0
-    sta @(+ txt_round_nn 8)
+    sta @(+ txt_tmp 8)
     lda level
 l:  sec
     sbc #10
     bcc +n
-    inc @(+ txt_round_nn 8)
+    inc @(+ txt_tmp 8)
     jmp -l
 n:  clc
     adc #@(+ 10 (char-code #\0) (- score_char0 (char-code #\0)))
-    sta @(+ txt_round_nn 9)
+    sta @(+ txt_tmp 9)
 
     ; Print "ROUND XX".
     lda #white
@@ -21,9 +30,9 @@ n:  clc
     sta scrx2
     lda #txt_round_nn_y
     sta scry
-    lda #<txt_round_nn
+    lda #<txt_tmp
     sta s
-    lda #>txt_round_nn
+    lda #>txt_tmp
     sta @(++ s)
     ldx #255
     jsr print_string
@@ -36,7 +45,7 @@ n:  clc
     lda #snd_doh_round
     jsr play_sound
 
-n:  lda #130
+n:  lda #80
     jsr wait
 
     ; Print "READY".

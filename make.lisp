@@ -599,6 +599,9 @@
                           ,@(when *rom?*
                               '("init-rom.asm"))
 
+                          ; Imported music player binary.
+                          "music-player.asm"
+
                           ; Graphics
                           "font-4x8.asm"
                           "gfx-background.asm"
@@ -631,7 +634,8 @@
 
                           ; Library
                           "bcd.asm"
-                          "blitter.asm"
+                          ,@(unless *rom?*
+                              '("blitter.asm"))
                           "chars.asm"
                           "digisound.asm"
                           "draw-bitmap.asm"
@@ -682,14 +686,14 @@
                           "main.asm"
                           "round-intro.asm"
                           "round-start.asm"
+                          "patch.asm"
 
-                          ; Imported music player binary.
-                          "music-player.asm"
-
-                          ,@(unless *rom?*
-                              '("patch.asm"))
                           ,@(when *rom?*
-                              '("init.asm"))
+                              '("init.asm"
+                                "moveram.asm"
+                                "lowmem-start.asm"
+                                "blitter.asm"
+                                "lowmem-end.asm"))
 
                           "end.asm"))
         cmds))
@@ -732,27 +736,35 @@
 (with-temporary *tv* :pal
   (with-temporary *show-cpu?* t
     (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt"))
-;  (with-temporary *shadowvic?* t
-;    (make-game :prg "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
-)
-(unix-sh-mkdir "arukanoido")
-(with-temporary *tv* :pal
-  (make-game :prg "arukanoido.pal.prg" "arukanoido.pal.prg.vice.txt"))
-(with-temporary *tv* :ntsc
-  (make-game :prg "arukanoido.ntsc.prg" "arukanoido.ntsc.prg.vice.txt"))
+  (with-temporary *shadowvic?* t
+    (make-game :prg "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt")))
 (with-temporary *rom?* t
   (with-temporary *tv* :pal
     (make-game :prg "arukanoido.pal.img" "arukanoido.pal.img.vice.txt"))
   (with-temporary *tv* :ntsc
     (make-game :prg "arukanoido.ntsc.img" "arukanoido.ntsc.img.vice.txt")))
+(with-temporary *tv* :pal
+  (make-game :prg "arukanoido.pal.prg" "arukanoido.pal.prg.vice.txt"))
+(with-temporary *tv* :ntsc
+  (make-game :prg "arukanoido.ntsc.prg" "arukanoido.ntsc.prg.vice.txt"))
 
 (format t "Level data: ~A B~%" (length +level-data+))
 
+(unix-sh-mkdir "arukanoido")
 (@ (i '("arukanoido.pal.prg"
-        "ukanoido.ntsc.prg"
+        "arukanoido.ntsc.prg"
         "arukanoido-cpumon.prg"))
   (sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-t52" "-x1" "-o" (+ "arukanoido/" i) i)
                       :pty cl:*standard-output*))
 
-(format t "~A bytes free.~%" (- #x7000 (get-label 'loaded_music_player)))
+(unix-sh-mkdir "arukanoido-cart")
+(sb-ext:run-program "/usr/bin/split" (list "-b" "8192" "arukanoido.pal.img" "arukanoido-cart/arukanoido.pal.img.")
+                    :pty cl:*standard-output*)
+(sb-ext:run-program "/usr/bin/split" (list "-b" "8192" "arukanoido.ntsc.img" "arukanoido-cart/arukanoido.ntsc.img.")
+                    :pty cl:*standard-output*)
+(sb-ext:run-program "/usr/bin/zip" (list "-r" "-9" "arukanoido-cart.zip" "arukanoido-cart")
+                    :pty cl:*standard-output*)
+
+(format t "~A bytes free before interrupt vectors.~%" (- #x314 (get-label 'before_int_vectors)))
+(format t "~A bytes free.~%" (- #x7000 (get-label 'the_end)))
 (quit)

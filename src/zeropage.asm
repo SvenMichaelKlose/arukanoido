@@ -171,8 +171,6 @@ sprites_ow:     fill num_sprites
 sprites_oh:     fill num_sprites
 sprites_of:     fill num_sprites
 
-    org $320
-
 brickfx_x:      fill num_brickfx
 brickfx_y:      fill num_brickfx
 brickfx_pos:    0
@@ -181,6 +179,34 @@ brickfx_end:    0
 next_powerup_score:   fill num_score_digits
 score_silver:         fill num_score_digits
 
+draw_bitmap_width:      0                                                                             
+draw_bitmap_height:     0
+draw_bitmap_num_chars:  0
+draw_bitmap_y:          0
+print_score_tmp:        0
+find_hit_tmp:           0
+find_hit_tmp2:          0
+find_hit_tmp3:          0
+draw_sprites_tmp:       0
+draw_sprites_tmp2:      0
+draw_sprites_tmp3:      0
+print4x8_char:          0
+get_crunched_byte_tmp:  0
+make_stars_tmp:         0
+music_tmp:              0
+
+apply_tmp:              0 0
+vcpu_tmp:               0 0
+
+txt_tmp:                fill 16
+
+sprite_inits:           fill @sprite_inits_size
+
+before_int_vectors:
+
+    org $320
+
+lowmem:
     end
 
 ; Minigrafik viewer

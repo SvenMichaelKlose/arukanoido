@@ -1,7 +1,6 @@
 ; d: Destination
 ; A: char
 ; C: 0: left half, 1: right half
-print4x8_char:  0
 print4x8:
     sta print4x8_char
     stx p_x

@@ -2,6 +2,15 @@ patch:
     jsr init_screen
     jsr clear_screen
 
+    ldx #0
+l:  lda txt_counter,x
+    sta txt_tmp,x
+    cmp #255
+    beq +n
+    inx
+    jmp -l
+n:
+
     lda #1
     sta curchar
     lda #white
@@ -78,7 +87,7 @@ print_counter:
     sec
     sbc tmp
     adc #@(- (char-code #\0) 32)
-    sta @(++ txt_counter)
+    sta @(++ txt_tmp)
 
 m:  lda $9004
     lsr
@@ -95,8 +104,8 @@ end
     sta scrx2
     lda #18
     sta scry
-    lda #<txt_counter
-    ldy #>txt_counter
+    lda #<txt_tmp
+    ldy #>txt_tmp
     jsr print_string_ay
 
     jsr test_fire

@@ -19,7 +19,9 @@ is_vaus      = 1
 
 multiwhite  = @(+ multicolor white)
 
-sprite_inits:
+loaded_sprite_inits:
+    org sprite_inits
+
 vaus_init:
     52 vaus_y is_vaus     multiwhite <gfx_vaus >gfx_vaus    <ctrl_vaus >ctrl_vaus 10 0
 ball_init:
@@ -33,3 +35,6 @@ obstacle_init:
 dummy_init:
     0 0       is_inactive  black     0 0           <ctrl_dummy >ctrl_dummy 9 0
 sprite_inits_end:
+
+sprite_inits_size = @(- *pc* sprite_inits)
+    org @(+ loaded_sprite_inits sprite_inits_size)

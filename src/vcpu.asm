@@ -38,9 +38,9 @@ next_bytecode:
     tax
     dex
     lda syscall_vectors_l,x
-    sta @(+ 1 mod_call)
+    sta vcpu_tmp
     lda syscall_vectors_h,x
-    sta @(+ 2 mod_call)
+    sta @(++ vcpu_tmp)
     lda syscall_args_l,x
     sta bca
     lda syscall_args_h,x
@@ -65,9 +65,9 @@ next_arg:
     jmp next_arg
 
 script_call:
-mod_call:
-    jsr $ffff
+    jsr +j
     jmp next_bytecode
+j:  jmp (vcpu_tmp)
 
     ; Return to native code.
 done:

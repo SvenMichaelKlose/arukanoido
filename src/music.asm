@@ -1,7 +1,7 @@
-init_music = $799a
-play_music = $7053
-current_song = $702b
-requested_song = $702d
+init_music = $218d
+play_music = $2027
+current_song = $03d4
+requested_song = $03d6
 
 snd_test              = 3
 snd_theme             = 1
@@ -42,8 +42,6 @@ sound_priorities:
     1 ; 15
     1 ; 16
     1 ; 17
-
-music_tmp:  0       ; TODO: Zero page?
 
 play_sound:
     sta music_tmp

@@ -55,7 +55,6 @@ display_score:
 
 ; scrx2/scry: Text position
 ; curchar: Character to print into.
-print_score_tmp:    0
 print_score_string:
     lda #0
     sta print_score_tmp

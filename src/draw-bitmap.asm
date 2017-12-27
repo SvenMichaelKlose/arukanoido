@@ -1,8 +1,3 @@
-draw_bitmap_width:      0
-draw_bitmap_height:     0
-draw_bitmap_num_chars:  0
-draw_bitmap_y:          0
-
 ; A: Low address
 ; Y: High address
 draw_bitmap:
