@@ -5,13 +5,13 @@ reflect_ball_obstacle_h:
     lda sprites_x,x
     cmp sprites_x,y
     bcs +j
-    bcc +r
+    rts
 
     ; Bounce back right.
 n:  lda sprites_x,x
     cmp sprites_x,y
     bcc +j
-    bcs +r
+    rts
 
 j:  lda #64
     jmp +l
@@ -31,15 +31,28 @@ reflect_ball_obstacle_v:
     lda sprites_y,x
     cmp sprites_y,y
     bcs +j
-    bcc +r
+    rts
 
     ; Bounce back from bottom.
 n:  lda sprites_y,x
     cmp sprites_y,y
     bcc +j
-    bcs +r
+    rts
 j:  lda #128
 l:  clc
     adc side_degrees
     sta side_degrees
-r:  rts
+
+    sty tmp
+    jsr random
+    bmi +n
+    lda sprites_d,x
+    jsr turn_clockwise
+    sta sprites_d,x
+    ldy tmp
+    rts
+n:  lda sprites_d,x
+    jsr turn_counterclockwise
+    sta sprites_d,x
+    ldy tmp
+    rts
