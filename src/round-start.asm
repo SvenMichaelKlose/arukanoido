@@ -45,7 +45,7 @@ n:  clc
     lda #snd_doh_round
     jsr play_sound
 
-n:  lda #80
+n:  ldx #60
     jsr wait
 
     ; Print "READY".

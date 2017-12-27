@@ -1,10 +1,7 @@
 wait:
-l:  lda $9004
-    lsr
-    bne -l
-n:  lda $9004
-    lsr
-    bne -n
+    lda framecounter
+l:  cmp framecounter
+    beq -l
     dex
-    bne -l
+    bne wait
     rts
