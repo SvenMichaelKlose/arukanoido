@@ -194,6 +194,8 @@ print4x8_char:          0
 get_crunched_byte_tmp:  0
 make_stars_tmp:         0
 music_tmp:              0
+digisound_a:            0
+digisound_x:            0
 
 apply_tmp:              0 0
 vcpu_tmp:               0 0
