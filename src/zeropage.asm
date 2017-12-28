@@ -148,8 +148,7 @@ uncleaned_zp:
 user_screen_origin_x:   0
 user_screen_origin_y:   0
 
-removed_brick_x:    0
-removed_brick_y:    0
+is_ntsc:                0
 
     @(check-zeropage-size (- #x00fc num_score_digits))
     org @(- #x00fc num_score_digits)
@@ -178,6 +177,9 @@ brickfx_end:    0
 
 next_powerup_score:   fill num_score_digits
 score_silver:         fill num_score_digits
+
+removed_brick_x:    0
+removed_brick_y:    0
 
 draw_bitmap_width:      0                                                                             
 draw_bitmap_height:     0

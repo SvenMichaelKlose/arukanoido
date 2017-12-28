@@ -37,6 +37,20 @@ if @*rom?*
     jsr moveram
 end
 
+    ; Detect if PAL or NTSC VIC.
+l:  lda $9004
+    bne -l
+l2: cmp $9004
+    beq -l2
+    bcs +n
+    lda $9004
+    jmp -l2
+n:  ldx #0
+    cmp #$90
+    bcs +n
+    inx
+n:  stx is_ntsc
+
     ; Init VCPU.
     lda #<exec_script
     sta $316
