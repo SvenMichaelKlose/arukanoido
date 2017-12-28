@@ -191,6 +191,9 @@ n:  sty is_firing
     sta @(+ laser_init sprite_init_x)
     ldy #@(- laser_init sprite_inits)
     jsr add_sprite
+    tay
+    lda vaus_y
+    sta sprites_y,y
     jmp -done
 
 handle_break_mode:
@@ -257,7 +260,11 @@ n:  rts
 make_vaus:
     ldy #@(- vaus_init sprite_inits)
     jsr add_sprite
+    tax
     lda #vaus_x
+    sta sprites_x,x
+    lda vaus_y
+    sta sprites_y,x
     sta vaus_last_x
 
 set_vaus_color:

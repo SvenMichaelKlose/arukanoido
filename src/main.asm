@@ -31,7 +31,7 @@ l:  lda loaded_sprite_inits,x
     dey
     bne -l
 
-    rts
+    jmp set_format
 
 start:
     jsr init_hiscore
