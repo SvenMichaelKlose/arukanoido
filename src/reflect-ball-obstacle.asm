@@ -42,6 +42,7 @@ j:  lda #128
 l:  clc
     adc side_degrees
     sta side_degrees
+rts
 
     sty tmp
     jsr random

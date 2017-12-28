@@ -17,7 +17,7 @@ n:
     sta laser_has_hit
 
     lda sprites_y,x
-    cmp #@(* (++ playfield_y) 8)
+    cmp #@(* (++ playfield_yc) 8)
     bcc +n              ; Laser left the playfield.
 
     ; Check on collision on the left hand side.

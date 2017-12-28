@@ -88,28 +88,30 @@ draw_walls:
     ; Draw top border without connectors.
     ldx #13
     lda #bg_top_1
-l:  sta @(+ screen (* playfield_y screen_columns)),x
+l:  sta screen_playfield,x
     dex
     bne -l
 
     ; Draw top border connectors.
     lda #bg_top_2
-    sta @(+ screen (* playfield_y screen_columns) 3),x
-    sta @(+ screen (* playfield_y screen_columns) 10),x
+    sta @(+ screen_playfield 3),x
+    sta @(+ screen_playfield 10),x
     lda #bg_top_3
-    sta @(+ screen (* playfield_y screen_columns) 4),x
-    sta @(+ screen (* playfield_y screen_columns) 11),x
+    sta @(+ screen_playfield 4),x
+    sta @(+ screen_playfield 11),x
 
     ; Draw corners.
     lda #bg_corner_left
-    sta @(+ screen (* playfield_y screen_columns))
+    sta screen_playfield
     lda #bg_corner_right
-    sta @(+ screen (* playfield_y screen_columns) 14)
+    sta @(+ screen_playfield 14)
     
     ; Draw sides.
     lda #0
     sta scrx
-    lda #@(++ playfield_y)
+    lda #playfield_yc
+    clc
+    adc #0
     sta scry
 a:  ldx #5
     lda #bg_side

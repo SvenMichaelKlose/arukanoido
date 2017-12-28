@@ -1,6 +1,3 @@
-lifes_on_screen = @(+ (* 31 screen_columns) 1 screen)
-lifes_on_colors = @(+ (* 31 screen_columns) 1 colors)
-
 if @(eq *tv* :pal)
 draw_lifes:
     txa
@@ -33,7 +30,7 @@ draw_lifes:
     pha
     lda #16
     sta scrx
-    lda #@(-- screen_rows)
+    lda #yc_max
     sta scry
     lda #bg_minivaus
     sta curchar
@@ -56,7 +53,7 @@ plot_life:
     jsr plot_scr
     inc scrx
     lda scrx
-    cmp #@(-- screen_columns)
+    cmp #xc_max
     bne +r
     lda #16
     sta scrx

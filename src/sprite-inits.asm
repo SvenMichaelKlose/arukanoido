@@ -31,7 +31,7 @@ laser_init:
 bonus_init:
     0 0       is_bonus    black      0 >gfx_bonus_l         <ctrl_bonus >ctrl_bonus 9 0
 obstacle_init:
-    28 @(* playfield_y 8) is_obstacle cyan <gfx_obstacle_cone >gfx_obstacle_cone <ctrl_obstacle >ctrl_obstacle 17 0
+    0 0 is_obstacle cyan <gfx_obstacle_cone >gfx_obstacle_cone <ctrl_obstacle >ctrl_obstacle 17 0
 dummy_init:
     0 0       is_inactive  black     0 0           <ctrl_dummy >ctrl_dummy 9 0
 sprite_inits_end:

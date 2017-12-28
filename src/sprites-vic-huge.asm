@@ -195,7 +195,7 @@ l2: lda sprite_y
 
 l:  lda scry
 if @(eq *tv* :pal)
-    cmp #playfield_y
+    cmp #playfield_yc
     bcc +n               ; Don't plot into score area…
 end
     cmp #screen_rows

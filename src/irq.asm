@@ -64,9 +64,9 @@ n:  lda mode_break
     and #1
     clc
     adc #bg_break
-    sta @(+ screen (* screen_columns (+ playfield_y 26)) 14)
-    sta @(+ screen (* screen_columns (+ playfield_y 27)) 14)
-    sta @(+ screen (* screen_columns (+ playfield_y 28)) 14)
+    sta screen_gate0
+    sta screen_gate1
+    sta screen_gate2
 
 n:  jsr play_music
     jsr set_vaus_color
