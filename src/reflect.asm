@@ -48,7 +48,7 @@ reflect_v:
     lda ball_x
     ldy ball_y
     dey
-    cpy #arena_y_above      ; Avoid over-stepping the walls.
+    cpy arena_y_above       ; Avoid over-stepping the walls.
     bcc +m
     jsr get_soft_collision
     bne +r
@@ -72,7 +72,7 @@ l:  clc
 
 r:  rts
 
-m:  lda #arena_y
+m:  lda arena_y
     sta sprites_y,x
     jmp -j
 

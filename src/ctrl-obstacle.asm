@@ -76,7 +76,7 @@ remove_obstacle:
 
 ctrl_obstacle:
     lda sprites_y,x
-    cmp #arena_y_above
+    cmp arena_y_above
     bcs +n
 
     ; Move obstacle in.

@@ -64,6 +64,10 @@ score_char0         = 16    ; Digit '0' in 4x8 charset.
 num_brickfx     = 24
 
 ; PAL
+
+lifes_on_screen     = @(+ (* 31 c_screen_columns) 1 screen)                                                 
+lifes_on_colors     = @(+ (* 31 c_screen_columns) 1 colors)
+
 if @(eq *tv* :pal)
 c_screen_columns    = 15
 c_screen_rows         = 32
@@ -86,12 +90,8 @@ screen_playfield    = @(+ screen (* c_playfield_yc c_screen_columns))
 screen_gate0        = @(+ screen (* c_screen_columns (+ c_playfield_yc 26)) 14)
 screen_gate1        = @(+ screen (* c_screen_columns (+ c_playfield_yc 27)) 14)
 screen_gate2        = @(+ screen (* c_screen_columns (+ c_playfield_yc 28)) 14)
-lifes_on_screen     = @(+ (* 31 c_screen_columns) 1 screen)                                                 
-lifes_on_colors     = @(+ (* 31 c_screen_columns) 1 colors)
 xc_max              = @(-- c_screen_columns)
 yc_max              = @(-- c_screen_rows)
-arena_y             = @(* (++ c_playfield_yc) 8)
-arena_y_above       = @(+ (* 8 c_playfield_yc) 7)
 ball_vaus_y_upper   = @(- c_vaus_y ball_height)
 ball_vaus_y_above   = @(-- ball_vaus_y_upper)
 ball_vaus_y_lower   = @(+ c_vaus_y 8)

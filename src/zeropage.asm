@@ -196,6 +196,8 @@ score_x:            0
 score_y:            0
 y_max:              0
 screen_height:      0
+arena_y:            0
+arena_y_above:      0
 
 ; Temporaries
 
