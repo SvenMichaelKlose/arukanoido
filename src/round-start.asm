@@ -28,7 +28,9 @@ n:  clc
     sta curchar
     lda #10
     sta scrx2
-    lda #txt_round_nn_y
+    lda playfield_yc
+    clc
+    adc #20
     sta scry
     lda #<txt_tmp
     sta s
@@ -52,7 +54,9 @@ n:  ldx #60
     inc curchar
     lda #12
     sta scrx2
-    lda #txt_round_nn_y
+    lda playfield_yc
+    clc
+    adc #20
     clc
     adc #2
     sta scry
@@ -66,10 +70,22 @@ n:  ldx #60
     jsr wait_sound
 
     ; Remove message.
-    0
-    c_clrmb <screen_round >screen_round 5
-    c_clrmb <screen_ready >screen_ready 5
-    0
+    lda #5
+    sta scrx
+l:  lda playfield_yc
+    clc
+    adc #20
+    sta scry
+    lda #0
+    jsr plot_char
+    inc scry
+    inc scry
+    lda #0
+    jsr plot_char
+    inc scrx
+    lda scrx
+    cmp #13
+    bne -l
 
     jsr start_brick_fx
     lda #8

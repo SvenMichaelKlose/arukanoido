@@ -67,7 +67,6 @@ num_brickfx     = 24
 if @(eq *tv* :pal)
 c_screen_columns    = 15
 c_screen_rows         = 32
-txt_round_nn_y      = 22
 c_vaus_y              = @(* 29 8)
 c_playfield_yc        = 2
 end
@@ -76,7 +75,6 @@ end
 if @(eq *tv* :ntsc)
 c_screen_columns    = 21
 c_screen_rows         = 28
-txt_round_nn_y      = 20
 c_vaus_y              = @(* 27 8)
 c_playfield_yc        = 0
 end
@@ -90,8 +88,6 @@ screen_gate1        = @(+ screen (* c_screen_columns (+ c_playfield_yc 27)) 14)
 screen_gate2        = @(+ screen (* c_screen_columns (+ c_playfield_yc 28)) 14)
 lifes_on_screen     = @(+ (* 31 c_screen_columns) 1 screen)                                                 
 lifes_on_colors     = @(+ (* 31 c_screen_columns) 1 colors)
-screen_round        = @(+ screen (* c_screen_columns txt_round_nn_y) 5)
-screen_ready        = @(+ screen (* c_screen_columns (+ txt_round_nn_y 2)) 6)
 xc_max              = @(-- c_screen_columns)
 yc_max              = @(-- c_screen_rows)
 x_max               = @(-- screen_width)
