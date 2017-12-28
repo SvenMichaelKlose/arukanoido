@@ -79,7 +79,7 @@ make_stars:
     lda #64
     sta make_stars_tmp
 l1: jsr random
-    cmp #14
+    cmp #15
     bcs -l1
     sta scrx
 l:  jsr random
