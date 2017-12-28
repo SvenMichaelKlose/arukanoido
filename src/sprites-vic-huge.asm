@@ -194,7 +194,7 @@ l2: lda sprite_y
     sta draw_sprites_tmp2
 
 l:  lda scry
-    cmp #playfield_yc
+    cmp playfield_yc
     bcc +n               ; Don't plot into score area…
     cmp screen_rows
     bcs +n               ; Don't plot over the bottom…

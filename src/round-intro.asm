@@ -11,7 +11,7 @@ round_intro:
     sta curcol
     lda #0
     sta scrx
-    lda #playfield_yc
+    lda playfield_yc
     clc
     adc #16
     sta scry
@@ -32,7 +32,7 @@ round_intro:
     lda #snd_theme
     jsr play_sound
 
-l5: lda #playfield_yc
+l5: lda playfield_yc
     clc
     adc #1
     sta scry
@@ -83,7 +83,7 @@ l1: jsr random
     bcs -l1
     sta scrx
 l:  jsr random
-    cmp #playfield_yc
+    cmp playfield_yc
     bcc -l               ; Don't plot into score area…
     cmp #yc_max
     bcs -l
@@ -106,7 +106,7 @@ n:  sty curcol
 clear_intro_text:
     lda #0
     sta scrx
-l3: ldy #playfield_yc
+l3: ldy playfield_yc
     iny
     sty scry
     lda #0

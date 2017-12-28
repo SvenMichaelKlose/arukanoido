@@ -16,7 +16,7 @@ l:  sta bricks,x
     sta bricks_left
     jsr get_decrunched_byte
     sec
-    adc #playfield_yc
+    adc playfield_yc
     sta scry
 
 m:  lda #1
@@ -83,7 +83,7 @@ draw_walls:
     txa
     pha
 
-    lda #playfield_yc
+    lda playfield_yc
     sta scry
     lda #@(+ multicolor white)
     sta curcol
@@ -108,7 +108,7 @@ l:  lda #bg_top_1
     lda #bg_top_2
     jsr plot_char
 
-    lda #playfield_yc
+    lda playfield_yc
     sta scry
     lda #4
     sta scrx
@@ -132,7 +132,7 @@ l:  lda #bg_top_1
     ; Draw sides.
     lda #0
     sta scrx
-    lda #playfield_yc
+    lda playfield_yc
     clc
     adc #1
     sta scry

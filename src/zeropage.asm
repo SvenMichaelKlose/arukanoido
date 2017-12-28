@@ -187,6 +187,7 @@ format_params:
 screen_columns:     0
 screen_rows:        0
 vaus_y:             0
+playfield_yc:       0
 
 ; Temporaries
 
