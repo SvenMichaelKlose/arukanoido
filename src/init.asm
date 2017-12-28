@@ -50,6 +50,7 @@ n:  ldx #0
     bcs +n
     inx
 n:  stx is_ntsc
+    stx is_landscape
 
     ; Init VCPU.
     lda #<exec_script
