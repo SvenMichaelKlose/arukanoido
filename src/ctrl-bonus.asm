@@ -41,16 +41,18 @@ end
     lda caught_ball
     bmi +n
     jsr release_ball
-n:
 
     ; Restore default Vaus graphics.
-    jsr get_vaus_index_in_y
+n:  jsr get_vaus_index_in_y
     lda #<gfx_vaus
     sta sprites_gl,y
     lda #>gfx_vaus
     sta sprites_gh,y
 
     ; Un-extend Vaus.
+    lda mode
+    cmp #mode_extended
+    bne +n
     lda #10
     sta sprites_dimensions,y
     lda sprites_x,y
@@ -60,7 +62,7 @@ n:
     lda #16
     sta vaus_width
 
-    lda #0
+n:  lda #0
     sta mode
 
     ldy sprites_d,x
