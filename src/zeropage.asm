@@ -194,6 +194,8 @@ hiscore_x:          0
 hiscore_y:          0
 score_x:            0
 score_y:            0
+y_max:              0
+screen_height:      0
 
 ; Temporaries
 

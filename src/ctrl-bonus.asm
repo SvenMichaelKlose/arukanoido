@@ -17,7 +17,7 @@ bonus_colors:
 
 ctrl_bonus:
     lda sprites_y,x
-    cmp #screen_height
+    cmp screen_height
     beq +r              ; Bonus left playfield…
     jsr find_hit
     bcs +m              ; Nothing hit…
