@@ -22,18 +22,11 @@ multiwhite  = @(+ multicolor white)
 loaded_sprite_inits:
     org sprite_inits
 
-vaus_init:
-    52 vaus_y is_vaus     multiwhite <gfx_vaus >gfx_vaus    <ctrl_vaus >ctrl_vaus 10 0
-ball_init:
-    0 0       is_ball     white      <gfx_ball >gfx_ball    <ctrl_ball >ctrl_ball 9 0
-laser_init:
-    0 vaus_y  is_laser    yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
-bonus_init:
-    0 0       is_bonus    black      0 >gfx_bonus_l         <ctrl_bonus >ctrl_bonus 9 0
-obstacle_init:
-    0 0 is_obstacle cyan <gfx_obstacle_cone >gfx_obstacle_cone <ctrl_obstacle >ctrl_obstacle 17 0
-dummy_init:
-    0 0       is_inactive  black     0 0           <ctrl_dummy >ctrl_dummy 9 0
+vaus_init:      52 vaus_y is_vaus     multiwhite <gfx_vaus >gfx_vaus    <ctrl_vaus >ctrl_vaus 10 0
+ball_init:      0 0       is_ball     white      <gfx_ball >gfx_ball    <ctrl_ball >ctrl_ball 9 0
+laser_init:     0 vaus_y  is_laser    yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
+bonus_init:     0 0       is_bonus    black      0 >gfx_bonus_l         <ctrl_bonus >ctrl_bonus 9 0
+obstacle_init:  0 0       is_obstacle cyan       0 0                    <ctrl_obstacle >ctrl_obstacle 17 0
 sprite_inits_end:
 
 sprite_inits_size = @(- *pc* sprite_inits)

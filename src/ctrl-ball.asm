@@ -74,9 +74,8 @@ ctrl_ball:
     sta is_running_game
     lda #snd_miss
     jmp play_sound
-n:
 
-    lda balls
+n:  lda balls
     cmp #1
     bne +n
     lda #0              ; Reset from disruption bonus.
@@ -105,9 +104,9 @@ ctrl_ball_vaus:
 
     ; Test on vertical collision with Vaus.
     lda sprites_y,x
-    cmp #@(- vaus_y ball_height -1)
+    cmp #ball_vaus_y_upper
     bcc -r
-    cmp #@(+ vaus_y 8)
+    cmp #ball_vaus_y_lower
     bcs -r
 
     jsr get_vaus_index_in_y
@@ -147,9 +146,8 @@ ctrl_ball_vaus:
 n:  lda vaus_directions_extended,y
 m:  sta sprites_d,x
 
-    lda #@(- vaus_y ball_height)
+    lda #ball_vaus_y_above
     sta sprites_y,x
-
     lda #0
     sta sprites_d2,x
 
@@ -163,7 +161,7 @@ m:  sta sprites_d,x
     sta sprites_gl,x
     lda #>gfx_ball_caught
     sta sprites_gh,x
-    lda #@(- vaus_y 8)
+    lda #ball_vaus_y_caught
     sta sprites_y,x
     lda #delay_until_ball_is_released
     sta ball_release_timer
@@ -321,7 +319,7 @@ make_ball:
     tax
     lda #59
     sta sprites_x,x
-    lda #@(- vaus_y 8)
+    lda #ball_vaus_y_caught
     sta sprites_y,x
     lda #<gfx_ball_caught
     sta sprites_gl,x
@@ -392,13 +390,16 @@ l:  inc ball_speed          ; Play the blues…
 n:  rts
 
 release_ball:
-    ; Correct X position so the ball won't end up in the border.
     ldy caught_ball
+    lda #ball_vaus_y_above
+    sta sprites_y,y
+
+    ; Correct X position so the ball won't end up in the wall.
     lda sprites_x,y
     cmp #@(- (* (-- screen_columns) 8) 3)
     bcc +n
     lda #@(- (* (-- screen_columns) 8) 3)
-    sta sprites_x,y                                                                                               
+    sta sprites_x,y
 n:  cmp #7
     bcs +n
     lda #8
@@ -407,5 +408,4 @@ n:  cmp #7
 n:  lda #255
     sta caught_ball
     lda #snd_reflection_low
-    jsr play_sound
-    rts
+    jmp play_sound

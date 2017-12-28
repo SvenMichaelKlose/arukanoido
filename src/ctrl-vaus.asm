@@ -167,16 +167,8 @@ do_fire:
     beq +m
     lda #default_ball_direction_skewed
     sta sprites_d,y
-m:  lda #@(- vaus_y 5)
-    sta sprites_y,y
-    lda #<gfx_ball
-    sta sprites_gl,y
-    lda #>gfx_ball
-    sta sprites_gh,y
-    lda #snd_reflection_low
-    jsr play_sound
-    lda #255
-    sta caught_ball
+m:  jmp release_ball
+
 done2:
     jmp -done
 
