@@ -53,7 +53,8 @@ l:  sta charset,x
 
     lda #screen_columns
     sta $9002
-    lda #@(* screen_rows 2)
+    lda #screen_rows
+    asl
     sta $9003
 
     lda #@(+ vic_screen_1000 vic_charset_1400)

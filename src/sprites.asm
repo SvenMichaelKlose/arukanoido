@@ -94,20 +94,6 @@ sprite_right:
     sta sprites_x,x
     rts
 
-; Test if sprite X is outside the screen.
-; Return carry flag set when true.
-test_sprite_out:
-    lda sprites_x,x
-    clc
-    adc #8
-    cmp #@(* (++ screen_columns) 8)
-    bcs +out
-    lda sprites_y,x
-    clc
-    adc #8
-    cmp #@(* (++ screen_rows) 8)
-out:rts
-
 ; Find collision with other sprite.
 ;
 ; X: sprite index

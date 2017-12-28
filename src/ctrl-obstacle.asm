@@ -120,7 +120,7 @@ l2: jsr half_step_smooth
 
     ; Remove obstacle if it left the screen at the bottom.
     lda sprites_y,x
-    cmp #@(-- (* 8 screen_rows))
+    cmp #x_max
     bcc +n
     dec num_obstacles
     jmp remove_sprite
