@@ -31,7 +31,7 @@ l:  lda loaded_sprite_inits,x
     dey
     bne -l
 
-    jmp set_format
+    rts
 
 start:
     jsr init_hiscore
@@ -120,6 +120,7 @@ n:  cmp #keycode_f
     lda is_landscape
     eor #1
     sta is_landscape
+    jsr set_format
     jmp toplevel
 
 f:  lda #snd_coin

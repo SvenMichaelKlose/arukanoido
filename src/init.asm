@@ -59,10 +59,4 @@ n:  stx is_ntsc
     lda #>exec_script
     sta $317
 
-    ; Set default screen origin.
-    lda #screen_origin_x
-    sta user_screen_origin_x
-    lda #screen_origin_y
-    sta user_screen_origin_y
-
     jmp patch

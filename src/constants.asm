@@ -67,8 +67,6 @@ num_brickfx     = 24
 if @(eq *tv* :pal)
 c_screen_columns    = 15
 c_screen_rows         = 32
-screen_origin_x     = 20
-screen_origin_y     = 21
 txt_round_nn_y      = 22
 vaus_y              = @(* 29 8)
 playfield_yc        = 2
@@ -84,8 +82,6 @@ end
 if @(eq *tv* :ntsc)
 c_screen_columns    = 21
 c_screen_rows         = 28
-screen_origin_x     = 5
-screen_origin_y     = 16
 txt_round_nn_y      = 20
 vaus_y              = @(* 27 8)
 playfield_yc        = 0
