@@ -31,6 +31,17 @@ plot_scr:
     sta (col),y
     rts
 
+plot_char:
+    pha
+    jsr scrcoladdr
+    pla
+    sta (scr),y
+    pha
+    lda curcol
+    sta (col),y
+    pla
+    rts
+
 clear_screen:
     0
     c_clrmw <screen >screen @(low 512) @(high 512)

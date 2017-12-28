@@ -83,33 +83,58 @@ draw_walls:
     txa
     pha
 
+    lda #playfield_yc
+    sta scry
+    lda #@(+ multicolor white)
+    sta curcol
+
     ; Draw top border without connectors.
-    ldx #13
-    lda #bg_top_1
-l:  sta screen_playfield,x
-    dex
+    lda #1
+    sta scrx
+l:  lda #bg_top_1
+    jsr plot_char
+    inc scrx
+    lda scrx
+    cmp #14
     bne -l
 
     ; Draw top border connectors.
+    lda #3
+    sta scrx
     lda #bg_top_2
-    sta @(+ screen_playfield 3),x
-    sta @(+ screen_playfield 10),x
+    jsr plot_char
+    lda #10
+    sta scrx
+    lda #bg_top_2
+    jsr plot_char
+
+    lda #playfield_yc
+    sta scry
+    lda #4
+    sta scrx
     lda #bg_top_3
-    sta @(+ screen_playfield 4),x
-    sta @(+ screen_playfield 11),x
+    jsr plot_char
+    lda #11
+    sta scrx
+    lda #bg_top_3
+    jsr plot_char
 
     ; Draw corners.
+    lda #0
+    sta scrx
     lda #bg_corner_left
-    sta screen_playfield
+    jsr plot_char
+    lda #14
+    sta scrx
     lda #bg_corner_right
-    sta @(+ screen_playfield 14)
+    jsr plot_char
     
     ; Draw sides.
     lda #0
     sta scrx
     lda #playfield_yc
     clc
-    adc #0
+    adc #1
     sta scry
 a:  ldx #5
     lda #bg_side
