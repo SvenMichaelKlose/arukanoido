@@ -15,10 +15,8 @@ l:  sta bricks,x
     lda #0
     sta bricks_left
     jsr get_decrunched_byte
-if @(eq *tv* :ntsc)
     sec
-    sbc #2
-end
+    adc #playfield_yc
     sta scry
 
 m:  lda #1

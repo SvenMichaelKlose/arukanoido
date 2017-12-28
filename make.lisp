@@ -542,7 +542,7 @@
 
 (const +level-data+ (with-queue q
                       (dolist (level *levels* (queue-list q))
-                        (enqueue q (+ 3 level.)) ; Y offset of bricks.
+                        (enqueue q level.) ; Y offset of bricks.
                         (dolist (line .level)
                           (dolist (brick (string-list line))
                             (enqueue q (get-brick brick))))
@@ -736,10 +736,10 @@
 
 (gen-vcpu-tables "src/_vcpu.asm")
 (with-temporary *tv* :pal
+;  (with-temporary *shadowvic?* t
+;    (make-game :prg "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
   (with-temporary *show-cpu?* t
-    (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt"))
-  (with-temporary *shadowvic?* t
-    (make-game :prg "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt")))
+    (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt")))
 (with-temporary *rom?* t
   (with-temporary *tv* :pal
     (make-game :prg "arukanoido.pal.img" "arukanoido.pal.img.vice.txt"))
