@@ -104,14 +104,29 @@ n:  sty curcol
     bne -l1
 
 clear_intro_text:
-    ldx #14
     lda #0
-l3: sta screen_introtxt0,x
-    sta screen_introtxt1,x
-    sta screen_introtxt2,x
-    sta screen_introtxt3,x
-    dex
-    bpl -l3
+    sta scrx
+l3: ldy #playfield_yc
+    iny
+    sty scry
+    lda #0
+    jsr plot_char
+    inc scry
+    inc scry
+    lda #0
+    jsr plot_char
+    inc scry
+    inc scry
+    lda #0
+    jsr plot_char
+    inc scry
+    inc scry
+    lda #0
+    jsr plot_char
+    inc scrx
+    lda scrx
+    cmp #14
+    bne -l3
     rts
 
 ship_flicker:
