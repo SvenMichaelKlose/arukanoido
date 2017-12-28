@@ -198,6 +198,8 @@ y_max:              0
 screen_height:      0
 arena_y:            0
 arena_y_above:      0
+xc_max:             0
+yc_max:             0
 
 ; Temporaries
 

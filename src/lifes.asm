@@ -31,7 +31,7 @@ draw_lifes_landscape:
     pha
     lda #16
     sta scrx
-    lda #yc_max
+    lda yc_max
     sta scry
     lda #bg_minivaus
     sta curchar
@@ -54,7 +54,7 @@ plot_life:
     jsr plot_scr
     inc scrx
     lda scrx
-    cmp #xc_max
+    cmp xc_max
     bne +r
     lda #16
     sta scrx

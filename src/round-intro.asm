@@ -85,7 +85,7 @@ l1: jsr random
 l:  jsr random
     cmp playfield_yc
     bcc -l               ; Don't plot into score area…
-    cmp #yc_max
+    cmp yc_max
     bcs -l
     sta scry
     jsr random

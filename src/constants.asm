@@ -84,14 +84,9 @@ c_playfield_yc        = 0
 end
 
 vaus_x              = 52
-c_screen_width        = @(* c_screen_columns 8)
-c_screen_height       = @(* c_screen_rows 8)
-screen_playfield    = @(+ screen (* c_playfield_yc c_screen_columns))
 screen_gate0        = @(+ screen (* c_screen_columns (+ c_playfield_yc 26)) 14)
 screen_gate1        = @(+ screen (* c_screen_columns (+ c_playfield_yc 27)) 14)
 screen_gate2        = @(+ screen (* c_screen_columns (+ c_playfield_yc 28)) 14)
-xc_max              = @(-- c_screen_columns)
-yc_max              = @(-- c_screen_rows)
 ball_vaus_y_upper   = @(- c_vaus_y ball_height)
 ball_vaus_y_above   = @(-- ball_vaus_y_upper)
 ball_vaus_y_lower   = @(+ c_vaus_y 8)
