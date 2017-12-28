@@ -58,14 +58,22 @@ n:  lda is_firing
 
 n:  lda mode_break
     beq +n
+    lda #14
+    sta scrx
+    lda #26
+    clc
+    adc playfield_yc
+    sta scry
     lda framecounter
     lsr
     and #1
     clc
     adc #bg_break
-    sta screen_gate0
-    sta screen_gate1
-    sta screen_gate2
+    jsr plot_char
+    inc scry
+    jsr plot_char
+    inc scry
+    jsr plot_char
 
 n:  jsr play_music
     jsr set_vaus_color
