@@ -83,10 +83,8 @@ l1: jsr random
     bcs -l1
     sta scrx
 l:  jsr random
-if @(eq *tv* :pal)
     cmp #playfield_yc
     bcc -l               ; Don't plot into score area…
-end
     cmp #yc_max
     bcs -l
     sta scry

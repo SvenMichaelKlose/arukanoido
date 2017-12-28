@@ -1,5 +1,8 @@
-if @(eq *tv* :pal)
 draw_lifes:
+    lda is_landscape
+    bne draw_lifes_landscape
+
+draw_lifes_portrait:
     txa
     pha
     ldx lifes
@@ -22,10 +25,8 @@ done:
     pla
     tax
     rts
-end
 
-if @(eq *tv* :ntsc)
-draw_lifes:
+draw_lifes_landscape:
     txa
     pha
     lda #16
@@ -59,4 +60,3 @@ plot_life:
     sta scrx
     dec scry
 r:  rts
-end

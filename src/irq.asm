@@ -23,15 +23,14 @@ l:  lda $9004
     sta $315
 
     ; Initialise VIA2 Timer 1.
-if @(eq *tv* :pal)
+    lda is_ntsc
+    bne +n
     ldx #<frame_timer_pal
     ldy #>frame_timer_pal
-end
-if @(eq *tv* :ntsc)
-    ldx #<frame_timer_ntsc
+    jmp +l
+n:  ldx #<frame_timer_ntsc
     ldy #>frame_timer_ntsc
-end
-    stx $9124
+l:  stx $9124
     sty $9125
     lda #%01000000  : free-running
     sta $912b

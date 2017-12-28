@@ -17,9 +17,7 @@ bonus_colors:
 
 ctrl_bonus:
     lda sprites_y,x
-if @(eq *tv* :ntsc)
     cmp #screen_height
-end
     beq +r              ; Bonus left playfield…
     jsr find_hit
     bcs +m              ; Nothing hit…
@@ -145,31 +143,37 @@ apply_bonus_b:
     jsr scrcoladdr
     lda #bg_side
     sta (scr),y
+
     inc scry
     jsr scrcoladdr
     lda #0
     sta (scr),y
     lda #white
     sta (col),y
+
     inc scry
     jsr scrcoladdr
     lda #0
     sta (scr),y
     lda #white
     sta (col),y
+
+    lda is_landscape
+    bne +n
+
     inc scry
     jsr scrcoladdr
-if @(eq *tv* :pal)
     lda #0
     sta (scr),y
     lda #white
     sta (col),y
+
     inc scry
     jsr scrcoladdr
     lda #@(+ bg_side 2)
     sta (scr),y
-end
-    rts
+
+n:  rts
 
 apply_bonus_d:
     jsr remove_bonuses
