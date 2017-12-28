@@ -62,7 +62,7 @@ l:  sta charset,x
     lda user_screen_origin_y
     sta $9001
 
-    lda #screen_columns
+    lda screen_columns
     sta $9002
     lda #screen_rows
     asl

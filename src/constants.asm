@@ -5,9 +5,11 @@ bricks       = $1c00
 
 ; VIC settings
 
-screen       = $1000
-charset      = $1400
-colors       = $9400
+screen              = $1000
+line_addresses_l    = $1300
+line_addresses_h    = $1330
+charset             = $1400
+colors              = $9400
 
 ; Charset settings
 
@@ -63,7 +65,7 @@ num_brickfx     = 24
 
 ; PAL
 if @(eq *tv* :pal)
-screen_columns      = 15
+c_screen_columns    = 15
 screen_rows         = 32
 screen_origin_x     = 20
 screen_origin_y     = 21
@@ -80,7 +82,7 @@ end
 
 ; NTSC
 if @(eq *tv* :ntsc)
-screen_columns      = 21
+c_screen_columns    = 21
 screen_rows         = 28
 screen_origin_x     = 5
 screen_origin_y     = 16
@@ -96,21 +98,21 @@ score_y             = 1
 end
 
 vaus_x              = 52
-screen_width        = @(* screen_columns 8)
+screen_width        = @(* c_screen_columns 8)
 screen_height       = @(* screen_rows 8)
-screen_playfield    = @(+ screen (* playfield_yc screen_columns))
-screen_gate0        = @(+ screen (* screen_columns (+ playfield_yc 26)) 14)
-screen_gate1        = @(+ screen (* screen_columns (+ playfield_yc 27)) 14)
-screen_gate2        = @(+ screen (* screen_columns (+ playfield_yc 28)) 14)
-screen_introtxt0    = @(+ screen (* screen_columns (+ playfield_yc 1)))
-screen_introtxt1    = @(+ screen (* screen_columns (+ playfield_yc 3)))
-screen_introtxt2    = @(+ screen (* screen_columns (+ playfield_yc 5)))
-screen_introtxt3    = @(+ screen (* screen_columns (+ playfield_yc 7)))
-lifes_on_screen     = @(+ (* 31 screen_columns) 1 screen)                                                 
-lifes_on_colors     = @(+ (* 31 screen_columns) 1 colors)
-screen_round        = @(+ screen (* screen_columns txt_round_nn_y) 5)
-screen_ready        = @(+ screen (* screen_columns (+ txt_round_nn_y 2)) 6)
-xc_max              = @(-- screen_columns)
+screen_playfield    = @(+ screen (* playfield_yc c_screen_columns))
+screen_gate0        = @(+ screen (* c_screen_columns (+ playfield_yc 26)) 14)
+screen_gate1        = @(+ screen (* c_screen_columns (+ playfield_yc 27)) 14)
+screen_gate2        = @(+ screen (* c_screen_columns (+ playfield_yc 28)) 14)
+screen_introtxt0    = @(+ screen (* c_screen_columns (+ playfield_yc 1)))
+screen_introtxt1    = @(+ screen (* c_screen_columns (+ playfield_yc 3)))
+screen_introtxt2    = @(+ screen (* c_screen_columns (+ playfield_yc 5)))
+screen_introtxt3    = @(+ screen (* c_screen_columns (+ playfield_yc 7)))
+lifes_on_screen     = @(+ (* 31 c_screen_columns) 1 screen)                                                 
+lifes_on_colors     = @(+ (* 31 c_screen_columns) 1 colors)
+screen_round        = @(+ screen (* c_screen_columns txt_round_nn_y) 5)
+screen_ready        = @(+ screen (* c_screen_columns (+ txt_round_nn_y 2)) 6)
+xc_max              = @(-- c_screen_columns)
 yc_max              = @(-- screen_rows)
 x_max               = @(-- screen_width)
 y_max               = @(-- screen_height)
@@ -118,7 +120,7 @@ ball_vaus_y_upper   = @(- vaus_y ball_height)
 ball_vaus_y_above   = @(-- ball_vaus_y_upper)
 ball_vaus_y_lower   = @(+ vaus_y 8)
 ball_vaus_y_caught  = @(- vaus_y 8)
-ball_max_x          = @(-- (* (-- screen_columns) 8))
+ball_max_x          = @(-- (* (-- c_screen_columns) 8))
 ball_max_y          = @(- (* 8 (+ playfield_yc 30)) 2)
 ball_min_y          = @(- (* (++ playfield_yc) 8) 2)
 arena_y             = @(* (++ playfield_yc) 8)

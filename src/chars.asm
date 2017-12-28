@@ -99,7 +99,7 @@ test_position:
     cmp #screen_rows
     bcs +l
     lda scrx
-    cmp #screen_columns
+    cmp screen_columns
 l:  tay
     rts
 

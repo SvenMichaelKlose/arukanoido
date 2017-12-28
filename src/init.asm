@@ -21,9 +21,6 @@ main:
     txs
 
 if @*rom?*
-    jsr $fdf9   ; Init VIAs.
-    jsr $e518   ; Init hardware.
-
     lda #<loaded_lowmem
     sta s
     lda #>loaded_lowmem
@@ -54,6 +51,7 @@ n:  ldx #0
     inx
 n:  stx is_ntsc
     stx is_landscape
+    jsr set_format
 
     ; Init VCPU.
     lda #<exec_script

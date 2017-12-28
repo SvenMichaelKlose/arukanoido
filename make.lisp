@@ -1,6 +1,6 @@
 (load "gen-vcpu-tables.lisp")
 
-(var *demo?* nil)
+(var *demo?* t)
 (var *shadowvic?* nil)
 (var *rom?* nil)
 (var *add-charset-base?* t)
@@ -622,7 +622,6 @@
 
                           ; Tables
                           "bits.asm"
-                          "line-addresses.asm"
                           "paddle-xlat.asm"
                           "ball-directions.asm"
                           "score-infos.asm"
@@ -683,6 +682,7 @@
                           ; Top level
                           "debug.asm"
                           "irq.asm"
+                          "format.asm"
                           "game.asm"
                           "hiscore.asm"
                           "main.asm"

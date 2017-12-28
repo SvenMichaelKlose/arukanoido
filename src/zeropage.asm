@@ -182,6 +182,11 @@ score_silver:         fill num_score_digits
 removed_brick_x:    0
 removed_brick_y:    0
 
+; TV standard dependant constants
+screen_columns:     0
+
+; Temporaries
+
 draw_bitmap_width:      0                                                                             
 draw_bitmap_height:     0
 draw_bitmap_num_chars:  0
