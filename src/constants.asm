@@ -70,12 +70,6 @@ c_screen_rows         = 32
 txt_round_nn_y      = 22
 c_vaus_y              = @(* 29 8)
 c_playfield_yc        = 2
-txt_hiscore_x       = 10
-txt_hiscore_y       = 0
-hiscore_x           = 12
-hiscore_y           = 1
-score_x             = 0
-score_y             = 1
 end
 
 ; NTSC
@@ -85,12 +79,6 @@ c_screen_rows         = 28
 txt_round_nn_y      = 20
 c_vaus_y              = @(* 27 8)
 c_playfield_yc        = 0
-txt_hiscore_x       = 31
-txt_hiscore_y       = 2
-hiscore_x           = 33
-hiscore_y           = 3
-score_x             = 33
-score_y             = 1
 end
 
 vaus_x              = 52

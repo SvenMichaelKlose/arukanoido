@@ -5,9 +5,9 @@ make_score_screen_title:
     ; Print "HIGH SCORE".
     lda #red
     sta curcol
-    lda #txt_hiscore_x
+    lda txt_hiscore_x
     sta scrx2
-    lda #txt_hiscore_y
+    lda txt_hiscore_y
     sta scry
     ldx #10
     lda #<txt_hiscore
@@ -28,9 +28,9 @@ display_score:
     ; Print score.
     lda #white
     sta curcol
-    lda #score_x
+    lda score_x
     sta scrx2
-    lda #score_y
+    lda score_y
     sta scry
     lda #<score
     sta s
@@ -40,9 +40,9 @@ display_score:
 
     ; Print hiscore.
     inc curchar
-    lda #hiscore_x
+    lda hiscore_x
     sta scrx2
-    lda #hiscore_y
+    lda hiscore_y
     sta scry
     lda #<hiscore
     sta s

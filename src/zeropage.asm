@@ -188,6 +188,12 @@ screen_columns:     0
 screen_rows:        0
 vaus_y:             0
 playfield_yc:       0
+txt_hiscore_x:      0
+txt_hiscore_y:      0
+hiscore_x:          0
+hiscore_y:          0
+score_x:            0
+score_y:            0
 
 ; Temporaries
 
