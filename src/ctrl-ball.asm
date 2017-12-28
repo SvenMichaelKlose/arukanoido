@@ -65,7 +65,7 @@ ctrl_ball:
 
     ; Deal with lost ball.
     lda sprites_y,x
-    cmp #@(- (* 8 (+ playfield_yc 30)) 4)
+    cmp #ball_max_y
     bcc +ball_loop
 
     dec balls
@@ -345,7 +345,7 @@ minimum_ball_speed_when_hit_top_per_round:
 
 adjust_ball_speed_hitting_top:
     lda sprites_y,x
-    cmp #@(- (* (++ playfield_yc) 8) 2) ; (Centre of ball hitting top.)
+    cmp #ball_min_y
     bne +n
     ldy level
     dey
@@ -396,9 +396,9 @@ release_ball:
 
     ; Correct X position so the ball won't end up in the wall.
     lda sprites_x,y
-    cmp #@(- (* (-- screen_columns) 8) 3)
+    cmp #ball_max_x
     bcc +n
-    lda #@(- (* (-- screen_columns) 8) 3)
+    lda #ball_max_x
     sta sprites_x,y
 n:  cmp #7
     bcs +n
