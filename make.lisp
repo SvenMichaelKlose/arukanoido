@@ -7,6 +7,8 @@
 (var *show-cpu?* nil)
 (var *debug?* nil)
 (var *tv* nil)
+(var *revision* (!= (fetch-file "_revision")
+                  (subseq ! 0 (-- (length !)))))
 
 (fn gen-sprite-nchars ()
   (with-queue q
