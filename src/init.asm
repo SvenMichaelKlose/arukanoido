@@ -21,6 +21,9 @@ main:
     txs
 
 if @*rom?*
+    jsr $fdf9   ; Init VIAs.
+    jsr $e518   ; Init hardware.
+
     lda #<loaded_lowmem
     sta s
     lda #>loaded_lowmem

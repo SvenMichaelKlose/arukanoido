@@ -96,24 +96,31 @@ l:  jsr test_fire
     dec $9000
     dec user_screen_origin_x
     jmp -l
-n:
-    cmp #keycode_l
+
+n:  cmp #keycode_l
     bne +n
     inc $9000
     inc user_screen_origin_x
     jmp -l
-n:
-    cmp #keycode_k
+
+n:  cmp #keycode_k
     bne +n
     dec $9001
     dec user_screen_origin_y
     jmp -l
-n:
-    cmp #keycode_j
-    bne -l
+
+n:  cmp #keycode_j
+    bne +n
     inc $9001
     inc user_screen_origin_y
     jmp -l
+
+n:  cmp #keycode_f
+    bne -l
+    lda is_landscape
+    eor #1
+    sta is_landscape
+    jmp toplevel
 
 f:  lda #snd_coin
     jsr play_sound
