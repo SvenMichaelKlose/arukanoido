@@ -110,8 +110,9 @@ n:  lda joystick_status
 
 done:
     lda sprites_x,x
+    beq +r
     sta vaus_last_x
-    rts
+r:  rts
 
 handle_joystick:
     ; Joystick left.
@@ -158,12 +159,8 @@ do_fire:
     ; Release caught ball. Shallow ball angle when moving to the right.
     ldy caught_ball
     bmi +n
-    lda sprites_d,y
-    cmp #default_ball_direction
-    bne +m
     lda vaus_last_x
     cmp sprites_x,x
-    bcs +m
     beq +m
     lda #default_ball_direction_skewed
     sta sprites_d,y
@@ -260,6 +257,8 @@ n:  rts
 make_vaus:
     ldy #@(- vaus_init sprite_inits)
     jsr add_sprite
+    lda #vaus_x
+    sta vaus_last_x
 
 set_vaus_color:
     lda mode

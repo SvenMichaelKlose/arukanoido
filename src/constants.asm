@@ -95,6 +95,7 @@ score_x             = 33
 score_y             = 1
 end
 
+vaus_x              = 52
 screen_width        = @(* screen_columns 8)
 screen_height       = @(* screen_rows 8)
 screen_playfield    = @(+ screen (* playfield_yc screen_columns))
