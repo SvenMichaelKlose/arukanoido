@@ -103,7 +103,7 @@ apply_bonus_e:
     jsr get_vaus_index_in_y
     lda sprites_x,y
     sec
-    sbc #8
+    sbc #4
     sta sprites_x,y
     lda #<gfx_vaus_extended
     sta sprites_gl,y
