@@ -96,7 +96,7 @@ fetch_char:
 
 test_position:
     lda scry
-    cmp #screen_rows
+    cmp screen_rows
     bcs +l
     lda scrx
     cmp screen_columns

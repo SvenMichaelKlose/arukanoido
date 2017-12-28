@@ -184,6 +184,7 @@ removed_brick_y:    0
 
 ; TV standard dependant constants
 screen_columns:     0
+screen_rows:        0
 
 ; Temporaries
 

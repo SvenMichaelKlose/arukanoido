@@ -196,7 +196,7 @@ l2: lda sprite_y
 l:  lda scry
     cmp #playfield_yc
     bcc +n               ; Don't plot into score area…
-    cmp #screen_rows
+    cmp screen_rows
     bcs +n               ; Don't plot over the bottom…
     lda scrx
     cmp #15

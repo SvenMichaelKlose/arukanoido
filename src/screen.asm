@@ -64,7 +64,7 @@ l:  sta charset,x
 
     lda screen_columns
     sta $9002
-    lda #screen_rows
+    lda screen_rows
     asl
     sta $9003
 

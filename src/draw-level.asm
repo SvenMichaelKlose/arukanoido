@@ -140,7 +140,7 @@ a:  ldx #5
     lda #bg_side
 l:  pha
     lda scry
-    cmp #screen_rows
+    cmp screen_rows
     beq +done
     jsr scrcoladdr
     pla
