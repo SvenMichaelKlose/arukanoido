@@ -72,6 +72,8 @@ n:  lda mode_break
     sta (d),y
     ldy screen_columns
     sta (d),y
+    lda is_landscape
+    bne +n
     tya
     asl
     tay
