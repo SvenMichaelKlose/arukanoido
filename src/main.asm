@@ -77,10 +77,15 @@ toplevel:
     ldy #>txt_rights
     jsr print_string_ay
 
-    lda #21
-    sta scrx2
-    lda #31
-    sta scry
+    lda is_landscape
+    bne +n
+    ldx #21
+    ldy #31
+    jmp +m
+n:  ldx #33
+    ldy #27
+m:  stx scrx2
+    sty scry
     lda #<txt_credit
     ldy #>txt_credit
     jsr print_string_ay
