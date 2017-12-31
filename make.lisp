@@ -547,8 +547,6 @@
                             (enqueue q (get-brick brick))))
                         (enqueue q 15))))
 
-(= *model* :vic-20)
-
 (fn check-zeropage-size (x)
   (? (< x *pc*)
      (error "Address ~A overflown by ~A bytes." x (abs (- *pc* x)))
