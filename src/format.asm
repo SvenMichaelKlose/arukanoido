@@ -69,13 +69,23 @@ n:  inx
     bne -l
 
     ; Set default screen origin.
-    ldx #20
-    ldy #21
-    lda is_Landscape
+    lda is_ntsc
     beq +n
+    ldx #12
+    ldy #9
+    lda is_Landscape
+    beq +l
     ldx #5
     ldy #16
-n:  stx user_screen_origin_x                                                                               
+    jmp +l
+n:  ldx #20
+    ldy #21
+    lda is_Landscape
+    beq +l
+    ldx #$0d
+    ldy #$1b
+    jmp +l
+l:  stx user_screen_origin_x                                                                               
     sty user_screen_origin_y
 
     lda screen_rows
