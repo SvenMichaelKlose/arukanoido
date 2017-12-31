@@ -114,7 +114,6 @@ l:  stx user_screen_origin_x
     dex
     stx yc_max
 
-
     lda vaus_y
     sec
     sbc #ball_height
@@ -162,7 +161,6 @@ l:  stx user_screen_origin_x
     clc
     adc playfield_yc
     sta scry
-    sta scrx
     jsr scraddr
     lda scr
     clc

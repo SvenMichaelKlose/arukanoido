@@ -6,7 +6,6 @@
 (var *add-charset-base?* t)
 (var *show-cpu?* nil)
 (var *debug?* nil)
-(var *tv* nil)
 (var *revision* (!= (fetch-file "_revision")
                   (subseq ! 0 (-- (length !)))))
 
