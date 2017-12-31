@@ -40,6 +40,8 @@ add_missing_obstacle:
     lda #@(+ 4 (* 3 8))
     sta sprites_x,x
     lda arena_y
+    sec
+    sbc #7
     sta sprites_y,x
     jsr random
     lsr
@@ -80,7 +82,7 @@ remove_obstacle:
 
 ctrl_obstacle:
     lda sprites_y,x
-    cmp arena_y_above
+    cmp arena_y
     bcs +n
 
     ; Move obstacle in.

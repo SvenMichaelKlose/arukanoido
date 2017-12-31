@@ -97,7 +97,9 @@ l:  stx user_screen_origin_x
     dex
     stx y_max
 
-    lda playfield_yc
+    ldx playfield_yc
+    inx
+    txa
     asl
     asl
     asl

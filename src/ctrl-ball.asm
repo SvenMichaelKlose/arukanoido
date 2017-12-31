@@ -48,7 +48,6 @@ turn_counterclockwise:
     dey
     jmp -l
 
-
 n:  jmp play_reflection_sound
 
 l:  dec ball_release_timer
