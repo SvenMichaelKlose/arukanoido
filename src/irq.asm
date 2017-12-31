@@ -73,12 +73,14 @@ n:  lda mode_break
     ldy screen_columns
     sta (d),y
     lda is_landscape
-    bne +n
+    bne +m
     tya
     asl
     tay
     pla
     sta (d),y
+    jmp +n
+m:  pla
     
 n:  jsr play_music
     jsr set_vaus_color
