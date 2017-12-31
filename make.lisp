@@ -735,34 +735,24 @@
 (put-file "obj/font-4x8-packed.bin" (list-string (@ #'code-char (packed-font))))
 
 (gen-vcpu-tables "src/_vcpu.asm")
-(with-temporary *tv* :pal
-;  (with-temporary *shadowvic?* t
-;    (make-game :prg "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
-  (with-temporary *show-cpu?* t
-    (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt")))
+;(with-temporary *shadowvic?* t
+;  (make-game :prg "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
+(with-temporary *show-cpu?* t
+  (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt"))
 (with-temporary *rom?* t
-  (with-temporary *tv* :pal
-    (make-game :prg "arukanoido.pal.img" "arukanoido.pal.img.vice.txt"))
-  (with-temporary *tv* :ntsc
-    (make-game :prg "arukanoido.ntsc.img" "arukanoido.ntsc.img.vice.txt")))
-(with-temporary *tv* :pal
-  (make-game :prg "arukanoido.pal.prg" "arukanoido.pal.prg.vice.txt"))
-(with-temporary *tv* :ntsc
-  (make-game :prg "arukanoido.ntsc.prg" "arukanoido.ntsc.prg.vice.txt"))
+    (make-game :prg "arukanoido.img" "arukanoido.img.vice.txt"))
+(make-game :prg "arukanoido.prg" "arukanoido.prg.vice.txt")
 
 (format t "Level data: ~A B~%" (length +level-data+))
 
 (unix-sh-mkdir "arukanoido")
-(@ (i '("arukanoido.pal.prg"
-        "arukanoido.ntsc.prg"
+(@ (i '("arukanoido.prg"
         "arukanoido-cpumon.prg"))
   (sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-t52" "-x1" "-o" (+ "arukanoido/" i) i)
                       :pty cl:*standard-output*))
 
 (unix-sh-mkdir "arukanoido-cart")
-(sb-ext:run-program "/usr/bin/split" (list "-b" "8192" "arukanoido.pal.img" "arukanoido-cart/arukanoido.pal.img.")
-                    :pty cl:*standard-output*)
-(sb-ext:run-program "/usr/bin/split" (list "-b" "8192" "arukanoido.ntsc.img" "arukanoido-cart/arukanoido.ntsc.img.")
+(sb-ext:run-program "/usr/bin/split" (list "-b" "8192" "arukanoido.img" "arukanoido-cart/arukanoido.img.")
                     :pty cl:*standard-output*)
 (sb-ext:run-program "/usr/bin/zip" (list "-r" "-9" "arukanoido-cart.zip" "arukanoido-cart")
                     :pty cl:*standard-output*)

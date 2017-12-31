@@ -137,9 +137,7 @@ l:  tya
     pla
     tay
     iny
-    dex
-    bne -l
-    rts
+    jmp -l
 r:  pla
     inc curchar
     rts

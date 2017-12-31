@@ -47,6 +47,7 @@ replace_sprite:
     adc #<sprite_inits
     sta s
     lda #>sprite_inits
+    adc #0
     sta @(++ s)
     txa
     clc

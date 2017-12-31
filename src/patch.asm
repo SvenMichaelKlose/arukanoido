@@ -27,10 +27,10 @@ n:  sta scrx2
     ldy #>txt_hardware_check
     jsr print_string_ay
 
-    lda #7
+    lda #6
     ldy is_landscape
     bne +n
-    lda #1
+    lda #0
 n:  sta scrx2
     lda #16
     sta scry
@@ -121,5 +121,5 @@ n:  pla
 id_patch:           @(make-reverse-patch-id)
 id_patch_end:
 txt_hardware_check: @(string4x8 "HARDWARE CHECK") 255
-txt_wait:           @(string4x8 "WAIT UNTIL TIMER REACHES '0'") 255
+txt_wait:           @(string4x8 " WAIT UNTIL TIMER REACHES '0'") 255
 txt_counter:        @(string4x8 "0") 0 255

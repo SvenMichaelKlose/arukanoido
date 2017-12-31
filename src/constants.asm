@@ -63,31 +63,9 @@ score_char0         = 16    ; Digit '0' in 4x8 charset.
 
 num_brickfx     = 24
 
+vaus_x              = 52
+
 ; PAL
 
-lifes_on_screen     = @(+ (* 31 c_screen_columns) 1 screen)                                                 
-lifes_on_colors     = @(+ (* 31 c_screen_columns) 1 colors)
-
-if @(eq *tv* :pal)
-c_screen_columns    = 15
-c_screen_rows         = 32
-c_vaus_y              = @(* 29 8)
-c_playfield_yc        = 2
-end
-
-; NTSC
-if @(eq *tv* :ntsc)
-c_screen_columns    = 21
-c_screen_rows         = 28
-c_vaus_y              = @(* 27 8)
-c_playfield_yc        = 0
-end
-
-vaus_x              = 52
-ball_vaus_y_upper   = @(- c_vaus_y ball_height)
-ball_vaus_y_above   = @(-- ball_vaus_y_upper)
-ball_vaus_y_lower   = @(+ c_vaus_y 8)
-ball_vaus_y_caught  = @(- c_vaus_y 8)
-ball_max_x          = @(-- (* (-- c_screen_columns) 8))
-ball_max_y          = @(- (* (+ c_playfield_yc 30) 8) 2)
-ball_min_y          = @(- (* (++ c_playfield_yc) 8) 2)
+lifes_on_screen     = @(+ (* 31 15) 1 screen)
+lifes_on_colors     = @(+ (* 31 15) 1 colors)

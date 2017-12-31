@@ -58,23 +58,26 @@ n:  lda is_firing
 
 n:  lda mode_break
     beq +n
-    lda #14
-    sta scrx
-    lda #26
-    clc
-    adc playfield_yc
-    sta scry
+    lda screen_gate
+    sta d
+    lda @(++ screen_gate)
+    sta @(++ d)
     lda framecounter
     lsr
     and #1
     clc
     adc #bg_break
-    jsr plot_char
-    inc scry
-    jsr plot_char
-    inc scry
-    jsr plot_char
-
+    pha
+    ldy #0
+    sta (d),y
+    ldy screen_columns
+    sta (d),y
+    tya
+    asl
+    tay
+    pla
+    sta (d),y
+    
 n:  jsr play_music
     jsr set_vaus_color
     lda is_running_game

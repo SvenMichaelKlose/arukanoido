@@ -37,6 +37,10 @@ add_missing_obstacle:
     ldy #@(- obstacle_init sprite_inits)
     jsr add_sprite
     tax
+    lda #@(+ 4 (* 3 8))
+    sta sprites_x,x
+    lda arena_y
+    sta sprites_y,x
     jsr random
     lsr
     bcs +n
@@ -82,10 +86,9 @@ ctrl_obstacle:
     ; Move obstacle in.
     inc sprites_y,x
 r:  rts
-n:
 
     ; Animate.
-    lda framecounter
+n:  lda framecounter
     and #7
     bne +l2
     lda sprites_gl,x
@@ -94,10 +97,9 @@ n:
     sta sprites_gl,x
     bcc +m
     inc sprites_gh,x
-m:
 
     ; Repeat animation.
-    ldy #3
+m:  ldy #3
 l:  lda sprites_gl,x
     cmp gfx_obstacles_gl_end,y
     bne +n

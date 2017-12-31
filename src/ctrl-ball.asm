@@ -63,11 +63,28 @@ ctrl_ball:
     lda has_hit_vaus
     bne -n
 
+    ; Call the ball controller ball_speed times.
+ball_loop:
+    ldy ball_speed
+l:  tya
+    pha
+    jsr ctrl_ball_subpixel
+    lda sprites_i,x
+    bmi +e              ; Ball sprite has been removed…
+    pla
+    tay
     ; Deal with lost ball.
     lda sprites_y,x
-    cmp #ball_max_y
-    bcc +ball_loop
+    cmp ball_max_y
+    bcs lost_ball
 
+    dey
+    bne -l
+r:  rts
+e:  pla
+    rts
+
+lost_ball:
     dec balls
     bne +n
     lda #0
@@ -82,21 +99,6 @@ n:  lda balls
     sta mode
 n:  jmp remove_sprite
 
-    ; Call the ball controller ball_speed times.
-ball_loop:
-    ldy ball_speed
-l:  tya
-    pha
-    jsr ctrl_ball_subpixel
-    lda sprites_i,x
-    bmi +e              ; Ball sprite has been removed…
-    pla
-    tay
-    dey
-    bne -l
-r:  rts
-e:  pla
-    rts
 
 ctrl_ball_vaus:
     lda #0
@@ -104,9 +106,9 @@ ctrl_ball_vaus:
 
     ; Test on vertical collision with Vaus.
     lda sprites_y,x
-    cmp #ball_vaus_y_upper
+    cmp ball_vaus_y_upper
     bcc -r
-    cmp #ball_vaus_y_lower
+    cmp ball_vaus_y_lower
     bcs -r
 
     jsr get_vaus_index_in_y
@@ -146,7 +148,7 @@ ctrl_ball_vaus:
 n:  lda vaus_directions_extended,y
 m:  sta sprites_d,x
 
-    lda #ball_vaus_y_above
+    lda ball_vaus_y_above
     sta sprites_y,x
     lda #0
     sta sprites_d2,x
@@ -161,7 +163,7 @@ m:  sta sprites_d,x
     sta sprites_gl,x
     lda #>gfx_ball_caught
     sta sprites_gh,x
-    lda #ball_vaus_y_caught
+    lda ball_vaus_y_caught
     sta sprites_y,x
     lda #delay_until_ball_is_released
     sta ball_release_timer
@@ -319,7 +321,7 @@ make_ball:
     tax
     lda #59
     sta sprites_x,x
-    lda #ball_vaus_y_caught
+    lda ball_vaus_y_caught
     sta sprites_y,x
     lda #<gfx_ball_caught
     sta sprites_gl,x
@@ -345,7 +347,7 @@ minimum_ball_speed_when_hit_top_per_round:
 
 adjust_ball_speed_hitting_top:
     lda sprites_y,x
-    cmp #ball_min_y
+    cmp ball_min_y
     bne +n
     ldy level
     dey
@@ -391,14 +393,14 @@ n:  rts
 
 release_ball:
     ldy caught_ball
-    lda #ball_vaus_y_above
+    lda ball_vaus_y_above
     sta sprites_y,y
 
     ; Correct X position so the ball won't end up in the wall.
     lda sprites_x,y
-    cmp #ball_max_x
+    cmp ball_max_x
     bcc +n
-    lda #ball_max_x
+    lda ball_max_x
     sta sprites_x,y
 n:  cmp #7
     bcs +n
