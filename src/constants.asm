@@ -61,7 +61,7 @@ score_char0         = 16    ; Digit '0' in 4x8 charset.
 
 ; Miscellaneous
 
-num_brickfx     = 24
+num_brickfx     = 16
 
 vaus_x              = 52
 

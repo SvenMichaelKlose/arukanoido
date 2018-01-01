@@ -45,7 +45,7 @@ add_brick_fx:
     beq -r
     stx tmp
     lda brickfx_end
-    and #@(-- num_sprites)
+    and #@(-- num_brickfx)
     tax
     lda scrx
     sta brickfx_x,x
@@ -57,14 +57,17 @@ add_brick_fx:
     ldy brickfx_end
     iny
     tya
-    and #@(-- num_sprites)
+    and #@(-- num_brickfx)
     sta brickfx_end
     ldx tmp
     rts
 
 dyn_brick_fx:
     ldx brickfx_pos
-l:  lda brickfx_x,x
+l:  txa
+    and #@(-- num_brickfx)
+    tax
+    lda brickfx_x,x
     beq +n
     sta scrx
     lda brickfx_y,x
@@ -80,7 +83,7 @@ l:  lda brickfx_x,x
     inc brickfx_pos
 n:  inx
     txa
-    and #@(-- num_sprites)
+    and #@(-- num_brickfx)
     tax
     cpx brickfx_end
     bne -l
