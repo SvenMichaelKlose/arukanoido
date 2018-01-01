@@ -38,6 +38,7 @@ draw_lifes_landscape:
     lda #@(+ multicolor white)
     sta curcol
     ldx lifes
+    dex
     beq +done
 l:  jsr plot_life
     dex
