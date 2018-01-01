@@ -1,11 +1,11 @@
 draw_sprites:
-    ldx #@(-- num_sprites)
-l:  sei
-
 if @*show-cpu?*
     lda #@(+ 8 4)
     sta $900f
 end
+
+    ldx #@(-- num_sprites)
+l:  sei
 
     lda sprites_i,x
     bmi +next
