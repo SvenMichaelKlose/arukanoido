@@ -211,6 +211,8 @@ l:  jsr random              ; Improve randomness and avoid CRTC hsync wobble.
     beq mainloop
     lda #0
     sta has_new_score
+    sei
     jsr display_score
+    cli
 
     jmp mainloop
