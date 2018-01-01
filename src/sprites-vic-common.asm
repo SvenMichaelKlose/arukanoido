@@ -8,28 +8,36 @@ if @*show-cpu?*
 end
 
     lda sprites_i,x
-    bmi +n
-    and #was_cleared
-    beq +n
+    bmi +next
 
     jsr draw_huge_sprite
-    lda sprites_i,x
-    and #@(bit-xor 255 was_cleared)
-    sta sprites_i,x
 
-    ; Save virtual position as screen position.
-    lda sprites_x,x
-    sta sprites_sx,x
-    lda sprites_y,x
-    sta sprites_sy,x
-    lda sprites_w,x
-    sta sprites_sw,x
-    lda sprites_h,x
-    sta sprites_sh,x
+    ; Save position of drawn sprite.
+    txa
+    asl
+    tay
     lda spriteframe
-    sta sprites_sf,x
+    beq +n
+    iny
+n:  lda sprites_x,x
+    lsr
+    lsr
+    lsr
+    sta sprites_sx,y
+    lda sprites_y,x
+    lsr
+    lsr
+    lsr
+    sta sprites_sy,y
+    lda sprites_w,x
+    sec
+    sbc #1
+    sta sprites_sw,y
+    lda sprites_h,x
+    sta sprites_sh,y
 
-n:  cli
+next:
+    cli
     dex
     bpl -l
 
@@ -39,99 +47,82 @@ if @*show-cpu?*
 end
 
     ldx #@(-- num_sprites)
-l:  lda sprites_i,x
-    and #was_cleared
-    bne +n
+sprites_clear_loop:
+    lda sprites_i,x
 
     sei
 
-    ; Remove remaining chars of sprites in old frame.
+    txa
+    asl
+    tay
     lda spriteframe
-    pha
-    lda sprites_of,x
-    eor #framemask
-    sta spriteframe
-    lda sprites_ox,x
-    sta scrx
-    lda sprites_ow,x
-    sta sprite_cols
-l2: lda sprites_oy,x
-    sta scry
-    lda sprites_oh,x
+    bne +n
+    iny
+n:  sty tmp
+
+    ; Prepare 2-dimensional loop and address on screen.
+    lda sprites_sh,y
+    beq +not_dirty
     sta sprite_rows
-l3: jsr scraddr_clear_char
-    inc scry
-    dec sprite_rows
+    lda #0
+    sta sprites_sh,y
+
+    lda sprites_sy,y
+    sta tmp2
+    lda sprites_sx,y
+    clc
+    ldy tmp2
+    adc line_addresses_l,y
+    sta scr
+    lda line_addresses_h,y
+    adc #0
+    sta @(++ scr)
+
+l2: lda scr
+    pha
+    lda @(++ scr)
+    pha
+    ldy tmp
+    lda sprites_sw,y
+    tay
+
+l3: lda (scr),y
+    beq +n              ; Nothing to clear…
+    and #foreground
+    bne +n              ; Don't remove foreground chars…
+    lda (scr),y
+    and #framemask
+    cmp spriteframe
+    beq +n
+    lda #0
+    sta (scr),y
+
+n:  dey
     bpl -l3
-    inc scrx
-    dec sprite_cols
-    bpl -l2
+
+    ; Step to next screen line.
     pla
-    sta spriteframe
+    sta @(++ scr)
+    pla
+    clc
+    adc screen_columns
+    sta scr
+    bcc +n
+    inc @(++ scr)
+    
+n:  dec sprite_rows
+    bne -l2
 
-    ; Save screen position as the next one to clean.
-    lda sprites_sx,x
-    lsr
-    lsr
-    lsr
-    sta sprites_ox,x
-    lda sprites_sy,x
-    lsr
-    lsr
-    lsr
-    sta sprites_oy,x
-    lda sprites_sw,x
-    sta sprites_ow,x
-    lda sprites_sh,x
-    sta sprites_oh,x
-    lda sprites_sf,x
-    sta sprites_of,x
-
-    lda sprites_i,x
-    ora #was_cleared
-    sta sprites_i,x
-
-n:  cli
+not_dirty:
+    cli
     dex
-    bpl -l
+    bpl sprites_clear_loop
 
 if @*show-cpu?*
     lda #@(+ 8 2)
     sta $900f
 end
 
-    rts
-
-; TODO: Find out why this is required.
-clear_removed_sprite:
-    lda spriteframe
-    pha
-    lda sprites_sf,x
-    eor #framemask
-    sta spriteframe
-    lda sprites_sx,x
-    lsr
-    lsr
-    lsr
-    sta scrx
-    lda sprites_sw,x
-    sta sprite_cols
-l2: lda sprites_sy,x
-    lsr
-    lsr
-    lsr
-    sta scry
-    lda sprites_sh,x
-    sta sprite_rows
-l3: jsr scraddr_clear_char
-    inc scry
-    dec sprite_rows
-    bpl -l3
-    inc scrx
-    dec sprite_cols
-    bpl -l2
-    pla
-    sta spriteframe
     rts
 
 clear_sprites:

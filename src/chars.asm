@@ -146,12 +146,7 @@ cant_use_position:
     sta curchar
     rts
 
-scraddr_clear_char:
-    jsr scrcoladdr
-
 clear_char:
-;    jsr test_position
-;    bcs +l
     lda (scr),y
     beq +l              ; Nothing to clear…
     and #foreground

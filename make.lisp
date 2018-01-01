@@ -677,7 +677,8 @@
                           "doh.asm"
 
                           ; Top level
-                          "debug.asm"
+                          ,@(when *debug?*
+                              '("debug.asm"))
                           "irq.asm"
                           "format.asm"
                           "game.asm"

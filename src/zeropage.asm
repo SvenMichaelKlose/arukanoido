@@ -23,7 +23,7 @@ a2:                   0
 a3:                   0
 a4:                   0
 
-current_level:        0 0 ; Pointer to next level's data.
+current_level:        0 0 ; Pointer to next level's data (compressed with exomizer).
 
 ; Temporaries.
 tmp:                  0
@@ -119,9 +119,9 @@ sprite_width:       0
 sprite_lines:       0
 sprite_lines_on_screen: 0
 
+sprites_i:          fill num_sprites  ; Flags.
 sprites_x:          fill num_sprites  ; X positions.
 sprites_y:          fill num_sprites  ; Y positions.
-sprites_i:          fill num_sprites  ; Flags.
 sprites_c:          fill num_sprites  ; Colors.
 sprites_gl:         fill num_sprites  ; Low character addresses.
 sprites_gh:         fill num_sprites  ; High character addresses.
@@ -160,16 +160,10 @@ hiscore:    fill num_score_digits
 
 sprites_d2:     fill num_sprites ; Whatever the controllers want.
 
-sprites_sx:     fill num_sprites ; Screen position, dimensions in chars and frame.
-sprites_sy:     fill num_sprites
-sprites_sw:     fill num_sprites
-sprites_sh:     fill num_sprites
-sprites_sf:     fill num_sprites
-sprites_ox:     fill num_sprites ; Old screen position and dimensions in chars and frame.
-sprites_oy:     fill num_sprites
-sprites_ow:     fill num_sprites
-sprites_oh:     fill num_sprites
-sprites_of:     fill num_sprites
+sprites_sx:     fill @(* 2 num_sprites) ; Screen position, dimensions in chars and frame.
+sprites_sy:     fill @(* 2 num_sprites)
+sprites_sw:     fill @(* 2 num_sprites)
+sprites_sh:     fill @(* 2 num_sprites)
 
 brickfx_x:      fill num_brickfx
 brickfx_y:      fill num_brickfx

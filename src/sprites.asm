@@ -35,13 +35,14 @@ replace_sprite2:
 remove_sprite:
     lda #is_inactive
     sta sprites_i,x
-    jmp clear_removed_sprite
+    rts
 
 ; Replace sprite by another.
 ;
 ; X: sprite index
 ; Y: low address byte of descriptor of new sprite in sprite_inits
 replace_sprite:
+    ; Make pointer into init values.
     tya
     clc
     adc #<sprite_inits
@@ -49,16 +50,22 @@ replace_sprite:
     lda #>sprite_inits
     adc #0
     sta @(++ s)
-    txa
+
+    ; Make pointer into 'sprites_i'.
+n:  txa
     clc
-    adc #sprites_x
+    adc #sprites_i
     sta d
     ldy #0
     sty @(++ d)
+
+    ; Copy rest of init values.
 l:  lda (s),y
     sta (d),y
     inc s
-    lda d
+    bne +n
+    inc @(++ s)
+n:  lda d
     clc
     adc #num_sprites
     sta d
