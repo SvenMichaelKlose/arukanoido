@@ -42,8 +42,8 @@ j:  lda #128
 l:  clc
     adc side_degrees
     sta side_degrees
-rts
 
+    ; Deviate (counter-)clockwise randomly.
     sty tmp
     jsr random
     bmi +n
