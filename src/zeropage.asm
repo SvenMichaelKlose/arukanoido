@@ -17,6 +17,7 @@ bcp:                  0 0
 bca:                  0 0
 num_args:             0
 srx:                  0
+sry:                  0
 a0:                   0
 a1:                   0
 a2:                   0
@@ -98,8 +99,6 @@ has_new_score:        0
 has_hiscore:          0
 scorechar_start:      0
 
-scrx2:                  0
-
 has_removed_brick:      0
 has_bonus_on_screen:    0
 
@@ -175,6 +174,8 @@ score_silver:         fill num_score_digits
 
 removed_brick_x:    0
 removed_brick_y:    0
+
+scrx2:                  0
 
 ; TV standard dependant constants
 format_params:

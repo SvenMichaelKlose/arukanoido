@@ -12,6 +12,7 @@ n:  rts
 
 exec_script:
     pla ; Y
+    sta sry
     pla ; X
     sta srx
     pla ; A
@@ -76,4 +77,5 @@ done:
     lda bcp
     pha
     ldx srx
+    ldy sry
     rts
