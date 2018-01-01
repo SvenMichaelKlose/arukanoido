@@ -145,14 +145,23 @@ apply_bonus_b:
     sta (scr),y
 
     inc scry
+    jsr scrcoladdr
+    lda #white
+    sta (col),y
     inc scry
+    jsr scrcoladdr
+    lda #white
+    sta (col),y
 
     lda is_landscape
     bne +n
 
     inc scry
-    inc scry
+    jsr scrcoladdr
+    lda #white
+    sta (col),y
 
+    inc scry
     jsr scrcoladdr
     lda #@(+ bg_side 2)
     sta (scr),y
