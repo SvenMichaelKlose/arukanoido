@@ -72,6 +72,7 @@ l:  tya
     bmi +e              ; Ball sprite has been removed…
     pla
     tay
+
     ; Deal with lost ball.
     lda sprites_y,x
     cmp ball_max_y

@@ -23,6 +23,7 @@ set_format_portrait:
     sta score_x
     lda #1
     sta score_y
+
     jmp set_format_common
 
 set_format_landscape:
@@ -66,7 +67,8 @@ l:  lda s
     inc @(++ s)
 n:  inx
     cpx screen_rows
-    bne -l
+    bcc -l
+    beq -l          ; Invisible bottom line.
 
     ; Set default screen origin.
     lda is_ntsc
@@ -154,11 +156,6 @@ l:  stx user_screen_origin_x
     sbc #2
     sta ball_min_y
 
-    ldx screen_height
-    dex
-    dex
-    stx ball_max_y
-
     lda #26
     clc
     adc playfield_yc
@@ -172,5 +169,10 @@ l:  stx user_screen_origin_x
     clc
     adc #0
     sta @(++ screen_gate)
+
+    lda screen_height
+    sec
+    sbc #ball_height
+    sta ball_max_y
 
     rts
