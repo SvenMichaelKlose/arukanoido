@@ -1,4 +1,7 @@
 ctrl_laser:
+    lda #8
+    jsr sprite_up
+
     ; Hit obstacle?
     jsr find_hit
     bcs +n
@@ -44,8 +47,6 @@ o:  lda sprites_x,x
 m:  lda laser_has_hit
     ora has_hit_golden_brick
     bne +n
-    lda #8
-    jsr sprite_up
     jmp +done
 
 f:  jsr make_bonus
