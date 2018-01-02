@@ -9,6 +9,52 @@
 (var *revision* (!= (fetch-file "_revision")
                   (subseq ! 0 (-- (length !)))))
 
+(unix-sh-mkdir "obj")
+
+(var *audio*
+     '("break-out"
+       "catch"
+       "doh-dissolving"
+       "doh-intro"
+       "explosion"
+       "extension"
+       "extra-life"
+       "final"
+       "game-over"
+       "laser"
+       "lost-ball"
+       "reflection-doh"
+       "reflection-high"
+       "reflection-low"
+       "reflection-med"
+       "round-intro"
+       "round-intro2"
+       "round-start"))
+
+(fn make-filtered-wav (name rate)
+  (sb-ext:run-program "/usr/bin/sox"
+                      `(,(+ "media/audio/" name ".wav")
+                        ,(+ "obj/" name ".filtered.wav")
+                        "lowpass" ,(princ (half rate) nil))
+                       :pty cl:*standard-output*)) 
+
+(fn downsampled-audio-name (name)
+  (+ "obj/" name ".downsampled.wav"))
+
+(fn make-conversion (name rate)
+  (sb-ext:run-program "/usr/bin/sox"
+                      (list (+ "obj/" name ".filtered.wav")
+                            "-c" "1"
+                            "-b" "8"
+                            "-r" (princ rate nil)
+                            (downsampled-audio-name name))
+                      :pty cl:*standard-output*))
+
+(@ (i *audio*)
+  (print i)
+  (make-filtered-wav i 4000)
+  (make-conversion i 4000))
+
 (fn gen-sprite-nchars ()
   (with-queue q
     (dotimes (a 8)
@@ -704,8 +750,6 @@
                      #xfe] 256))
 
 (= *model* :vic-20+xk)
-
-(unix-sh-mkdir "obj")
 
 (apply #'assemble-files "obj/gfx-ship.bin" '("media/gfx-ship.asm"))
 (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/gfx-ship.bin" "-o" "obj/gfx-ship.bin.exo")
