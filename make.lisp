@@ -1,6 +1,6 @@
 (load "gen-vcpu-tables.lisp")
 
-(var *demo?* t)
+(var *demo?* nil)
 (var *shadowvic?* nil)
 (var *rom?* nil)
 (var *add-charset-base?* t)
@@ -33,10 +33,18 @@
 
 (fn make-filtered-wav (name rate)
   (sb-ext:run-program "/usr/bin/sox"
-                      `(,(+ "media/audio/" name ".wav")
+                      `(
+                        "-v 0.9"
+                        ,(+ "media/audio/" name ".wav")
                         ,(+ "obj/" name ".filtered.wav")
-                        "lowpass" ,(princ (half rate) nil))
-                       :pty cl:*standard-output*)) 
+;                        "bass" "12"
+                        "lowpass" ,(princ (half rate) nil)
+"compand" "0.3,1" "6:-70,-60,-20" "-5" "-90"
+;"compand" "0.1,0.3" "-60,-60,-30,-15,-20,-12,-4,-8,-2,-7" "-2" ; voice/music
+;"compand" "0.01,1" "-90,-90,-70,-70,-60,-20,0,0" "-5" ; voice/radio
+;                        "compand" "0.3,1" "6:-70,-60,-20" "-1" "-90" "0.2" "gain" "-64"
+                        )
+                       :pty cl:*standard-output*))
 
 (fn downsampled-audio-name (name)
   (+ "obj/" name ".downsampled.wav"))
@@ -45,7 +53,7 @@
   (sb-ext:run-program "/usr/bin/sox"
                       (list (+ "obj/" name ".filtered.wav")
                             "-c" "1"
-                            "-b" "8"
+                            "-b" "16"
                             "-r" (princ rate nil)
                             (downsampled-audio-name name))
                       :pty cl:*standard-output*))
@@ -54,6 +62,48 @@
   (print i)
   (make-filtered-wav i 4000)
   (make-conversion i 4000))
+
+(fn read-wav (in)
+  (= (stream-track-input-location? in) nil)
+  (adotimes 96 (read-byte in))
+  (with-queue q
+    (awhile (read-word in)
+            (queue-list q)
+      (enqueue q (bit-xor ! 32768)))))
+
+(fn wav2pwm (out in)
+  (@ (! in)
+    (write-byte
+;    (bit-xor ! 32768)
+;      (bit-and (* (round (/ (bit-xor ! 32768) 16384)) 16384) (+ 32768 16384))
+      (round (/ (bit-xor ! 32768) 16384))
+                out)))
+
+(fn smallest (x)
+  (let v 65535
+    (@ (i x v)
+      (when (< i v)
+        (= v i)))))
+
+(fn biggest (x)
+  (let v 0
+    (@ (i x v)
+      (when (> i v)
+        (= v i)))))
+
+(@ (i *audio*)
+  (print i)
+  (with-input-file in (+ "obj/" i ".downsampled.wav")
+     (with (wav (read-wav)
+            lo  (smallest wav)
+            hi  (biggest wav)
+            rat (/ 65535 (- hi lo))
+            lwav (@ [integer (* _ rat)]
+                    (@ [- _ lo] wav)))
+       (with-output-file out (+ "obj/" i ".raw")
+         (wav2pwm out lwav))
+       (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m" "256" "-M" "256" "-o" (+ "obj/" i ".exm") (+ "obj/" i ".raw"))
+                           :pty cl:*standard-output*))))
 
 (fn gen-sprite-nchars ()
   (with-queue q
