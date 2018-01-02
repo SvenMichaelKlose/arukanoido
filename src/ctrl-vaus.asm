@@ -210,7 +210,7 @@ l:  lda sprites_i,y
 m:  dey
     bpl -l
 
-    jsr clear_sprites
+    jsr clear_sprites       ; TODO: Still required?
 
     lda #100
     sta mode_break
