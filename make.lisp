@@ -756,5 +756,5 @@
                     :pty cl:*standard-output*)
 
 (format t "~A bytes free before interrupt vectors.~%" (- #x314 (get-label 'before_int_vectors)))
-(format t "~A bytes free.~%" (- #x7000 (get-label 'the_end)))
+(format t "~A bytes free.~%" (- #x8000 (get-label 'the_end)))
 (quit)
