@@ -168,11 +168,12 @@ mainloop:
     jsr clear_sprites
     jsr wait_sound
     jmp next_level
-n:
 
-    lda is_running_game
+n:  lda is_running_game
     bne +n
     jsr wait_sound
+    jsr remove_sprites
+    jsr clear_sprites
     dec lifes
     beq +o
     jmp retry
