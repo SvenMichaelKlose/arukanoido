@@ -1,4 +1,6 @@
-digitound_timer = @(/ 1108404 4000)
+digisound_rate = 4000
+digisound_timer_pal = @(/ (cpu-cycles :pal) digisound_rate)
+digisound_timer_ntsc = @(/ (cpu-cycles :ntsc) digisound_rate)
 
 digisound_xlat_low:
 digisound_xlat_high:
@@ -7,7 +9,7 @@ play_audio_sample:
     sta digisound_a
     stx digisound_x
 
-    lda #>digitound_timer
+    lda #>digisound_timer_pal
     sta $9115
 
 digisound_src:
@@ -32,7 +34,7 @@ n:  ldx digisound_x
 stop_digisound:
     lda #$7f
     sta $911e
-    rts
+    rti
 
 start_digisound:
     stx @(+ 1 digisound_src)
@@ -46,10 +48,14 @@ start_digisound:
 n:  stx @(+ 1 digisound_xlat_src)
     sty @(+ 2 digisound_xlat_src)
 
-    lda #<digitound_timer
-    sta $9114
-    lda #>digitound_timer
-    sta $9115
+    ldx #<digisound_timer_pal
+    ldy #>digisound_timer_pal
+    lda is_ntsc
+    bne +n
+    ldx #<digisound_timer_ntsc
+    ldy #>digisound_timer_ntsc
+n:  stx $9114
+    sty $9115
 
     ; Set NMI vector.
     lda #<play_audio_sample
