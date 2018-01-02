@@ -1,3 +1,15 @@
+brick_fx:
+    cmp #@bg_brick_fx
+    bcc +n
+    cmp #bg_brick_fx_end
+    bcs +n
+    clc 
+    adc #1
+    rts
+n:  bne +r
+    lda #bg_brick_special
+r:  rts
+
 start_brick_fx:
     ldx #0
 l:  lda screen,x
@@ -26,18 +38,6 @@ l:  lda screen,x
     dex
     bne -l
     rts
-
-brick_fx:
-    cmp #@bg_brick_fx
-    bcc +n
-    cmp #bg_brick_fx_end
-    bcs +n
-    clc 
-    adc #1
-    rts
-n:  bne +r
-    lda #bg_brick_special
-r:  rts
 
 add_brick_fx:
     lda level
@@ -70,7 +70,6 @@ l:  txa
     cpx brickfx_end
     beq -r
     lda brickfx_x,x
-    beq +n
     sta scrx
     lda brickfx_y,x
     sta scry
