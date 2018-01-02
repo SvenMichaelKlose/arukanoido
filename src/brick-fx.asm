@@ -60,13 +60,15 @@ add_brick_fx:
     and #@(-- num_brickfx)
     sta brickfx_end
     ldx tmp
-    rts
+r:  rts
 
 dyn_brick_fx:
     ldx brickfx_pos
 l:  txa
     and #@(-- num_brickfx)
     tax
+    cpx brickfx_end
+    beq -r
     lda brickfx_x,x
     beq +n
     sta scrx
@@ -85,6 +87,4 @@ n:  inx
     txa
     and #@(-- num_brickfx)
     tax
-    cpx brickfx_end
-    bne -l
-    rts
+    jmp -l
