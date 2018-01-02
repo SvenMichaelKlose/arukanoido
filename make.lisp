@@ -796,7 +796,7 @@
 (unix-sh-mkdir "arukanoido-cart")
 (sb-ext:run-program "/usr/bin/split" (list "-b" "8192" "arukanoido.img" "arukanoido-cart/arukanoido.img.")
                     :pty cl:*standard-output*)
-(sb-ext:run-program "/usr/bin/zip" (list "-r" "-9" "arukanoido-cart.zip" "arukanoido-cart")
+(sb-ext:run-program "/usr/bin/zip" (list "-r" "-9" (+ "arukanoido-cart." *revision* ".zip") "arukanoido-cart")
                     :pty cl:*standard-output*)
 
 (format t "~A bytes free before interrupt vectors.~%" (- #x314 (get-label 'before_int_vectors)))
