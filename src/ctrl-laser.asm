@@ -10,14 +10,12 @@ ctrl_laser:
     beq +n
     jsr remove_obstacle
     jmp remove_sprite
-n:
 
-    lda #1
-    sta is_testing_laser_hit
-
-    ; We check two collisions, on the left and the right, so we need this flag.
-    lda #0              ; No brick hit.
-    sta laser_has_hit
+n:  ldy #0
+    sty has_hit_golden_brick
+    sty laser_has_hit
+    iny
+    sty is_testing_laser_hit
 
     lda sprites_y,x
     cmp arena_y
@@ -43,7 +41,7 @@ o:  lda sprites_x,x
     jsr hit_brick
     bcc +f              ; We hit a brick…
 
-    ; Move laser up unless it hit a brick with its left.
+    ; Move laser up unless it hit a brick.
 m:  lda laser_has_hit
     ora has_hit_golden_brick
     bne +n
