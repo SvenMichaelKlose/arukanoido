@@ -84,7 +84,7 @@
 (fn wav2raw (out in)
   (with-queue q
     (@ (! in)
-      (enqueue q (* (integer (/ ! 16384)) 2)))
+      (enqueue q (* (integer (/ ! 16384)) 4)))
     (@ (i (reverse (trim-wav (reverse (trim-wav (queue-list q))))))
       (write-byte (+ i (* 11 16)) out))))
 
