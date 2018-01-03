@@ -38,11 +38,12 @@ l:  jsr exm_work
     ldx #<digisound_timer_pal
     ldy #>digisound_timer_pal
     lda is_ntsc
-    bne +n
+    beq +n
     ldx #<digisound_timer_ntsc
     ldy #>digisound_timer_ntsc
 n:  stx $9114
     sty $9115
+    sty exm_timer
 
     ; Set NMI vector.
     lda #<exm_play_sample
@@ -91,7 +92,7 @@ buffer_filled:
 
 exm_play_sample:
     sta digisound_a
-    lda #>digisound_timer_pal
+    lda exm_timer
     sta $9115
 exm_play_ptr:
     lda $ffff
