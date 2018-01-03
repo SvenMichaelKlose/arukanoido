@@ -62,13 +62,10 @@ ball_release_timer:   0
 vaus_width:           0
 vaus_last_x:          0
 
-level:                0
-bricks_left:          0
-num_obstacles:        0
+exo_x:                0
+exo_y:                0
+exo_y2:               0
 
-joystick_status:      0
-
-last_random_value:    0   ; Random number generator's last returned value.
 framecounter:         0 0
 lifes:                0
 balls:                0
@@ -101,6 +98,7 @@ scorechar_start:      0
 
 exm_play_dptr:        0 0
 exm_play_rest:        0 0
+exm_timer:            0
 
 ; Currently processed sprite
 sprite_char:        0   ; First char.
@@ -165,6 +163,9 @@ has_bonus_on_screen:    0
 num_lifes_by_score:     0
 has_paused:             0
 
+num_obstacles:        0
+joystick_status:      0
+
 brickfx_x:      fill num_brickfx
 brickfx_y:      fill num_brickfx
 brickfx_pos:    0
@@ -176,8 +177,10 @@ score_silver:         fill num_score_digits
 removed_brick_x:    0
 removed_brick_y:    0
 
+level:              0
+bricks_left:        0
 scrx2:              0
-
+last_random_value:  0
 exm_needs_data:     0
 
 ; TV standard dependant constants

@@ -59,23 +59,16 @@ n:  dec c
 ; and must not modify the state of the carry flag.
 ; -------------------------------------------------------------------
 get_crunched_byte:
-    php
-    txa
-    pha
-    tya
-    pha
+    sty exo_y2
     ldy #0
     lda (s),y
     sta get_crunched_byte_tmp
     inc s
-    bne +n
-    inc @(++ s)
-n:  pla
-    tay
-    pla
-    tax
-    plp
-    lda get_crunched_byte_tmp
+    beq +n
+    ldy exo_y2
+    rts
+n:  inc @(++ s)
+    ldy exo_y2
     rts
 
 ; -------------------------------------------------------------------
@@ -164,20 +157,16 @@ _init_shortcut:
 
 _do_exit:
     sta get_crunched_byte_tmp
-    pla
-    tay
-    pla
-    tax
+    ldx exo_x
+    ldy exo_y
     lda get_crunched_byte_tmp
 	rts
 ; -------------------------------------------------------------------
 ; decrunch one byte
 ;
 get_decrunched_byte:
-    txa
-    pha
-    tya
-    pha
+    stx exo_x
+    sty exo_y
 
 	ldy zp_len_lo
 	bne _do_sequence
