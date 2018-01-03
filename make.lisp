@@ -1,6 +1,6 @@
 (load "gen-vcpu-tables.lisp")
 
-(var *demo?* nil)
+(var *demo?* t)
 (var *shadowvic?* nil)
 (var *rom?* nil)
 (var *add-charset-base?* t)
@@ -9,12 +9,14 @@
 (var *revision* (!= (fetch-file "_revision")
                   (subseq ! 0 (-- (length !)))))
 
+(var *audio-rate* 4000)
+
 (unix-sh-mkdir "obj")
 
 (var *audio*
      '("break-out"
-       "catch"
-       "doh-dissolving"
+;       "catch"     ; Play beginning of reflection_low instead.
+;       "doh-dissolving"    ; Needs higher sample rate.
        "doh-intro"
        "explosion"
        "extension"
@@ -23,12 +25,12 @@
        "game-over"
        "laser"
        "lost-ball"
-       "reflection-doh"
-       "reflection-high"
-       "reflection-low"
-       "reflection-med"
+;       "reflection-doh" ; Needs higher sample rate.
+       "reflection-high"; Needs 4 bits.
+       "reflection-low" ; Needs 4 bits.
+       "reflection-med" ; Needs 4 bits.
        "round-intro"
-       "round-intro2"
+;       "round-intro2"
        "round-start"))
 
 (fn make-filtered-wav (name rate)
@@ -39,10 +41,9 @@
                         ,(+ "obj/" name ".filtered.wav")
 ;                        "bass" "12"
                         "lowpass" ,(princ (half rate) nil)
-"compand" "0.3,1" "6:-70,-60,-20" "-5" "-90"
-;"compand" "0.1,0.3" "-60,-60,-30,-15,-20,-12,-4,-8,-2,-7" "-2" ; voice/music
+;"compand" "0.3,1" "6:-70,-60,-20" "-5" "-90" ; podcast
+"compand" "0.1,0.3" "-60,-60,-30,-15,-20,-12,-4,-8,-2,-7" "-2" ; voice/music
 ;"compand" "0.01,1" "-90,-90,-70,-70,-60,-20,0,0" "-5" ; voice/radio
-;                        "compand" "0.3,1" "6:-70,-60,-20" "-1" "-90" "0.2" "gain" "-64"
                         )
                        :pty cl:*standard-output*))
 
@@ -60,8 +61,13 @@
 
 (@ (i *audio*)
   (print i)
-  (make-filtered-wav i 4000)
-  (make-conversion i 4000))
+  (make-filtered-wav i *audio-rate*)
+  (make-conversion i *audio-rate*))
+
+(fn trim-wav (x)
+  (? (== x. .x.)
+     (trim-wav .x)
+     x))
 
 (fn read-wav (in)
   (= (stream-track-input-location? in) nil)
@@ -71,13 +77,16 @@
             (queue-list q)
       (enqueue q (bit-xor ! 32768)))))
 
-(fn wav2pwm (out in)
+(fn wav2mon (out in)
   (@ (! in)
-    (write-byte
-;    (bit-xor ! 32768)
-;      (bit-and (* (round (/ (bit-xor ! 32768) 16384)) 16384) (+ 32768 16384))
-      (round (/ (bit-xor ! 32768) 16384))
-                out)))
+    (write-word (* (integer (/ (bit-xor ! 32768) 16384)) 16384) out)))
+
+(fn wav2raw (out in)
+  (with-queue q
+    (@ (! in)
+      (enqueue q (* (integer (/ ! 16384)) 2)))
+    (@ (i (reverse (trim-wav (reverse (trim-wav (queue-list q))))))
+      (write-byte (+ i (* 11 16)) out))))
 
 (fn smallest (x)
   (let v 65535
@@ -98,10 +107,11 @@
             lo  (smallest wav)
             hi  (biggest wav)
             rat (/ 65535 (- hi lo))
-            lwav (@ [integer (* _ rat)]
-                    (@ [- _ lo] wav)))
+            lwav  (@ #'integer (@ [* _ rat] (@ [- _ lo] wav))))
+       (with-output-file out (+ "obj/" i ".mon")
+         (wav2mon out lwav))
        (with-output-file out (+ "obj/" i ".raw")
-         (wav2pwm out lwav))
+         (wav2raw out lwav))
        (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m" "256" "-M" "256" "-o" (+ "obj/" i ".exm") (+ "obj/" i ".raw"))
                            :pty cl:*standard-output*))))
 
@@ -727,6 +737,7 @@
                           "_vcpu.asm"
 
                           ; Library
+                          "audio-boost.asm"
                           "bcd.asm"
                           ,@(unless *rom?*
                               '("blitter.asm"))
@@ -734,6 +745,7 @@
                           "digisound.asm"
                           "draw-bitmap.asm"
                           "exomizer-stream-decrunsh.asm"
+                          "exm-player.asm"
                           "joystick.asm"
                           "keyboard.asm"
                           "math.asm"

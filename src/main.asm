@@ -128,9 +128,15 @@ n:  cmp #keycode_f
     jsr set_format
     jmp toplevel
 
-f:  lda #snd_coin
-    jsr play_sound
-    jsr wait_sound
+f:  ;lda #snd_coin
+    ;jsr play_sound
+    ;jsr wait_sound
+    jsr exm_test
+l:  jsr exm_work
+    lda exm_needs_data
+    bpl -l
+    lda #$7f
+    sta $911e
     jsr round_intro
     jsr game
     jmp toplevel

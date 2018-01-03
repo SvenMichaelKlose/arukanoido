@@ -99,12 +99,8 @@ has_new_score:        0
 has_hiscore:          0
 scorechar_start:      0
 
-has_removed_brick:      0
-has_bonus_on_screen:    0
-
-num_lifes_by_score:     0
-
-has_paused:         0
+exm_play_dptr:        0 0
+exm_play_rest:        0 0
 
 ; Currently processed sprite
 sprite_char:        0   ; First char.
@@ -164,6 +160,11 @@ sprites_sy:     fill @(* 2 num_sprites)
 sprites_sw:     fill @(* 2 num_sprites)
 sprites_sh:     fill @(* 2 num_sprites)
 
+has_removed_brick:      0
+has_bonus_on_screen:    0
+num_lifes_by_score:     0
+has_paused:             0
+
 brickfx_x:      fill num_brickfx
 brickfx_y:      fill num_brickfx
 brickfx_pos:    0
@@ -175,7 +176,9 @@ score_silver:         fill num_score_digits
 removed_brick_x:    0
 removed_brick_y:    0
 
-scrx2:                  0
+scrx2:              0
+
+exm_needs_data:     0
 
 ; TV standard dependant constants
 format_params:
