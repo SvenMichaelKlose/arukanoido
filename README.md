@@ -1,34 +1,48 @@
 # Arukanoido
 
-https://en.wikipedia.org/wiki/Arkanoid/
+Arukanoido is a clone of the famous arcade game "Arkanoid" for the
+Commodore VIC–20 with at least 24K memory expansion.  It should be
+played best with paddles, which are detected automatically as soon
+as you move them.  If you don't have paddles Arukanoido switches
+to a more convenient and slower joystick mode.
 
-This is an Arkanoid clone for the Commodore VIC–20 with at least 24K
-memory expansion.  It should be played with paddles which are detected
-automatically as soon as you move them.
+This demo comes with the first eight of 33 levels.
+
+Don't play the WAV file without the volume turned down unless you
+want your ears zonked.  Instead, you can record it on a music
+cassette and slap that into a real VIC.
+
+The IMG files are the banks of the cartridge version.  You can
+fire them up with VICE like this:
+
+```
+xvic -cart2 arukanoido.img.aa -cart4 arukanoido.img.ab -cart6 arukanoido.img.ac -cartA arukanoido.img.ad
+```
 
 Arukanoido is being discussed and developed on the VIC–20 Denial forum:
 http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?t=3752
 
-You've probably found these files here:
-https://github.com/SvenMichaelKlose/arukanoido/
+Get the latest revision here:
+http://hugbox.org/pixel/software/vic-20/arukanoido/
+
+If you wanna complain or are in for crazy small talk just mail to
+Sven Michael Klose <pixel@hugbox.org>.
 
 
-# Rolling your own
+# Title screen keys
 
-You can find the latest binary 'arukanoido.prg' in this directory.
-You need a Linux machine to build your own Arukanoido.  Steel Bank
-Common Lisp AKA 'sbcl' is required.  Launch 'download-and-install.sh'
-in an empty directory and it'll clone everything and build it.
+* A, S, D, F: Move screen around.
+* F: Switch between landscape and portrait format.
 
 
-# Things missing:
+# In-game keys
 
-* Round 33 (raining objects, cannot hit the DOH, sprites over background)
-* Title screens
-* Intro
-* Correct ball angles
-* Correct reflection from Vaus
-* Ball leaves screen at top wall corners.
+* S, J: Move Vaus left.
+* D. K: Move Vaus right.
+* SPACE: Fire – doesn't work in combination with other key tough. :(
+* P: Pause the game.
+* N: Skip to next level.
+
 
 # Applications used
 
@@ -57,6 +71,10 @@ Discussion: http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?f=2&t=
 
 URL: http://vice-emu.sourceforge.net/
 
+## exomizer
+
+URL: https://bitbucket.org/magli143/exomizer/wiki/Home
+
 
 # Contributions
 
@@ -65,22 +83,22 @@ Contributions are listed by time.
 
 Code has been contributed by Sven Michael Klose <pixel@hugbox.org>.
 
-src-media/character.txt has been created with beamrider's VIC—20 Screen
-and Character Designer by pixel:
+Tiles and sprites have been created with beamrider's VIC—20 Screen
+and Character Designer:
 http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?f=14&t=7133
 
-src-media/doh.prg has been contributed by Mike. He created it
-with his VIC–20 editor MINIPAINT (there must be no ,1 in the LOAD command).
+The DOH graphics have been contributed by Mike.  He created it
+with his VIC–20 editor MINIPAINT (there must not be a ,1 in the LOAD command).
 
-src-media/intro-sequence.txt has been contributed by beamrider using his
-VIC–20 Screen and Character Designer.
-
-src-media/ark-title.prg has been contributed by tokra with help of
+A demo title screen has been contributed by tokra with help of
 Mike's MINIGRAFIK. Also no ,1 in the LOAD command.
 
-sound.bin and sound-beamrider have been contributed by beamrider.
+VIC conversions of the original tunes and sounds have been contributed
+by beamrider as well.
 
 
 # External resources
+
+https://en.wikipedia.org/wiki/Arkanoid/
 
 https://tcrf.net/Arkanoid_(Arcade)

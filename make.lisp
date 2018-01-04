@@ -855,10 +855,9 @@
   (sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-B" "-t52" "-x1" "-o" (+ "arukanoido/" i) i)
                       :pty cl:*standard-output*))
 
-(unix-sh-mkdir "arukanoido-cart")
-(sb-ext:run-program "/usr/bin/split" (list "-b" "8192" "arukanoido.img" "arukanoido-cart/arukanoido.img.")
+(sb-ext:run-program "/usr/bin/split" (list "-b" "8192" "arukanoido.img" "arukanoido/arukanoido.img.")
                     :pty cl:*standard-output*)
-(sb-ext:run-program "/usr/bin/zip" (list "-r" "-9" (+ "arukanoido-cart." *revision* ".zip") "arukanoido-cart")
+(sb-ext:run-program "/bin/cp" (list "README.md" "arukanoido/")
                     :pty cl:*standard-output*)
 
 (format t "~A bytes free before interrupt vectors.~%" (- #x314 (get-label 'before_int_vectors)))
