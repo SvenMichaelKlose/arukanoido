@@ -1,13 +1,10 @@
 ; Fixed addresses
 
-music_player = $7000
 bricks       = $1c00
 
 ; VIC settings
 
 screen              = $1000
-line_addresses_l    = $1300
-line_addresses_h    = $1330
 charset             = $1400
 colors              = $9400
 

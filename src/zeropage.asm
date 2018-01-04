@@ -234,13 +234,17 @@ digisound_x:            0
 apply_tmp:              0 0
 vcpu_tmp:               0 0
 
-txt_tmp:                fill 16
+txt_tmp:                fill 8
 
 sprite_inits:           fill @sprite_inits_size
+
+line_addresses_l:       fill 33
 
 before_int_vectors:
 
     org $320
+
+line_addresses_h:       fill 33
 
 lowmem:
     end

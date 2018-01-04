@@ -100,8 +100,11 @@
       (when (> i v)
         (= v i)))))
 
+(fn exomize-stream (to from)
+  (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
+                      :pty cl:*standard-output*))
+
 (@ (i *audio*)
-  (print i)
   (with-input-file in (+ "obj/" i ".downsampled.wav")
      (with (wav (read-wav)
             lo  (smallest wav)
@@ -112,8 +115,7 @@
          (wav2mon out lwav))
        (with-output-file out (+ "obj/" i ".raw")
          (wav2raw out lwav))
-       (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m" "256" "-M" "256" "-o" (+ "obj/" i ".exm") (+ "obj/" i ".raw"))
-                           :pty cl:*standard-output*))))
+       (exomize-stream (+ "obj/" i ".exm") (+ "obj/" i ".raw")))))
 
 (fn gen-sprite-nchars ()
   (with-queue q
@@ -740,7 +742,8 @@
                           "audio-boost.asm"
                           "bcd.asm"
                           ,@(unless *rom?*
-                              '("blitter.asm"))
+                              '("blitter.asm"
+                                "exm-nmi.asm"))
                           "chars.asm"
                           "digisound.asm"
                           "draw-bitmap.asm"
@@ -801,6 +804,7 @@
                                 "moveram.asm"
                                 "lowmem-start.asm"
                                 "blitter.asm"
+                                "exm-nmi.asm"
                                 "lowmem-end.asm"))
 
                           "end.asm"))
@@ -814,17 +818,13 @@
 (= *model* :vic-20+xk)
 
 (apply #'assemble-files "obj/gfx-ship.bin" '("media/gfx-ship.asm"))
-(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/gfx-ship.bin" "-o" "obj/gfx-ship.bin.exo")
-                    :pty cl:*standard-output*)
+(exomize-stream "obj/gfx-ship.bin" "obj/gfx-ship.bin.exo")
 (apply #'assemble-files "obj/gfx-taito.bin" '("media/gfx-taito.asm"))
-(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/gfx-taito.bin" "-o" "obj/gfx-taito.bin.exo")
-                    :pty cl:*standard-output*)
+(exomize-stream "obj/gfx-taito.bin" "obj/gfx-taito.bin.exo")
 (apply #'assemble-files "obj/gfx-background.bin" '("media/gfx-background.asm"))
-(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/gfx-background.bin" "-o" "obj/gfx-background.bin.exo")
-                    :pty cl:*standard-output*)
+(exomize-stream "obj/gfx-background.bin" "obj/gfx-background.bin.exo")
 (put-file "obj/levels.bin" (list-string (@ #'code-char +level-data+)))
-(sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m 256" "-M 256" "obj/levels.bin" "-o" "obj/levels.bin.exo")
-                    :pty cl:*standard-output*)
+(exomize-stream "obj/levels.bin" "obj/levels.bin.exo")
 
 (fn packed-font ()
   (assemble-files "obj/font-4x8.bin" "media/font-4x8.asm")
@@ -852,7 +852,7 @@
 (unix-sh-mkdir "arukanoido")
 (@ (i '("arukanoido.prg"
         "arukanoido-cpumon.prg"))
-  (sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-t52" "-x1" "-o" (+ "arukanoido/" i) i)
+  (sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-B" "-t52" "-x1" "-o" (+ "arukanoido/" i) i)
                       :pty cl:*standard-output*))
 
 (unix-sh-mkdir "arukanoido-cart")
