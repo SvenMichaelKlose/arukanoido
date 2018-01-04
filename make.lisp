@@ -13,26 +13,6 @@
 
 (unix-sh-mkdir "obj")
 
-(var *audio*
-     '("break-out"
-;       "catch"     ; Play beginning of reflection_low instead.
-;       "doh-dissolving"    ; Needs higher sample rate.
-       "doh-intro"
-       "explosion"
-       "extension"
-       "extra-life"
-       "final"
-       "game-over"
-       "laser"
-       "lost-ball"
-;       "reflection-doh" ; Needs higher sample rate.
-       "reflection-high"; Needs 4 bits.
-       "reflection-low" ; Needs 4 bits.
-       "reflection-med" ; Needs 4 bits.
-       "round-intro"
-;       "round-intro2"
-       "round-start"))
-
 (fn make-filtered-wav (name rate)
   (sb-ext:run-program "/usr/bin/sox"
                       `(
@@ -59,11 +39,6 @@
                             (downsampled-audio-name name))
                       :pty cl:*standard-output*))
 
-(@ (i *audio*)
-  (print i)
-  (make-filtered-wav i *audio-rate*)
-  (make-conversion i *audio-rate*))
-
 (fn trim-wav (x)
   (? (== x. .x.)
      (trim-wav .x)
@@ -77,14 +52,14 @@
             (queue-list q)
       (enqueue q (bit-xor ! 32768)))))
 
-(fn wav2mon (out in)
+(fn wav2mon (out in f)
   (@ (! in)
-    (write-word (* (integer (/ (bit-xor ! 32768) 8192)) 8192) out)))
+    (write-word (* (integer (/ (bit-xor ! 32768) f)) f) out)))
 
-(fn wav2raw (out in)
+(fn wav2raw (out in f m)
   (with-queue q
     (@ (! in)
-      (enqueue q (* (integer (/ ! 8192)) 2)))
+      (enqueue q (* (integer (/ ! f)) m)))
     (@ (i (reverse (trim-wav (reverse (trim-wav (queue-list q))))))
       (write-byte (+ i (* 11 16)) out))))
 
@@ -104,18 +79,48 @@
   (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
                       :pty cl:*standard-output*))
 
-(@ (i *audio*)
-  (with-input-file in (+ "obj/" i ".downsampled.wav")
-     (with (wav (read-wav)
-            lo  (smallest wav)
-            hi  (biggest wav)
-            rat (/ 65535 (- hi lo))
-            lwav  (@ #'integer (@ [* _ rat] (@ [- _ lo] wav))))
-       (with-output-file out (+ "obj/" i ".mon")
-         (wav2mon out lwav))
-       (with-output-file out (+ "obj/" i ".raw")
-         (wav2raw out lwav))
-       (exomize-stream (+ "obj/" i ".exm") (+ "obj/" i ".raw")))))
+(fn convert-wavs (x d m)
+  (@ (i x)
+    (with-input-file in (+ "obj/" i ".downsampled.wav")
+       (with (wav (read-wav)
+              lo  (smallest wav)
+              hi  (biggest wav)
+              rat (/ 65535 (- hi lo))
+              lwav  (@ #'integer (@ [* _ rat] (@ [- _ lo] wav))))
+         (with-output-file out (+ "obj/" i ".mon")
+           (wav2mon out lwav d))
+         (with-output-file out (+ "obj/" i ".raw")
+           (wav2raw out lwav d m))
+         (exomize-stream (+ "obj/" i ".exm") (+ "obj/" i ".raw"))))))
+
+(const *audio-1bit*
+       '("break-out"
+;        "catch"     ; Play beginning of reflection_low instead.
+;        "doh-dissolving"    ; Needs higher sample rate.
+        "doh-intro"
+        "explosion"
+        "extension"
+        "extra-life"
+        "final"
+        "game-over"
+        "laser"
+        "lost-ball"
+;       "reflection-doh" ; Needs higher sample rate.
+        "reflection-high"; Needs 4 bits.
+        "reflection-low" ; Needs 4 bits.
+        "reflection-med" ; Needs 4 bits.
+        "round-intro"
+;       "round-intro2"
+        "round-start"))
+
+(@ (i *audio-1bit*)
+  (print i)
+  (make-filtered-wav i *audio-rate*)
+  (make-conversion i *audio-rate*))
+;(convert-wavs *audio-1bit* 32768 8)    ; 1 bit
+(convert-wavs *audio-1bit* 16384 4)     ; 2 bits
+;(convert-wavs *audio-1bit* 8192 2)      ; 3 bits
+;(convert-wavs *audio-1bit* 4096 1)      ; 4 bits
 
 (fn gen-sprite-nchars ()
   (with-queue q

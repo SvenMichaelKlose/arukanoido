@@ -1,15 +1,5 @@
 exm_buffers = $1200
 
-exm_extra_life_size = @(length (fetch-file "obj/round-intro.raw"))
-exm_extra_life: @(fetch-file "obj/round-intro.exm")
-
-exm_test:
-    lda #<exm_extra_life
-    ldy #>exm_extra_life
-    jsr init_decruncher
-    lda #<exm_extra_life_size
-    ldy #>exm_extra_life_size
-
 exm_start:
     ; Save number of samples.
     sta exm_play_rest
