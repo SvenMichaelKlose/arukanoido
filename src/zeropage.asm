@@ -234,8 +234,6 @@ digisound_x:            0
 apply_tmp:              0 0
 vcpu_tmp:               0 0
 
-txt_tmp:                fill 8
-
 sprite_inits:           fill @sprite_inits_size
 
 line_addresses_l:       fill 33

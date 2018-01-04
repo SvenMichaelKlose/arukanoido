@@ -1,6 +1,7 @@
 ; Fixed addresses
 
 bricks       = $1c00
+txt_tmp      = bricks
 
 ; VIC settings
 
