@@ -78,8 +78,6 @@ zp_src_lo = @(+ zp_src_hi 1)
 zp_src_bi = @(+ zp_src_hi 2)
 zp_bitbuf = @(+ zp_src_hi 3)
 
-zp_len_hi  = @(+ zp_len_lo 1)
-
 zp_bits_hi = @(+ zp_bits_lo 1)
 
 zp_dest_lo = @(+ zp_dest_hi 1) ; dest addr lo
@@ -116,7 +114,6 @@ init_decruncher:
 	stx zp_dest_lo
 	stx zp_dest_hi
 	stx zp_len_lo
-	stx zp_len_hi
 	ldy #0
 ; -------------------------------------------------------------------
 ; calculate tables (49 bytes)
@@ -170,8 +167,7 @@ get_decrunched_byte:
 
 	ldy zp_len_lo
 	bne _do_sequence
-	ldx zp_len_hi
-	bne _do_sequence2
+	ldx #0
 
 	jsr _bit_get_bit1
 	beq _get_sequence
@@ -200,7 +196,6 @@ _seq_next1:
 	sta zp_len_lo
 	lda zp_bits_hi
 	adc @(-- tabl_hi),y
-	sta zp_len_hi
 ; -------------------------------------------------------------------
 ; here we decide what offset table to use (20 bytes)
 ; x is 0 here
@@ -243,11 +238,6 @@ _seq_offset_ok:
 	sta zp_src_bi
 _do_sequence:
 	ldy #0
-_do_sequence2:
-	ldx zp_len_lo
-	bne _seq_len_dec_lo
-	dec zp_len_hi
-_seq_len_dec_lo:
 	dec zp_len_lo
 ; -------------------------------------------------------------------
 	ldx zp_src_lo
