@@ -808,7 +808,13 @@
                                 "lowmem-end.asm"))
 
                           "end.asm"))
-        cmds))
+        cmds)
+  (!= (- #x314 (get-label 'before_int_vectors))
+    (format t "~A bytes free before interrupt vectors.~%" !)
+    (? (< ! 0)
+       (quit)))
+  (!= (- #x8000 (get-label 'the_end))
+    (format t "~A bytes free.~%" !)))
 
 (fn paddle-xlat ()
   (maptimes [bit-and (integer (+ 8 (/ (- 255 _) ; TODO: Häh?
@@ -844,7 +850,11 @@
 (with-temporary *show-cpu?* t
   (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt"))
 (with-temporary *rom?* t
-    (make-game :prg "arukanoido.img" "arukanoido.img.vice.txt"))
+  (make-game :prg "arukanoido.img" "arukanoido.img.vice.txt")
+  (!= (- #x3ce (+ (get-label 'lowmem) (get-label 'lowmem_size)))
+    (format t "~A bytes till $3ce.~%" !)
+    (? (< ! 0)
+       (quit))))
 (make-game :prg "arukanoido.prg" "arukanoido.prg.vice.txt")
 
 (format t "Level data: ~A B~%" (length +level-data+))
@@ -860,6 +870,4 @@
 (sb-ext:run-program "/bin/cp" (list "README.md" "arukanoido/")
                     :pty cl:*standard-output*)
 
-(format t "~A bytes free before interrupt vectors.~%" (- #x314 (get-label 'before_int_vectors)))
-(format t "~A bytes free.~%" (- #x8000 (get-label 'the_end)))
 (quit)
