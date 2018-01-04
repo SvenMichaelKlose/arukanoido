@@ -62,7 +62,6 @@ get_crunched_byte:
     sty exo_y2
     ldy #0
     lda (s),y
-    sta get_crunched_byte_tmp
     inc s
     beq +n
     ldy exo_y2
@@ -171,11 +170,9 @@ get_decrunched_byte:
 
 	jsr _bit_get_bit1
 	beq _get_sequence
-; -------------------------------------------------------------------
-; literal handling (13 bytes)
-;
 	jsr get_crunched_byte
 	bcc _do_literal
+
 ; -------------------------------------------------------------------
 ; count zero bits + 1 to get length table index (10 bytes)
 ; y = x = 0 when entering
@@ -185,8 +182,8 @@ _seq_next1:
 	iny
 	jsr _bit_get_bit1
 	beq _seq_next1
-	cpy #$11
-	bcs _do_exit
+;	cpy #$11
+;	bcs _do_exit
 ; -------------------------------------------------------------------
 ; calulate length of sequence (zp_len) (17 bytes)
 ;
@@ -216,10 +213,10 @@ _seq_size123:
 	ldx tabl_bi,y
 	jsr _bit_get_bits;
 	adc tabl_lo,y
-	bcc _seq_skipcarry
-	inc zp_bits_hi
-	clc
-_seq_skipcarry:
+;	bcc _seq_skipcarry
+;	inc zp_bits_hi
+;	clc
+;_seq_skipcarry:
 	adc zp_dest_lo
 	sta zp_src_lo
 
@@ -246,11 +243,7 @@ tabl_bit:
 	2 4 4
 tabl_off:
 	48 32 16
-; -------------------------------------------------------------------
-; get x + 1 bits (1 byte)
-;
-_bit_get_bit1:
-	inx
+
 ; -------------------------------------------------------------------
 ; get bits (31 bytes)
 ;
@@ -275,7 +268,7 @@ _bit_get_bits:
 	lda zp_bitbuf
 _bit_bits_next:
 	lsr
-	beq +l
+	beq +n
 _bit_ok:
 	rol zp_bits_lo
 	rol zp_bits_hi
@@ -286,9 +279,24 @@ _bit_ok:
 _bit_bits_done:
 	rts
 
-l:  jsr get_crunched_byte
+n:  jsr get_crunched_byte
 	ror
     jmp _bit_ok
+
+_bit_get_bit1:
+	stx zp_bits_lo
+	lda zp_bitbuf
+    lsr
+	beq +n
+l:  rol zp_bits_lo
+	sta zp_bitbuf
+	lda zp_bits_lo
+	rts
+
+n:  jsr get_crunched_byte
+	ror
+    jmp -l
+
 
 ; -------------------------------------------------------------------
 ; end of decruncher
