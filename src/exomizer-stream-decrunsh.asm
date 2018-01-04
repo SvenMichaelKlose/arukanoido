@@ -110,12 +110,15 @@ init_decruncher:
 	jsr get_crunched_byte
 	sta zp_bitbuf
 
+	ldx #@(-- buffer_len_hi)
+	stx zp_dest_hi
+	ldx #@(-- buffer_end_hi)
+	stx zp_dest_bi
     lda #buffer_start_hi
 	sta zp_src_hi
 	sta zp_src_bi
 	ldx #0
 	stx zp_dest_lo
-	stx zp_dest_hi
 	stx zp_len_lo
 	ldy #0
 ; -------------------------------------------------------------------
@@ -155,12 +158,6 @@ _init_shortcut:
 	bne _init_nextone
 	rts
 
-_do_exit:
-    sta get_crunched_byte_tmp
-    ldx exo_x
-    ldy exo_y
-    lda get_crunched_byte_tmp
-	rts
 ; -------------------------------------------------------------------
 ; decrunch one byte
 ;
@@ -225,26 +222,23 @@ _seq_size123:
 _seq_skipcarry:
 	adc zp_dest_lo
 	sta zp_src_lo
+
 _do_sequence:
 	ldy #0
 	dec zp_len_lo
-; -------------------------------------------------------------------
 	dec zp_src_lo
-; -------------------------------------------------------------------
 	lda (zp_src_lo),y
-; -------------------------------------------------------------------
+
 _do_literal:
-	ldx #@(-- buffer_len_hi)
-	stx zp_dest_hi
-	ldx #@(-- buffer_end_hi)
-	stx zp_dest_bi
-; -------------------------------------------------------------------
-_seq_dest_dec_lo:
 	dec zp_dest_lo
-; -------------------------------------------------------------------
 	sta (zp_dest_lo),y
 	clc
-	jmp _do_exit
+
+_do_exit:
+    ldx exo_x
+    ldy exo_y
+	rts
+
 ; -------------------------------------------------------------------
 ; two small static tables (6 bytes)
 ;
