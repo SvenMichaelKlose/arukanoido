@@ -78,8 +78,6 @@ zp_src_lo = @(+ zp_src_hi 1)
 zp_src_bi = @(+ zp_src_hi 2)
 zp_bitbuf = @(+ zp_src_hi 3)
 
-zp_len_hi  = @(+ zp_len_lo 1)
-
 zp_bits_hi = @(+ zp_bits_lo 1)
 
 zp_dest_lo = @(+ zp_dest_hi 1) ; dest addr lo
@@ -116,7 +114,6 @@ init_decruncher:
 	stx zp_dest_lo
 	stx zp_dest_hi
 	stx zp_len_lo
-	stx zp_len_hi
 	ldy #0
 ; -------------------------------------------------------------------
 ; calculate tables (49 bytes)
@@ -168,10 +165,9 @@ get_decrunched_byte:
     stx exo_x
     sty exo_y
 
-	ldy zp_len_lo
+    ldy #0
+	ldx zp_len_lo
 	bne _do_sequence
-	ldx zp_len_hi
-	bne _do_sequence2
 
 	jsr _bit_get_bit1
 	beq _get_sequence
@@ -198,9 +194,6 @@ _seq_next1:
 	jsr _bit_get_bits
 	adc @(-- tabl_lo),y
 	sta zp_len_lo
-	lda zp_bits_hi
-	adc @(-- tabl_hi),y
-	sta zp_len_hi
 ; -------------------------------------------------------------------
 ; here we decide what offset table to use (20 bytes)
 ; x is 0 here
@@ -222,14 +215,9 @@ _seq_size123:
 	ldx tabl_bi,y
 	jsr _bit_get_bits;
 	adc tabl_lo,y
-	bcc _seq_skipcarry
-	inc zp_bits_hi
-	clc
-_seq_skipcarry:
 	adc zp_dest_lo
 	sta zp_src_lo
-	lda zp_bits_hi
-	adc tabl_hi,y
+	lda #0
 	adc zp_dest_hi
 ; -------------------------------------------------------------------
 	cmp #buffer_len_hi
@@ -243,11 +231,6 @@ _seq_offset_ok:
 	sta zp_src_bi
 _do_sequence:
 	ldy #0
-_do_sequence2:
-	ldx zp_len_lo
-	bne _seq_len_dec_lo
-	dec zp_len_hi
-_seq_len_dec_lo:
 	dec zp_len_lo
 ; -------------------------------------------------------------------
 	ldx zp_src_lo
@@ -310,7 +293,6 @@ _bit_get_bit1:
 ;   x = #0
 ;   c = 0
 ;   zp_bits_lo = #bits_lo
-;   zp_bits_hi = #bits_hi
 ; notes:
 ;   y is untouched
 ;   other status bits are set to (a == #0)
@@ -318,7 +300,6 @@ _bit_get_bit1:
 _bit_get_bits:
 	lda #$00
 	sta zp_bits_lo
-	sta zp_bits_hi
 	cpx #$01
 	bcc _bit_bits_done
 	lda zp_bitbuf
@@ -329,7 +310,6 @@ _bit_bits_next:
 	ror
 _bit_ok:
 	rol zp_bits_lo
-	rol zp_bits_hi
 	dex
 	bne _bit_bits_next
 	sta zp_bitbuf
