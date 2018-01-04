@@ -256,17 +256,12 @@ _seq_src_dec_lo:
 _do_literal:
 	ldx zp_dest_lo
 	bne _seq_dest_dec_lo
-	ldx zp_dest_hi
-	bne _seq_dest_dec_hi
 ; ------- handle buffer wrap problematics here ----------------------
-	ldx #buffer_len_hi
+	ldx #@(-- buffer_len_hi)
 	stx zp_dest_hi
-	ldx #buffer_end_hi
+	ldx #@(-- buffer_end_hi)
 	stx zp_dest_bi
 ; -------------------------------------------------------------------
-_seq_dest_dec_hi:
-	dec zp_dest_hi
-	dec zp_dest_bi
 _seq_dest_dec_lo:
 	dec zp_dest_lo
 ; -------------------------------------------------------------------
