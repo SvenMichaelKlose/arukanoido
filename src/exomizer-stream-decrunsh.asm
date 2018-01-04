@@ -110,6 +110,9 @@ init_decruncher:
 	jsr get_crunched_byte
 	sta zp_bitbuf
 
+    lda #buffer_start_hi
+	sta zp_src_hi
+	sta zp_src_bi
 	ldx #0
 	stx zp_dest_lo
 	stx zp_dest_hi
@@ -194,8 +197,7 @@ _seq_next1:
 	jsr _bit_get_bits
 	adc @(-- tabl_lo),y
 	sta zp_len_lo
-	lda zp_bits_hi
-	adc @(-- tabl_hi),y
+	lda @(-- tabl_hi),y
 ; -------------------------------------------------------------------
 ; here we decide what offset table to use (20 bytes)
 ; x is 0 here
@@ -223,40 +225,15 @@ _seq_size123:
 _seq_skipcarry:
 	adc zp_dest_lo
 	sta zp_src_lo
-	lda zp_bits_hi
-	adc tabl_hi,y
-	adc zp_dest_hi
-; -------------------------------------------------------------------
-	cmp #buffer_len_hi
-	bcc _seq_offset_ok
-	sbc #buffer_len_hi
-	clc
-; -------------------------------------------------------------------
-_seq_offset_ok:
-	sta zp_src_hi
-	adc #buffer_start_hi
-	sta zp_src_bi
 _do_sequence:
 	ldy #0
 	dec zp_len_lo
 ; -------------------------------------------------------------------
-	ldx zp_src_lo
-	bne _seq_src_dec_lo
-; ------- handle buffer wrap problematics here ----------------------
-	ldx #@(-- buffer_len_hi)
-	stx zp_src_hi
-	ldx #@(-- buffer_end_hi)
-	stx zp_src_bi
-; -------------------------------------------------------------------
-_seq_src_dec_lo:
 	dec zp_src_lo
 ; -------------------------------------------------------------------
 	lda (zp_src_lo),y
 ; -------------------------------------------------------------------
 _do_literal:
-	ldx zp_dest_lo
-	bne _seq_dest_dec_lo
-; ------- handle buffer wrap problematics here ----------------------
 	ldx #@(-- buffer_len_hi)
 	stx zp_dest_hi
 	ldx #@(-- buffer_end_hi)
