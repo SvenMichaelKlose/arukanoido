@@ -242,17 +242,12 @@ _do_sequence:
 ; -------------------------------------------------------------------
 	ldx zp_src_lo
 	bne _seq_src_dec_lo
-	ldx zp_src_hi
-	bne _seq_src_dec_hi
 ; ------- handle buffer wrap problematics here ----------------------
-	ldx #buffer_len_hi
+	ldx #@(-- buffer_len_hi)
 	stx zp_src_hi
-	ldx #buffer_end_hi
+	ldx #@(-- buffer_end_hi)
 	stx zp_src_bi
 ; -------------------------------------------------------------------
-_seq_src_dec_hi:
-	dec zp_src_hi
-	dec zp_src_bi
 _seq_src_dec_lo:
 	dec zp_src_lo
 ; -------------------------------------------------------------------
