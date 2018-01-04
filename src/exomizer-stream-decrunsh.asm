@@ -275,9 +275,7 @@ _bit_get_bits:
 	lda zp_bitbuf
 _bit_bits_next:
 	lsr
-	bne _bit_ok
-	jsr get_crunched_byte
-	ror
+	beq +l
 _bit_ok:
 	rol zp_bits_lo
 	rol zp_bits_hi
@@ -287,6 +285,11 @@ _bit_ok:
 	lda zp_bits_lo
 _bit_bits_done:
 	rts
+
+l:  jsr get_crunched_byte
+	ror
+    jmp _bit_ok
+
 ; -------------------------------------------------------------------
 ; end of decruncher
 ; -------------------------------------------------------------------

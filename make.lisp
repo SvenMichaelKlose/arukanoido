@@ -79,12 +79,12 @@
 
 (fn wav2mon (out in)
   (@ (! in)
-    (write-word (* (integer (/ (bit-xor ! 32768) 16384)) 16384) out)))
+    (write-word (* (integer (/ (bit-xor ! 32768) 8192)) 8192) out)))
 
 (fn wav2raw (out in)
   (with-queue q
     (@ (! in)
-      (enqueue q (* (integer (/ ! 16384)) 4)))
+      (enqueue q (* (integer (/ ! 8192)) 2)))
     (@ (i (reverse (trim-wav (reverse (trim-wav (queue-list q))))))
       (write-byte (+ i (* 11 16)) out))))
 
