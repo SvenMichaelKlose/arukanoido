@@ -75,7 +75,7 @@
       (when (> i v)
         (= v i)))))
 
-(fn exomize-stream (to from)
+(fn exomize-stream (from to)
   (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
                       :pty cl:*standard-output*))
 
@@ -91,7 +91,7 @@
            (wav2mon out lwav d))
          (with-output-file out (+ "obj/" i ".raw")
            (wav2raw out lwav d m))
-         (exomize-stream (+ "obj/" i ".exm") (+ "obj/" i ".raw"))))))
+         (exomize-stream (+ "obj/" i ".raw") (+ "obj/" i ".exm"))))))
 
 (const *audio-2bit*
        '("break-out"
