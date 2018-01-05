@@ -57,7 +57,7 @@ play_sound:
     beq +m
     bcs +n
 
-m:  lda #$7f
+m:  lda #$60
     sta $911e
     lda is_playing_digis
     beq +l

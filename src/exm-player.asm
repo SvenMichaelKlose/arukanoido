@@ -1,7 +1,7 @@
 exm_buffers = $1200
 
 exm_start:
-    ldx #$7f
+    lda #$60        ; Disable NMI timer and interrupt.
     sta $911e
 
     ; Save number of samples.
@@ -40,23 +40,23 @@ n:  stx $9114
     lda #>exm_play_sample
     sta $319
 
-    lda #$40        ; Enable NMI timer and interrupt.
+    lda #$40        ; Set periodic timer.
     sta $911b
-    lda #$e0
+    lda #$e0        ; Enable NMI timer and interrupt.
     sta $911e
 
     rts
 
 exm_work:
     pha
+    lda exm_needs_data
+    bmi +r
+    beq +r
+
     txa
     pha
     tya
     pha
-
-    lda exm_needs_data
-    bmi +r
-    beq +r
 
     ldx #88
     ldy #0
@@ -71,11 +71,11 @@ n:  inc exm_play_dptr
     dex
     bne -l
 
-r:  pla
+r2: pla
     tya
     pla
     txa
-    pla
+r:  pla
     rts
 
 finished:
@@ -83,11 +83,11 @@ finished:
     sty exm_needs_data
     lda #$60
     sta $911e
-    jmp -r
+    jmp -r2
 
 buffer_filled:
     lda @(++ exm_play_dptr)
     eor #1
     sta @(++ exm_play_dptr)
     sty exm_needs_data
-    jmp -r
+    jmp -r2
