@@ -109,11 +109,11 @@
          "reflection-high"; Needs 4 bits.
          "reflection-low" ; Needs 4 bits.
          "reflection-med" ; Needs 4 bits.
-         "round-intro"
-;        "round-intro2"
-         "round-start"))
+))
 
-(const *audio-3bit* nil)
+(const *audio-3bit*
+       '("round-intro"
+         "round-start"))
 
 (@ (i *audio-2bit*)
   (print i)
@@ -121,7 +121,7 @@
   (make-conversion i *audio-rate*))
 ;(convert-wavs *audio-1bit* 32768 8)    ; 1 bit
 (convert-wavs *audio-2bit* 16384 4)     ; 2 bits
-;(convert-wavs *audio-3bit* 8192 2)      ; 3 bits
+(convert-wavs *audio-3bit* 8192 2)      ; 3 bits
 ;(convert-wavs *audio-4bit* 4096 1)      ; 4 bits
 
 (fn gen-sprite-nchars ()
