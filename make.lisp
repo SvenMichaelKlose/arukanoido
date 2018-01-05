@@ -93,21 +93,25 @@
            (wav2raw out lwav d m))
          (exomize-stream (+ "obj/" i ".raw") (+ "obj/" i ".exm"))))))
 
+(const *audio-1bit*
+       '(
+         "break-out"
+         "extra-life"
+         ))
+
 (const *audio-2bit*
-       '("break-out"
+       '(
 ;        "catch"     ; Play beginning of reflection_low instead.
 ;        "doh-dissolving"    ; Needs higher sample rate.
          "doh-intro"
          "explosion"
          "extension"
-         "extra-life"
          "final"
          "game-over"
          "laser"
          "lost-ball"
 ;        "reflection-doh" ; Needs higher sample rate.
          "round-intro"
-;         "round-start"
 ))
 
 (const *audio-3bit*
@@ -115,18 +119,21 @@
          "reflection-high"; Needs 4 bits.
          "reflection-low" ; Needs 4 bits.
          "reflection-med" ; Needs 4 bits.
-;          "round-intro"
-         "round-start"
+         "round-start"    ; Needs more companding.
 ))
 
-(@ (i (+ *audio-2bit* *audio-3bit*))
+(const *audio-4bit*
+       '(
+))
+
+(@ (i (+ *audio-1bit* *audio-2bit* *audio-3bit* *audio-4bit*))
   (print i)
   (make-filtered-wav i *audio-rate*)
   (make-conversion i *audio-rate*))
-;(convert-wavs *audio-1bit* 32768 8)    ; 1 bit
+(convert-wavs *audio-1bit* 32768 8)    ; 1 bit
 (convert-wavs *audio-2bit* 16384 4)     ; 2 bits
 (convert-wavs *audio-3bit* 8192 2)      ; 3 bits
-;(convert-wavs *audio-4bit* 4096 1)      ; 4 bits
+(convert-wavs *audio-4bit* 4096 1)      ; 4 bits
 
 (fn gen-sprite-nchars ()
   (with-queue q
