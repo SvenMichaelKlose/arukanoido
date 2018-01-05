@@ -75,10 +75,19 @@ r:  pla
     rts
 
 finished:
-    dey
+    dex
+    beq +n
+    lda #$b0
+l:  sta (exm_play_dptr),y
+    inc exm_play_dptr
+    dex
+    bne -l
+
+n:  dey
     sty exm_needs_data
     lda #$60
     sta $911e
+
     jmp -r2
 
 buffer_filled:
