@@ -110,7 +110,12 @@ if @*show-cpu?*
     sta $900f
 end
 
-    jmp $eb18       ; CBM ROM IRQ return
+    pla
+    tay
+    pla
+    tax
+    pla
+    rti
 
 init_music_data: @(fetch-file "sound-init.bin")
 init_music_data_end:
