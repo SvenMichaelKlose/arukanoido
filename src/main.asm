@@ -1,4 +1,7 @@
 clear_data:
+    lda #$60
+    sta $911e
+
     lda #0
     tax
 l:  cpx #@(-- uncleaned_zp)
@@ -22,6 +25,9 @@ n:  sta charset,x
     sta @(+ 1024 768 charset),x
     dex
     bne -l
+
+    lda #$ff
+    sta exm_needs_data
 
     ldy #sprite_inits_size
     ldx #0
@@ -93,6 +99,8 @@ m:  stx scrx2
 l:  jsr test_fire
     beq +f
 
+    jsr exm_work
+
     jsr poll_keypress
     bcc -l
 
@@ -121,22 +129,25 @@ n:  cmp #keycode_j
     jmp -l
 
 n:  cmp #keycode_f
-    bne -l
+    bne +n
     lda is_landscape
     eor #1
     sta is_landscape
     jsr set_format
     jmp toplevel
 
-f:  ;lda #snd_coin
-    ;jsr play_sound
-    ;jsr wait_sound
-    jsr exm_test
-l:  jsr exm_work
-    lda exm_needs_data
-    bpl -l
-    lda #$7f
-    sta $911e
+n:  cmp #keycode_m
+    bne -l
+    lda is_playing_digis
+    eor #1
+    sta is_playing_digis
+    lda #snd_doh_round
+    jsr play_sound
+    jmp -l
+
+f:  lda #snd_miss
+    jsr play_sound
+    jsr wait_sound
     jsr round_intro
     jsr game
     jmp toplevel

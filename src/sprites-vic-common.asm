@@ -5,11 +5,10 @@ if @*show-cpu?*
 end
 
     ldx #@(-- num_sprites)
-l:  sei
-
-    lda sprites_i,x
+l:  lda sprites_i,x
     bmi +next
 
+    sei
     jsr draw_huge_sprite
 
     ; Save position of drawn sprite.
@@ -36,8 +35,10 @@ n:  lda sprites_x,x
     lda sprites_h,x
     sta sprites_sh,y
 
-next:
     cli
+    jsr exm_work
+
+next:
     dex
     bpl -l
 

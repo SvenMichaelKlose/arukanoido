@@ -1,6 +1,13 @@
 wait:
     lda framecounter
-l:  cmp framecounter
+l:  pha
+    txa
+    pha
+    jsr exm_work
+    pla
+    tax
+    pla
+    cmp framecounter
     beq -l
     dex
     bne wait

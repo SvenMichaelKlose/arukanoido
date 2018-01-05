@@ -61,26 +61,14 @@ n:  dec c
 get_crunched_byte:
     sty exo_y2
     ldy #0
-    lda (s),y
-    inc s
+    lda (exo_s),y
+    inc exo_s
     beq +n
     ldy exo_y2
     rts
-n:  inc @(++ s)
+n:  inc @(++ exo_s)
     ldy exo_y2
     rts
-
-; -------------------------------------------------------------------
-; zero page addresses used
-; -------------------------------------------------------------------
-zp_src_lo = @(+ zp_src_hi 1)
-zp_src_bi = @(+ zp_src_hi 2)
-zp_bitbuf = @(+ zp_src_hi 3)
-
-zp_bits_hi = @(+ zp_bits_lo 1)
-
-zp_dest_lo = @(+ zp_dest_hi 1) ; dest addr lo
-zp_dest_bi = @(+ zp_dest_hi 2) ; dest addr hi
 
 ; -------------------------------------------------------------------
 ; symbolic names for constants
@@ -104,8 +92,8 @@ tabl_hi = @(+ decrunch_table 104)
 ; decimal flag has to be #0 (it almost always is, otherwise do a cld)
 ; -------------------------------------------------------------------
 init_decruncher:
-    sta s
-    sty @(++ s)
+    sta exo_s
+    sty @(++ exo_s)
 	jsr get_crunched_byte
 	sta zp_bitbuf
 
@@ -298,16 +286,6 @@ n:  jsr get_crunched_byte
     jmp -l
 
 
-; -------------------------------------------------------------------
-; end of decruncher
-; -------------------------------------------------------------------
-
-; -------------------------------------------------------------------
-; this 156 byte table area may be relocated. It may also be clobbered
-; by other data between decrunches.
-; -------------------------------------------------------------------
-decrunch_table = @(- #x1f00 156)
-;    fill 156
 ; -------------------------------------------------------------------
 ; end of decruncher
 ; -------------------------------------------------------------------

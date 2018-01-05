@@ -14,8 +14,14 @@ l:  lda @(+ 2 exm_play_ptr)
     eor #1
     sta @(+ 2 exm_play_ptr)
     lda exm_needs_data
+    bmi +done
     ora #1
     sta exm_needs_data
 
-    lda digisound_a
+r:  lda digisound_a
     rti
+
+done:
+    lda #$7f
+    sta $911e
+    bne -r

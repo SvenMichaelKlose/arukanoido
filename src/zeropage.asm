@@ -65,6 +65,10 @@ vaus_last_x:          0
 exo_x:                0
 exo_y:                0
 exo_y2:               0
+exo_s:                0 0
+exm_play_dptr:        0 0
+exm_play_rest:        0 0
+exm_timer:            0
 
 framecounter:         0 0
 lifes:                0
@@ -84,21 +88,11 @@ has_collision:        0
 ball_x:               0
 ball_y:               0
 
-has_hit_brick:          0
-has_hit_silver_brick:   0 ; TODO: Perhaps merge with has_golden_brick.
-has_hit_golden_brick:   0
-has_hit_vaus:           0
-num_hits:               0 ; Used to increase the ball speed.
-
 laser_has_hit:        0   ; For the laser controller to remember if it hit one the left.
 is_testing_laser_hit: 0
 has_new_score:        0
 has_hiscore:          0
 scorechar_start:      0
-
-exm_play_dptr:        0 0
-exm_play_rest:        0 0
-exm_timer:            0
 
 ; Currently processed sprite
 sprite_char:        0   ; First char.
@@ -132,10 +126,17 @@ sprites_h:      fill num_sprites
 
 score:      fill num_score_digits
 
-zp_src_hi:      0 0 0 0 
+zp_src_hi:      0
+zp_src_lo:      0
+zp_src_bi:      0
+zp_bitbuf:      0
+
 zp_len_lo:      0 0
-zp_bits_lo:     0 0
-zp_dest_hi:     0 0 0 
+zp_bits_lo:     0
+zp_bits_hi:     0
+zp_dest_hi:     0
+zp_dest_lo:     0
+zp_dest_bi:     0
 
 uncleaned_zp:
 user_screen_origin_x:   0
@@ -143,6 +144,7 @@ user_screen_origin_y:   0
 
 is_ntsc:                0
 is_landscape:           0
+is_playing_digis:       0
 
     @(check-zeropage-size (- #x00fc num_score_digits))
     org @(- #x00fc num_score_digits)
@@ -162,6 +164,12 @@ has_removed_brick:      0
 has_bonus_on_screen:    0
 num_lifes_by_score:     0
 has_paused:             0
+
+has_hit_brick:          0
+has_hit_silver_brick:   0 ; TODO: Perhaps merge with has_golden_brick.
+has_hit_golden_brick:   0
+has_hit_vaus:           0
+num_hits:               0 ; Used to increase the ball speed.
 
 num_obstacles:        0
 joystick_status:      0

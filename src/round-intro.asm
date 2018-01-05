@@ -24,13 +24,13 @@ round_intro:
     lda #white
     sta curcol
 
+    lda #snd_theme
+    jsr play_sound
+
     lda #<txt_round_intro
     sta s
     lda #>txt_round_intro
     sta @(++ s)
-
-    lda #snd_theme
-    jsr play_sound
 
 l5: lda playfield_yc
     clc
@@ -56,7 +56,7 @@ n:  cmp #253
     beq +r2
 
     ldx #2
-    jsr ship_flicker
+    jsr wait
 
     jmp -l2
 
@@ -64,7 +64,7 @@ r2: jsr wait_fire_released
 r:  rts
 
 m:  ldx #15
-    jsr ship_flicker
+    jsr wait
 
     jsr clear_intro_text
 
@@ -127,17 +127,6 @@ l3: ldy playfield_yc
     lda scrx
     cmp #14
     bne -l3
-    rts
-
-ship_flicker:
-l4: lda $9004
-    beq -l4
-
-l3: lda $9004
-    bne -l3
-
-    dex
-    bne -l4
     rts
 
 txt_round_intro:

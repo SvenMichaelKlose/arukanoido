@@ -1,6 +1,9 @@
 exm_buffers = $1200
 
 exm_start:
+    ldx #$7f
+    sta $911e
+
     ; Save number of samples.
     sta exm_play_rest
     iny
@@ -19,11 +22,7 @@ exm_start:
     ; Decrunch first buffer.
     lda #1
     sta exm_needs_data
-l:  jsr exm_work
-    lda exm_needs_data
-    bne -l
-    lda #1
-    sta exm_needs_data
+    jsr exm_work
 
     ldx #<digisound_timer_pal
     ldy #>digisound_timer_pal
@@ -43,12 +42,18 @@ n:  stx $9114
 
     lda #$40        ; Enable NMI timer and interrupt.
     sta $911b
-    lda #$c0
+    lda #$e0
     sta $911e
 
     rts
 
 exm_work:
+    pha
+    txa
+    pha
+    tya
+    pha
+
     lda exm_needs_data
     bmi +r
     beq +r
@@ -66,16 +71,23 @@ n:  inc exm_play_dptr
     dex
     bne -l
 
-r:  rts
+r:  pla
+    tya
+    pla
+    txa
+    pla
+    rts
 
 finished:
     dey
     sty exm_needs_data
-    rts
+    lda #$60
+    sta $911e
+    jmp -r
 
 buffer_filled:
     lda @(++ exm_play_dptr)
     eor #1
     sta @(++ exm_play_dptr)
     sty exm_needs_data
-    rts
+    jmp -r

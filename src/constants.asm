@@ -2,6 +2,7 @@
 
 bricks       = $1c00
 txt_tmp      = bricks
+decrunch_table = $1e00      ; 156 bytes
 
 ; VIC settings
 

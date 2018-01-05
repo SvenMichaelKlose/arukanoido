@@ -93,34 +93,36 @@
            (wav2raw out lwav d m))
          (exomize-stream (+ "obj/" i ".exm") (+ "obj/" i ".raw"))))))
 
-(const *audio-1bit*
+(const *audio-2bit*
        '("break-out"
 ;        "catch"     ; Play beginning of reflection_low instead.
 ;        "doh-dissolving"    ; Needs higher sample rate.
-        "doh-intro"
-        "explosion"
-        "extension"
-        "extra-life"
-        "final"
-        "game-over"
-        "laser"
-        "lost-ball"
-;       "reflection-doh" ; Needs higher sample rate.
-        "reflection-high"; Needs 4 bits.
-        "reflection-low" ; Needs 4 bits.
-        "reflection-med" ; Needs 4 bits.
-        "round-intro"
-;       "round-intro2"
-        "round-start"))
+         "doh-intro"
+         "explosion"
+         "extension"
+         "extra-life"
+         "final"
+         "game-over"
+         "laser"
+         "lost-ball"
+;        "reflection-doh" ; Needs higher sample rate.
+         "reflection-high"; Needs 4 bits.
+         "reflection-low" ; Needs 4 bits.
+         "reflection-med" ; Needs 4 bits.
+         "round-intro"
+;        "round-intro2"
+         "round-start"))
 
-(@ (i *audio-1bit*)
+(const *audio-3bit* nil)
+
+(@ (i *audio-2bit*)
   (print i)
   (make-filtered-wav i *audio-rate*)
   (make-conversion i *audio-rate*))
 ;(convert-wavs *audio-1bit* 32768 8)    ; 1 bit
-(convert-wavs *audio-1bit* 16384 4)     ; 2 bits
-;(convert-wavs *audio-1bit* 8192 2)      ; 3 bits
-;(convert-wavs *audio-1bit* 4096 1)      ; 4 bits
+;(convert-wavs *audio-2bit* 16384 4)     ; 2 bits
+(convert-wavs *audio-3bit* 8192 2)      ; 3 bits
+;(convert-wavs *audio-4bit* 4096 1)      ; 4 bits
 
 (fn gen-sprite-nchars ()
   (with-queue q
@@ -803,6 +805,9 @@
                           "round-intro.asm"
                           "round-start.asm"
                           "patch.asm"
+
+                          ; Add-ons
+                          "music-arcade.asm"
 
                           ,@(when *rom?*
                               '("init.asm"

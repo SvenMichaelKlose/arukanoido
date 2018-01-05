@@ -16,6 +16,7 @@ main:
     ; Blank screen.
     lda #0
     sta $9002
+    sta is_playing_digis
 
     ldx #$ff
     txs
