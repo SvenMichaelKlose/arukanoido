@@ -1,8 +1,8 @@
 exm_buffers = $1200
 
 exm_start:
-    lda #$60        ; Disable NMI timer and interrupt.
-    sta $911e
+    ldx #$60        ; Disable NMI timer and interrupt.
+    stx $911e
 
     ; Save number of samples.
     sta exm_play_rest
@@ -72,9 +72,9 @@ n:  inc exm_play_dptr
     bne -l
 
 r2: pla
-    tya
+    tay
     pla
-    txa
+    tax
 r:  pla
     rts
 
