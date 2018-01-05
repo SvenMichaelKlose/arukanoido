@@ -1,11 +1,22 @@
 draw_level:
-    lda current_level
-    sta s
-    ldy @(++ current_level)
-    sty @(++ s)
+    lda #<level_data
+    ldy #>level_data
+    jsr init_decruncher
+
+    ldx level
+l:  dex
+    beq +n
+    txa
+    pha
+m:  jsr get_decrunched_byte
+    cmp #15
+    bne -m
+    pla
+    tax
+    jmp -l
 
     ; Clear brick map.
-    ldx #0
+n:  ldx #0
     txa
 l:  sta bricks,x
     sta @(+ bricks 256),x
@@ -58,11 +69,7 @@ o:  inc scrx
     inc scry
     jmp -m
     
-r:  lda s
-    sta current_level
-    lda @(++ s)
-    sta @(++ current_level)
-    rts
+r:  rts
 
 brick_to_char:
     tax

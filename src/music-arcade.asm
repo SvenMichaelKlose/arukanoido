@@ -1,6 +1,6 @@
 sample_addrs_l:
     <exm_round_intro
-    0 ;<exm_round_start
+    <exm_round_start
     0 ;<exm_extra_life
     <exm_game_over
     <exm_doh_intro
@@ -9,8 +9,8 @@ sample_addrs_l:
     0 ;<exm_reflection_med
     0 ;<exm_reflection_high
     0
-    0 ;<exm_lost_ball
-    0 ;<exm_lost_ball
+    <exm_lost_ball
+    <exm_lost_ball
     0
     0
     0 ;<exm_extension
@@ -20,7 +20,7 @@ sample_addrs_l:
 
 sample_addrs_h:
     >exm_round_intro
-    0 ;>exm_round_start
+    >exm_round_start
     0 ;>exm_extra_life
     >exm_game_over
     >exm_doh_intro
@@ -29,8 +29,8 @@ sample_addrs_h:
     0 ;>exm_reflection_med
     0 ;>exm_reflection_high
     0
-    0 ;>exm_lost_ball
-    0 ;>exm_lost_ball
+    >exm_lost_ball
+    >exm_lost_ball
     0
     0
     0 ;>exm_extension
@@ -40,7 +40,7 @@ sample_addrs_h:
 
 sample_len_l:
     <exm_round_intro_size
-    0 ;<exm_round_start_size
+    <exm_round_start_size
     0 ;<exm_extra_life_size
     <exm_game_over_size
     <exm_doh_intro_size
@@ -49,8 +49,8 @@ sample_len_l:
     0 ;<exm_reflection_med_size
     0 ;<exm_reflection_high_size
     0
-    0 ;<exm_lost_ball_size
-    0 ;<exm_lost_ball_size
+    <exm_lost_ball_size
+    <exm_lost_ball_size
     0
     0
     0 ;<exm_extension_size
@@ -60,7 +60,7 @@ sample_len_l:
 
 sample_len_h:
     >exm_round_intro_size
-    0 ;>exm_round_start_size
+    >exm_round_start_size
     0 ;>exm_extra_life_size
     >exm_game_over_size
     >exm_doh_intro_size
@@ -69,8 +69,8 @@ sample_len_h:
     0 ;>exm_reflection_med_size
     0 ;>exm_reflection_high_size
     0
-    0 ;>exm_lost_ball_size
-    0 ;>exm_lost_ball_size
+    >exm_lost_ball_size
+    >exm_lost_ball_size
     0
     0
     0 ;>exm_extension_size
@@ -92,8 +92,8 @@ exm_game_over_size =   @(length (fetch-file "obj/game-over.raw"))
 exm_game_over:         @(fetch-file "obj/game-over.exm")
 ;exm_laser_size =   @(length (fetch-file "obj/laser.raw"))
 ;exm_laser:         @(fetch-file "obj/laser.exm")
-;exm_lost_ball_size =   @(length (fetch-file "obj/lost-ball.raw"))
-;exm_lost_ball:         @(fetch-file "obj/lost-ball.exm")
+exm_lost_ball_size =   @(length (fetch-file "obj/lost-ball.raw"))
+exm_lost_ball:         @(fetch-file "obj/lost-ball.exm")
 ;exm_reflection_doh_size =   @(length (fetch-file "obj/reflection-doh.raw"))
 ;exm_reflection_doh:         @(fetch-file "obj/reflection-doh.exm")
 ;exm_reflection_high_size =   @(length (fetch-file "obj/reflection-high.raw"))
@@ -104,5 +104,5 @@ exm_game_over:         @(fetch-file "obj/game-over.exm")
 ;exm_reflection_med:         @(fetch-file "obj/reflection-med.exm")
 exm_round_intro_size =   @(length (fetch-file "obj/round-intro.raw"))
 exm_round_intro:         @(fetch-file "obj/round-intro.exm")
-;exm_round_start_size =   @(length (fetch-file "obj/round-start.raw"))
-;exm_round_start:         @(fetch-file "obj/round-start.exm")
+exm_round_start_size =   @(length (fetch-file "obj/round-start.raw"))
+exm_round_start:         @(fetch-file "obj/round-start.exm")

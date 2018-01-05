@@ -120,8 +120,8 @@
   (make-filtered-wav i *audio-rate*)
   (make-conversion i *audio-rate*))
 ;(convert-wavs *audio-1bit* 32768 8)    ; 1 bit
-;(convert-wavs *audio-2bit* 16384 4)     ; 2 bits
-(convert-wavs *audio-3bit* 8192 2)      ; 3 bits
+(convert-wavs *audio-2bit* 16384 4)     ; 2 bits
+;(convert-wavs *audio-3bit* 8192 2)      ; 3 bits
 ;(convert-wavs *audio-4bit* 4096 1)      ; 4 bits
 
 (fn gen-sprite-nchars ()

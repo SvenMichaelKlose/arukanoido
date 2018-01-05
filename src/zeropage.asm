@@ -24,8 +24,6 @@ a2:                   0
 a3:                   0
 a4:                   0
 
-current_level:        0 0 ; Pointer to next level's data (compressed with exomizer).
-
 ; Temporaries.
 tmp:                  0
 tmp2:                 0

@@ -35,15 +35,6 @@ game:
     sta lifes
     jsr init_score
 
-    ; Reset level data stream.
-    lda #<level_data
-    ldy #>level_data
-    jsr init_decruncher
-    lda s
-    sta current_level
-    lda @(++ s)
-    sta @(++ current_level)
-
 next_level:
     lda #0
     sta is_running_game
