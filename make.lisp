@@ -115,7 +115,7 @@
        '("round-intro"
          "round-start"))
 
-(@ (i *audio-2bit*)
+(@ (i (+ *audio-2bit* *audio-3bit*))
   (print i)
   (make-filtered-wav i *audio-rate*)
   (make-conversion i *audio-rate*))
