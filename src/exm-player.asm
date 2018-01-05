@@ -1,5 +1,3 @@
-exm_buffers = $1200
-
 exm_start:
     ldx #$60        ; Disable NMI timer and interrupt.
     stx $911e
@@ -16,8 +14,6 @@ exm_start:
     ldy #>exm_buffers
     sty @(+ 2 exm_play_ptr)
     sty @(++ exm_play_dptr)
-
-    jsr audio_boost
 
     ; Decrunch first buffer.
     lda #1

@@ -66,7 +66,7 @@ m:  lda #$60
     sta exm_needs_data
 
     lda @(-- sample_addrs_l),x
-    beq +l
+    beq +n
     lda @(-- sample_addrs_l),x
     ldy @(-- sample_addrs_h),x
     jsr init_decruncher

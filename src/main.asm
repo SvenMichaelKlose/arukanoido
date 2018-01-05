@@ -141,7 +141,9 @@ n:  cmp #keycode_m
     lda is_playing_digis
     eor #1
     sta is_playing_digis
-    lda #snd_miss
+    beq +n
+    jsr audio_boost
+n:  lda #snd_miss
     jsr play_sound
     jmp -l
 

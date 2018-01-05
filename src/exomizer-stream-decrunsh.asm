@@ -31,9 +31,6 @@
 ; a maximum offset size greater than the buffer size. use the -m option
 ; with a value of (buffer_len_hi * 256) or less.
 ; -------------------------------------------------------------------
-buffer_start_hi     = $1f
-buffer_len_hi       = $01
-
 decrunch_block:
     jsr init_decruncher
     jsr get_decrunched_byte

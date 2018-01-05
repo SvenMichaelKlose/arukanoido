@@ -192,7 +192,7 @@ n:  cmp #keycode_n
     sta bricks_left
     jmp next_level
 
-l:  jsr random              ; Improve randomness and avoid CRTC hsync wobble.
+l:  jsr exm_work
     lda has_moved_sprites
     beq -n2
     lda #0

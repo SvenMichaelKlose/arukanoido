@@ -106,14 +106,18 @@
          "laser"
          "lost-ball"
 ;        "reflection-doh" ; Needs higher sample rate.
-         "reflection-high"; Needs 4 bits.
-         "reflection-low" ; Needs 4 bits.
-         "reflection-med" ; Needs 4 bits.
+         "round-intro"
+;         "round-start"
 ))
 
 (const *audio-3bit*
-       '("round-intro"
-         "round-start"))
+       '(
+         "reflection-high"; Needs 4 bits.
+         "reflection-low" ; Needs 4 bits.
+         "reflection-med" ; Needs 4 bits.
+;          "round-intro"
+         "round-start"
+))
 
 (@ (i (+ *audio-2bit* *audio-3bit*))
   (print i)

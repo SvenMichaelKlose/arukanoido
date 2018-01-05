@@ -1,8 +1,12 @@
 ; Fixed addresses
 
-bricks       = $1c00
-txt_tmp      = bricks
-decrunch_table = $1e00      ; 156 bytes
+bricks          = $1c00
+txt_tmp         = bricks
+decrunch_table  = $1250      ; 156 bytes
+buffer_start_hi = $13
+buffer_len_hi   = $01
+exm_buffers     = $1e00
+
 
 ; VIC settings
 

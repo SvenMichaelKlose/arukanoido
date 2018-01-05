@@ -1,5 +1,5 @@
 audio_boost:
-    lda #$00
+    lda #$b0
     sta $900e
     ldx #$7e
     stx $900c
