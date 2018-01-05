@@ -82,8 +82,10 @@ n:  lda mode_break
     jmp +n
 m:  pla
     
-n:  jsr play_music
-    jsr set_vaus_color
+n:  lda is_playing_digis
+    bne +n
+    jsr play_music
+n:  jsr set_vaus_color
     lda is_running_game
     beq +done
 

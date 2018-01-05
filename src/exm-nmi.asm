@@ -22,6 +22,8 @@ r:  lda digisound_a
     rti
 
 done:
+    lda #0
+    sta current_song
     lda #$7f
     sta $911e
     bne -r

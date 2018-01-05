@@ -52,6 +52,7 @@ play_sound:
     pha
     ldx music_tmp
     ldy current_song
+    beq +m
     lda sound_priorities,y
     cmp sound_priorities,x
     beq +m
@@ -62,9 +63,6 @@ m:  lda #$60
     lda is_playing_digis
     beq +l
 
-    lda #$ff
-    sta exm_needs_data
-
     lda @(-- sample_addrs_l),x
     beq +n
     lda @(-- sample_addrs_l),x
@@ -74,6 +72,10 @@ m:  lda #$60
     lda @(-- sample_len_l),x
     ldy @(-- sample_len_h),x
     jsr exm_start
+    lda music_tmp
+    sta current_song
+    lda #$ff
+    sta requested_song
     jmp +n
 
 l:  lda #$ff
@@ -87,6 +89,8 @@ n:  pla
     rts
 
 wait_sound:
+    lda is_playing_digis
+    bne +n
     jsr exm_work
     lda requested_song
     cmp #$ff
@@ -94,8 +98,8 @@ wait_sound:
 l:  jsr exm_work
     lda current_song
     bne -l
-l:  jsr exm_work
+n:  jsr exm_work
     lda exm_needs_data
-    bpl -l
+    bpl -n
 
     rts

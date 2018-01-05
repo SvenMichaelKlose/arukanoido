@@ -17,6 +17,7 @@ main:
     lda #0
     sta $9002
     sta is_playing_digis
+    sta current_song
 
     ldx #$ff
     txs

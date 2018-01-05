@@ -85,8 +85,6 @@ l:  sta (exm_play_dptr),y
 
 n:  dey
     sty exm_needs_data
-    lda #$60
-    sta $911e
 
     jmp -r2
 
