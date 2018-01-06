@@ -120,7 +120,7 @@ l:  stx user_screen_origin_x
 
     lda vaus_y
     sec
-    sbc #2
+    sbc #2      ; Rounded half ball_height.
     sta ball_vaus_y_upper
     tax
     dex
