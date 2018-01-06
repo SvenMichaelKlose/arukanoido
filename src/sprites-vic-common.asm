@@ -129,17 +129,24 @@ end
 clear_sprites:
     ldx #0
 l:  lda screen,x
-    and #foreground
-    cmp #foreground
-    beq +n
-    lda #0
+    jsr +j
     sta screen,x
-n:  lda @(+ 258 screen),x
-    and #foreground
-    cmp #foreground
-    beq +n
-    lda #0
-    sta @(+ 258 screen),x
+    lda @(+ 256 screen),x
+    jsr +j
+    sta @(+ 256 screen),x
+    cpx #76
+    bcs +n
+    lda @(+ 512 screen),x
+    jsr +j
+    sta @(+ 512 screen),x
 n:  dex
     bne -l
+    rts
+
+j:  tay
+    and #foreground
+    cmp #foreground
+    beq +n
+    ldy #0
+n:  tya
     rts
