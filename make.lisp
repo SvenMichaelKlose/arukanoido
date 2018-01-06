@@ -79,10 +79,18 @@
   (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
                       :pty cl:*standard-output*))
 
+(fn rle-compress (x &optional (n 0))
+  (?
+    (not x)          nil
+    (not .x)         x
+    (& (< n 15)
+       (== x. .x.))  (rle-compress .x (++ n))
+    (. (+ (* n 16) (bit-and x. 15)) (rle-compress .x))))
+
 (fn convert-wavs (x d m)
   (@ (i x)
-    (with-input-file in (+ "obj/" i ".downsampled.wav")
-       (with (wav (read-wav)
+       (with (wav (with-input-file in (+ "obj/" i ".downsampled.wav")
+                    (read-wav in))
               lo  (smallest wav)
               hi  (biggest wav)
               rat (/ 65535 (- hi lo))
@@ -91,16 +99,19 @@
            (wav2mon out lwav d))
          (with-output-file out (+ "obj/" i ".raw")
            (wav2raw out lwav d m))
-         (exomize-stream (+ "obj/" i ".raw") (+ "obj/" i ".exm"))))))
+         (with-output-file out (+ "obj/" i ".rle")
+           (@ (i (rle-compress (@ #'char-code (string-list (fetch-file (+ "obj/" i ".raw"))))))
+             (write-byte i out)))
+         (exomize-stream (+ "obj/" i ".raw") (+ "obj/" i ".exm")))))
 
 (const *audio-1bit*
        '(
-         "break-out"
-         "extra-life"
-         ))
+        ))
 
 (const *audio-2bit*
        '(
+         "break-out"
+         "extra-life"
 ;        "catch"     ; Play beginning of reflection_low instead.
 ;        "doh-dissolving"    ; Needs higher sample rate.
          "doh-intro"
@@ -111,15 +122,17 @@
          "laser"
          "lost-ball"
 ;        "reflection-doh" ; Needs higher sample rate.
-         "round-intro"
-))
-
-(const *audio-3bit*
-       '(
          "reflection-high"; Needs 4 bits.
          "reflection-low" ; Needs 4 bits.
          "reflection-med" ; Needs 4 bits.
          "round-start"    ; Needs more companding.
+         "round-intro"
+
+))
+
+(const *audio-3bit*
+       '(
+
 ))
 
 (const *audio-4bit*

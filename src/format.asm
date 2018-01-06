@@ -120,7 +120,7 @@ l:  stx user_screen_origin_x
 
     lda vaus_y
     sec
-    sbc #ball_height
+    sbc #2
     sta ball_vaus_y_upper
     tax
     dex
