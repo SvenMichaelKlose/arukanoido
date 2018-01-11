@@ -2,16 +2,7 @@ ctrl_laser:
     lda #8
     jsr sprite_up
 
-    ; Hit obstacle?
-    jsr find_hit
-    bcs +n
-    lda sprites_i,y
-    and #is_obstacle
-    beq +n
-    jsr remove_obstacle
-    jmp remove_sprite
-
-n:  ldy #0
+    ldy #0
     sty has_hit_golden_brick
     sty laser_has_hit
     iny
@@ -49,11 +40,23 @@ m:  lda laser_has_hit
 
 f:  jsr make_bonus
 n:  jsr remove_sprite   ; Remove laser sprite.
+    lda #0
+    sta is_testing_laser_hit
+    rts
 
 done:
     lda #0
     sta is_testing_laser_hit
-    rts
+
+    ; Hit obstacle?
+    jsr find_hit
+    bcs +n
+    lda sprites_i,y
+    and #is_obstacle
+    beq +n
+    jsr remove_obstacle
+    jmp remove_sprite
+n:  rts
 
 remove_lasers:
     txa
