@@ -30,33 +30,28 @@ o:  lda sprites_x,x
     jsr get_soft_collision
     bne +m
     jsr hit_brick
-    bcc +f              ; We hit a brick…
+    bcs +m
+    inc laser_has_hit
+    jsr make_bonus
 
-    ; Move laser up unless it hit a brick.
+    ; Hit left or right?
 m:  lda laser_has_hit
-    ora has_hit_golden_brick
-    bne +n
-    jmp +done
+    beq +m
+    lda has_hit_golden_brick
+    bne +r
+    beq +n
 
-f:  jsr make_bonus
-n:  jsr remove_sprite   ; Remove laser sprite.
-    lda #0
-    sta is_testing_laser_hit
-    rts
-
-done:
-    lda #0
-    sta is_testing_laser_hit
-
-    ; Hit obstacle?
-    jsr find_hit
-    bcs +n
+    ; Hit obstacle instead?
+m:  jsr find_hit
+    bcs +r
     lda sprites_i,y
     and #is_obstacle
-    beq +n
+    beq +r
     jsr remove_obstacle
-    jmp remove_sprite
-n:  rts
+
+n:  jsr remove_sprite
+r:  dec is_testing_laser_hit
+    rts
 
 remove_lasers:
     txa
@@ -70,4 +65,4 @@ n:  dex
     bpl -l
     pla
     tax
-r:  rts
+    rts
