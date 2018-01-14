@@ -45,6 +45,15 @@ Sven Michael Klose <pixel@hugbox.org>.
 * N: Skip to next level.
 
 
+# Things missing
+
+* Original movement of obstacles.
+* DOH particles
+* DOH animation
+* intro/outro animations
+* hiscore table
+
+
 # Applications used
 
 ## beamrider's "VIC–20 Screen and Character Designer"

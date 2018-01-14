@@ -1,3 +1,6 @@
+Changes of 724 relative to 719:
+  * Mostly correct obstacle graphics per level.
+
 Changes of 723 relative to 719:
   * Laser controller has been cleaned up, probably fixing
     some odd behaviour.

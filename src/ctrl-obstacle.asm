@@ -1,3 +1,11 @@
+; TODO: New movement rules
+;
+; * After dropping out of the game, Diagonally move half a char to the left or right.
+; * On the upper half of the screen, move horizontally and vertically along tiles.
+; * When hitting the bottom half of the screen, draw a circle to opposite side of the screen.
+; * Move diagonally towards towards Vaus.
+; * There varying delays when new obstacles drop in.
+
 gfx_obstacles_gl:
     <gfx_obstacle_cone
     <gfx_obstacle_pyramid
@@ -28,7 +36,26 @@ gfx_obstacles_c:
     white
     red
 
+cone        = 0
+pyramid     = 1
+spheres     = 2
+cube        = 3
+none        = 255
+
+level_obstacle:
+    cone pyramid spheres cube cone
+    pyramid spheres cube cone none
+    spheres none cone pyramid spheres
+    cube cone pyramid spheres cube
+    cone pyramid spheres cube cone
+    pyramid spheres cube cone pyramid
+    spheres cube none
+
 add_missing_obstacle:
+    ldy level
+    dey
+    lda level_obstacle,y
+    bmi +done
     lda num_obstacles
     cmp #3
     beq +done
@@ -54,8 +81,7 @@ n:  lda #direction_down
 
     ldy level
     dey
-    tya
-    and #3
+    lda level_obstacle,y
     tay
     lda gfx_obstacles_c,y
     sta sprites_c,x

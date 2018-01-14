@@ -1,6 +1,6 @@
 (load "gen-vcpu-tables.lisp")
 
-(var *demo?* t)
+(var *demo?* nil)
 (var *shadowvic?* nil)
 (var *rom?* nil)
 (var *add-charset-base?* t)
