@@ -139,14 +139,16 @@
        '(
 ))
 
-(@ (i (+ *audio-1bit* *audio-2bit* *audio-3bit* *audio-4bit*))
-  (print i)
-  (make-filtered-wav i *audio-rate*)
-  (make-conversion i *audio-rate*))
-(convert-wavs *audio-1bit* 32768 8)    ; 1 bit
-(convert-wavs *audio-2bit* 16384 4)     ; 2 bits
-(convert-wavs *audio-3bit* 8192 2)      ; 3 bits
-(convert-wavs *audio-4bit* 4096 1)      ; 4 bits
+(fn make-arcade-sounds ()
+  (@ (i (+ *audio-1bit* *audio-2bit* *audio-3bit* *audio-4bit*))
+    (print i)
+    (make-filtered-wav i *audio-rate*)
+    (make-conversion i *audio-rate*))
+  (convert-wavs *audio-1bit* 32768 8)    ; 1 bit
+  (convert-wavs *audio-2bit* 16384 4)     ; 2 bits
+  (convert-wavs *audio-3bit* 8192 2)      ; 3 bits
+  (convert-wavs *audio-4bit* 4096 1)      ; 4 bits
+  )
 
 (fn gen-sprite-nchars ()
   (with-queue q
@@ -877,6 +879,8 @@
           (group (filter #'char-code (string-list (fetch-file "obj/font-4x8.bin"))) 16)))
 
 (put-file "obj/font-4x8-packed.bin" (list-string (@ #'code-char (packed-font))))
+
+(make-arcade-sounds)
 
 (gen-vcpu-tables "src/_vcpu.asm")
 ;(with-temporary *shadowvic?* t
