@@ -1,0 +1,3 @@
+Changes of 723 relative to 719:
+  * Laser controller has been cleaned up, probably fixing
+    some odd behaviour.

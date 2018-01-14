@@ -905,7 +905,7 @@
 
 (sb-ext:run-program "/usr/bin/split" (list "-b" "8192" "arukanoido.img" "arukanoido/arukanoido.img.")
                     :pty cl:*standard-output*)
-(sb-ext:run-program "/bin/cp" (list "README.md" "arukanoido/")
+(sb-ext:run-program "/bin/cp" (list "README.md" "NEWS" "arukanoido/")
                     :pty cl:*standard-output*)
 
 (quit)
