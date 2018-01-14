@@ -36,13 +36,11 @@ o:  lda sprites_x,x
 
     ; Hit left or right?
 m:  lda laser_has_hit
-    beq +m
-    lda has_hit_golden_brick
-    bne +r
-    beq +n
+    ora has_hit_golden_brick
+    bne +n
 
     ; Hit obstacle instead?
-m:  jsr find_hit
+    jsr find_hit
     bcs +r
     lda sprites_i,y
     and #is_obstacle
