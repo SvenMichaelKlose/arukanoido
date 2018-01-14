@@ -267,7 +267,15 @@ make_bonus_p:
     jmp +ok
 
 make_bonus:
-    lda has_bonus_on_screen
+    lda removed_bricks
+    cmp #1
+    beq +o
+    cmp #4
+    beq +o
+    and #7
+    bne -r
+
+o:  lda has_bonus_on_screen
     ora has_hit_silver_brick
     bne -r
 
