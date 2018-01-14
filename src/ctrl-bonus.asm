@@ -263,7 +263,9 @@ make_bonus_p:
     lda #bonus_p
     cpy #3
     bcc +ok
-    lda #bonus_d
+    ldy mode_break
+    bne +ok
+    lda #bonus_b
     jmp +ok
 
 make_bonus:
@@ -294,15 +296,15 @@ l:  cmp bonus_p_probabilities,y
 n:  cmp current_bonus
     beq -a              ; Bonus already active…
     cmp #bonus_b
-    bne +n
-    ldy mode_break
-    beq +ok
-    bne -a
-n:  cmp #bonus_s        ; Bonus S is useless at minimum ball speed.
+    beq -a
+    cmp #bonus_p
+    beq -a
+n:  cmp #bonus_s
     bne +ok
     ldy ball_speed
     cpy #min_ball_speed
     beq -a
+
 ok: sta @(+ bonus_init sprite_init_data)
     sec
     sbc #1
