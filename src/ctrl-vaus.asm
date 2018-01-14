@@ -196,21 +196,12 @@ n:  sty is_firing
     sta sprites_y,y
     jmp -done
 
-handle_break_mode:
+enter_break_mode:
     lda mode_break
     beq +n
 
-    ; Remove all sprites except the Vaus.
-    ldy #@(-- num_sprites)
-l:  lda sprites_i,y
-    and #is_vaus
-    bne +m
-    lda #is_inactive
-    sta sprites_i,y
-m:  dey
-    bpl -l
-
-    jsr clear_sprites       ; TODO: Still required?
+    lda #@(+ is_ball is_bonus is_obstacle is_laser)
+    jsr remove_sprites_by_type
 
     lda #100
     sta mode_break
@@ -243,7 +234,7 @@ n:  rts
 move_vaus_right:
     lda sprites_x,x
     jsr test_vaus_hit_right
-    bcs handle_break_mode
+    bcs enter_break_mode
     lda #2
     jsr sprite_right
 
