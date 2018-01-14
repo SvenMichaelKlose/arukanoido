@@ -1,3 +1,7 @@
+if @(not *rom?*)
+    fill @(- #x1c00 *pc*)
+end
+
 patch:
     jsr init_screen
     jsr clear_screen

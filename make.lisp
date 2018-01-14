@@ -735,6 +735,7 @@
                               '("../bender/vic-20/basic-loader.asm"))
                           ,@(unless *rom?*
                               '("init.asm"
+                                "patch.asm"
                                 "gap.asm"))
                           ,@(when *rom?*
                               '("init-rom.asm"))
@@ -830,13 +831,13 @@
                           "main.asm"
                           "round-intro.asm"
                           "round-start.asm"
-                          "patch.asm"
 
                           ; Add-ons
                           "music-arcade.asm"
 
                           ,@(when *rom?*
                               '("init.asm"
+                                "patch.asm"
                                 "moveram.asm"
                                 "lowmem-start.asm"
                                 "blitter.asm"
