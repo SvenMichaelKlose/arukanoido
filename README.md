@@ -34,6 +34,7 @@ Sven Michael Klose <pixel@hugbox.org>.
 * A, S, D, F: Move screen around.
 * F: Switch between landscape and portrait format.
 * M: Switch between beamrider's blasting VIC sounds or arcade digis.
+* B: Start BASIC.
 
 
 # In-game keys

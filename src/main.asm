@@ -136,7 +136,10 @@ n:  cmp #keycode_f
     jsr set_format
     jmp toplevel
 
-n:  cmp #keycode_m
+n:  cmp #keycode_b
+    beq boot_basic
+
+    cmp #keycode_m
     bne -l
     lda is_playing_digis
     eor #1
@@ -153,6 +156,27 @@ f:  lda #snd_miss
     jsr round_intro
     jsr game
     jmp toplevel
+
+boot_basic:
+    lda #0
+    sta $9002
+if @*rom?*
+    sei
+    lda #$7f
+    sta $911d
+    sta $911e
+    cld
+    ldx #$ff
+    txs
+    jsr $fd8d   ; Init memory.
+    jsr $fd52   ; Init KERNAL.
+    jsr $fdf9   ; Init VIAs.
+    jsr $e518   ; Init VIC.
+    jmp ($c000) ; Start BASIC.
+end
+if @(not *rom?*)
+    jmp ($fffc)
+end
 
 ;txt_copyright:  @(string4x8 "[\\ 2017 TAYTO CORP JAPAN") 255
 txt_copyright:  @(string4x8 "      DEMO VERSION") 255
