@@ -111,11 +111,7 @@ apply_bonus_e:
     sta sprites_gh,y
     lda #11
     sta sprites_dimensions,y
-    cmp #255
-    bne +n
-    jsr remove_bonuses  ; No slots left, last resort.
-    jmp apply_bonus_e
-n:  lda #mode_extended
+    lda #mode_extended
     sta mode
     lda #24
     sta vaus_width
@@ -169,8 +165,8 @@ apply_bonus_b:
 n:  rts
 
 apply_bonus_d:
-    jsr remove_bonuses
-    jsr remove_lasers
+    lda #@(+ is_bonus is_laser)
+    jsr remove_sprites_by_type
 
     ; Find ball.
     ldy #@(-- num_sprites)
@@ -259,20 +255,6 @@ n:  lsr
 m:  lda #<gfx_bonus_p
     ldx #>gfx_bonus_p
     jmp rotate_bonus
-
-remove_bonuses:
-    txa
-    pha
-    ldx #@(-- num_sprites)
-l:  lda sprites_i,x
-    and #is_bonus
-    beq +n
-    jsr remove_sprite
-n:  dex
-    bpl -l
-    pla
-    tax
-r:  rts
 
 bonus_p_probabilities:
     $07 $df $3d $b9 $1b $5e

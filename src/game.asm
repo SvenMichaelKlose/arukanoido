@@ -186,6 +186,7 @@ n2: jsr get_keypress
     sta has_paused
     jsr reset_volume
     jsr wait_keyunpress
+
 n:  cmp #keycode_n
     bne +l
     lda #0

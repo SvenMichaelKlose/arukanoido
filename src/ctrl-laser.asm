@@ -52,17 +52,3 @@ m:  jsr find_hit
 n:  jsr remove_sprite
 r:  dec is_testing_laser_hit
     rts
-
-remove_lasers:
-    txa
-    pha
-    ldx #@(-- num_sprites)
-l:  lda sprites_i,x
-    and #is_laser
-    beq +n
-    jsr remove_sprite
-n:  dex
-    bpl -l
-    pla
-    tax
-    rts

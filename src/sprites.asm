@@ -80,6 +80,21 @@ l:  jsr remove_sprite
     bpl -l
     rts
 
+remove_sprites_by_type:
+    sta tmp
+    txa
+    pha
+    ldx #@(-- num_sprites)
+l:  lda sprites_i,x
+    and tmp
+    beq +n
+    jsr remove_sprite
+n:  dex
+    bpl -l
+    pla
+    tax
+    rts
+
 ; Move sprite X up A pixels.
 sprite_up:
     jsr neg
