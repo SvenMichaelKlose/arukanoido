@@ -282,10 +282,8 @@ o:  lda has_bonus_on_screen
     bne -r
 
 a:  jsr random
-lda #bonus_d
-jmp +ok
 
-    ; Check for bonus P.
+    ; Check for bonus P or B.
     ldy #5
 l:  cmp bonus_p_probabilities,y
     beq make_bonus_p
