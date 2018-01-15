@@ -31,7 +31,7 @@ Sven Michael Klose <pixel@hugbox.org>.
 
 # Title screen keys
 
-* A, S, D, F: Move screen around.
+* H, J, K, L: Move screen around.
 * F: Switch between landscape and portrait format.
 * M: Switch between beamrider's blasting VIC sounds or arcade digis.
 * B: Start BASIC.
