@@ -142,16 +142,13 @@ end
     sta spriteframe
     ora #first_sprite_char
     sta next_sprite_char
-    jsr draw_sprites
 
     ; Kick off game code in IRQ handler.
-    sei
     ldy #0
     sty framecounter
     sty @(++ framecounter)
     iny
     sty is_running_game
-    cli
 
 mainloop:
     lda bricks_left
