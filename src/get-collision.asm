@@ -19,7 +19,4 @@ get_hard_collision:
     cmp #bg_minivaus    ; Ignore miniature Vaus displaying # of lifes.
     beq +n
     and #foreground
-    cmp #foreground
-    rts
-n:  lda #1
-    rts
+n:  rts

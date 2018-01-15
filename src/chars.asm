@@ -80,8 +80,7 @@ alloc_wrap:
 alloc_char:
     lda next_sprite_char
     and #foreground
-    cmp #foreground
-    beq alloc_wrap      ; No chars left…
+    bne alloc_wrap      ; No chars left…
     lda next_sprite_char
     inc next_sprite_char
 
@@ -113,8 +112,7 @@ get_char:
     beq +l              ; Screen char isn't used, yet…
     tax
     and #foreground
-    cmp #foreground
-    beq on_foreground   ; Can't draw on foreground…
+    bne on_foreground   ; Can't draw on foreground…
     txa
     and #framemask
     cmp spriteframe
@@ -150,8 +148,7 @@ clear_char:
     lda (scr),y
     beq +l              ; Nothing to clear…
     and #foreground
-    cmp #foreground
-    beq +l              ; Don't remove foreground chars…
+    bne +l              ; Don't remove foreground chars…
     lda (scr),y
     and #framemask
     cmp spriteframe

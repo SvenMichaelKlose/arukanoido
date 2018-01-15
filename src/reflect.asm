@@ -9,8 +9,8 @@ reflect_h:
     cmp #7                  ; Avoid over-stepping the walls.
     bcc +m
     jsr get_soft_collision
-    bne +r
-    beq +j
+    beq +r
+    bne +j
 
     ; Bounce back right.
 n:  ldy ball_x
@@ -20,7 +20,7 @@ n:  ldy ball_x
     cmp #@(++ (* 8 14))     ; Avoid over-stepping the walls.
     bcs +k
     jsr get_soft_collision
-    bne +r
+    beq +r
 j:  lda #64
     jmp +l
 
@@ -51,15 +51,15 @@ reflect_v:
     cpy arena_y_above       ; Avoid over-stepping the walls.
     bcc +m
     jsr get_soft_collision
-    bne +r
-    beq +j
+    beq +r
+    bne +j
 
     ; Bounce back bottom.
 n:  lda ball_x
     ldy ball_y
     iny
     jsr get_soft_collision
-    bne +r
+    beq +r
 j:  lda #128
 
 l:  clc

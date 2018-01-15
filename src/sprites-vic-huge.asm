@@ -70,8 +70,7 @@ l:  sta sprite_char
     adc next_sprite_char
     sta next_sprite_char
     and #foreground
-    cmp #foreground                                                                                          
-    bne +n
+    beq +n
     lda spriteframe
     ora #first_sprite_char
     sta next_sprite_char
@@ -204,8 +203,7 @@ l:  lda scry
     jsr scrcoladdr
     lda (scr),y
     and #foreground
-    cmp #foreground
-    beq +n
+    bne +n
     lda draw_sprites_tmp
     sta (scr),y
     lda sprites_c,x

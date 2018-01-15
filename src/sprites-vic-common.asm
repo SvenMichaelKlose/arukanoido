@@ -145,8 +145,7 @@ n:  dex
 
 j:  tay
     and #foreground
-    cmp #foreground
-    beq +n
+    bne +n
     ldy #0
 n:  tya
     rts

@@ -180,13 +180,13 @@ n:  jsr get_sprite_screen_position
     inc scry
     inc scry
     jsr get_hard_collision
-    beq +f
+    bne +f
     lda sprites_x,x
     and #7
     beq +r
     inc scrx
     jsr get_hard_collision
-    bne +r
+    beq +r
 
 f:  ldy #direction_left
     lda sprites_d2,x
@@ -204,13 +204,13 @@ not_down:
     ; Check collision upwards.
     dec scry
     jsr get_hard_collision
-    beq +f
+    bne +f
     lda sprites_x,x
     and #7
     beq +n
     inc scrx
     jsr get_hard_collision
-    bne +n
+    beq +n
 
 f:  lda sprites_d2,x
     eor #1
@@ -229,10 +229,10 @@ n:  lda sprites_d2,x
     jsr get_sprite_screen_position
     dec scrx
     jsr get_hard_collision
-    beq +r
+    bne +r
     inc scry
     jsr get_hard_collision
-    beq +r
+    bne +r
     lda #direction_left
     sta sprites_d,x
 r:  rts
@@ -241,10 +241,10 @@ r:  rts
 n:  jsr get_sprite_screen_position
     inc scrx
     jsr get_hard_collision
-    beq +r
+    bne +r
     inc scry
     jsr get_hard_collision
-    beq +r
+    bne +r
     lda #direction_right
     sta sprites_d,x
 r:  rts
@@ -265,7 +265,7 @@ not_up:
     inc scry
     inc scry
     jsr get_hard_collision
-    bne -turn_downwards
+    beq -turn_downwards
     dec scry
     dec scry
 
@@ -275,10 +275,10 @@ not_up:
 
     dec scrx
 l:  jsr get_hard_collision
-    beq +f
+    bne +f
     inc scry
     jsr get_hard_collision
-    bne +r
+    beq +r
 f:  lda #direction_up
     sta sprites_d,x
 r:  rts

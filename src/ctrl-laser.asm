@@ -16,7 +16,7 @@ ctrl_laser:
     lda sprites_x,x
     ldy sprites_y,x
     jsr get_soft_collision
-    bne +o              ; Nothing, try on the right…
+    beq +o              ; Nothing, try on the right…
     jsr hit_brick
     bcs +o              ; No brick hit.
     inc laser_has_hit
@@ -28,7 +28,7 @@ o:  lda sprites_x,x
     adc #7
     ldy sprites_y,x
     jsr get_soft_collision
-    bne +m
+    beq +m
     jsr hit_brick
     bcs +m
     inc laser_has_hit

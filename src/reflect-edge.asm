@@ -13,8 +13,8 @@ reflect_edge:
     ldy ball_y
     iny
     jsr get_soft_collision
-    bne +r
-    beq +j
+    beq +r
+    bne +j
 
     ; Bounce back from top right.
 n:  asl
@@ -25,8 +25,8 @@ n:  asl
     ldy ball_y
     dey
     jsr get_soft_collision
-    bne +r
-    beq +j
+    beq +r
+    bne +j
 
     ; Bounce back from top left.
 n:  asl
@@ -37,8 +37,8 @@ n:  asl
     ldy ball_y
     dey
     jsr get_soft_collision
-    bne +r
-    beq +j
+    beq +r
+    bne +j
 
     ; Bounce back from bottom left.
 n:  ldy ball_x
@@ -47,7 +47,7 @@ n:  ldy ball_x
     ldy ball_y
     iny
     jsr get_soft_collision
-    bne +r
+    beq +r
 
 j:  inc has_collision
     jsr hit_brick
