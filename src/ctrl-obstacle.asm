@@ -142,10 +142,6 @@ l:  lda sprites_gl,x
 n:  dey
     bpl -l
 
-; When nothing is touched, move downwards, do a circle.
-; When touching something on the way down, go sideways.
-; When touching something going sideways, try going up.
-; When touching something going up, go back down but reverse sideways.
 l2: jsr half_step_smooth
 
     ; Remove obstacle if it left the screen at the bottom.
@@ -156,18 +152,18 @@ l2: jsr half_step_smooth
     jmp remove_sprite
 
     ; Check if another obstacle was hit.
-n:  lda #0
-    sta obstacle_hit_obstacle
-    ldy #@(-- num_sprites)
-    jsr find_hit
-    bcs +n
-    bcc +l2
-l:  jsr find_hit_next
-    bcs +n
-l2: lda sprites_i,y
-    and #is_obstacle
-    beq -l
-    inc obstacle_hit_obstacle
+;n:  lda #0
+;    sta obstacle_hit_obstacle
+;    ldy #@(-- num_sprites)
+;    jsr find_hit
+;    bcs +n
+;    bcc +l2
+;l:  jsr find_hit_next
+;    bcs +n
+;l2: lda sprites_i,y
+;    and #is_obstacle
+;    beq -l
+;    inc obstacle_hit_obstacle
 
 n:  jsr get_sprite_screen_position
 
@@ -291,5 +287,3 @@ not_left:
     ; Move right.
     inc scrx
     jmp -l
-
-obstacle_hit_obstacle:  0
