@@ -282,6 +282,8 @@ o:  lda has_bonus_on_screen
     bne -r
 
 a:  jsr random
+lda #bonus_d
+jmp +ok
 
     ; Check for bonus P.
     ldy #5

@@ -38,6 +38,7 @@ game:
 next_level:
     lda #0
     sta is_running_game
+    sta mode_break
 
     inc level
     lda level
@@ -105,7 +106,6 @@ retry:
     sta is_running_game
     sta is_firing
     sta mode
-    sta mode_break
     sta sprites_d2,x
     sta framecounter
     sta @(++ framecounter)

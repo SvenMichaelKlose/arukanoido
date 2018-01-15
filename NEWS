@@ -1,4 +1,7 @@
-Changes relative to 725:
+Changes relative to 732:
+  * Break mode doesn't spoil jump into next level anymore.
+
+Changes of 732 relative to 725:
   * Bonuses appear less often, more like the original.
   * Laser doesn't get through golden bricks.
 
