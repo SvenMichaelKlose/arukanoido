@@ -77,6 +77,8 @@ add_missing_obstacle:
     sta sprites_x,x
 n:  lda #direction_down
     sta sprites_d,x
+    jsr random
+    sta sprites_d2,x
     inc num_obstacles
 
     ldy level
@@ -142,8 +144,12 @@ l:  lda sprites_gl,x
 n:  dey
     bpl -l
 
-l2: jsr half_step_smooth
+l2: jsr move_obstacle
+    jmp half_step_smooth
 
+move_obstacle_again:
+    sty sprites_d,x
+move_obstacle:
     ; Remove obstacle if it left the screen at the bottom.
     lda sprites_y,x
     cmp y_max
@@ -170,92 +176,74 @@ n:  jsr get_sprite_screen_position
     ; Skip testing vertical collision if not on Y char boundary.
     lda sprites_y,x
     and #7
-    bne +not_up         ; No vertical movement to check.
+    bne +move_horizontally
 
-    ; Move down.
+    ; Move down?
     lda sprites_d,x
-    bne +not_down       ; Not doing down.
+    bne +move_up
 
     ; Test on collision at bottom.
     inc scry
     inc scry
     jsr get_hard_collision
-    bne +f
-    lda sprites_x,x
-    and #7
-    beq +r
-    inc scrx
-    jsr get_hard_collision
-    beq +r
+    beq -r
 
 f:  ldy #direction_left
     lda sprites_d2,x
     lsr
     bcc +n
     ldy #direction_right
-n:  sty sprites_d,x
-r:  rts
+n:  jmp move_obstacle_again
 
-not_down:
-    ; Move up.
+move_up:
+    ; Move up?
     cmp #direction_up
-    bne +not_up
-
-    ; Check collision upwards.
-    dec scry
-    jsr get_hard_collision
-    bne +f
-    lda sprites_x,x
-    and #7
-    beq +n
-    inc scrx
-    jsr get_hard_collision
-    beq +n
-
-f:  lda sprites_d2,x
-    eor #1
-    sta sprites_d2,x
-turn_downwards:
-    lda #direction_down
-f:  sta sprites_d,x
-r:  rts
+    bne +move_horizontally
 
     ; Check on gap left or right.
-n:  lda sprites_d2,x
+    lda sprites_d2,x
     lsr
     bcs +n
 
     ; Gap left?
-    jsr get_sprite_screen_position
     dec scrx
     jsr get_hard_collision
-    bne +r
+    bne +l
     inc scry
     jsr get_hard_collision
-    bne +r
-    lda #direction_left
-    sta sprites_d,x
-r:  rts
+    bne +l
+    ldy #direction_left
+    jmp move_obstacle_again
 
     ; Gap right?
-n:  jsr get_sprite_screen_position
-    inc scrx
+n:  inc scrx
     jsr get_hard_collision
-    bne +r
+    bne +l
     inc scry
     jsr get_hard_collision
-    bne +r
-    lda #direction_right
-    sta sprites_d,x
-r:  rts
+    bne +l
+    ldy #direction_right
+    jmp move_obstacle_again
 
-not_up:
+    ; Check collision upwards.
+l:  jsr get_sprite_screen_position
+    dec scry
+    jsr get_hard_collision
+    beq +r
+    lda sprites_d2,x
+    eor #1
+    sta sprites_d2,x
+turn_downwards:
+    ldy #direction_down
+    jmp move_obstacle_again
+
+move_horizontally:
     ; Skip testing horizontaal collision if not on Y char boundary.
     lda sprites_x,x
     and #7
     bne +r              ; No on char boundary.
+
     lda sprites_d,x
-    ; Skip testing horizontal collision if direction is vertical.
     cmp #direction_up
     beq +r
     cmp #direction_down
@@ -279,8 +267,8 @@ l:  jsr get_hard_collision
     inc scry
     jsr get_hard_collision
     beq +r
-f:  lda #direction_up
-    sta sprites_d,x
+f:  ldy #direction_up
+    jmp move_obstacle_again
 r:  rts
 
 not_left:
