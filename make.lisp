@@ -723,7 +723,7 @@
 
 (fn make (to files cmds)
   (apply #'assemble-files to files)
-  (make-vice-commands cmds "break .stop"))
+  (make-vice-commands cmds (format nil "break .stop~%break .stop2~%break .stop3")))
 
 (fn make-game (version file cmds)
   (make file
