@@ -281,7 +281,13 @@ o:  lda has_bonus_on_screen
     ora has_hit_silver_brick
     bne -r
 
-a:  jsr random
+a:
+if @*demo?*
+    lda next_bonus
+    bne +ok
+end
+
+    jsr random
 
     ; Check for bonus P or B.
     ldy #5
