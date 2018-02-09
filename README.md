@@ -43,7 +43,18 @@ Sven Michael Klose <pixel@hugbox.org>.
 * D. K: Move Vaus right.
 * SPACE: Fire – doesn't work in combination with other key tough. :(
 * P: Pause the game.
+
+## Keys for game testers
+
 * N: Skip to next level.
+* 0: Drop random bonuses.
+* 1: Drop bonus L only.
+* 2: Drop bonus E only.
+* 3: Drop bonus C only.
+* 4: Drop bonus S only.
+* 5: Drop bonus B only.
+* 6: Drop bonus D only.
+* 7: Drop bonus P only.
 
 
 # Things missing

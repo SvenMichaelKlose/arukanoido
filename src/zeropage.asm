@@ -244,6 +244,10 @@ sprite_inits:           fill @sprite_inits_size
 
 line_addresses_l:       fill 33
 
+if @*demo?*
+next_bonus:             0
+end
+
 before_int_vectors:
 
     org $320

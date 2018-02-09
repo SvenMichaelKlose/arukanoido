@@ -183,7 +183,18 @@ n2: jsr get_keypress
     eor has_paused
     sta has_paused
     jsr reset_volume
-    jsr wait_keyunpress
+q:  jsr wait_keyunpress
+    jmp +l
+
+if @*demo?*
+n:  ldx #8
+m:  cmp bonus_keys,x
+    bne +n
+    stx next_bonus
+    beq -q
+n:  dex
+    bpl -m
+end
 
 n:  cmp #keycode_n
     bne +l
@@ -207,3 +218,15 @@ l:  jsr exm_work
     cli
 
     jmp mainloop
+
+if @*demo?*
+bonus_keys:
+    keycode_0
+    keycode_1
+    keycode_2
+    keycode_3
+    keycode_4
+    keycode_5
+    keycode_6
+    keycode_7
+end
