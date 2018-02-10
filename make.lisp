@@ -860,6 +860,8 @@
 
 (= *model* :vic-20+xk)
 
+(put-file "obj/title.bin" (minigrafik-without-code "media/ark-title.prg"))
+(exomize-stream "obj/title.bin" "obj/title.bin.exo")
 (apply #'assemble-files "obj/gfx-ship.bin" '("media/gfx-ship.asm"))
 (exomize-stream "obj/gfx-ship.bin" "obj/gfx-ship.bin.exo")
 (apply #'assemble-files "obj/gfx-taito.bin" '("media/gfx-taito.asm"))
