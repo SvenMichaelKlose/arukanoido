@@ -26,6 +26,7 @@
                               :no-gaps? t)
                   (with-input-file i "obj/title.bin.exo"
                     (with-string-stream s (c2ntap s i)))
+                  (list-string (@ #'code-char '(0 0 0 8)))
                   (with-input-file i path-in
                     (with-string-stream s (c2ntap s i)))))))
 

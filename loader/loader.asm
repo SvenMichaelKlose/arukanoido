@@ -1,3 +1,8 @@
+title_size = @(length (fetch-file "obj/title.bin.exo"))
+binary_size = @(length (fetch-file *path-main*))
+cdec = @(/ binary_size 72)
+number_9 = @(+ #x8000 (* #x39 8))
+
 tape_leader_length = 32
 tape_map = $7800
 tape_map_length = $800
@@ -63,7 +68,7 @@ l:  lda #$ff
     ; Let the IRQ handler do everything.
     cli
     clc
-w:  bcc -w
+l: bcc -l
 
 tape_get_bit:
     lda $912d               ; Get timer underflow bit.
@@ -234,11 +239,6 @@ n:  dec tape_counter        ; All bytes loaded?
     sta $315
 ;    jsr $e5c3               ; Re-init VIC.
 
-    ; Stop tape motor.
-    lda $911c
-    ora #3
-    sta $911c
-
     jmp (tape_callback)
 
 pulse_to_map:
@@ -292,6 +292,11 @@ l:  lda cfg,x
 start_game:
     lda #$00
     sta $9002
+
+    ; Stop tape motor.
+    lda $911c
+    ora #3
+    sta $911c
 
     ldx #@(- copy_forwards_end copy_forwards 1)
 l:  lda copy_forwards,x
@@ -363,13 +368,11 @@ n:  dex
     jmp $120d
 copy_forwards_end:
 
-title_size = @(length (fetch-file "obj/title.bin.exo"))
 title_cfg:
     <target >target
     <title_size @(++ (high title_size))
     <show_title >show_title
 
-binary_size = @(length (fetch-file *path-main*))
 cfg:
     <target >target
     <binary_size @(++ (high binary_size))

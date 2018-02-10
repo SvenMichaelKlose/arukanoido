@@ -2,16 +2,18 @@ main:
     ldx #0
 l:  lda loader,x
     sta $2000,x
-    lda @(+ loader 256),x
+    lda @(+ loader #x100),x
     sta $2100,x
-    lda @(+ loader 512),x
+    lda @(+ loader #x200),x
     sta $2200,x
-    lda @(+ loader 768),x
+    lda @(+ loader #x300),x
     sta $2300,x
-    lda @(+ loader 1024),x
+    lda @(+ loader #x400),x
     sta $2400,x
-    lda @(+ loader 1280),x
+    lda @(+ loader #x500),x
     sta $2500,x
+    lda @(+ loader #x600),x
+    sta $2600,x
     inx
     bne -l
 

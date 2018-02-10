@@ -64,12 +64,12 @@ add_missing_obstacle:
     ldy #@(- obstacle_init sprite_inits)
     jsr add_sprite
     tax
-    lda #@(+ 4 (* 3 8))
-    sta sprites_x,x
     lda arena_y
     sec
     sbc #7
     sta sprites_y,x
+    lda #@(+ 4 (* 3 8))
+    sta sprites_x,x
     jsr random
     lsr
     bcs +n
@@ -78,6 +78,7 @@ add_missing_obstacle:
 n:  lda #direction_down
     sta sprites_d,x
     jsr random
+;lda #0
     sta sprites_d2,x
     inc num_obstacles
 
@@ -182,13 +183,10 @@ n:  jsr get_sprite_screen_position
     lda sprites_d,x
     bne +move_up
 
-    ; Test on collision at bottom.
-    inc scry
-    inc scry
-    jsr get_hard_collision
-    beq -r
+    jsr test_gap_bottom
+    bcs -r
 
-f:  ldy #direction_left
+    ldy #direction_left
     lda sprites_d2,x
     lsr
     bcc +n
@@ -203,33 +201,18 @@ move_up:
     ; Check on gap left or right.
     lda sprites_d2,x
     lsr
-    bcs +n
+    bcc +n
 
-    ; Gap left?
-    dec scrx
-    jsr get_hard_collision
-    bne +l
-    inc scry
-    jsr get_hard_collision
-    bne +l
-    ldy #direction_left
-    jmp move_obstacle_again
+    jsr test_gap_left
+    bcc +l
+m:  jmp move_obstacle_again
 
-    ; Gap right?
-n:  inc scrx
-    jsr get_hard_collision
-    bne +l
-    inc scry
-    jsr get_hard_collision
-    bne +l
-    ldy #direction_right
-    jmp move_obstacle_again
+n:  jsr test_gap_right
+    bcs -m
 
     ; Check collision upwards.
-l:  jsr get_sprite_screen_position
-    dec scry
-    jsr get_hard_collision
-    beq +r
+l:  jsr test_gap_top
+    bcs +r
     lda sprites_d2,x
     eor #1
     sta sprites_d2,x
@@ -249,13 +232,10 @@ move_horizontally:
     cmp #direction_down
     beq +r
 
-    ; Move down if there is a gap.
-    inc scry
-    inc scry
-    jsr get_hard_collision
-    beq -turn_downwards
-    dec scry
-    dec scry
+    jsr test_gap_bottom
+    bcs -turn_downwards
+
+    jsr get_sprite_screen_position
 
     ; Move left.
     lda sprites_d,x
@@ -275,3 +255,46 @@ not_left:
     ; Move right.
     inc scrx
     jmp -l
+
+test_gap_left:
+    jsr get_sprite_screen_position
+    dec scrx
+    jsr get_hard_collision
+    bne +n
+    inc scry
+    jsr get_hard_collision
+    bne +n
+    ldy #direction_left
+    sec
+    rts
+n:  clc
+    rts
+
+test_gap_right:
+    jsr get_sprite_screen_position
+    inc scrx
+    jsr get_hard_collision
+    bne -n
+    inc scry
+    jsr get_hard_collision
+    bne -n
+    ldy #direction_right
+    sec
+    rts
+
+test_gap_bottom:
+    jsr get_sprite_screen_position
+    inc scry
+    inc scry
+    jsr get_hard_collision
+    bne -n
+    sec
+    rts
+
+test_gap_top:
+    jsr get_sprite_screen_position
+    dec scry
+    jsr get_hard_collision
+    bne -n
+    sec
+    rts
