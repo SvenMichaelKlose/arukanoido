@@ -37,6 +37,7 @@ decrunch_block:
     sta c
     jsr get_decrunched_byte
     sta @(++ c)
+decrunch_block_static:
     inc @(++ c)
 l:  jsr get_decrunched_byte
     ldy #0
