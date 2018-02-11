@@ -7,7 +7,8 @@
            "loader/main.asm"
            "bender/vic-20/minigrafik-display.asm"
            "src/exomizer-stream-decrunsh.asm"
-           "loader/loader.asm"))
+           "loader/loader.asm"
+           "loader/ctrl.asm"))
   (make-vice-commands "loader.vice.txt" "break .stop")
   (format t "Short pulse: ~A~%" *pulse-short*)
   (format t "Long pulse: ~A~%" *pulse-long*)
