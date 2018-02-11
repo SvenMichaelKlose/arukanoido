@@ -107,37 +107,36 @@
 
 (const *audio-1bit*
        '(
-         "final"
-         "round-start"    ; Needs more companding.
-         "round-intro"
-         "break-out"
-         "doh-intro"
-         "game-over"
         ))
 
 (const *audio-2bit*
        '(
-         "extra-life"
+         "lost-ball"
 ;        "catch"     ; Play beginning of reflection_low instead.
 ;        "doh-dissolving"    ; Needs higher sample rate.
          "explosion"
-         "extension"
-         "laser"
-         "lost-ball"
 ;        "reflection-doh" ; Needs higher sample rate.
-         "reflection-high"; Needs 4 bits.
-         "reflection-low" ; Needs 4 bits.
-         "reflection-med" ; Needs 4 bits.
 
+         "game-over"
+         "extension"
+         "break-out"
+         "extra-life"
 ))
 
 (const *audio-3bit*
        '(
-
+         "laser"
+         "round-intro"
+         "reflection-high"; Needs 4 bits.
 ))
 
 (const *audio-4bit*
        '(
+         "reflection-med" ; Needs 4 bits.
+         "reflection-low" ; Needs 4 bits.
+         "final"
+         "doh-intro"
+         "round-start"    ; Needs more companding.
 ))
 
 (fn make-arcade-sounds ()
@@ -841,6 +840,7 @@
                               '("init.asm"
                                 "patch.asm"
                                 "moveram.asm"
+                                "music-arcade-blk5.asm"
                                 "lowmem-start.asm"
                                 "blitter.asm"
                                 "exm-nmi.asm"
@@ -890,15 +890,17 @@
 (gen-vcpu-tables "src/_vcpu.asm")
 ;(with-temporary *shadowvic?* t
 ;  (make-game :prg "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
-(with-temporary *show-cpu?* t
-  (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt"))
+;(with-temporary *show-cpu?* t
+;  (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt"))
 (with-temporary *rom?* t
   (make-game :prg "arukanoido.img" "arukanoido.img.vice.txt")
   (!= (- #x3ce (+ (get-label 'lowmem) (get-label 'lowmem_size)))
     (format t "~A bytes till $3ce.~%" !)
     (? (< ! 0)
-       (quit))))
-(make-game :prg "arukanoido.prg" "arukanoido.prg.vice.txt")
+       (quit)))
+  (!= (- #xc000 (get-label 'the_end))
+    (format t "~A bytes till $c000.~%" !)))
+;(make-game :prg "arukanoido.prg" "arukanoido.prg.vice.txt")
 
 (format t "Level data: ~A B~%" (length +level-data+))
 

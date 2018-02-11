@@ -50,7 +50,7 @@ digi_types:
     0 ; 2
     1 ; 3
     0 ; 4
-    0 ; 5
+    2 ; 5
     0 ; 6
     1 ; 7
     1 ; 8
@@ -100,7 +100,9 @@ r:  lda music_tmp
     sta requested_song
     jmp +n
 
-m:  jsr rle_start
+m:  lsr
+    bne +l
+    jsr rle_start
     jmp -r
 
 l:  lda #$ff
