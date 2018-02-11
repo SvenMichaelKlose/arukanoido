@@ -79,7 +79,7 @@
   (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
                       :pty cl:*standard-output*))
 
-(fn rle-compress (x &optional (n 0))
+(fn rle-compress (x &optional (n 1))
   (?
     (not x)          nil
     (not .x)         x
@@ -101,32 +101,33 @@
            (wav2raw out lwav d m))
          (with-output-file out (+ "obj/" i ".rle")
            (@ (i (rle-compress (@ #'char-code (string-list (fetch-file (+ "obj/" i ".raw"))))))
-             (write-byte i out)))
+             (write-byte i out))
+           (write-byte 0 out))
          (exomize-stream (+ "obj/" i ".raw") (+ "obj/" i ".exm")))))
 
 (const *audio-1bit*
        '(
+         "final"
+         "round-start"    ; Needs more companding.
+         "round-intro"
+         "break-out"
+         "doh-intro"
+         "game-over"
         ))
 
 (const *audio-2bit*
        '(
-         "break-out"
          "extra-life"
 ;        "catch"     ; Play beginning of reflection_low instead.
 ;        "doh-dissolving"    ; Needs higher sample rate.
-         "doh-intro"
          "explosion"
          "extension"
-         "final"
-         "game-over"
          "laser"
          "lost-ball"
 ;        "reflection-doh" ; Needs higher sample rate.
          "reflection-high"; Needs 4 bits.
          "reflection-low" ; Needs 4 bits.
          "reflection-med" ; Needs 4 bits.
-         "round-start"    ; Needs more companding.
-         "round-intro"
 
 ))
 
@@ -789,6 +790,7 @@
                           "music.asm"
                           "screen.asm"
                           "random.asm"
+                          "rle-player.asm"
                           "print.asm"
                           "sprites.asm"
                           "sprites-vic-common.asm"

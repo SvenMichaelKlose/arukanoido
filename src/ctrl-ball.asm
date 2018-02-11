@@ -52,7 +52,7 @@ n:  jmp play_reflection_sound
 
 l:  dec ball_release_timer
     bne +r
-;beq +r
+beq +r
     jsr release_ball
 
 ctrl_ball:

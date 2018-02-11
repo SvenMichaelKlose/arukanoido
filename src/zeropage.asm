@@ -136,6 +136,10 @@ zp_dest_hi:     0
 zp_dest_lo:     0
 zp_dest_bi:     0
 
+rle_val:        0
+rle_cnt:        0
+rle_play_ptr:   0 0
+
 uncleaned_zp:
 user_screen_origin_x:   0
 user_screen_origin_y:   0
@@ -236,6 +240,7 @@ make_stars_tmp:         0
 music_tmp:              0
 digisound_a:            0
 digisound_x:            0
+digisound_y:            0
 
 apply_tmp:              0 0
 vcpu_tmp:               0 0

@@ -44,6 +44,26 @@ sound_priorities:
     1 ; 16
     1 ; 17
 
+digi_types:
+    0 ; no sound
+    0 ; 1
+    0 ; 2
+    1 ; 3
+    0 ; 4
+    0 ; 5
+    0 ; 6
+    1 ; 7
+    1 ; 8
+    1 ; 9
+    1 ; 10
+    0 ; 11
+    1 ; 12
+    0 ; 13
+    1 ; 14
+    1 ; 15
+    1 ; 16
+    0 ; 17
+
 play_sound:
     sta music_tmp
     txa
@@ -62,6 +82,8 @@ m:  lda #$60
     sta $911e
     lda is_playing_digis
     beq +l
+    lda digi_types,x
+    bne +m
 
     lda @(-- sample_addrs_l),x
     beq +n
@@ -72,11 +94,14 @@ m:  lda #$60
     lda @(-- sample_len_l),x
     ldy @(-- sample_len_h),x
     jsr exm_start
-    lda music_tmp
+r:  lda music_tmp
     sta current_song
     lda #$ff
     sta requested_song
     jmp +n
+
+m:  jsr rle_start
+    jmp -r
 
 l:  lda #$ff
     sta exm_needs_data
