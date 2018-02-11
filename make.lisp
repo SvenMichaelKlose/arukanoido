@@ -903,7 +903,7 @@
 (unix-sh-mkdir "arukanoido")
 (@ (i '("arukanoido.prg"
         "arukanoido-cpumon.prg"))
-  (sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-B" "-t52" "-x1" "-o" (+ "arukanoido/" i) i)
+  (sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-B" "-t52" "-o" (+ "arukanoido/" i) i)
                       :pty cl:*standard-output*))
 
 (sb-ext:run-program "/usr/bin/split" (list "-b" "8192" "arukanoido.img" "arukanoido/arukanoido.img.")
