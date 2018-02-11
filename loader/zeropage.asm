@@ -43,4 +43,7 @@ mg_s:           0 0
 mg_d:           0 0
 mg_c:           0 0
 
+tmp:            0 0
+tmp2:           0
+
     end
