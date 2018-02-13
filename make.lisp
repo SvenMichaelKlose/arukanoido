@@ -1,6 +1,6 @@
 (load "gen-vcpu-tables.lisp")
 
-(var *demo?* t)
+(var *demo?* nil)
 (var *shadowvic?* nil)
 (var *rom?* nil)
 (var *add-charset-base?* t)
@@ -109,9 +109,9 @@
        '(
          "lost-ball"
 ;        "catch"     ; Play beginning of reflection_low instead.
-;        "doh-dissolving"    ; Needs higher sample rate.
+         "doh-dissolving"    ; Needs higher sample rate.
          "explosion"
-;        "reflection-doh" ; Needs higher sample rate.
+         "reflection-doh" ; Needs higher sample rate.
 
          "game-over"
          "extra-life"
@@ -886,7 +886,7 @@
 
 (put-file "obj/font-4x8-packed.bin" (list-string (@ #'code-char (packed-font))))
 
-;(make-arcade-sounds)
+(make-arcade-sounds)
 (gen-vcpu-tables "src/_vcpu.asm")
 
 (unix-sh-mkdir "arukanoido")
