@@ -1,7 +1,11 @@
-Changes relative to 746:
+Changes relative to 750:
+  * Faster decompression of original arcade audio.
+  * +32K RAM required.
+
+Changes of 750 relative to 746:
   * Splash screen countdown for tape version.
 
-Changes relative to 736:
+Changes of 746 relative to 736:
   * More random obstacle movements.
   * Bonus keys for game testers.
   * Splash screen for tape version.

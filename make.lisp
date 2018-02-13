@@ -95,21 +95,17 @@
               hi  (biggest wav)
               rat (/ 65535 (- hi lo))
               lwav  (@ #'integer (@ [* _ rat] (@ [- _ lo] wav))))
-         (with-output-file out (+ "obj/" i ".mon")
+         (with-output-file out (+ "obj/" i "." (string m) ".mon")
            (wav2mon out lwav d))
-         (with-output-file out (+ "obj/" i ".raw")
+         (with-output-file out (+ "obj/" i "." (string m) ".raw")
            (wav2raw out lwav d m))
-         (with-output-file out (+ "obj/" i ".rle")
-           (@ (i (rle-compress (@ #'char-code (string-list (fetch-file (+ "obj/" i ".raw"))))))
+         (with-output-file out (+ "obj/" i "." (string m) ".rle")
+           (@ (i (rle-compress (@ #'char-code (string-list (fetch-file (+ "obj/" i "." (string m) ".raw"))))))
              (write-byte i out))
            (write-byte 0 out))
-         (exomize-stream (+ "obj/" i ".raw") (+ "obj/" i ".exm")))))
+         (exomize-stream (+ "obj/" i "." (string m) ".raw") (+ "obj/" i "." (string m) ".exm")))))
 
-(const *audio-1bit*
-       '(
-        ))
-
-(const *audio-2bit*
+(const *audio-files*
        '(
          "lost-ball"
 ;        "catch"     ; Play beginning of reflection_low instead.
@@ -118,36 +114,29 @@
 ;        "reflection-doh" ; Needs higher sample rate.
 
          "game-over"
+         "extra-life"
          "extension"
          "break-out"
-         "extra-life"
-))
-
-(const *audio-3bit*
-       '(
          "laser"
          "round-intro"
          "reflection-high"; Needs 4 bits.
-))
-
-(const *audio-4bit*
-       '(
-         "reflection-med" ; Needs 4 bits.
          "reflection-low" ; Needs 4 bits.
+         "reflection-med" ; Needs 4 bits.
+
          "final"
          "doh-intro"
          "round-start"    ; Needs more companding.
 ))
 
 (fn make-arcade-sounds ()
-  (@ (i (+ *audio-1bit* *audio-2bit* *audio-3bit* *audio-4bit*))
+  (@ (i (+ *audio-files*))
     (print i)
     (make-filtered-wav i *audio-rate*)
     (make-conversion i *audio-rate*))
-  (convert-wavs *audio-1bit* 32768 8)    ; 1 bit
-  (convert-wavs *audio-2bit* 16384 4)     ; 2 bits
-  (convert-wavs *audio-3bit* 8192 2)      ; 3 bits
-  (convert-wavs *audio-4bit* 4096 1)      ; 4 bits
+  (convert-wavs *audio-files* 32768 8)    ; 1 bit
+  (convert-wavs *audio-files* 16384 4)     ; 2 bits
+  (convert-wavs *audio-files* 8192 2)      ; 3 bits
+  (convert-wavs *audio-files* 4096 1)      ; 4 bits
   )
 
 (fn gen-sprite-nchars ()
@@ -725,7 +714,19 @@
   (apply #'assemble-files to files)
   (make-vice-commands cmds (format nil "break .stop~%break .stop2~%break .stop3")))
 
-(fn make-game (version file cmds)
+(fn make-prg-launcher (file cmds)
+  (make file
+        (@ [+ "prg-launcher/" _] `("../bender/vic-20/vic.asm"
+                                   "zeropage.asm"
+                                   "../bender/vic-20/basic-loader.asm"
+                                   "main.asm"
+                                   "start.asm"
+                                   "blk5.asm"
+                                   "../src/music-arcade-blk5.asm"
+                                   "blk5-end.asm"))
+        cmds))
+
+(fn make-game (file cmds)
   (make file
         (@ [+ "src/" _] `("../bender/vic-20/vic.asm"
                           "constants.asm"
@@ -888,27 +889,39 @@
 (make-arcade-sounds)
 
 (gen-vcpu-tables "src/_vcpu.asm")
+
+(unix-sh-mkdir "arukanoido")
+
 ;(with-temporary *shadowvic?* t
-;  (make-game :prg "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
-;(with-temporary *show-cpu?* t
-;  (make-game :prg "arukanoido-cpumon.prg" "arukanoido-cpumon.vice.txt"))
+;  (make-game "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
 (with-temporary *rom?* t
-  (make-game :prg "arukanoido.img" "arukanoido.img.vice.txt")
+  (make-game "arukanoido.img" "arukanoido.img.vice.txt")
   (!= (- #x3ce (+ (get-label 'lowmem) (get-label 'lowmem_size)))
     (format t "~A bytes till $3ce.~%" !)
     (? (< ! 0)
        (quit)))
   (!= (- #xc000 (get-label 'the_end))
     (format t "~A bytes till $c000.~%" !)))
-;(make-game :prg "arukanoido.prg" "arukanoido.prg.vice.txt")
+
+(var *prg-path* nil)
+(fn make-prg (file)
+  (with-temporary *prg-path* file
+    (make "obj/music-arcade-blk5.bin"
+          `("prg-launcher/blk5.asm"
+            "src/music-arcade-blk5.asm")
+          "obj/music-arcade-blk5.vice.lst")
+    (with-temporary *imported-labels* (get-labels)
+      (make-game (+ "obj/" file ".prg") (+ file ".prg.vice.txt")))
+    (sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-B" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
+                        :pty cl:*standard-output*)
+    (make-prg-launcher (+ file ".prg") (+ file "-launcher.vice.txt"))
+    (unix-sh-cp (+ file ".prg") "arukanoido/")))
+
+(make-prg "arukanoido")
+(with-temporary *show-cpu?* t
+  (make-prg "arukanoido-cpumon"))
 
 (format t "Level data: ~A B~%" (length +level-data+))
-
-(unix-sh-mkdir "arukanoido")
-(@ (i '("arukanoido.prg"
-        "arukanoido-cpumon.prg"))
-  (sb-ext:run-program "/usr/local/bin/exomizer" (list "sfx" "basic" "-B" "-t52" "-o" (+ "arukanoido/" i) i)
-                      :pty cl:*standard-output*))
 
 (sb-ext:run-program "/usr/bin/split" (list "-b" "8192" "arukanoido.img" "arukanoido/arukanoido.img.")
                     :pty cl:*standard-output*)
