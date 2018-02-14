@@ -80,13 +80,13 @@ play_sound:
 
 m:  lda #$60
     sta $911e
+    lda #$ff
+    sta exm_needs_data
     lda is_playing_digis
     beq +l
     lda digi_types,x
     bne +m
 
-    lda @(-- sample_addrs_l),x
-    beq +n
     lda @(-- sample_addrs_l),x
     ldy @(-- sample_addrs_h),x
     jsr init_decruncher
