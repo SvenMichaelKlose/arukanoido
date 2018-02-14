@@ -25,6 +25,11 @@ l:  lda cfg,x
     sta tape_ptr,x
     dex
     bpl -l
+    ; Set IRQ vector.
+    lda #<tape_leader2
+    sta $314
+    lda #>tape_leader2
+    sta $315
     jmp c2nwarp_start
 
 start_game:

@@ -8,10 +8,7 @@ tape_map_end = @(+ tape_map tape_map_length)
 
 timer = @(* 8 *pulse-long*)
 
-c2nwarp_start:
-    lda #tape_leader_length
-    sta tape_leader_countdown
-
+c2nwarp_reset:
     ; Init pulse length map.
     lda #<tape_map
     sta s
@@ -32,26 +29,16 @@ l:  lda #$ff
     sta tape_map
     lda #3
     sta @(+ tape_map tape_map_length -1)
+    rts
+
+c2nwarp_start:
+    lda #tape_leader_length
+    sta tape_leader_countdown
 
     ; Start tape motor.
     lda $911c
     and #$fd
     sta $911c
-
-    sei
-    lda #$7f
-    sta $911e
-    sta $912e
-
-    ; Set IRQ vector.
-    lda $314
-    sta tape_old_irq
-    lda $315
-    sta @(++ tape_old_irq)
-    lda #<tape_leader1
-    sta $314
-    lda #>tape_leader1
-    sta $315
 
     ; Initialise VIA2 Timer 1 (cassette tape read).
     ldx #@(low *tape-pulse*) ; Restart timer.
@@ -262,11 +249,6 @@ n:  dec tape_counter        ; All bytes loaded?
     lda #$7f                ; Turn off tape pulse interrupt.
     sta $912e
     sta $912d
-
-    lda tape_old_irq
-    sta $314
-    lda @(++ tape_old_irq)
-    sta $315
 
     jmp (tape_callback)
 

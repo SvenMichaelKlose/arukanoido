@@ -1,4 +1,9 @@
 main:
+    sei
+    lda #$7f
+    sta $911e
+    sta $912e
+
     ldx #0
 l:  lda loader,x
     sta $2000,x
@@ -27,6 +32,11 @@ l:  lda title_cfg,x
     dex
     bpl -l
 
+    jsr c2nwarp_reset
+    lda #<tape_leader1
+    sta $314
+    lda #>tape_leader1
+    sta $315
     jmp c2nwarp_start
 
 loader:
