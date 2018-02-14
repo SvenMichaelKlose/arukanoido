@@ -1,4 +1,7 @@
-Changes relative to 750:
+Changes relative to 753:
+  * Reduced initial clicks of in-game digis.
+
+Changes of 753 relative to 750:
   * Faster decompression of original arcade audio.
   * +32K RAM required.
 
