@@ -20,7 +20,10 @@ n:  stx $9114
 
     lda #1
     sta rle_cnt
-    lda #$b8
+    ldy #0
+    lda (rle_play_ptr),y
+    and #$0f
+    ora #$b0
     sta rle_val
 
     ; Set NMI vector.
