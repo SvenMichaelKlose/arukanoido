@@ -5,6 +5,10 @@ buffer_len_hi   = $01
 tape_buffer     = $5100
 decrunch_table  = $6000
 
+num_digis       = 10
+
+ultimem_first_bank  = 8
+
     org 0
 
     data
@@ -49,4 +53,10 @@ tmp2:           0
 
 audio_ptr:      0
 is_loading_audio:   0
+digis_left:     0
+bank_ptr:       0 0
+raw_size:       0 0
+bank:           0
+get_byte:       0 0
+
     end

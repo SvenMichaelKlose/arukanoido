@@ -21,7 +21,23 @@ l:  lda title_cfg,x
     jsr c2nwarp_start
 l:  jmp -l
 
+get_mg_byte:
+    sty exo_y2
+    ldy #0
+    lda (exo_s),y
+    inc exo_s
+    beq +n
+    ldy exo_y2
+    rts
+n:  inc @(++ exo_s)
+    ldy exo_y2
+    rts
+
 show_title:
+    lda #<get_mg_byte
+    sta get_byte
+    lda #>get_mg_byte
+    sta @(++ get_byte)
     lda #$00
     sta d
     sta mg_s
