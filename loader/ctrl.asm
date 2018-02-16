@@ -2,6 +2,24 @@ title_size = @(length (fetch-file "obj/title.bin.exo"))
 title_size_raw = @(length (fetch-file "obj/title.bin"))
 binary_size = @(length (fetch-file *path-main*))
 
+load_title:
+    lda #0
+    sta $9002
+
+    ; Load title screen.
+    ldx #5
+l:  lda title_cfg,x
+    sta tape_ptr,x
+    dex
+    bpl -l
+
+    jsr c2nwarp_reset
+    lda #<tape_leader1
+    sta $314
+    lda #>tape_leader1
+    sta $315
+    jmp c2nwarp_start
+
 show_title:
     lda #$00
     sta d

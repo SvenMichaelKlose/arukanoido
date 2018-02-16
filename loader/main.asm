@@ -19,25 +19,12 @@ l:  lda loader,x
     sta $2500,x
     lda @(+ loader #x600),x
     sta $2600,x
+    lda @(+ loader #x700),x
+    sta $2700,x
     inx
     bne -l
 
-    lda #0
-    sta $9002
-
-    ; Load title screen.
-    ldx #5
-l:  lda title_cfg,x
-    sta tape_ptr,x
-    dex
-    bpl -l
-
-    jsr c2nwarp_reset
-    lda #<tape_leader1
-    sta $314
-    lda #>tape_leader1
-    sta $315
-    jmp c2nwarp_start
+    jmp load_title
 
 loader:
     org $2000

@@ -1,8 +1,9 @@
-screen      = $1e00
-colors      = $9600
+screen          = $1e00
+colors          = $9600
 buffer_start_hi = $50
-buffer_len_hi = $01
-decrunch_table = $6000
+buffer_len_hi   = $01
+tape_buffer     = $5100
+decrunch_table  = $6000
 
     org 0
 
@@ -46,4 +47,6 @@ mg_c:           0 0
 tmp:            0 0
 tmp2:           0
 
+audio_ptr:      0
+is_loading_audio:   0
     end
