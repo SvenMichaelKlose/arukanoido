@@ -78,6 +78,7 @@ copy_forwards:
     ldx #@(low binary_size)
     lda #@(++ (high binary_size))
     sta @(++ c)
+    ldy #0
 l:  lda (s),y
     sta (d),y
     iny

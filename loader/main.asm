@@ -1,30 +1,36 @@
+loader_size = @(- target loader)
+
 main:
     sei
+stop:
     lda #$7f
     sta $911e
     sta $912e
 
-    ldx #0
-l:  lda loader,x
-    sta $2000,x
-    lda @(+ loader #x100),x
-    sta $2100,x
-    lda @(+ loader #x200),x
-    sta $2200,x
-    lda @(+ loader #x300),x
-    sta $2300,x
-    lda @(+ loader #x400),x
-    sta $2400,x
-    lda @(+ loader #x500),x
-    sta $2500,x
-    lda @(+ loader #x600),x
-    sta $2600,x
-    lda @(+ loader #x700),x
-    sta $2700,x
-    inx
+    lda #<loaded_loader
+    sta s
+    lda #>loaded_loader
+    sta @(++ s)
+    lda #<loader
+    sta d
+    lda #>loader
+    sta @(++ d)
+    ldx #@(low loader_size)
+    lda #@(++ (high loader_size))
+    sta @(++ c)
+    ldy #0
+l:  lda (s),y
+    sta (d),y
+    iny
+    bne +n
+    inc @(++ s)
+    inc @(++ d)
+n:  dex
     bne -l
-
+    dec @(++ c)
+    bne -l
     jmp load_title
 
-loader:
+loaded_loader:
     org $2000
+loader:
