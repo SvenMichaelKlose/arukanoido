@@ -36,10 +36,10 @@
                                                            (string (code-char (mod (>> l 8) 256)))
                                                            (string (code-char (>> l 16)))
                                                            (fetch-file (+ "obj/" _ ".1.exm")))
-                                    (with-string-stream s (c2ntap s i :sync? nil)))]
-                                '("break-out" "doh-intro" "explosion" "extension" "extra-life" "game-over" "laser" "lost-ball"
-                                  "reflection-doh" "reflection-high" "reflection-med" "reflection-low" "final"
-                                  "round-intro" "round-start")))))))
+                                    (with-string-stream s (c2ntap s i :sync? nil :gap #x4000000)))]
+                                '("break-out" "doh-intro" "explosion" "extension" "extra-life"
+                                  "game-over" "laser" "lost-ball" "reflection-doh" "reflection-high"
+                                  "reflection-med" "reflection-low" "round-intro" "round-start" "final")))))))
 
 
 (with-temporary *path-main* "arukanoido/arukanoido.prg"

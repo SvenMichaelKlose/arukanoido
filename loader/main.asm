@@ -6,8 +6,43 @@ main:
     sta $911e
     sta $912e
 
+    lda $9f55       ; Unhide registers.
+    lda $9faa
+    lda $9f01
+    lda $9ff3
+    cmp #$11
+    beq +f
+    cmp #$12
+    beq +f
+
+    bne +n
+
+    ; Activate all Ultimem RAM.
+f:  lda #%00111111
+    sta $9ff1
+    lda #%11111111
+    sta $9ff2
+    lda #0
+    sta $9ff4
+    sta $9ff5
+    ldx #1
+    stx $9ff6
+    sta $9ff7
+    inx
+    stx $9ff8
+    sta $9ff9
+    inx
+    stx $9ffa
+    sta $9ffb
+    inx
+    stx $9ffc
+    sta $9ffd
+    inx
+    stx $9ffe
+    sta $9fff
+
     ; Relocate to $2000.
-    lda #<loaded_loader
+n:  lda #<loaded_loader
     sta s
     lda #>loaded_loader
     sta @(++ s)

@@ -12,13 +12,13 @@ r:  sei
     ; Load and recompress audio depending on
     ; available memory expansion.
 load_audio:
+    lda #0
+    sta $9002
+
     jsr check_memory_expansion
+    bcc -r
     jsr init_memory_expansion
 
-    lda #$00
-    sta bank_ptr
-    lda #$a0
-    sta @(++ bank_ptr)
     lda #num_digis
     sta digis_left
     inc is_loading_audio
@@ -49,24 +49,11 @@ next_digi:
     jsr poll_loader_byte
     sta @(+ 2 raw_size)
 
-;    lda #$ff
-;    sec
-;    sbc bank_ptr
-;    sta tmp
-;    lda #$bf
-;    sbc @(++ bank_ptr)
-;    cmp @(++ raw_size)
-;    bcs +n
-;    lda tmp
-;    cmp raw_size
-;    bcc +n
-;    inc bank
-;    jmp next_digi
-    
 n:  jsr init_decruncher
 
     inc @(+ 2 raw_size)
 l:  jsr get_decrunched_byte
+    sta $900e
     inc $900f
     ldy #0
     sta (bank_ptr),y
@@ -78,7 +65,8 @@ l:  jsr get_decrunched_byte
     bne +n
     lda #$a0
     sta @(++ bank_ptr)
-    inc $9ffc
+    inc bank
+    jsr set_bank
 n:  dec raw_size
     bne -l
     dec @(+ 1 raw_size)
@@ -89,21 +77,32 @@ n:  dec raw_size
     jmp next_digi
 
 check_memory_expansion:
+    lda $9f55       ; Unhide registers.
+    lda $9faa
+    lda $9f01
+    lda $9ff3
+    cmp #$11
+    beq +f
+    cmp #$12
+    beq +f
+    clc
+    rts
+
+f:  sec
     rts
 
 init_memory_expansion:
     lda #ultimem_first_bank
     sta bank
-    lda #$00
+    lda #0
     sta bank_ptr
+    sta $9fff
     lda #$a0
     sta @(++ bank_ptr)
 
+set_bank:
     lda bank
-    stx $9ffc
-    lda #0
-    sta $9ffd
- 
+    sta $9ffe
     rts
 
 poll_loader_byte:
