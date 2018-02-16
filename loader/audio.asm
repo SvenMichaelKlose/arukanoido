@@ -1,16 +1,39 @@
-r:  rts
+r:  sei
+    lda #$7f
+    sta $912e
+    sta $912d
+
+    ; Stop tape motor.
+    lda $911c
+    ora #3
+    sta $911c
+    jmp start_game
 
     ; Load and recompress audio depending on
     ; available memory expansion.
-load_digis:
+load_audio:
+    jmp  -r
     lda #num_digis
     sta digis_left
-    ldy #0
-    sty audio_ptr
     inc is_loading_audio
 
     jsr check_memory_expansion
     jsr init_memory_expansion
+
+    lda #0
+    sta audio_ptr
+    sta tape_ptr
+    lda #>tape_buffer
+    sta @(++ tape_ptr)
+    lda #<poll_loader_byte
+    sta get_byte
+    lda #>poll_loader_byte
+    sta @(++ get_byte)
+    lda #<tape_leader2
+    sta $314
+    lda #>tape_leader2
+    sta $315
+    jsr c2nwarp_start
 
 next_digi:
     lda digis_left
@@ -39,16 +62,21 @@ next_digi:
 n:  jsr init_decruncher
     inc @(++ raw_size)
 
+    inc @(++ raw_size)
 l:  jsr get_decrunched_byte
     ldy #0
-    sta (bank_ptr),y
-    inc bank_ptr
-    bcc +n
-    inc @(++ bank_ptr)
-N:  dec raw_size
-    bne +n
+    dec raw_size
+    bne -l
     dec @(++ raw_size)
-n:  bne -l
+    bne -l
+;    sta (bank_ptr),y
+;    inc bank_ptr
+;    bcc +n
+;    inc @(++ bank_ptr)
+;N:  dec raw_size
+;    bne +n
+;    dec @(++ raw_size)
+;n:  bne -l
     jmp next_digi
 
 check_memory_expansion:
@@ -64,8 +92,11 @@ init_memory_expansion:
     rts
 
 poll_loader_byte:
-    ldy audio_ptr
+    sty exo_y2
+l:  ldy audio_ptr
     cpy tape_ptr
-    beq poll_loader_byte
+    beq -l
+    inc audio_ptr
     lda tape_buffer,y
+    ldy exo_y2
     rts
