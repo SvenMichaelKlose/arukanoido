@@ -31,8 +31,15 @@
                   (list-string (@ #'code-char '(0 0 0 8)))
                   (with-input-file i path-in
                     (with-string-stream s (c2ntap s i :sync? nil)))
-                  (with-input-file i "obj/music-expanded.bin"
-                    (with-string-stream s (c2ntap s i :sync? nil)))))))
+                  (apply #'+ (@ [let l (length (fetch-file (+ "obj/" _ ".1.raw")))
+                                  (with-stream-string i (+ (string (code-char (mod l 256)))
+                                                           (string (code-char (>> l 8)))
+                                                           (fetch-file (+ "obj/" _ ".1.exm")))
+                                    (with-string-stream s (c2ntap s i :sync? nil)))]
+                                '("break-out" "doh-intro" "explosion" "extension" "extra-life" "game-over" "laser" "lost-ball"
+                                  "reflection-doh" "reflection-high" "reflection-med" "reflection-low"
+                                  "round-intro" "round-start")))))))
+
 
 (with-temporary *path-main* "arukanoido/arukanoido.prg"
   (assemble-loader :title "ARUKANOIDO"

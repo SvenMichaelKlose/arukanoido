@@ -886,7 +886,6 @@
 (put-file "obj/font-4x8-packed.bin" (list-string (@ #'code-char (packed-font))))
 
 (make-arcade-sounds)
-(apply #'assemble-files "obj/music-expanded.bin" '("src/music-expanded.asm"))
 (gen-vcpu-tables "src/_vcpu.asm")
 
 (unix-sh-mkdir "arukanoido")

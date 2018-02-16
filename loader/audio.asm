@@ -15,7 +15,7 @@ load_audio:
     jsr check_memory_expansion
     jsr init_memory_expansion
 
-    lda #1 ;num_digis
+    lda #num_digis
     sta digis_left
     inc is_loading_audio
 
