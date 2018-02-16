@@ -1,6 +1,6 @@
 (load "gen-vcpu-tables.lisp")
 
-(var *demo?* t)
+(var *demo?* nil)
 (var *shadowvic?* nil)
 (var *rom?* nil)
 (var *add-charset-base?* t)
@@ -790,6 +790,7 @@
                           "music.asm"
                           "screen.asm"
                           "random.asm"
+                          "raw-player.asm"
                           "rle-player.asm"
                           "print.asm"
                           "sprites.asm"

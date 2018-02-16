@@ -138,6 +138,7 @@ zp_dest_bi:     0
 
 rle_val:        0
 rle_cnt:        0
+raw_play_ptr:
 rle_play_ptr:   0 0
 
 uncleaned_zp:

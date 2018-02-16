@@ -1,18 +1,14 @@
 ; Fixed addresses
 
-bricks          = $1c00
-txt_tmp         = bricks
+screen          = $1000
 decrunch_table  = $1250      ; 156 bytes
 buffer_start_hi = $13
 buffer_len_hi   = $01
+charset         = $1400
+bricks          = $1c00
+txt_tmp         = bricks
 exm_buffers     = $1e00
-
-
-; VIC settings
-
-screen              = $1000
-charset             = $1400
-colors              = $9400
+colors          = $9400
 
 ; Charset settings
 
