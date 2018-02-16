@@ -51,41 +51,7 @@ c2nwarp_start:
     sta $912e
 
     cli
-
-    ; Display countdown.
-l:  lda tape_counter
-    sta tmp
-    ldx @(++ tape_counter)
-    dex
-    stx @(++ tmp)
-
-    lda #0
-    sta tmp2
-l2: lda tmp
-    sec
-    sbc #<cdec
-    sta tmp
-    lda @(++ tmp)
-    sbc #>cdec
-    sta @(++ tmp)
-    inc tmp2
-    bcs -l2
-
-    lda #<number_0
-    clc
-    adc tmp2
-    sta tmp
-    lda #>number_0
-    adc #0
-    sta @(++ tmp)
-
-    ldy #7
-l3: lda (tmp),y
-    sta mg_charset,y
-    dey
-    bpl -l3
-
-    jmp -l
+    rts
 
 tape_get_bit:
     lda $912d               ; Get timer underflow bit.

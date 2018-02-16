@@ -18,7 +18,8 @@ l:  lda title_cfg,x
     sta $314
     lda #>tape_leader1
     sta $315
-    jmp c2nwarp_start
+    jsr c2nwarp_start
+l:  jmp -l
 
 show_title:
     lda #$00
@@ -48,7 +49,42 @@ l:  lda cfg,x
     sta $314
     lda #>tape_leader2
     sta $315
-    jmp c2nwarp_start
+    jsr c2nwarp_start
+
+    ; Display countdown.
+l:  lda tape_counter
+    sta tmp
+    ldx @(++ tape_counter)
+    dex
+    stx @(++ tmp)
+
+    lda #0
+    sta tmp2
+l2: lda tmp
+    sec
+    sbc #<cdec
+    sta tmp
+    lda @(++ tmp)
+    sbc #>cdec
+    sta @(++ tmp)
+    inc tmp2
+    bcs -l2
+
+    lda #<number_0
+    clc
+    adc tmp2
+    sta tmp
+    lda #>number_0
+    adc #0
+    sta @(++ tmp)
+
+    ldy #7
+l3: lda (tmp),y
+    sta mg_charset,y
+    dey
+    bpl -l3
+
+    jmp -l
 
 start_game:
     lda #$00

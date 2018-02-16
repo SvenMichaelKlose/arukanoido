@@ -2,7 +2,6 @@ loader_size = @(- target loader)
 
 main:
     sei
-stop:
     lda #$7f
     sta $911e
     sta $912e
