@@ -5,7 +5,7 @@ buffer_len_hi   = $01
 tape_buffer     = $7b00
 decrunch_table  = $0200
 
-num_digis       = 10
+num_digis       = 15
 
 ultimem_first_bank  = 8
 

@@ -33,11 +33,12 @@
                     (with-string-stream s (c2ntap s i :sync? nil)))
                   (apply #'+ (@ [let l (length (fetch-file (+ "obj/" _ ".1.raw")))
                                   (with-stream-string i (+ (string (code-char (mod l 256)))
-                                                           (string (code-char (>> l 8)))
+                                                           (string (code-char (mod (>> l 8) 256)))
+                                                           (string (code-char (>> l 16)))
                                                            (fetch-file (+ "obj/" _ ".1.exm")))
                                     (with-string-stream s (c2ntap s i :sync? nil)))]
                                 '("break-out" "doh-intro" "explosion" "extension" "extra-life" "game-over" "laser" "lost-ball"
-                                  "reflection-doh" "reflection-high" "reflection-med" "reflection-low"
+                                  "reflection-doh" "reflection-high" "reflection-med" "reflection-low" "final"
                                   "round-intro" "round-start")))))))
 
 
