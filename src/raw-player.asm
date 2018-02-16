@@ -40,14 +40,20 @@ raw_play_sample:
     lda (@(++ raw_play_ptr)),y
     beq +done
     sta $900e
-    inc @(+ 1 raw_play_ptr)
-    bne +n
+    inc raw_play_ptr
+    beq +n
+    ldy digisound_y
+    lda digisound_a
+    rti
+
+n:  inc @(+ 1 raw_play_ptr)
     lda @(+ 1 raw_play_ptr)
     cmp #$c0
-    bne +n
+    bne +r
     lda #$a0
     sta @(+ 1 raw_play_ptr)
     inc $9ffe
+
 r:  ldy digisound_y
     lda digisound_a
     rti
