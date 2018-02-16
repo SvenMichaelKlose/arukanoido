@@ -7,7 +7,7 @@
            "loader/main.asm"
            "bender/vic-20/minigrafik-display.asm"
            "loader/exomizer-stream-decrunsh.asm"
-           "loader/audio.asm"
+;           "loader/audio.asm"
            "loader/loader.asm"
            "loader/ctrl.asm"))
   (make-vice-commands "loader.vice.txt" "break .stop")

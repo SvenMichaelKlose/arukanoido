@@ -2,8 +2,8 @@ cdec = @(/ binary_size 72)
 number_0 = @(-- (+ #x8000 (* #x30 8)))
 
 tape_leader_length = 32
-tape_map = $7800
-tape_map_length = $800
+tape_map = $7c00
+tape_map_length = $400
 tape_map_end = @(+ tape_map tape_map_length)
 
 timer = @(* 8 *pulse-long*)
