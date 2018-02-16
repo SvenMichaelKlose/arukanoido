@@ -3,7 +3,7 @@ colors          = $9600
 buffer_start_hi = $50
 buffer_len_hi   = $01
 tape_buffer     = $5100
-decrunch_table  = $6000
+decrunch_table  = $0200
 
 num_digis       = 10
 
