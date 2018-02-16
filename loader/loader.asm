@@ -198,11 +198,16 @@ tape_loader_data:
     beq byte_complete
 r:  jmp intret
 
+n:  inc tape_ptr
+    jmp intret
+
 byte_complete:
     lda #4                  ; Reset bit count.
     sta tape_bit_counter
     lda tape_current_byte   ; Save byte to its destination.
     sta (tape_ptr),y
+    lda is_loading_audio
+    bne -n
     inc tape_ptr            ; Advance destination address.
     bne +n
     inc @(++ tape_ptr)
@@ -234,7 +239,8 @@ n:
     stx @(++ s)
     lda @(++ s)
     and #7
-    ora #>tape_map
+    clc
+    adc #>tape_map
     sta @(++ s)
 
     rts

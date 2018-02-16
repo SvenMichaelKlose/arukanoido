@@ -5,6 +5,7 @@ binary_size = @(length (fetch-file *path-main*))
 load_title:
     lda #0
     sta $9002
+    sta is_loading_audio
 
     ; Load title screen.
     ldx #5

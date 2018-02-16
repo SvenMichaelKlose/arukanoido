@@ -9,7 +9,7 @@ num_digis       = 10
 
 ultimem_first_bank  = 8
 
-    org 0
+    org $c0
 
     data
 

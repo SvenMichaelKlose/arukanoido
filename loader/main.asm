@@ -6,6 +6,7 @@ main:
     sta $911e
     sta $912e
 
+    ; Relocate to $2000.
     lda #<loaded_loader
     sta s
     lda #>loaded_loader
@@ -28,6 +29,7 @@ n:  dex
     bne -l
     dec @(++ c)
     bne -l
+
     jmp load_title
 
 loaded_loader:
