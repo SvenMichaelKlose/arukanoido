@@ -12,13 +12,16 @@ r:  sei
     ; Load and recompress audio depending on
     ; available memory expansion.
 load_audio:
-    jmp  -r
-    lda #num_digis
+    jsr check_memory_expansion
+    jsr init_memory_expansion
+
+    lda #1 ;num_digis
     sta digis_left
     inc is_loading_audio
 
-    jsr check_memory_expansion
-    jsr init_memory_expansion
+next_digi:
+    lda digis_left
+    beq -r
 
     lda #0
     sta audio_ptr
@@ -35,36 +38,32 @@ load_audio:
     sta $315
     jsr c2nwarp_start
 
-next_digi:
-    lda digis_left
-    beq -r
-
     jsr poll_loader_byte
     sta raw_size
     jsr poll_loader_byte
     sta @(++ raw_size)
-    jsr poll_loader_byte
 
-    lda #$ff
-    sec
-    sbc bank_ptr
-    sta tmp
-    lda #$bf
-    sbc @(++ bank_ptr)
-    cmp @(++ raw_size)
-    bcc +n
-    lda tmp
-    cmp raw_size
-    bcc +n
-    inc bank
-    jmp next_digi
+;    lda #$ff
+;    sec
+;    sbc bank_ptr
+;    sta tmp
+;    lda #$bf
+;    sbc @(++ bank_ptr)
+;    cmp @(++ raw_size)
+;    bcs +n
+;    lda tmp
+;    cmp raw_size
+;    bcc +n
+;    inc bank
+;    jmp next_digi
     
 n:  jsr init_decruncher
-    inc @(++ raw_size)
 
     inc @(++ raw_size)
 l:  jsr get_decrunched_byte
+    sta $900e
     ldy #0
+    inc $900f
     dec raw_size
     bne -l
     dec @(++ raw_size)
@@ -77,6 +76,7 @@ l:  jsr get_decrunched_byte
 ;    bne +n
 ;    dec @(++ raw_size)
 ;n:  bne -l
+    dec digis_left
     jmp next_digi
 
 check_memory_expansion:
@@ -92,11 +92,13 @@ init_memory_expansion:
     rts
 
 poll_loader_byte:
+    php
     sty exo_y2
 l:  ldy audio_ptr
     cpy tape_ptr
     beq -l
-    inc audio_ptr
     lda tape_buffer,y
+    inc audio_ptr
     ldy exo_y2
+    plp
     rts

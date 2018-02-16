@@ -153,6 +153,6 @@ title_cfg:
 cfg:
     <target >target
     <binary_size @(++ (high binary_size))
-    <start_game >start_game
+    <load_audio >load_audio
 
 target:

@@ -2,14 +2,14 @@ screen          = $1e00
 colors          = $9600
 buffer_start_hi = $50
 buffer_len_hi   = $01
-tape_buffer     = $5100
+tape_buffer     = $7b00
 decrunch_table  = $0200
 
 num_digis       = 10
 
 ultimem_first_bank  = 8
 
-    org $c0
+    org $a0
 
     data
 
