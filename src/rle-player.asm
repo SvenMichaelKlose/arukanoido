@@ -5,15 +5,25 @@ rle_start:
     lda @(-- sample_addrs_h),x
     sta @(+ 2 rle_play_ptr)
 
-    ldx #$60        ; Disable NMI timer and interrupt.
-    stx $911e
+    lda #$60        ; Disable NMI timer and interrupt.
+    sta $911e
 
+    lda digi_rates,x
+    bne +m
     ldx #<digisound_timer_pal
     ldy #>digisound_timer_pal
     lda is_ntsc
     beq +n
     ldx #<digisound_timer_ntsc
     ldy #>digisound_timer_ntsc
+    jmp +n
+m:  ldx #<digisound_timer_fast_pal
+    ldy #>digisound_timer_fast_pal
+    lda is_ntsc
+    beq +n
+    ldx #<digisound_timer_fast_ntsc
+    ldy #>digisound_timer_fast_ntsc
+    jmp +n
 n:  stx $9114
     sty $9115
     sty exm_timer

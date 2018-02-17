@@ -10,6 +10,7 @@
                   (subseq ! 0 (-- (length !)))))
 
 (var *audio-rate* 4000)
+(var *audio-rate-fast* 6000)
 
 (unix-sh-mkdir "obj")
 
@@ -131,8 +132,11 @@
 (fn make-arcade-sounds ()
   (@ (i (+ *audio-files*))
     (print i)
-    (make-filtered-wav i *audio-rate*)
-    (make-conversion i *audio-rate*))
+    (!= (? (in? i "reflection-low" "reflection-med" "reflection-high")
+           *audio-rate-fast*
+           *audio-rate*)
+      (make-filtered-wav i !)
+      (make-conversion i !)))
   (convert-wavs *audio-files* 32768 8)    ; 1 bit
   (convert-wavs *audio-files* 16384 4)     ; 2 bits
   (convert-wavs *audio-files* 8192 2)      ; 3 bits
@@ -886,7 +890,7 @@
 
 (put-file "obj/font-4x8-packed.bin" (list-string (@ #'code-char (packed-font))))
 
-;(make-arcade-sounds)
+(make-arcade-sounds)
 (gen-vcpu-tables "src/_vcpu.asm")
 
 (unix-sh-mkdir "arukanoido")
