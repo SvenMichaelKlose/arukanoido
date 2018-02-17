@@ -17,13 +17,13 @@
 (fn make-filtered-wav (name rate)
   (sb-ext:run-program "/usr/bin/sox"
                       `(
-                        "-v 0.9"
+;                        "-v 0.9"
                         ,(+ "media/audio/" name ".wav")
                         ,(+ "obj/" name ".filtered.wav")
 ;                        "bass" "12"
                         "lowpass" ,(princ (half rate) nil)
 ;"compand" "0.3,1" "6:-70,-60,-20" "-5" "-90" ; podcast
-"compand" "0.1,0.3" "-60,-60,-30,-15,-20,-12,-4,-8,-2,-7" "-2" ; voice/music
+;"compand" "0.1,0.3" "-60,-60,-30,-15,-20,-12,-4,-8,-2,-7" "-2" ; voice/music
 ;"compand" "0.01,1" "-90,-90,-70,-70,-60,-20,0,0" "-5" ; voice/radio
                         )
                        :pty cl:*standard-output*))
@@ -53,14 +53,30 @@
             (queue-list q)
       (enqueue q (bit-xor ! 32768)))))
 
+(fn around (x f m)
+  (!= (degree-sin (* (/ 89 65536) x))
+    (!= (integer (* ! 65535))
+      (* (integer (/ ! f)) m))))
+
+;  (* (integer (/ x f)) m))
+;  (* (integer (/ (!= (+ x (integer (cl:random (++ (mod x f)))))
+;                   (? (< 65535 !)
+;                      65535
+;                      !))
+;                 f)) m))
+;  (!= (* (integer (round (/ x f))) m)
+;    (? (< 255 !)
+;       255
+;       !)))
+
 (fn wav2mon (out in f)
   (@ (! in)
-    (write-word (* (integer (/ (bit-xor ! 32768) f)) f) out)))
+    (write-word (bit-xor (around ! f f) 32768) out)))
 
 (fn wav2raw (out in f m)
   (with-queue q
     (@ (! in)
-      (enqueue q (* (integer (/ ! f)) m)))
+      (enqueue q (around ! f m)))
     (@ (i (reverse (trim-wav (reverse (trim-wav (queue-list q))))))
       (write-byte (+ i (* 11 16)) out))))
 
@@ -95,7 +111,8 @@
               lo  (smallest wav)
               hi  (biggest wav)
               rat (/ 65535 (- hi lo))
-              lwav  (@ #'integer (@ [* _ rat] (@ [- _ lo] wav))))
+              lwav  (@ #'integer (@ [* _ rat]
+                                    (@ [- _ lo] wav))))
          (with-output-file out (+ "obj/" i "." (string m) ".mon")
            (wav2mon out lwav d))
          (with-output-file out (+ "obj/" i "." (string m) ".raw")
@@ -132,7 +149,7 @@
 (fn make-arcade-sounds ()
   (@ (i (+ *audio-files*))
     (print i)
-    (!= (? (in? i "reflection-low" "reflection-med" "reflection-high")
+    (!= (? (in? i "reflection-med" "reflection-high")
            *audio-rate-fast*
            *audio-rate*)
       (make-filtered-wav i !)

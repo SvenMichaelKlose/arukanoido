@@ -8,7 +8,7 @@ rle_start:
     lda #$60        ; Disable NMI timer and interrupt.
     sta $911e
 
-    lda digi_rates,x
+    lda @(-- digi_rates),x
     bne +m
     ldx #<digisound_timer_pal
     ldy #>digisound_timer_pal
