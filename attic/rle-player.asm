@@ -1,9 +1,9 @@
 ; X: Sound index
 rle_start:
     lda @(-- sample_addrs_l),x                                                                                                                                                                        
-    sta rle_play_ptr
+    sta @(+ 1 rle_play_ptr)
     lda @(-- sample_addrs_h),x
-    sta @(++ rle_play_ptr)
+    sta @(+ 2 rle_play_ptr)
 
     lda #$60        ; Disable NMI timer and interrupt.
     sta $911e
@@ -31,8 +31,6 @@ n:  stx $9114
     lda #1
     sta rle_cnt
     ldy #0
-    sty rle_singles
-    sty rle_bit
     lda (rle_play_ptr),y
     and #$0f
     ora #$b0
@@ -51,62 +49,34 @@ n:  stx $9114
 
     rts
 
-rle_fetch:
-    ldy #0
-    lda rle_bit
-    lsr
-    lda (rle_play_ptr),y
-    bcc +n
-    lsr
-    lsr
-    lsr
-    lsr
-    inc rle_play_ptr
-    bne +r
-    inc @(++ rle_play_ptr)
-n:  and #15
-r:  inc rle_bit
-    rts
-
 rle_play_sample:
     sta digisound_a
-    sty digisound_y
     lda exm_timer
     sta $9115
-    lda rle_singles
-    beq +n
-    jsr rle_fetch
-    ora #$b0
-    sta $900e
-    dec rle_singles
-    beq +m
-    ldy digisound_y
-    lda digisound_a
-    rti
-
-n:  lda rle_val
+    lda rle_val
     sta $900e
     dec rle_cnt
-    beq +m
-    ldy digisound_y
+    beq +n
     lda digisound_a
     rti
 
-m:  jsr rle_fetch
-    cmp #0
+n:  sty digisound_y
+    ldy #0
+    lda (@(++ rle_play_ptr)),y
     beq +done
-    cmp #8
-    bcc +n
-    and #7
-    sta rle_singles
-    ldy digisound_y
-    lda digisound_a
-    rti
-
-n:  sta rle_cnt
-    jsr rle_fetch
+    inc @(+ 1 rle_play_ptr)
+    bne +n
+    inc @(+ 2 rle_play_ptr)
+n:  tay
+    and #$0f
     ora #$b0
     sta rle_val
+    tya
+    lsr
+    lsr
+    lsr
+    lsr
+    sta rle_cnt
 r:  ldy digisound_y
     lda digisound_a
     rti

@@ -1,6 +1,6 @@
 (load "gen-vcpu-tables.lisp")
 
-(var *demo?* nil)
+(var *demo?* t)
 (var *shadowvic?* nil)
 (var *rom?* nil)
 (var *add-charset-base?* t)
@@ -10,7 +10,7 @@
                   (subseq ! 0 (-- (length !)))))
 
 (var *audio-rate* 4000)
-(var *audio-rate-fast* 6000)
+(var *audio-rate-fast* 4000)
 
 (unix-sh-mkdir "obj")
 
@@ -96,13 +96,38 @@
   (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
                       :pty cl:*standard-output*))
 
+(fn num-singles (x &optional (n 1))
+  (?
+    (not x)          n
+    (not .x)         n
+    (& (< n 7)
+       (== 16 (bit-and x. #xf0) (bit-and .x. #xf0)))
+                     (num-singles .x (++ n))
+    n))
+
+(fn rle-compress2 (x)
+  (?
+    (not x)          nil
+    (not .x)         (list (>> x. 4) (bit-and x. 15))
+    (== 16 (bit-and x. #xf0))
+                    (!= (num-singles x)
+                      (+ (list (+ ! 8))
+                         (@ [bit-and _ 15] (subseq x 0 !))
+                         (rle-compress2 (nthcdr ! x))))
+    (. (>> x. 4)
+       (. (bit-and x. 15)
+          (rle-compress2 .x)))))
+
 (fn rle-compress (x &optional (n 1))
   (?
     (not x)          nil
-    (not .x)         x
-    (& (< n 15)
+    (not .x)         (list (bit-and x. 15))
+    (& (< n 7)
        (== x. .x.))  (rle-compress .x (++ n))
     (. (+ (* n 16) (bit-and x. 15)) (rle-compress .x))))
+
+(fn packed (x)
+  (@ [+ (<< (| ._. 0) 4) (| _. 0)] (group x 2)))
 
 (fn convert-wavs (x d m)
   (@ (i x)
@@ -117,8 +142,12 @@
            (wav2mon out lwav d))
          (with-output-file out (+ "obj/" i "." (string m) ".raw")
            (wav2raw out lwav d m))
+;         (with-output-file out (+ "obj/" i "." (string m) ".rle")
+;           (@ (i (rle-compress (@ #'char-code (string-list (fetch-file (+ "obj/" i "." (string m) ".raw"))))))
+;             (write-byte i out))
+;           (write-byte 0 out))
          (with-output-file out (+ "obj/" i "." (string m) ".rle")
-           (@ (i (rle-compress (@ #'char-code (string-list (fetch-file (+ "obj/" i "." (string m) ".raw"))))))
+           (@ (i (packed (rle-compress2 (rle-compress (@ #'char-code (string-list (fetch-file (+ "obj/" i "." (string m) ".raw"))))))))
              (write-byte i out))
            (write-byte 0 out))
          (exomize-stream (+ "obj/" i "." (string m) ".raw") (+ "obj/" i "." (string m) ".exm")))))

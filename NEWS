@@ -1,4 +1,11 @@
-Changes relative to 753:
+Changes relative to 762:
+  * Improved audio compression.
+  * Better audio dynamcs.
+
+Changes of 782 relative to 762:
+  * Improved arcade sounds.
+
+Changes of 762 relative to 753:
   * Reduced initial clicks of in-game digis.
   * Bonus B digi works.
 

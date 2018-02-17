@@ -88,8 +88,6 @@ ball_y:               0
 
 laser_has_hit:        0   ; For the laser controller to remember if it hit one the left.
 is_testing_laser_hit: 0
-has_new_score:        0
-has_hiscore:          0
 scorechar_start:      0
 
 ; Currently processed sprite
@@ -140,6 +138,8 @@ rle_val:        0
 rle_cnt:        0
 raw_play_ptr:
 rle_play_ptr:   0 0
+rle_bit:        0
+rle_singles:    0
 
 uncleaned_zp:
 user_screen_origin_x:   0
@@ -162,6 +162,9 @@ sprites_sx:     fill @(* 2 num_sprites) ; Screen position, dimensions in chars a
 sprites_sy:     fill @(* 2 num_sprites)
 sprites_sw:     fill @(* 2 num_sprites)
 sprites_sh:     fill @(* 2 num_sprites)
+
+has_new_score:        0
+has_hiscore:          0
 
 has_removed_brick:      0
 has_bonus_on_screen:    0
