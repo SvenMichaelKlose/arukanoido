@@ -30,18 +30,16 @@ n:  stx $9114
 
     lda #1
     sta rle_cnt
-    ldy #0
-    sty rle_singles
-    sty rle_bit
-    lda (rle_play_ptr),y
-    and #$0f
-    ora #$b0
+    lda #$b8
     sta rle_val
+    lda #0
+    sta rle_singles
+    sta rle_bit
 
     ; Set NMI vector.
-    lda #<rle_play_sample
+    lda #<rle_play_multiple
     sta $318
-    lda #>rle_play_sample
+    lda #>rle_play_multiple
     sta $319
 
     lda #$40        ; Set periodic timer.
@@ -52,8 +50,8 @@ n:  stx $9114
     rts
 
 rle_fetch:
-    ldy #0
     lda rle_bit
+    inc rle_bit
     lsr
     lda (rle_play_ptr),y
     bcc +n
@@ -62,19 +60,19 @@ rle_fetch:
     lsr
     lsr
     inc rle_play_ptr
-    bne +r
-    inc @(++ rle_play_ptr)
+    beq +m
+    rts
 n:  and #15
-r:  inc rle_bit
+    rts
+m:  inc @(++ rle_play_ptr)
     rts
 
-rle_play_sample:
+rle_play_single:
     sta digisound_a
-    sty digisound_y
     lda exm_timer
     sta $9115
-    lda rle_singles
-    beq +n
+    sty digisound_y
+    ldy #0
     jsr rle_fetch
     ora #$b0
     sta $900e
@@ -84,7 +82,13 @@ rle_play_sample:
     lda digisound_a
     rti
 
-n:  lda rle_val
+rle_play_multiple:
+    sta digisound_a
+    lda exm_timer
+    sta $9115
+    sty digisound_y
+    ldy #0
+    lda rle_val
     sta $900e
     dec rle_cnt
     beq +m
@@ -99,6 +103,10 @@ m:  jsr rle_fetch
     bcc +n
     and #7
     sta rle_singles
+    lda #<rle_play_single
+    sta $318
+    lda #>rle_play_single
+    sta $319
     ldy digisound_y
     lda digisound_a
     rti
@@ -107,6 +115,10 @@ n:  sta rle_cnt
     jsr rle_fetch
     ora #$b0
     sta rle_val
+    lda #<rle_play_multiple
+    sta $318
+    lda #>rle_play_multiple
+    sta $319
 r:  ldy digisound_y
     lda digisound_a
     rti
