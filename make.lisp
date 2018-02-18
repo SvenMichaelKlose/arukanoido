@@ -19,6 +19,7 @@
 
 (load "build/level-data.lisp")
 (load "build/audio.lisp")
+(load "prg-launcher/make.lisp")
 
 (fn packed-font ()
   (assemble-files "obj/font-4x8.bin" "media/font-4x8.asm")
