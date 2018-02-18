@@ -10,7 +10,7 @@
                   (subseq ! 0 (-- (length !)))))
 
 (var *audio-rate* 4000)
-(var *audio-rate-fast* 4000)
+(var *audio-rate-fast* 6000)
 
 (unix-sh-mkdir "obj")
 
@@ -140,8 +140,8 @@
                                     (@ [- _ lo] wav))))
          (with-output-file out (+ "obj/" i "." (string m) ".raw")
            (wav2raw out lwav d m))
-;         (with-output-file out (+ "obj/" i "." (string m) ".mon")
-;           (wav2mon out lwav d))
+         (with-output-file out (+ "obj/" i "." (string m) ".mon")
+           (wav2mon out lwav d))
          (with-output-file out (+ "obj/" i "." (string m) ".pac")
            (@ (i (packed (@ [char-code (bit-and _ 15)] (string-list (fetch-file (+ "obj/" i "." (string m) ".raw"))))))
              (write-byte i out)))
@@ -181,7 +181,7 @@
 (fn make-arcade-sounds ()
   (@ (i (+ *audio-files*))
     (print i)
-    (!= (? (in? i "reflection-med" "reflection-high")
+    (!= (? (in? i "doh-dissolving")
            *audio-rate-fast*
            *audio-rate*)
       (make-filtered-wav i !)
