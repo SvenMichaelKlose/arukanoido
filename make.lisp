@@ -69,6 +69,11 @@
   (let m (/ 360 +degrees+)
     (bytes (maptimes [integer (* smax (degree-cos (* m _)))] +degrees+))))
 
+(fn paddle-xlat ()
+  (maptimes [bit-and (integer (+ 8 (/ (- 255 _) ; TODO: Häh?
+                                      (/ 256 (++ (* 8 12))))))
+                     #xfe] 256))
+
 (fn make (to files cmds)
   (apply #'assemble-files to files)
   (make-vice-commands cmds (format nil "break .stop~%break .stop2~%break .stop3")))
@@ -221,10 +226,17 @@
   (!= (- #x8000 (get-label 'the_end))
     (format t "~A bytes free.~%" !)))
 
-(fn paddle-xlat ()
-  (maptimes [bit-and (integer (+ 8 (/ (- 255 _) ; TODO: Häh?
-                                      (/ 256 (++ (* 8 12))))))
-                     #xfe] 256))
+(fn make-prg (file)
+  (with-temporary *prg-path* file
+    (make "obj/music-arcade-blk5.bin"
+          `("prg-launcher/blk5.asm"
+            "src/music-arcade-blk5.asm")
+          "obj/music-arcade-blk5.vice.lst")
+    (with-temporary *imported-labels* (get-labels)
+      (make-game (+ "obj/" file ".prg") (+ "obj/" file ".prg.vice.txt")))
+    (sb-ext:run-program "/usr/local/bin/exomizer"
+                        (list "sfx" "basic" "-B" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
+                        :pty cl:*standard-output*)))
 
 (= *model* :vic-20+xk)
 
@@ -246,8 +258,6 @@
 
 (unix-sh-mkdir "arukanoido")
 
-;(with-temporary *shadowvic?* t
-;  (make-game "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
 (with-temporary *rom?* t
   (make-game "arukanoido.img" "arukanoido.img.vice.txt")
   (!= (- #x3ce (+ (get-label 'lowmem) (get-label 'lowmem_size)))
@@ -261,25 +271,18 @@
                     :pty cl:*standard-output*)
 
 (var *prg-path* nil)
-(fn make-prg (file)
-  (with-temporary *prg-path* file
-    (make "obj/music-arcade-blk5.bin"
-          `("prg-launcher/blk5.asm"
-            "src/music-arcade-blk5.asm")
-          "obj/music-arcade-blk5.vice.lst")
-    (with-temporary *imported-labels* (get-labels)
-      (make-game (+ "obj/" file ".prg") (+ "obj/" file ".prg.vice.txt")))
-    (sb-ext:run-program "/usr/local/bin/exomizer"
-                        (list "sfx" "basic" "-B" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
-                        :pty cl:*standard-output*)))
 
 (with-temporary *tape?* t
   (make-prg "arukanoido-tape"))
+
 (make-prg "arukanoido")
 (make-prg-launcher)
 
 (with-temporary *show-cpu?* t
   (make-prg "arukanoido-cpumon"))
+
+;(with-temporary *shadowvic?* t
+;  (make-game "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
 
 (unix-sh-cp "obj/arukanoido.prg" "arukanoido/")
 
