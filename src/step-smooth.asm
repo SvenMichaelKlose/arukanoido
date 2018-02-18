@@ -7,7 +7,6 @@
 step_smooth:
     jsr half_step_smooth
 
-; TODO: Why negate?
 half_step_smooth:
     ; Move on X axis.
     ldy sprites_d,x

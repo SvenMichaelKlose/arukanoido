@@ -1,6 +1,6 @@
 (load "gen-vcpu-tables.lisp")
 
-(var *demo?* t)
+(var *demo?* nil)
 (var *add-charset-base?* t)
 (var *debug?* nil)
 (var *revision* (!= (fetch-file "_revision")
@@ -113,11 +113,6 @@
                           "gfx-obstacle-pyramid.asm"
                           "gfx-obstacle-spheres.asm"
                           "gfx-sprites.asm"
-                          "gfx-ship.asm"
-                          "gfx-taito.asm"
-
-                          ; Level data
-                          "level-data.asm"
 
                           ; Tables
                           "bits.asm"
@@ -133,28 +128,21 @@
                           "_vcpu.asm"
 
                           ; Library
-                          "audio-boost.asm"
                           "bcd.asm"
                           ,@(unless *rom?*
-                              '("blitter.asm"
-                                "exm-nmi.asm"))
+                              '("blitter.asm"))
                           "chars.asm"
-                          "digisound.asm"
-                          "draw-bitmap.asm"
                           "exomizer-stream-decrunsh.asm"
-                          "exm-player.asm"
                           "joystick.asm"
                           "keyboard.asm"
                           "math.asm"
                           "music.asm"
                           "screen.asm"
                           "random.asm"
-                          "raw-player.asm"
-                          "rle-player.asm"
                           "print.asm"
                           "sprites.asm"
                           "sprites-vic-common.asm"
-                          "sprites-vic.asm"
+;                          "sprites-vic.asm"
                           "sprites-vic-huge.asm"
                           "wait.asm"
 
@@ -190,9 +178,27 @@
                           "format.asm"
                           "game.asm"
                           "hiscore.asm"
+
                           "main.asm"
+
+                          ; Level data
+                          "level-data.asm"
+
+                          "draw-bitmap.asm"
+                          "gfx-taito.asm"
+
+                          "gfx-ship.asm"
                           "round-intro.asm"
                           "round-start.asm"
+
+                          ; Digital audio
+                          ,@(unless *rom?*
+                              '("exm-nmi.asm"))
+                          "audio-boost.asm"
+                          "digisound.asm"
+                          "exm-player.asm"
+                          "raw-player.asm"
+                          "rle-player.asm"
 
                           "music-arcade.asm"
 
@@ -269,8 +275,9 @@
 
 (with-temporary *tape?* t
   (make-prg "arukanoido-tape"))
-;(make-prg-launcher)
-;  (make-prg "arukanoido-tape"))
+(make-prg "arukanoido")
+(make-prg-launcher)
+
 (with-temporary *show-cpu?* t
   (make-prg "arukanoido-cpumon"))
 

@@ -1,5 +1,3 @@
-    fill @(- 256 (low *pc*))
-
 sprite_gfx:
 
 gfx_vaus:
