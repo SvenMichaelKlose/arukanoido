@@ -1,6 +1,6 @@
 (load "c2nwarp/make.lisp")
 
-(fn assemble-loader (&key title path-in path-out (start #x1201))
+(fn assemble-loader ()
   (apply #'assemble-files "c2nwarp.prg"
          `("loader/zeropage.asm"
            "bender/vic-20/basic-loader.asm"
@@ -19,17 +19,19 @@
   (format t "C2NWARP rate PAL: ~A~%" (integer (* 2 (/ (cpu-cycles :pal) *tape-pulse*))))
   (format t "Pulse rate NTSC: ~A~%" (integer (/ (cpu-cycles :ntsc) *tape-pulse*)))
   (format t "C2NWARP rate NTSC: ~A~%" (integer (* 2 (/ (cpu-cycles :ntsc) *tape-pulse*))))
-  (with-output-file o path-out
+  (with-output-file o "arukanoido/arukanoido.tap"
     (write-tap o
                (+ (bin2cbmtap (cddr (string-list (fetch-file "c2nwarp.prg")))
-                              title
-                              :start start
+                              "ARUKANOIDO"
+                              :start #x1201
                               :short-data? t
                               :no-gaps? t)
                   (with-input-file i "obj/title.bin.exo"
                     (with-string-stream s (c2ntap s i)))
                   (list-string (@ #'code-char '(0 0 0 8)))
-                  (with-input-file i path-in
+                  (with-input-file i "obj/arukanoido-tape.exo.prg"
+                    (with-string-stream s (c2ntap s i :sync? nil)))
+                  (with-input-file i "obj/music-arcade-blk5.bin"
                     (with-string-stream s (c2ntap s i :sync? nil)))
                   (apply #'+ (@ [let l (length (fetch-file (+ "obj/" _ ".1.raw")))
                                   (with-stream-string i (+ (string (code-char (mod l 256)))
@@ -43,9 +45,6 @@
                                   "final")))))))
 
 
-(with-temporary *path-main* "arukanoido/arukanoido.prg"
-  (assemble-loader :title "ARUKANOIDO"
-                   :path-in "arukanoido/arukanoido.prg"
-                   :path-out "arukanoido/arukanoido.tap"))
+(assemble-loader)
 
 (quit)

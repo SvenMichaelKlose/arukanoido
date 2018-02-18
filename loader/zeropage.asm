@@ -59,4 +59,5 @@ raw_size:       0 0 0
 bank:           0
 get_byte:       0 0
 
+total_counter:  0 0
     end

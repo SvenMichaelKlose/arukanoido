@@ -1,6 +1,3 @@
-cdec = @(/ binary_size 72)
-number_0 = @(-- (+ #x8000 (* #x30 8)))
-
 tape_leader_length = 32
 tape_map = $7c00
 tape_map_length = $400
@@ -211,6 +208,9 @@ byte_complete:
     inc tape_ptr            ; Advance destination address.
     bne +n
     inc @(++ tape_ptr)
+n:  dec total_counter
+    bne +n
+    dec @(++ total_counter)
 n:  dec tape_counter        ; All bytes loaded?
     bne -r                  ; No...
     dec @(++ tape_counter)
