@@ -286,15 +286,18 @@ test_gap_bottom:
     jsr get_sprite_screen_position
     inc scry
     inc scry
+l:  jsr get_hard_collision
+    beq +f
+    lda sprites_x,x
+    and #7
+    beq -n
+    inc scrx
     jsr get_hard_collision
     bne -n
-    sec
+f:  sec
     rts
 
 test_gap_top:
     jsr get_sprite_screen_position
     dec scry
-    jsr get_hard_collision
-    bne -n
-    sec
-    rts
+    jmp -l
