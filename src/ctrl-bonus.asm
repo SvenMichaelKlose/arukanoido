@@ -182,12 +182,12 @@ f:  lda sprites_x,y                     ; Copy coordinates of current ball.
     lda sprites_y,y
     sta @(+ ball_init sprite_init_y)
     lda sprites_d,y
-    sta tmp4
+    pha
     jsr turn_counterclockwise
     sta @(+ ball_init sprite_init_data)
     ldy #@(- ball_init sprite_inits)
     jsr add_sprite
-    lda tmp4
+    pla
     jsr turn_clockwise
     sta @(+ ball_init sprite_init_data)
     ldy #@(- ball_init sprite_inits)
