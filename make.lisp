@@ -2,7 +2,7 @@
 (= *model* :vic-20+xk)
 
 (var *demo?* nil)
-(var *all?* nil)
+(var *all?* t)
 (var *add-charset-base?* t)
 (var *debug?* nil)
 (var *revision* (!= (fetch-file "_revision")
@@ -58,14 +58,9 @@
      (error "Address ~A overflown by ~A bytes." x (abs (- *pc* x)))
      (format t "~A bytes free until address ~A.~%" (- x *pc*) x)))
 
-(const +degrees+ 256)
-(const smax 127)
-
-(define-filter bytes #'byte)
-
 (fn ball-directions-y ()
-  (let m (/ 360 +degrees+)
-    (bytes (maptimes [integer (* smax (degree-cos (* m _)))] +degrees+))))
+  (let m (/ 360 256)
+    (@ #'byte (maptimes [integer (* 127 (degree-cos (* m _)))] 256))))
 
 (fn paddle-xlat ()
   (maptimes [bit-and (integer (+ 8 (/ (- 255 _) ; TODO: Häh?
