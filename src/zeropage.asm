@@ -24,6 +24,7 @@ curcol:               0   ; Character colour
 bcp:                  0 0
 bca:                  0 0
 num_args:             0
+sra:                  0
 srx:                  0
 sry:                  0
 a0:                   0
@@ -145,8 +146,6 @@ zp_dest_bi:     0
 
 rle_val:        0
 rle_cnt:        0
-raw_play_ptr:
-rle_play_ptr:   0 0
 rle_bit:        0
 rle_singles:    0
 

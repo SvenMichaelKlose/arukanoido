@@ -16,6 +16,7 @@ exec_script:
     pla ; X
     sta srx
     pla ; A
+    sta sra
     plp ; flags
     pla
     sta bcp
@@ -78,4 +79,5 @@ done:
     pha
     ldx srx
     ldy sry
+    lda sra
     rts

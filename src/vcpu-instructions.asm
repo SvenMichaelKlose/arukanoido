@@ -10,8 +10,15 @@ i_apply:
     sta @(++ apply_tmp)
     jmp (apply_tmp)
 
+; Set zero page byte.
+i_stzb:
+    ldx a0
+    lda a1
+    sta 0,x
+    rts
+
 ; Set zero page word.
-i_setzw:
+i_stzw:
     ldx a0
     lda a1
     sta 0,x
@@ -19,17 +26,30 @@ i_setzw:
     sta 1,x
     rts
 
-; Set zero page word s and d.
-i_setsd:
-    lda a0
-    sta s
-    lda a1
-    sta @(++ s)
+; Set zero page byte.
+i_stmb:
     lda a2
-    sta d
-    lda a3
-    sta @(++ d)
+    ldy #0
+    sta (a0),y
     rts
+
+; Set zero page word s and d.
+i_lday:
+i_ldsd:
+    rts
+
+; Call regular subroutine.
+i_call:
+    lda sra
+    ldx srx
+    ldy sry
+    jsr +n
+    sta sra
+    stx srx
+    sty sry
+    rts
+
+n:  jmp (a0)
 
 ; Clear memory area. Byte length.
 i_clrmb:

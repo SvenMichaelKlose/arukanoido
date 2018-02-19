@@ -1,3 +1,5 @@
+raw_play_ptr = @(++ exm_play_ptr)
+
 ; X: Sound index
 raw_start:
     lda @(-- sample_addrs_l),x                                                                                                                                                                        

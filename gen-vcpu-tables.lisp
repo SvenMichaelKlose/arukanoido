@@ -36,14 +36,18 @@
      (acons! name args *bytecodes*))
   nil)
 
-(define-bytecode setzw a0 a1 a2)        ; zp, word
-(define-bytecode setsd a0 a1 a2 a3)     ; <s, >s, <d, >d
-(define-bytecode clrmb dl dh cl)        ; <d, >d, l
-(define-bytecode clrmw dl dh cl ch)     ; <d, >d, <l, >l
-(define-bytecode movmw sl sh dl dh cl ch) ; <s, >s, <d, >d, <l, >l
-(define-bytecode setmb dl dh cl a3)     ; <d, >d, <l, value
-(define-bytecode setmw dl dh cl ch a4)  ; <d, >d, <l, >l, value
+(define-bytecode stmb a0 a1 a2)
+(define-bytecode stzb a0 a1)
+(define-bytecode stzw a0 a1 a2)
+(define-bytecode lday sra sry)
+(define-bytecode ldsd sl sh dl dh)
+(define-bytecode clrmb dl dh cl)
+(define-bytecode clrmw dl dh cl ch)
+(define-bytecode movmw sl sh dl dh cl ch)
+(define-bytecode setmb dl dh cl a3)
+(define-bytecode setmw dl dh cl ch a4)
 (define-bytecode apply) ; Argument is destination address.
+(define-bytecode call a0 a1)
 
 (= *bytecodes* (reverse *bytecodes*))
 

@@ -1,3 +1,5 @@
+rle_play_ptr = @(++ exm_play_ptr)
+
 ; X: Sound index
 rle_start:
     lda @(-- sample_addrs_l),x                                                                                                                                                                        

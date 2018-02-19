@@ -39,33 +39,24 @@ toplevel:
     jsr make_score_screen_title
     jsr display_score
 
-    lda #red
-    sta curcol
-    lda #5
-    sta scrx
-    lda #20
-    sta scry
-    lda #<gfx_taito
-    ldy #>gfx_taito
-    jsr draw_bitmap
+    0
+    stzb curcol red
+    stzb scrx 5
+    stzb scry 20
+    lday <gfx_taito >gfx_taito
+    call <draw_bitmap >draw_bitmap
 
-    lda #white
-    sta curcol
-    lda #3
-    sta scrx2
-    lda #23
-    sta scry
-    lda #<txt_copyright
-    ldy #>txt_copyright
-    jsr print_string_ay
+    stzb curcol white
+    stmb <scrx2 >scrx2 3
+    stzb scry 23
+    lday <txt_copyright >txt_copyright
+    call <print_string_ay >print_string_ay
 
-    lda #6
-    sta scrx2
-    lda #25
-    sta scry
-    lda #<txt_rights
-    ldy #>txt_rights
-    jsr print_string_ay
+    stmb <scrx2 >scrx2 6
+    stzb scry 25
+    lday <txt_rights >txt_rights
+    call <print_string_ay >print_string_ay
+    0
 
     lda is_landscape
     bne +n
