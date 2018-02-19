@@ -285,10 +285,10 @@ test_gap_bottom:
     inc scry
     inc scry
 l:  jsr get_hard_collision
-    beq +f
+    bne -n
     lda sprites_x,x
     and #7
-    beq -n
+    beq +f
     inc scrx
     jsr get_hard_collision
     bne -n
