@@ -1,7 +1,7 @@
 init_score:
     0
-    setmb <score >score num_score_digits 0
-    setmb <score_silver >score_silver num_score_digits 0
+    clrmb <score >score num_score_digits
+    clrmb <score_silver >score_silver num_score_digits
     0
     ldx #@(-- num_score_digits)
 l:  lda score_20000,x
@@ -55,10 +55,8 @@ l:  lda score,y
     dey
     bpl -l
 
-n:
-
     ; Compare score with next powerup score.
-    lda #<score
+n:  lda #<score
     sta s
     lda #>score
     sta @(++ s)

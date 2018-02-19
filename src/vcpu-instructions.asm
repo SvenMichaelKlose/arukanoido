@@ -33,11 +33,7 @@ i_setsd:
 
 ; Clear memory area. Byte length.
 i_clrmb:
-    lda a0
-    sta d
-    lda a1
-    sta @(++ d)
-    ldy a2
+    ldy cl
     lda #0
 l:  sta (d),y
     dey
@@ -46,92 +42,63 @@ l:  sta (d),y
 
 ; Clear memory area. Word length.
 i_clrmw:
-    lda a2
-    sta c
-    ldy a3
-    iny
-    sty @(++ c)
-    lda a1
-    sta @(++ d)
+    ldx cl
+    beq +n
+    inc ch
+n:  ldy dl
     lda #0
-    sta d
-    ldy a0
+    sta dl
 l:  sta (d),y
     iny
     bne +n
-    inc @(++ d)
-n:  dec c
-    ldx c
-    cpx #255
+    inc dh
+n:  dex
     bne -l
-    dec @(++ c)
+    dec ch
     bne -l
     rts
 
 ; Move memory area upwards.
 i_movmw:
-    lda a0
-    sta s
-    lda a1
-    sta @(++ s)
-    lda a2
-    sta d
-    lda a3
-    sta @(++ d)
-    lda a4
-    sta c
-    lda a5
-    sta @(++ c)
-    ldy #0
+    ldx cl
+    beq +n
+    inc ch
+n:  ldy #0
 l:  lda (s),y
     sta (d),y
     iny
     bne +n
-    inc @(++ s)
-    inc @(++ d)
-n:  dec c
-    ldx c
-    cpx #255
+    inc sh
+    inc dh
+n:  dex
     bne -l
-    dec @(++ c)
-    ldx @(++ c)
-    cpx #255
+    dec ch
     bne -l
     rts
 
-; Clear memory area. Byte length.
-; TODO: Remove. Does not work.
+; Fill memory area. Byte length.
 i_setmb:
-    lda a0
-    sta d
-    lda a1
-    sta @(++ d)
-    ldy a2
+    ldy cl
     lda a3
 l:  sta (d),y
     dey
     bne -l
     rts
 
-; Set memory area. Word length.
+; Fill memory area. Word length.
 i_setmw:
-    lda a0
-    sta d
-    lda a1
-    sta @(++ d)
-    lda a2
-    sta c
-    ldy a3
-    iny
-    sty @(++ c)
+    ldx cl
+    beq +n
+    inc ch
+n:  ldy dl
     lda a4
-    ldy #0
+    sta dl
 l:  sta (d),y
-    inc d
+    iny
     bne +n
-    inc @(++ d)
-n:  dec c
+    inc dh
+n:  dex
     bne -l
-    dec @(++ c)
+    dec ch
     bne -l
     rts

@@ -12,9 +12,9 @@ syscall_args_l: <args_setzw <args_setsd <args_clrmb <args_clrmw <args_movmw <arg
 syscall_args_h: >args_setzw >args_setsd >args_clrmb >args_clrmw >args_movmw >args_setmb >args_setmw >args_apply
 args_setzw: 3 a0 a1 a2
 args_setsd: 4 a0 a1 a2 a3
-args_clrmb: 3 a0 a1 a2
-args_clrmw: 4 a0 a1 a2 a3
-args_movmw: 6 a0 a1 a2 a3 a4 a5
-args_setmb: 4 a0 a1 a2 a3
-args_setmw: 5 a0 a1 a2 a3 a4
+args_clrmb: 3 dl dh cl
+args_clrmw: 4 dl dh cl ch
+args_movmw: 6 sl sh dl dh cl ch
+args_setmb: 4 dl dh cl a3
+args_setmw: 5 dl dh cl ch a4
 args_apply: 0

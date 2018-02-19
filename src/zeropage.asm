@@ -1,9 +1,17 @@
     org 0
     data
 
-s:                    0 0 ; Source pointer
-d:                    0 0 ; Destination pointer
-c:                    0 0 ; Counter
+sl:
+s:                    0   ; Source pointer
+sh:                   0
+
+dl:
+d:                    0   ; Destination pointer
+dh:                   0
+
+cl:
+c:                    0   ; Counter
+ch:                   0
 
 scr:                  0 0 ; Screen pointer (line start)
 col:                  0 0 ; Colour RAM pointer
