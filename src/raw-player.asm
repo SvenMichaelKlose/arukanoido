@@ -68,4 +68,6 @@ done:
     sta current_song
     lda #$7f
     sta $911e
-    bne -r
+    ldy digisound_y
+    lda digisound_a
+    rti

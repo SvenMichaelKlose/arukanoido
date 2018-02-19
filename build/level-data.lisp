@@ -515,3 +515,7 @@
                           (dolist (brick (string-list line))
                             (enqueue q (get-brick brick))))
                         (enqueue q 15))))
+
+(fn make-level-data ()
+  (put-file "obj/levels.bin" (list-string (@ #'code-char +level-data+)))
+  (exomize-stream "obj/levels.bin" "obj/levels.bin.exo"))

@@ -17,29 +17,11 @@
   (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
                       :pty cl:*standard-output*))
 
-(load "build/level-data.lisp")
 (load "build/audio.lisp")
+(load "build/font.lisp")
+(load "build/level-data.lisp")
+(load "media/make.lisp")
 (load "prg-launcher/make.lisp")
-
-(fn packed-font ()
-  (assemble-files "obj/font-4x8.bin" "media/font-4x8.asm")
-  (mapcan [maptimes #'((i)
-                                 (!= (? (== (length _) 16)
-                                        _
-                                        (+ _ (maptimes [identity 0] 8)))
-                                   (+ (elt ! i) (<< (elt ! (+ i 8)) 4))))
-                    8]
-          (group (filter #'char-code (string-list (fetch-file "obj/font-4x8.bin"))) 16)))
-
-(fn ascii2pixcii (x)
-  (@ [?
-       (== 32 (char-code _))  (code-char 255)
-       (alpha-char? _)        (code-char (+ (- (char-code _) (char-code #\A)) (get-label 'framechars)))
-       _]
-     (string-list x)))
-
-(fn string4x8 (x)
-  (@ [- (char-code _) 32] (string-list x)))
 
 (fn gen-sprite-nchars ()
   (with-queue q
@@ -216,26 +198,6 @@
                       (list "sfx" "basic" "-B" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
                       :pty cl:*standard-output*))
 
-(unix-sh-mkdir "obj")
-(unix-sh-mkdir "arukanoido")
-
-(when *all?*
-  (put-file "obj/title.bin" (minigrafik-without-code "media/ark-title.prg"))
-  (exomize-stream "obj/title.bin" "obj/title.bin.exo")
-  (apply #'assemble-files "obj/gfx-ship.bin" '("media/gfx-ship.asm"))
-  (exomize-stream "obj/gfx-ship.bin" "obj/gfx-ship.bin.exo")
-  (apply #'assemble-files "obj/gfx-taito.bin" '("media/gfx-taito.asm"))
-  (exomize-stream "obj/gfx-taito.bin" "obj/gfx-taito.bin.exo")
-  (apply #'assemble-files "obj/gfx-background.bin" '("media/gfx-background.asm"))
-  (exomize-stream "obj/gfx-background.bin" "obj/gfx-background.bin.exo")
-  (put-file "obj/levels.bin" (list-string (@ #'code-char +level-data+)))
-  (exomize-stream "obj/levels.bin" "obj/levels.bin.exo")
-
-  (put-file "obj/font-4x8-packed.bin" (list-string (@ #'code-char (packed-font))))
-
-  (make-arcade-sounds)
-  (gen-vcpu-tables "src/_vcpu.asm"))
-
 (fn make-cart ()
   (with-temporary *rom?* t
     (make-game "arukanoido.img" "obj/arukanoido.img.vice.txt")
@@ -249,11 +211,24 @@
                       (list "-b" "8192" "arukanoido.img" "arukanoido/arukanoido.img.")
                       :pty cl:*standard-output*))
 
+(fn make-zip ()
+  (unix-sh-cp "obj/arukanoido.prg" "arukanoido/")
+  (sb-ext:run-program "/bin/cp"
+                      (list "README.md" "NEWS" "arukanoido/")
+                      :pty cl:*standard-output*))
+
+(unix-sh-mkdir "obj")
+(unix-sh-mkdir "arukanoido")
+
 (when *all?*
+  (gen-vcpu-tables "src/_vcpu.asm")
+  (make-arcade-sounds)
+  (make-font)
+  (make-level-data)
+  (make-media)
   (make-cart)
   (with-temporary *tape?* t
     (make-prg "arukanoido-tape"))
-
   (with-temporary *show-cpu?* t
     (make-prg "arukanoido-cpumon"))
   ;(with-temporary *shadowvic?* t
@@ -263,12 +238,9 @@
 (make-prg "arukanoido")
 (make-prg-launcher)
 
-(unix-sh-cp "obj/arukanoido.prg" "arukanoido/")
+(when *all?*
+  (make-zip))
 
 (format t "Level data: ~A B~%" (length +level-data+))
-
-(sb-ext:run-program "/bin/cp"
-                    (list "README.md" "NEWS" "arukanoido/")
-                    :pty cl:*standard-output*)
 
 (quit)
