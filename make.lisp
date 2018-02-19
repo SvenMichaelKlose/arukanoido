@@ -1,6 +1,8 @@
 (load "gen-vcpu-tables.lisp")
+(= *model* :vic-20+xk)
 
 (var *demo?* nil)
+(var *all?* t)
 (var *add-charset-base?* t)
 (var *debug?* nil)
 (var *revision* (!= (fetch-file "_revision")
@@ -60,10 +62,6 @@
 (const smax 127)
 
 (define-filter bytes #'byte)
-
-(fn ball-directions-x ()
-  (let m (/ 360 +degrees+)
-    (bytes (maptimes [integer (* smax (degree-sin (* m _)) 0.5)] +degrees+))))
 
 (fn ball-directions-y ()
   (let m (/ 360 +degrees+)
@@ -238,8 +236,6 @@
                         (list "sfx" "basic" "-B" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
                         :pty cl:*standard-output*)))
 
-(= *model* :vic-20+xk)
-
 (put-file "obj/title.bin" (minigrafik-without-code "media/ark-title.prg"))
 (exomize-stream "obj/title.bin" "obj/title.bin.exo")
 (apply #'assemble-files "obj/gfx-ship.bin" '("media/gfx-ship.asm"))
@@ -253,36 +249,38 @@
 
 (put-file "obj/font-4x8-packed.bin" (list-string (@ #'code-char (packed-font))))
 
-(make-arcade-sounds)
-(gen-vcpu-tables "src/_vcpu.asm")
+(when *all?*
+  (make-arcade-sounds)
+  (gen-vcpu-tables "src/_vcpu.asm"))
 
 (unix-sh-mkdir "arukanoido")
 
-(with-temporary *rom?* t
-  (make-game "arukanoido.img" "arukanoido.img.vice.txt")
-  (!= (- #x3ce (+ (get-label 'lowmem) (get-label 'lowmem_size)))
-    (format t "~A bytes till $3ce.~%" !)
-    (? (< ! 0)
-       (quit)))
-  (!= (- #xc000 (get-label 'the_end))
-    (format t "~A bytes till $c000.~%" !)))
-(sb-ext:run-program "/usr/bin/split"
-                    (list "-b" "8192" "arukanoido.img" "arukanoido/arukanoido.img.")
-                    :pty cl:*standard-output*)
+(fn make-cart ()
+  (with-temporary *rom?* t
+    (make-game "arukanoido.img" "arukanoido.img.vice.txt")
+    (!= (- #x3ce (+ (get-label 'lowmem) (get-label 'lowmem_size)))
+      (format t "~A bytes till $3ce.~%" !)
+      (? (< ! 0)
+         (quit)))
+    (!= (- #xc000 (get-label 'the_end))
+      (format t "~A bytes till $c000.~%" !)))
+  (sb-ext:run-program "/usr/bin/split"
+                      (list "-b" "8192" "arukanoido.img" "arukanoido/arukanoido.img.")
+                      :pty cl:*standard-output*))
 
-(var *prg-path* nil)
+(when *all?*
+  (make-cart)
+  (with-temporary *tape?* t
+    (make-prg "arukanoido-tape"))
 
-(with-temporary *tape?* t
-  (make-prg "arukanoido-tape"))
+  (with-temporary *show-cpu?* t
+    (make-prg "arukanoido-cpumon"))
+  ;(with-temporary *shadowvic?* t
+  ;  (make-game "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
+  )
 
 (make-prg "arukanoido")
 (make-prg-launcher)
-
-(with-temporary *show-cpu?* t
-  (make-prg "arukanoido-cpumon"))
-
-;(with-temporary *shadowvic?* t
-;  (make-game "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
 
 (unix-sh-cp "obj/arukanoido.prg" "arukanoido/")
 

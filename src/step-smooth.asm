@@ -9,12 +9,19 @@ step_smooth:
 
 half_step_smooth:
     ; Move on X axis.
-    ldy sprites_d,x
-    lda ball_directions_x,y
+    lda sprites_d,x
+    sec
+    sbc #$40
+    tay
+    lda ball_directions_y,y
+    asl
+    lda ball_directions_y,y
+    ror
+    sta tmp
     bmi +m
     lda sprites_dx,x
     clc
-    adc ball_directions_x,y
+    adc tmp
     bcc +n
     inc sprites_x,x
     jmp +n
@@ -30,6 +37,7 @@ m:  jsr neg
 n:  sta sprites_dx,x
 
     ; Move on Y axis.
+    ldy sprites_d,x
     lda ball_directions_y,y
     bmi +m
     lda sprites_dy,x
