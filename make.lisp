@@ -2,7 +2,7 @@
 (= *model* :vic-20+xk)
 
 (var *demo?* nil)
-(var *all?* t)
+(var *all?* nil)
 (var *add-charset-base?* t)
 (var *debug?* nil)
 (var *revision* (!= (fetch-file "_revision")
@@ -212,7 +212,7 @@
                       :pty cl:*standard-output*))
 
 (fn make-zip ()
-  (unix-sh-cp "obj/arukanoido.prg" "arukanoido/")
+  (unix-sh-cp "arukanoido.prg" "arukanoido/")
   (sb-ext:run-program "/bin/cp"
                       (list "README.md" "NEWS" "arukanoido/")
                       :pty cl:*standard-output*))
@@ -220,12 +220,13 @@
 (unix-sh-mkdir "obj")
 (unix-sh-mkdir "arukanoido")
 
+(gen-vcpu-tables "src/_vcpu.asm")
+(make-font)
+(make-level-data)
+(make-media)
+
 (when *all?*
-  (gen-vcpu-tables "src/_vcpu.asm")
   (make-arcade-sounds)
-  (make-font)
-  (make-level-data)
-  (make-media)
   (make-cart)
   (with-temporary *tape?* t
     (make-prg "arukanoido-tape"))

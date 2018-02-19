@@ -34,11 +34,8 @@ setsd:
 ; Clear memory area. Byte length.
 clrmb:
     lda a0
-    sec
-    sbc #1
     sta d
     lda a1
-    sbc #0
     sta @(++ d)
     ldy a2
     lda #0
@@ -49,35 +46,34 @@ l:  sta (d),y
 
 ; Clear memory area. Word length.
 clrmw:
-    lda a0
-    sta d
-    lda a1
-    sta @(++ d)
     lda a2
     sta c
     ldy a3
     iny
     sty @(++ c)
+    lda a1
+    sta @(++ d)
     lda #0
-    tay
+    sta d
+    ldy a0
 l:  sta (d),y
-    inc d
+    iny
     bne +n
     inc @(++ d)
 n:  dec c
+    ldx c
+    cpx #255
     bne -l
     dec @(++ c)
     bne -l
     rts
 
 ; Clear memory area. Byte length.
+; TODO: Remove. Does not work.
 setmb:
     lda a0
-    sec
-    sbc #1
     sta d
     lda a1
-    sbc #0
     sta @(++ d)
     ldy a2
     lda a3

@@ -7,24 +7,15 @@ clear_data:
 l:  cpx #@(-- uncleaned_zp)
     bcs +n
     sta 0,x
-    sta $200,x
-n:  cpx #$14
-    bcc +m
-    cpx #$20
-    bcc +n
-    cpx #<lowmem
-    bcs +n
-m:  sta $300,x
-n:  sta charset,x
-    sta @(+ 256 charset),x
-    sta @(+ 512 charset),x
-    sta @(+ 768 charset),x
-    sta @(+ 1024 charset),x
-    sta @(+ 1024 256 charset),x
-    sta @(+ 1024 512 charset),x
-    sta @(+ 1024 768 charset),x
-    dex
+n:  dex
     bne -l
+
+    0
+    c_clrmw $00 $02 $00 $01
+    c_clrmw $00 $03 $13 $00
+    c_clrmw $20 $03 $e0 $00
+    c_clrmw <charset >charset $00 $04
+    0
 
     lda #$ff
     sta exm_needs_data

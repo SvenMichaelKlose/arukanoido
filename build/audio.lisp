@@ -156,7 +156,7 @@
            *audio-rate*)
       (make-filtered-wav i !)
       (make-conversion i !)))
-  (convert-wavs *audio-files* 32768 8)    ; 1 bit
+;  (convert-wavs *audio-files* 32768 8)    ; 1 bit
   (convert-wavs *audio-files* 16384 4)     ; 2 bits
   (convert-wavs *audio-files* 8192 2)      ; 3 bits
   (convert-wavs *audio-files* 4096 1)      ; 4 bits
