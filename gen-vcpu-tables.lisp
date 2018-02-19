@@ -40,6 +40,7 @@
 (define-bytecode setsd a0 a1 a2 a3)     ; <s, >s, <d, >d
 (define-bytecode clrmb a0 a1 a2)        ; <d, >d, l
 (define-bytecode clrmw a0 a1 a2 a3)     ; <d, >d, <l, >l
+(define-bytecode movmw a0 a1 a2 a3 a4 a5) ; <s, >s, <d, >d, <l, >l
 (define-bytecode setmb a0 a1 a2 a3)     ; <d, >d, <l, value
 (define-bytecode setmw a0 a1 a2 a3 a4)  ; <d, >d, <l, >l, value
 (define-bytecode apply) ; Argument is destination address.

@@ -68,6 +68,37 @@ n:  dec c
     bne -l
     rts
 
+; Move memory area upwards.
+movmw:
+    lda a0
+    sta s
+    lda a1
+    sta @(++ s)
+    lda a2
+    sta d
+    lda a3
+    sta @(++ d)
+    lda a4
+    sta c
+    lda a5
+    sta @(++ c)
+    ldy #0
+l:  lda (s),y
+    sta (d),y
+    iny
+    bne +n
+    inc @(++ s)
+    inc @(++ d)
+n:  dec c
+    ldx c
+    cpx #255
+    bne -l
+    dec @(++ c)
+    ldx @(++ c)
+    cpx #255
+    bne -l
+    rts
+
 ; Clear memory area. Byte length.
 ; TODO: Remove. Does not work.
 setmb:
