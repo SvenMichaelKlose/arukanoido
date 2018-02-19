@@ -201,7 +201,7 @@ move_up:
     ; Check on gap left or right.
     lda sprites_d2,x
     lsr
-    bcc +n
+    bcs +n
 
     jsr test_gap_left
     bcc +l
@@ -227,16 +227,14 @@ move_horizontally:
     bne +r              ; No on char boundary.
 
     lda sprites_d,x
-    cmp #direction_up
     beq +r
-    cmp #direction_down
+    cmp #direction_up
     beq +r
 
     jsr test_gap_bottom
     bcs -turn_downwards
 
     jsr get_sprite_screen_position
-
     ; Move left.
     lda sprites_d,x
     bpl +not_left
