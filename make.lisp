@@ -2,7 +2,7 @@
 (= *model* :vic-20+xk)
 
 (var *demo?* nil)
-(var *all?* t)
+(var *all?* nil)
 (var *add-charset-base?* t)
 (var *debug?* nil)
 (var *revision* (!= (fetch-file "_revision")
@@ -33,13 +33,6 @@
                     8]
           (group (filter #'char-code (string-list (fetch-file "obj/font-4x8.bin"))) 16)))
 
-(fn gen-sprite-nchars ()
-  (with-queue q
-    (dotimes (a 8)
-      (dotimes (b 8)
-        (enqueue q (* a b))))
-    (queue-list q)))
-
 (fn ascii2pixcii (x)
   (@ [?
        (== 32 (char-code _))  (code-char 255)
@@ -49,6 +42,13 @@
 
 (fn string4x8 (x)
   (@ [- (char-code _) 32] (string-list x)))
+
+(fn gen-sprite-nchars ()
+  (with-queue q
+    (dotimes (a 8)
+      (dotimes (b 8)
+        (enqueue q (* a b))))
+    (queue-list q)))
 
 (fn make-reverse-patch-id ()
   (string4x8 (list-string (reverse (string-list "ARUKANOIDO PATCH")))))
@@ -75,18 +75,6 @@
 (fn make (to files cmds)
   (apply #'assemble-files to files)
   (make-vice-commands cmds (format nil "break .stop~%break .stop2~%break .stop3")))
-
-(fn make-prg-launcher (file cmds)
-  (make "arukanoido.prg"
-        (@ [+ "prg-launcher/" _] `("../bender/vic-20/vic.asm"
-                                   "zeropage.asm"
-                                   "../bender/vic-20/basic-loader.asm"
-                                   "main.asm"
-                                   "start.asm"
-                                   "blk5.asm"
-                                   "../src/music-arcade-blk5.asm"
-                                   "blk5-end.asm"))
-        "obj/prg-launcher.vice.txt"))
 
 (fn make-game (file cmds)
   (make file
@@ -236,20 +224,20 @@
                         (list "sfx" "basic" "-B" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
                         :pty cl:*standard-output*)))
 
-(put-file "obj/title.bin" (minigrafik-without-code "media/ark-title.prg"))
-(exomize-stream "obj/title.bin" "obj/title.bin.exo")
-(apply #'assemble-files "obj/gfx-ship.bin" '("media/gfx-ship.asm"))
-(exomize-stream "obj/gfx-ship.bin" "obj/gfx-ship.bin.exo")
-(apply #'assemble-files "obj/gfx-taito.bin" '("media/gfx-taito.asm"))
-(exomize-stream "obj/gfx-taito.bin" "obj/gfx-taito.bin.exo")
-(apply #'assemble-files "obj/gfx-background.bin" '("media/gfx-background.asm"))
-(exomize-stream "obj/gfx-background.bin" "obj/gfx-background.bin.exo")
-(put-file "obj/levels.bin" (list-string (@ #'code-char +level-data+)))
-(exomize-stream "obj/levels.bin" "obj/levels.bin.exo")
-
-(put-file "obj/font-4x8-packed.bin" (list-string (@ #'code-char (packed-font))))
-
 (when *all?*
+  (put-file "obj/title.bin" (minigrafik-without-code "media/ark-title.prg"))
+  (exomize-stream "obj/title.bin" "obj/title.bin.exo")
+  (apply #'assemble-files "obj/gfx-ship.bin" '("media/gfx-ship.asm"))
+  (exomize-stream "obj/gfx-ship.bin" "obj/gfx-ship.bin.exo")
+  (apply #'assemble-files "obj/gfx-taito.bin" '("media/gfx-taito.asm"))
+  (exomize-stream "obj/gfx-taito.bin" "obj/gfx-taito.bin.exo")
+  (apply #'assemble-files "obj/gfx-background.bin" '("media/gfx-background.asm"))
+  (exomize-stream "obj/gfx-background.bin" "obj/gfx-background.bin.exo")
+  (put-file "obj/levels.bin" (list-string (@ #'code-char +level-data+)))
+  (exomize-stream "obj/levels.bin" "obj/levels.bin.exo")
+
+  (put-file "obj/font-4x8-packed.bin" (list-string (@ #'code-char (packed-font))))
+
   (make-arcade-sounds)
   (gen-vcpu-tables "src/_vcpu.asm"))
 
