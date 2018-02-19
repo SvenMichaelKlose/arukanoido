@@ -1,5 +1,5 @@
 ; Call system function without argument mapping.
-apply:
+i_apply:
     lda (bcp),y
     tax
     dex
@@ -11,7 +11,7 @@ apply:
     jmp (apply_tmp)
 
 ; Set zero page word.
-setzw:
+i_setzw:
     ldx a0
     lda a1
     sta 0,x
@@ -20,7 +20,7 @@ setzw:
     rts
 
 ; Set zero page word s and d.
-setsd:
+i_setsd:
     lda a0
     sta s
     lda a1
@@ -32,7 +32,7 @@ setsd:
     rts
 
 ; Clear memory area. Byte length.
-clrmb:
+i_clrmb:
     lda a0
     sta d
     lda a1
@@ -45,7 +45,7 @@ l:  sta (d),y
     rts
 
 ; Clear memory area. Word length.
-clrmw:
+i_clrmw:
     lda a2
     sta c
     ldy a3
@@ -69,7 +69,7 @@ n:  dec c
     rts
 
 ; Move memory area upwards.
-movmw:
+i_movmw:
     lda a0
     sta s
     lda a1
@@ -101,7 +101,7 @@ n:  dec c
 
 ; Clear memory area. Byte length.
 ; TODO: Remove. Does not work.
-setmb:
+i_setmb:
     lda a0
     sta d
     lda a1
@@ -114,7 +114,7 @@ l:  sta (d),y
     rts
 
 ; Set memory area. Word length.
-setmw:
+i_setmw:
     lda a0
     sta d
     lda a1

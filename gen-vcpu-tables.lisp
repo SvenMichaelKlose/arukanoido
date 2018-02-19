@@ -7,7 +7,7 @@
   (downcase (symbol-name x.)))
 
 (fn syscall-bytecodes-source ()
-  (apply #'+ (maptimes [format nil "c_~A=~A~%" (syscall-name (syscallbyindex _))
+  (apply #'+ (maptimes [format nil "~A=~A~%" (syscall-name (syscallbyindex _))
                                                (++ _)]
                        (length *bytecodes*))))
 
@@ -18,8 +18,8 @@
                      " "))
      (format nil "~%")))
 
-(fn syscall-vectors-l () (syscall-vectors "syscall_vectors_l" "<"))
-(fn syscall-vectors-h () (syscall-vectors "syscall_vectors_h" ">"))
+(fn syscall-vectors-l () (syscall-vectors "syscall_vectors_l" "<i_"))
+(fn syscall-vectors-h () (syscall-vectors "syscall_vectors_h" ">i_"))
 (fn syscall-args-l () (syscall-vectors "syscall_args_l" "<args_"))
 (fn syscall-args-h () (syscall-vectors "syscall_args_h" ">args_"))
 

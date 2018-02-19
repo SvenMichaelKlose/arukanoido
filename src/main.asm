@@ -11,11 +11,11 @@ n:  dex
     bne -l
 
     0
-    c_clrmw $00 $02 $00 $01
-    c_clrmw $00 $03 $13 $00
-    c_clrmw $20 $03 $e0 $00
-    c_clrmw <charset >charset $00 $04
-    c_movmw <loaded_sprite_inits >loaded_sprite_inits <sprite_inits >sprite_inits sprite_inits_size 0
+    clrmw $00 $02 $00 $01
+    clrmw $00 $03 $13 $00
+    clrmw $20 $03 $e0 $00
+    clrmw <charset >charset $00 $04
+    movmw <loaded_sprite_inits >loaded_sprite_inits <sprite_inits >sprite_inits sprite_inits_size 0
     0
 
     lda #$ff

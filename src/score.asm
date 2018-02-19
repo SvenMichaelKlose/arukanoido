@@ -1,7 +1,7 @@
 init_score:
     0
-    c_setmb <score >score num_score_digits 0
-    c_setmb <score_silver >score_silver num_score_digits 0
+    setmb <score >score num_score_digits 0
+    setmb <score_silver >score_silver num_score_digits 0
     0
     ldx #@(-- num_score_digits)
 l:  lda score_20000,x

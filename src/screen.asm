@@ -44,8 +44,8 @@ plot_char:
 
 clear_screen:
     0
-    c_clrmw <screen >screen @(low 588) @(high 588)
-    c_setmw <colors >colors @(low 588) @(high 588) @(+ multicolor white)
+    clrmw <screen >screen @(low 588) @(high 588)
+    setmw <colors >colors @(low 588) @(high 588) @(+ multicolor white)
     0
     rts
 
