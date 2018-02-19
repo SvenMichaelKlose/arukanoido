@@ -34,12 +34,12 @@ toplevel:
     jsr clear_data
     jsr init_screen
     jsr clear_screen
-    lda #1
-    sta curchar
-    jsr make_score_screen_title
-    jsr display_score
 
     0
+    stzb curchar 1
+    call <make_score_screen_title >make_score_screen_title
+    call <display_score >display_score
+
     stzb curcol red
     stzb scrx 5
     stzb scry 20
