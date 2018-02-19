@@ -39,9 +39,12 @@
                                                            (string (code-char (>> l 16)))
                                                            (fetch-file (+ "obj/" _ ".1.exm")))
                                     (with-string-stream s (c2ntap s i :sync? nil :gap #x4000000)))]
-                                '("break-out" "doh-dissolving" "doh-intro" "explosion" "extension"
+                                '("break-out"
+                                  "explosion" "extension"
                                   "extra-life" "game-over" "laser" "lost-ball" "reflection-doh"
-                                  "reflection-high" "reflection-med" "reflection-low" "round-intro" "round-start"
+                                  "reflection-high" "reflection-med" "reflection-low"
+                                  "round-intro" "round-start"
+                                  "doh-dissolving" "doh-intro"
                                   "final")))))))
 
 

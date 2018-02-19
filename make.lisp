@@ -13,8 +13,6 @@
 (var *shadowvic?* nil)
 (var *show-cpu?* nil)
 
-(unix-sh-mkdir "obj")
-
 (fn exomize-stream (from to)
   (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
                       :pty cl:*standard-output*))
@@ -208,16 +206,18 @@
     (format t "~A bytes free.~%" !)))
 
 (fn make-prg (file)
-  (with-temporary *prg-path* file
-    (make "obj/music-arcade-blk5.bin"
-          `("prg-launcher/blk5.asm"
-            "src/music-arcade-blk5.asm")
-          "obj/music-arcade-blk5.vice.lst")
-    (with-temporary *imported-labels* (get-labels)
-      (make-game (+ "obj/" file ".prg") (+ "obj/" file ".prg.vice.txt")))
-    (sb-ext:run-program "/usr/local/bin/exomizer"
-                        (list "sfx" "basic" "-B" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
-                        :pty cl:*standard-output*)))
+  (make "obj/music-arcade-blk5.bin"
+        `("prg-launcher/blk5.asm"
+          "src/music-arcade-blk5.asm")
+        "obj/music-arcade-blk5.vice.lst")
+  (with-temporary *imported-labels* (get-labels)
+    (make-game (+ "obj/" file ".prg") (+ "obj/" file ".prg.vice.txt")))
+  (sb-ext:run-program "/usr/local/bin/exomizer"
+                      (list "sfx" "basic" "-B" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
+                      :pty cl:*standard-output*))
+
+(unix-sh-mkdir "obj")
+(unix-sh-mkdir "arukanoido")
 
 (when *all?*
   (put-file "obj/title.bin" (minigrafik-without-code "media/ark-title.prg"))
@@ -236,11 +236,9 @@
   (make-arcade-sounds)
   (gen-vcpu-tables "src/_vcpu.asm"))
 
-(unix-sh-mkdir "arukanoido")
-
 (fn make-cart ()
   (with-temporary *rom?* t
-    (make-game "arukanoido.img" "arukanoido.img.vice.txt")
+    (make-game "arukanoido.img" "obj/arukanoido.img.vice.txt")
     (!= (- #x3ce (+ (get-label 'lowmem) (get-label 'lowmem_size)))
       (format t "~A bytes till $3ce.~%" !)
       (? (< ! 0)
