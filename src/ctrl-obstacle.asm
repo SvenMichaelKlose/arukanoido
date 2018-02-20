@@ -110,15 +110,7 @@ remove_obstacle:
     rts
 
 ctrl_obstacle:
-    lda sprites_y,x
-    cmp arena_y
-    bcs +n
-
-    ; Move obstacle in.
-    inc sprites_y,x
-r:  rts
-
-    ; Animate.
+   ; Animate.
 n:  lda framecounter
     and #7
     bne +l2
@@ -145,7 +137,15 @@ l:  lda sprites_gl,x
 n:  dey
     bpl -l
 
-l2: jsr move_obstacle
+l2: lda sprites_y,x
+    cmp arena_y
+    bcs +n
+
+    ; Move obstacle in.
+    inc sprites_y,x
+    rts
+ 
+n:  jsr move_obstacle
     jmp half_step_smooth
 
 move_obstacle_again:
@@ -184,7 +184,7 @@ n:  jsr get_sprite_screen_position
     bne +move_up
 
     jsr test_gap_bottom
-    bcs -r
+    bcs +r
 
     ldy #direction_left
     lda sprites_d2,x
@@ -237,8 +237,8 @@ move_horizontally:
     jsr test_gap_bottom
     bcs -turn_downwards
 
-    jsr get_sprite_screen_position
     ; Move left.
+    jsr get_sprite_screen_position
     lda sprites_d,x
     bpl +not_left
 
