@@ -1,7 +1,6 @@
 ; X: Sound index
 rle_start:
     lda @(-- sample_addrs_l),x
-stop:
     sta rle_play_ptr
     lda @(-- sample_addrs_h),x
     sta @(++ rle_play_ptr)

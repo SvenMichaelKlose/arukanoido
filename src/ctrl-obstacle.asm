@@ -78,7 +78,7 @@ add_missing_obstacle:
 n:  lda #direction_down
     sta sprites_d,x
     jsr random
-;lda #0
+    and #1          ; Prefers left or right.
     sta sprites_d2,x
     inc num_obstacles
 
@@ -110,19 +110,19 @@ remove_obstacle:
     rts
 
 ctrl_obstacle:
-   ; Animate.
-n:  lda framecounter
+    ; Animate.
+    lda framecounter
     and #7
-    bne +l2
+    bne +m
     lda sprites_gl,x
     clc
     adc #16
     sta sprites_gl,x
-    bcc +m
+    bcc +n
     inc sprites_gh,x
 
     ; Repeat animation.
-m:  ldy #3
+n:  ldy #3
 l:  lda sprites_gl,x
     cmp gfx_obstacles_gl_end,y
     bne +n
@@ -133,11 +133,11 @@ l:  lda sprites_gl,x
     sta sprites_gl,x
     lda gfx_obstacles_gh,y
     sta sprites_gh,x
-    jmp +l
+    jmp +m
 n:  dey
     bpl -l
 
-l2: lda sprites_y,x
+m:  lda sprites_y,x
     cmp arena_y
     bcs +n
 
@@ -158,19 +158,48 @@ move_obstacle:
     dec num_obstacles
     jmp remove_sprite
 
-    ; Check if another obstacle was hit.
-;n:  lda #0
-;    sta obstacle_hit_obstacle
-;    ldy #@(-- num_sprites)
-;    jsr find_hit
-;    bcs +n
-;    bcc +l2
-;l:  jsr find_hit_next
-;    bcs +n
-;l2: lda sprites_i,y
-;    and #is_obstacle
-;    beq -l
-;    inc obstacle_hit_obstacle
+n:  lda sprites_d2,x
+    and #2
+    beq +pacing
+
+circling:
+    lda framecounter
+    and #31
+    bne +r
+
+    lda sprites_d2,x
+    lsr
+    lda sprites_d,x
+    bcs +n
+    jsr turn_counterclockwise
+    sta sprites_d,x
+    rts
+n:  jsr turn_clockwise
+    sta sprites_d,x
+r:  rts
+
+pacing:
+    lda sprites_y,x
+    sec
+    sbc arena_y
+    cmp #152
+    bcc +n
+
+    ; Start circling.
+stop:
+    lda sprites_x,x
+    cmp #64
+    bcs +m
+    lda #2
+    sta sprites_d2,x
+    lda #@(+ 128 direction_ls)
+    sta sprites_d,x
+    jmp -circling
+m:  lda #3
+    sta sprites_d2,x
+    lda #@(+ 128 direction_rs)
+    sta sprites_d,x
+    jmp -circling
 
 n:  jsr get_sprite_screen_position
 
