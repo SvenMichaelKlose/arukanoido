@@ -1,6 +1,7 @@
 Changes relative to 782:
   * More frames when playing original digis.
   * Cleaned up, probably removed lots of bugs.
+  * Improved obstacle movements (upper half of screen).
 
 Changes of 782 relative to 762:
   * Improved audio compression.

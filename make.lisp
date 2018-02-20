@@ -2,7 +2,7 @@
 (= *model* :vic-20+xk)
 
 (var *demo?* nil)
-(var *all?* nil)
+(var *all?* t)
 (var *add-charset-base?* t)
 (var *debug?* nil)
 (var *revision* (!= (fetch-file "_revision")
