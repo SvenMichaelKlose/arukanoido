@@ -205,10 +205,13 @@ move_up:
 
     jsr test_gap_left
     bcc +l
+    dec sprites_x,x
 m:  jmp move_obstacle_again
 
 n:  jsr test_gap_right
-    bcs -m
+    bcc +l
+    inc sprites_x,x
+    bne -m
 
     ; Check collision upwards.
 l:  jsr test_gap_top
