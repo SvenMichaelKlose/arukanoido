@@ -1,8 +1,7 @@
-rle_play_ptr = @(++ exm_play_ptr)
-
 ; X: Sound index
 rle_start:
-    lda @(-- sample_addrs_l),x                                                                                                                                                                        
+    lda @(-- sample_addrs_l),x
+stop:
     sta rle_play_ptr
     lda @(-- sample_addrs_h),x
     sta @(++ rle_play_ptr)
@@ -25,7 +24,6 @@ m:  ldx #<digisound_timer_fast_pal
     beq +n
     ldx #<digisound_timer_fast_ntsc
     ldy #>digisound_timer_fast_ntsc
-    jmp +n
 n:  stx $9114
     sty $9115
     sty exm_timer
@@ -79,7 +77,7 @@ rle_play_single:
     ora #$b0
     sta $900e
     dec rle_singles
-    beq +m
+    beq +n
     ldy digisound_y
     lda digisound_a
     rti
@@ -88,17 +86,16 @@ rle_play_multiple:
     sta digisound_a
     lda exm_timer
     sta $9115
-    sty digisound_y
-    ldy #0
     lda rle_val
     sta $900e
     dec rle_cnt
     beq +m
-    ldy digisound_y
     lda digisound_a
     rti
 
-m:  jsr rle_fetch
+m:  sty digisound_y
+    ldy #0
+n:  jsr rle_fetch
     cmp #0
     beq +done
     cmp #8
