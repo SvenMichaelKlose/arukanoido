@@ -39,11 +39,11 @@ set_format_landscape:
     sta txt_hiscore_x
     lda #2
     sta txt_hiscore_y
-    lda #33
+    lda #34
     sta hiscore_x
     lda #3
     sta hiscore_y
-    lda #33
+    lda #34
     sta score_x
     lda #1
     sta score_y
