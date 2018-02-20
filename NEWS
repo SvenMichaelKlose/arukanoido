@@ -1,9 +1,12 @@
-Changes relative to 811:
+Changes relative to 815:
+  * Higher quality of in-game digital audio.
+
+Changes 815 relative to 811:
   * No spoiled round intro graphics on NTSC systems.
   * Obstacles circle at bottom of screen.
   * Fixed turning directions (counter) clockwise.
 
-Changes relative to 782:
+Changes of 811 relative to 782:
   * More frames when playing original digis.
   * Cleaned up, probably removed lots of bugs.
   * Improved obstacle movements (upper half of screen).

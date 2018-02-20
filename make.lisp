@@ -185,7 +185,9 @@
     (? (< ! 0)
        (quit)))
   (!= (- #x8000 (get-label 'the_end))
-    (format t "~A bytes free.~%" !)))
+    (format t "~A bytes free before $a000.~%" !))
+  (!= (- #xc000 (get-label 'blk5_end))
+    (format t "~A bytes free before $C000.~%" !)))
 
 (fn make-prg (file)
   (make "obj/music-arcade-blk5.bin"
