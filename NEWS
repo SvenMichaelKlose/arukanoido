@@ -1,6 +1,7 @@
 Changes relative to 811:
   * No spoiled round intro graphics on NTSC systems.
   * Obstacles circle at bottom of screen.
+  * Fixed turning directions (counter) clockwise.
 
 Changes relative to 782:
   * More frames when playing original digis.
