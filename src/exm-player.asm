@@ -13,6 +13,7 @@ exm_start:
     sta exm_play_dptr
     ldy #>exm_buffers
     sty @(+ 2 exm_play_ptr)
+    iny
     sty @(++ exm_play_dptr)
 
     ; Decrunch first buffer.
