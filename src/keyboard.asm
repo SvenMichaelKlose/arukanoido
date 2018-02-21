@@ -24,6 +24,11 @@ keycode_w  = $36
 keycode_x  = $25
 keycode_y  = $34
 keycode_z  = $1e
+keycode_shift  = $26
+keycode_tab  = $2f
+keycode_backspace = $38
+keycode_up = $20
+keycode_left = $28
 
 keycode_0  = $03
 keycode_1  = $3f
