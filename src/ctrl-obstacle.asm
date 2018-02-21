@@ -186,7 +186,6 @@ pacing:
     bcc +n
 
     ; Start circling.
-stop:
     lda sprites_x,x
     cmp #64
     bcs +m

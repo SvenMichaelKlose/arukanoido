@@ -1,6 +1,11 @@
 exm_start:
-    ldx #$60        ; Disable NMI timer and interrupt.
-    stx $911e
+    jsr digi_nmi_stop
+
+    ; Set NMI vector.
+    lda #<exm_play_sample
+    sta $318
+    lda #>exm_play_sample
+    sta $319
 
     ; Save number of samples.
     sta exm_play_rest
@@ -21,28 +26,7 @@ exm_start:
     sta exm_needs_data
     jsr exm_work
 
-    ldx #<digisound_timer_pal
-    ldy #>digisound_timer_pal
-    lda is_ntsc
-    beq +n
-    ldx #<digisound_timer_ntsc
-    ldy #>digisound_timer_ntsc
-n:  stx $9114
-    sty $9115
-    sty exm_timer
-
-    ; Set NMI vector.
-    lda #<exm_play_sample
-    sta $318
-    lda #>exm_play_sample
-    sta $319
-
-    lda #$40        ; Set periodic timer.
-    sta $911b
-    lda #$e0        ; Enable NMI timer and interrupt.
-    sta $911e
-
-    rts
+    jmp digi_nmi_start
 
 exm_work:
     pha

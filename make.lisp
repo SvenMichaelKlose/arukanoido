@@ -161,7 +161,7 @@
                           ,@(unless *rom?*
                               '("exm-nmi.asm"))
                           "audio-boost.asm"
-                          "digisound.asm"
+                          "digi-nmi.asm"
                           "exm-player.asm"
                           "raw-player.asm"
                           "rle-player.asm"
