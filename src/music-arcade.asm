@@ -76,8 +76,8 @@ sample_len_h:
     >exm_laser_size
     >exm_break_out_size
 
-;exm_break_out_size =    @(length (fetch-file "obj/break-out.2.raw"))
-;exm_break_out:          @(fetch-file "obj/break-out.2.exm")
+exm_break_out_size =    @(length (fetch-file "obj/break-out.2.raw"))
+exm_break_out:          @(fetch-file "obj/break-out.2.exm")
 ;exm_doh_intro_size =   @(length (fetch-file "obj/doh-intro.2.raw"))
 ;exm_doh_intro:         @(fetch-file "obj/doh-intro.2.exm")
 exm_explosion_size =   @(length (fetch-file "obj/explosion.2.raw"))
