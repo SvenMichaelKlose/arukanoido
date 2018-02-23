@@ -12,15 +12,32 @@ game_over:
     lda #0
     sta is_running_game
 
+    jsr clear_screen
+
+    0
+    stzb curchar 1
+    call <make_score_screen_title >make_score_screen_title
+    call <display_score >display_score
+
+    stzb curcol white
+    stmb <scrx2 >scrx2 12
+    0
+    lda playfield_yc
+    clc
+    adc #20
+    sta scry
+    0
+    lday <txt_game_over >txt_game_over
+    call <print_string_ay >print_string_ay
+    0
+
     lda #snd_game_over
     jsr play_sound
     jsr wait_sound
-    lda has_hiscore
-    beq +r
-    lda #snd_hiscore
-    jmp play_sound
+    ldx #100
+    jsr wait
 
-r:  rts
+    rts
 
 game:
     jsr clear_data
@@ -230,3 +247,5 @@ bonus_keys:
     keycode_6
     keycode_7
 end
+
+txt_game_over: @(string4x8 "GAME OVER") 255
