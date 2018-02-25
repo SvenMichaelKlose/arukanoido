@@ -1,5 +1,7 @@
 (fn make-prg-launcher (file cmds)
-  (make "arukanoido.prg"
+  (make (? *show-cpu?*
+           "arukanoido-cpumon.prg"
+           "arukanoido.prg")
         (@ [+ "prg-launcher/" _] `("../bender/vic-20/vic.asm"
                                    "zeropage.asm"
                                    "../bender/vic-20/basic-loader.asm"

@@ -1,7 +1,7 @@
 (load "gen-vcpu-tables.lisp")
 (= *model* :vic-20+xk)
 
-(var *demo?* nil)
+(var *demo?* t)
 (var *all?* t)
 (var *add-charset-base?* t)
 (var *debug?* nil)
@@ -215,6 +215,7 @@
 
 (fn make-zip ()
   (unix-sh-cp "arukanoido.prg" "arukanoido/")
+  (unix-sh-cp "arukanoido-cpumon.prg" "arukanoido/arukanoido-cpumon.prg")
   (sb-ext:run-program "/bin/cp"
                       (list "README.md" "NEWS" "arukanoido/")
                       :pty cl:*standard-output*))
@@ -233,7 +234,8 @@
   (with-temporary *tape?* t
     (make-prg "arukanoido-tape"))
   (with-temporary *show-cpu?* t
-    (make-prg "arukanoido-cpumon"))
+    (make-prg "arukanoido-cpumon")
+    (make-prg-launcher))
   ;(with-temporary *shadowvic?* t
   ;  (make-game "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
   )
