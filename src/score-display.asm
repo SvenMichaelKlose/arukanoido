@@ -21,7 +21,6 @@ make_score_screen_title:
     rts
 
 display_score:
-    sei
     lda scorechar_start
     sta curchar
 
@@ -50,7 +49,6 @@ display_score:
     sta @(++ s)
     jsr print_score_string
     inc curchar
-    cli
     rts
 
 ; scrx2/scry: Text position

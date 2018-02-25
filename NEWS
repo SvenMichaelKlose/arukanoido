@@ -1,5 +1,6 @@
 Changes relative to 825:
   * Score display is flickering less.
+  * Fixed break mode.
 
 Changes of 825 relative to 820:
   * Lower top speed in joystick mode.

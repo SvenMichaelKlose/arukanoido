@@ -58,6 +58,7 @@ n:  lda is_firing
 
 n:  lda mode_break
     beq +n
+
     lda screen_gate
     sta d
     lda @(++ screen_gate)
