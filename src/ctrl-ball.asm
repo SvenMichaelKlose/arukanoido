@@ -74,32 +74,11 @@ l:  tya
     pla
     tay
 
-    ; Deal with lost ball.
-    lda sprites_y,x
-    cmp ball_max_y
-    bcs lost_ball
-
     dey
     bne -l
 r:  rts
 e:  pla
     rts
-
-lost_ball:
-    dec balls
-    bne +n
-    lda #0
-    sta is_running_game
-    lda #snd_miss
-    jmp play_sound
-
-n:  lda balls
-    cmp #1
-    bne +n
-    lda #0              ; Reset from disruption bonus.
-    sta mode
-n:  jmp remove_sprite
-
 
 ctrl_ball_vaus:
     lda #0
@@ -174,7 +153,30 @@ m:  sta sprites_d,x
 r:  inc has_hit_vaus
     rts
 
+lose_ball:
+    pla
+    pla
+    pla
+    dec balls
+    bne +n
+    lda #0
+    sta is_running_game
+    lda #snd_miss
+    jmp play_sound
+
+n:  lda balls
+    cmp #1
+    bne +n
+    lda #0              ; Reset from disruption bonus.
+    sta mode
+n:  jmp remove_sprite
+
 ctrl_ball_subpixel:
+    ; Deal with lost ball.
+    lda sprites_y,x
+    cmp ball_max_y
+    beq lose_ball
+
     lda #0
     sta has_hit_brick
 
