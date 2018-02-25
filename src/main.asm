@@ -13,7 +13,8 @@ n:  dex
     0
     clrmw $00 $02 $00 $01
     clrmw $00 $03 $13 $00
-    clrmw $20 $03 $e0 $00
+lowmem_ofs = @(- lowmem #x320)
+    clrmw $20 $03 <lowmem_ofs >lowmem_ofs
     clrmw <charset >charset $00 $04
     movmw <loaded_sprite_inits >loaded_sprite_inits <sprite_inits >sprite_inits sprite_inits_size 0
     0
