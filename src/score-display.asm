@@ -54,6 +54,8 @@ display_score:
 ; scrx2/scry: Text position
 ; curchar: Character to print into.
 print_score_string:
+    jsr print_clear_curchar
+
     lda #0
     sta print_score_tmp
     ldx #num_score_digits

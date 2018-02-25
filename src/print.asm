@@ -75,6 +75,15 @@ get_curchar_address:
     sta @(++ d)
     rts
 
+print_clear_curchar:
+    jsr get_curchar_address
+    ldy #7
+    lda #0
+l:  sta (d),y
+    dey
+    bpl -l
+    rts
+
 print4x8_dynalloc:
     pha
 

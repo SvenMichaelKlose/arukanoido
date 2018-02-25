@@ -27,7 +27,7 @@ set_format_portrait:
     jmp set_format_common
 
 set_format_landscape:
-    lda #21
+    lda #20
     sta screen_columns
     lda #28
     sta screen_rows
@@ -35,16 +35,15 @@ set_format_landscape:
     sta vaus_y
     lda #0
     sta playfield_yc
-    lda #31
+    lda #30
     sta txt_hiscore_x
     lda #2
     sta txt_hiscore_y
-    lda #34
+    lda #33
     sta hiscore_x
+    sta score_x
     lda #3
     sta hiscore_y
-    lda #34
-    sta score_x
     lda #1
     sta score_y
 

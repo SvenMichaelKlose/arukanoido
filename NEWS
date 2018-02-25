@@ -1,4 +1,7 @@
 Changes relative to 825:
+  * One column less in landscape mode (NTSC).
+
+Changes of 834 relative to 825:
   * Score display is flickering less.
   * Fixed break mode.
   * Less beam riding on PAL.

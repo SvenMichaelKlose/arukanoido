@@ -48,7 +48,7 @@ game:
     lda $9008
     sta old_paddle_value
 
-    lda #default_num_lifes
+    lda #12 ;default_num_lifes
     sta lifes
     jsr init_score
 
