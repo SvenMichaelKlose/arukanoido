@@ -214,15 +214,6 @@ l:  jsr exm_work
     sta has_moved_sprites
     jsr draw_sprites
 
-    lda has_new_score
-    beq mainloop
-
-    lda #0
-    sta has_new_score
-    sei
-    jsr display_score
-    cli
-
     jmp mainloop
 
 loose_life:

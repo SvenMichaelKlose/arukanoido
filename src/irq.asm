@@ -104,8 +104,14 @@ n:  lda level
     jsr dyn_brick_fx
 
 done:
-    lda #$7f        ; Acknowledge IRQ.
-    sta $912d
+    lda has_new_score
+    beq +n
+
+    lda #0
+    sta has_new_score
+    jsr display_score
+
+n:
 
 if @*show-cpu?*
     lda #@(+ 8 2)
@@ -116,6 +122,8 @@ end
     tay
     pla
     tax
+    lda #$7f        ; Acknowledge IRQ.
+    sta $912d
     pla
     rti
 

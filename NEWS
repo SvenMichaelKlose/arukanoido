@@ -1,3 +1,6 @@
+Changes relative to 825:
+  * Score display is flickering less.
+
 Changes of 825 relative to 820:
   * Lower top speed in joystick mode.
   * Full speed in paddle mode.
