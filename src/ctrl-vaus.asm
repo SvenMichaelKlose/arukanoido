@@ -254,9 +254,9 @@ make_vaus:
     tax
     lda #vaus_x
     sta sprites_x,x
+    sta vaus_last_x
     lda vaus_y
     sta sprites_y,x
-    sta vaus_last_x
 
 set_vaus_color:
     lda mode
