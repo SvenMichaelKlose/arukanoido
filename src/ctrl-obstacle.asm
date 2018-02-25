@@ -164,7 +164,7 @@ n:  lda sprites_d2,x
 
 circling:
     lda framecounter
-    and #31
+    and #63
     bne +r
 
     lda sprites_d2,x
@@ -179,10 +179,15 @@ n:  jsr turn_clockwise
 r:  rts
 
 pacing:
+    lda level_bottom_y
+    asl
+    asl
+    asl
+    sta tmp
     lda sprites_y,x
     sec
     sbc arena_y
-    cmp #152
+    cmp tmp
     bcc +n
 
     ; Start circling.
@@ -198,6 +203,10 @@ m:  lda #3
     sta sprites_d2,x
     lda #@(+ 128 direction_rs)
     sta sprites_d,x
+
+    lda #255
+    sta framecounter
+
     jmp -circling
 
 n:  jsr get_sprite_screen_position

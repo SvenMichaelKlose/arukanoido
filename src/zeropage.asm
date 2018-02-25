@@ -264,15 +264,16 @@ sprite_inits:           fill @sprite_inits_size
 
 line_addresses_l:       fill 33
 
-if @*demo?*
+;if @*demo?*
 next_bonus:             0
-end
+;end
 
 before_int_vectors:
 
     org $320
 
 line_addresses_h:       fill 33
+level_bottom_y:         0
 
 lowmem:
     end

@@ -69,7 +69,9 @@ o:  inc scrx
     inc scry
     jmp -m
     
-r:  rts
+r:  lda scry
+    sta level_bottom_y
+    rts
 
 brick_to_char:
     tax
