@@ -1,6 +1,7 @@
 Changes of 825 relative to 820:
   * Lower top speed in joystick mode.
   * Full speed in paddle mode.
+  * Obstacles are dropping out.
 
 Changes relative to 820:
   * Obstacles start circling at bottom row of bricks.

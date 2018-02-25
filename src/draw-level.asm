@@ -69,8 +69,9 @@ o:  inc scrx
     inc scry
     jmp -m
     
-r:  lda scry
-    sta level_bottom_y
+r:  ldy scry
+    dey
+    sty level_bottom_y
     rts
 
 brick_to_char:

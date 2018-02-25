@@ -6,6 +6,38 @@
 ; * Move diagonally towards towards Vaus.
 ; * There varying delays when new obstacles drop in.
 
+used_obstacle_directions:
+    direction_l
+    128
+    direction_r
+    64
+    @(byte (+ 128 direction_l))
+    0
+    @(byte (+ 128 direction_r))
+    192
+
+get_used_obstacle_direction:
+    ldy #7
+l:  cmp used_obstacle_directions,y
+    beq +r
+    dey
+    jmp -l
+r:  rts
+
+turn_obstacle_clockwise:
+    jsr get_used_obstacle_direction
+    iny
+l:  tya
+    and #7
+    tay
+    lda used_obstacle_directions,y
+    rts
+
+turn_obstacle_counterclockwise:
+    jsr get_used_obstacle_direction
+    dey
+    jmp -l
+
 gfx_obstacles_gl:
     <gfx_obstacle_cone
     <gfx_obstacle_pyramid
@@ -143,7 +175,7 @@ m:  lda sprites_y,x
 
     ; Move obstacle in.
     inc sprites_y,x
-    rts
+r2: rts
  
 n:  jsr move_obstacle
     jmp half_step_smooth
@@ -164,19 +196,29 @@ n:  lda sprites_d2,x
 
 circling:
     lda framecounter
-    and #63
+    and #31
     bne +r
 
     lda sprites_d2,x
     lsr
     lda sprites_d,x
     bcs +n
-    jsr turn_counterclockwise
+    jsr turn_obstacle_counterclockwise
     sta sprites_d,x
-    rts
-n:  jsr turn_clockwise
+    jmp +r
+n:  jsr turn_obstacle_clockwise
     sta sprites_d,x
-r:  rts
+r:  lda sprites_d,x
+    beq +m
+    cmp #128
+    beq -r2
+    jsr half_step_smooth
+    jsr half_step_smooth
+    jmp -r2
+m:  jsr half_step_smooth
+    jsr half_step_smooth
+r:  jsr half_step_smooth
+    jmp half_step_smooth
 
 pacing:
     lda level_bottom_y
@@ -196,12 +238,12 @@ pacing:
     bcs +m
     lda #2
     sta sprites_d2,x
-    lda #@(+ 128 direction_ls)
+    lda #@(+ 128 direction_l)
     sta sprites_d,x
     jmp -circling
 m:  lda #3
     sta sprites_d2,x
-    lda #@(+ 128 direction_rs)
+    lda #@(+ 128 direction_r)
     sta sprites_d,x
 
     lda #255
