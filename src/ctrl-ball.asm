@@ -353,8 +353,6 @@ adjust_ball_speed_hitting_top:
     ldy level
     dey
     lda minimum_ball_speed_when_hit_top_per_round,y
-    lsr
-    adc #0
     cmp ball_speed
     bcc +n
     ldy is_using_paddle
