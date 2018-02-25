@@ -14,10 +14,7 @@ l:  lda init_music_data,x
     bne -l
     jsr init_music
 
-l:  lda $9004
-    bne -l
-
-    lda #<irq
+l:  lda #<irq
     sta $314
     lda #>irq
     sta $315
@@ -27,16 +24,20 @@ l:  lda $9004
     bne +n
     ldx #<frame_timer_pal
     ldy #>frame_timer_pal
-    jmp +l
+l:  lda $9004
+    cmp #135
+    bne -l
+    jmp +m
 n:  ldx #<frame_timer_ntsc
     ldy #>frame_timer_ntsc
-l:  stx $9124
+m:  stx $9124
     sty $9125
     lda #%01000000  : free-running
     sta $912b
     lda #%11000000  ; IRQ enable
     sta $912e
     cli
+
     rts
 
 irq:
