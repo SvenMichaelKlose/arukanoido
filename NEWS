@@ -1,5 +1,7 @@
 Changes relative to 820:
   * Obstacles start circling at bottom row of bricks.
+  * Fixed cart version.
+  * Always draws last frame when losing a life.
 
 Changes of 820 relative to 816:
   * Game over screen added.

@@ -169,23 +169,11 @@ end
 
 mainloop:
     lda bricks_left
-    bne +n
-    jsr remove_sprites
-    jsr clear_sprites
-    jsr wait_sound
-    jmp next_level
+    beq level_end
+    lda is_running_game
+    beq loose_life
 
-n:  lda is_running_game
-    bne +n
-    jsr wait_sound
-    jsr remove_sprites
-    jsr clear_sprites
-    dec lifes
-    beq +o
-    jmp retry
-o:  jmp game_over
-
-n:  ; Toggle sprite frame.
+    ; Toggle sprite frame.
     lda spriteframe
     eor #framemask
     sta spriteframe
@@ -228,6 +216,7 @@ l:  jsr exm_work
 
     lda has_new_score
     beq mainloop
+
     lda #0
     sta has_new_score
     sei
@@ -235,6 +224,29 @@ l:  jsr exm_work
     cli
 
     jmp mainloop
+
+loose_life:
+    jsr wait_sound
+    jsr remove_sprites
+    jsr clear_sprites
+    dec lifes
+    beq +l
+    jmp retry
+l:  jmp game_over
+
+level_end:
+    ldx #1
+    jsr wait
+    jsr draw_sprites
+    jsr remove_sprites
+    jsr exm_work
+    ldx #3
+    jsr wait
+    jsr exm_work
+    jsr exm_work
+    jsr clear_sprites
+    jsr wait_sound
+    jmp next_level
 
 if @*demo?*
 bonus_keys:
