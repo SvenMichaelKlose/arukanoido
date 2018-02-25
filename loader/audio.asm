@@ -16,12 +16,17 @@ load_audio:
     sta $9002
 
     jsr check_memory_expansion
-    bcc -r
+;    bcc -r
     jsr init_memory_expansion
 
     lda #num_digis
     sta digis_left
     inc is_loading_audio
+
+    lda #<poll_loader_byte
+    sta get_byte
+    lda #>poll_loader_byte
+    sta @(++ get_byte)
 
 next_digi:
     lda digis_left
@@ -32,10 +37,6 @@ next_digi:
     sta tape_ptr
     lda #>tape_buffer
     sta @(++ tape_ptr)
-    lda #<poll_loader_byte
-    sta get_byte
-    lda #>poll_loader_byte
-    sta @(++ get_byte)
     lda #<tape_leader2
     sta $314
     lda #>tape_leader2
@@ -49,9 +50,8 @@ next_digi:
     jsr poll_loader_byte
     sta @(+ 2 raw_size)
 
-n:  jsr init_decruncher
+    jsr init_decruncher
 
-    inc @(+ 2 raw_size)
 l:  jsr get_decrunched_byte
     sta $900e
     inc $900f
@@ -68,10 +68,16 @@ l:  jsr get_decrunched_byte
     inc bank
     jsr set_bank
 n:  dec raw_size
+    lda raw_size
+    cmp #255
     bne -l
     dec @(+ 1 raw_size)
+    lda @(+ 1 raw_size)
+    cmp #255
     bne -l
     dec @(+ 2 raw_size)
+    lda @(+ 2 raw_size)
+    cmp #255
     bne -l
     dec digis_left
     jmp next_digi

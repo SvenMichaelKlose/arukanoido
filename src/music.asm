@@ -24,6 +24,8 @@ snd_hit_obstacle      = 15
 snd_laser             = 16
 snd_round_break       = 17
 
+num_tunes             = 17
+
 sound_priorities:
     0 ; no sound
     2 ; 1

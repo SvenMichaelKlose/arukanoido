@@ -36,7 +36,8 @@ sample_addrs_h:
     >exm_laser
     >exm_break_out
 
-sample_addrs_b:     fill 24
+sample_addrs_b:
+    fill num_tunes
 
 sample_len_l:
     <exm_round_intro_size
