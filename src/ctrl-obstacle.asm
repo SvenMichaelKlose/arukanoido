@@ -7,7 +7,7 @@
 ; * There varying delays when new obstacles drop in.
 
 used_obstacle_directions:
-    direction_l
+;    direction_l
     128
     direction_r
     64
@@ -15,13 +15,15 @@ used_obstacle_directions:
     0
     @(byte (+ 128 direction_r))
     192
+used_obstacle_directions_end:
 
 get_used_obstacle_direction:
-    ldy #7
+    ldy #0
 l:  cmp used_obstacle_directions,y
     beq +r
-    dey
-    jmp -l
+    iny
+    cmp #@(- used_obstacle_directions_end used_obstacle_directions 1)
+    bne -l
 r:  rts
 
 turn_obstacle_clockwise:
@@ -199,7 +201,14 @@ circling:
     and #31
     bne +l
 
-    lda sprites_d2,x
+    lda arena_y
+    clc
+    adc #@(* 23 8)
+    cmp sprites_y,x
+    bcs +n
+    jmp move_towards_vaus
+
+n:  lda sprites_d2,x
     lsr
     lda sprites_d,x
     bcs +n
@@ -209,10 +218,8 @@ circling:
 n:  jsr turn_obstacle_clockwise
     sta sprites_d,x
 l:  lda sprites_d,x
-    cmp #128
-    beq -r
-;    jsr half_step_smooth
-;    jsr half_step_smooth
+;    cmp #128
+;    beq -r
     cmp #0
     beq +m
     cmp #192
@@ -387,3 +394,14 @@ test_gap_top:
     jsr get_sprite_screen_position
     dec scry
     jmp -l
+
+move_towards_vaus:
+    jsr get_vaus_index_in_y
+    lda sprites_x,y
+    cmp sprites_x,x
+    ldy #@(- 128 direction_l)
+    bcc +n
+    ldy #@(- 128 direction_r)
+n:  tya
+    sta sprites_d,x
+    rts
