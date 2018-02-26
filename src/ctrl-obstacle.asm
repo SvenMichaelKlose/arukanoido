@@ -175,7 +175,7 @@ m:  lda sprites_y,x
 
     ; Move obstacle in.
     inc sprites_y,x
-r2: rts
+r:  rts
  
 n:  jsr move_obstacle
     jmp half_step_smooth
@@ -197,7 +197,7 @@ n:  lda sprites_d2,x
 circling:
     lda framecounter
     and #31
-    bne +r
+    bne +l
 
     lda sprites_d2,x
     lsr
@@ -205,19 +205,25 @@ circling:
     bcs +n
     jsr turn_obstacle_counterclockwise
     sta sprites_d,x
-    jmp +r
+    jmp +l
 n:  jsr turn_obstacle_clockwise
     sta sprites_d,x
-r:  lda sprites_d,x
-    beq +m
+l:  lda sprites_d,x
     cmp #128
-    beq -r2
-    jsr half_step_smooth
-    jsr half_step_smooth
-    jmp -r2
+    beq -r
+;    jsr half_step_smooth
+;    jsr half_step_smooth
+    cmp #0
+    beq +m
+    cmp #192
+    beq +m
+    cmp #64
+    beq +m
+    cmp #@(+ 128 direction_l)
+    beq +m
+    cmp #@(+ 128 direction_r)
+    bne -r
 m:  jsr half_step_smooth
-    jsr half_step_smooth
-r:  jsr half_step_smooth
     jmp half_step_smooth
 
 pacing:
