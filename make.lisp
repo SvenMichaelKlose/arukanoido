@@ -1,7 +1,7 @@
 (load "gen-vcpu-tables.lisp")
 (= *model* :vic-20+xk)
 
-(var *demo?* t)
+(var *demo?* nil)
 (var *all?* t)
 (var *add-charset-base?* t)
 (var *debug?* nil)
