@@ -1,5 +1,7 @@
 Changes relative to 825:
   * One column less in landscape mode (NTSC).
+  * More accurate tests when balls leave the arena.
+  * More work on obstacles done.
 
 Changes of 834 relative to 825:
   * Score display is flickering less.
