@@ -112,8 +112,6 @@ m:  lda #$60
     ldy @(-- sample_addrs_h),x
     jsr init_decruncher
     ldx music_tmp
-    lda @(-- sample_len_l),x
-    ldy @(-- sample_len_h),x
     jsr exm_start
 r:  lda music_tmp
     sta current_song
