@@ -7,11 +7,6 @@ exm_start:
     lda #>exm_play_sample
     sta $319
 
-    ; Save number of samples.
-    sta exm_play_rest
-    iny
-    sty @(++ exm_play_rest)
-
     ; Set pointers to double buffer.
     lda #0
     sta @(+ 1 exm_play_ptr)
@@ -43,9 +38,7 @@ exm_work:
     ldy #0
 l:  jsr get_decrunched_byte
     sta (exm_play_dptr),y
-    dec exm_play_rest
-    bne +n
-    dec @(++ exm_play_rest)
+    cmp #0
     beq +finished
 n:  inc exm_play_dptr
     beq +buffer_filled

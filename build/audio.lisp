@@ -75,7 +75,8 @@
     (@ (! in)
       (enqueue q (around ! f m)))
     (@ (i (reverse (trim-wav (reverse (trim-wav (queue-list q))))))
-      (write-byte (+ i (* 11 16)) out))))
+      (write-byte (+ i (* 11 16)) out))
+    (write-byte 0 out)))
 
 (fn smallest (x)
   (let v 65535
