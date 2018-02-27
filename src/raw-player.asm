@@ -18,7 +18,7 @@ raw_play_sample:
     sty digisound_y
     lda $9114
     ldy #0
-    lda (@(++ raw_play_ptr)),y
+    lda (raw_play_ptr),y
     beq +done
     sta $900e
     inc raw_play_ptr

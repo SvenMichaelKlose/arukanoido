@@ -154,6 +154,7 @@ user_screen_origin_y:   0
 is_ntsc:                0
 is_landscape:           0
 is_playing_digis:       0
+has_ultimem:            0
 
     @(check-zeropage-size (- #x00fc num_score_digits))
     org @(- #x00fc num_score_digits)

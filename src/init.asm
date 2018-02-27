@@ -22,6 +22,22 @@ main:
     ldx #$ff
     txs
 
+if @*tape?*
+    lda $1100
+    sta has_ultimem
+    beq +n
+    ldx #@(-- num_tunes)
+l:  lda $1101,x
+    sta sample_addrs_l,x
+    lda $1121,x
+    sta sample_addrs_h,x
+    lda $1141,x
+    sta sample_addrs_b,x
+    dex
+    bpl -l
+n:
+end
+
 if @*rom?*
     lda #<loaded_lowmem
     sta s

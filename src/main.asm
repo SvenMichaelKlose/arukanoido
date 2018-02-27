@@ -122,7 +122,7 @@ n:  cmp #keycode_b
     sta is_playing_digis
     beq +n
     jsr audio_boost
-n:  lda #snd_miss
+n:  lda #snd_round_break
     jsr play_sound
     jmp -l
 

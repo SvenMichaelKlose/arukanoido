@@ -99,31 +99,43 @@ play_sound:
     beq +m
     bcs +n
 
-m:  lda #$60
-    sta $911e
+m:  jsr digi_nmi_stop
     lda #$ff
     sta exm_needs_data
     lda is_playing_digis
     beq +l
-    lda digi_types,x
+    lda has_ultimem
+    beq +n
+
+    ; Play raw sample from Ultimem.
+    ldx music_tmp
+    jsr raw_start
+    jmp +r
+
+n:  lda digi_types,x
     bne +m
 
+    ; Play EXM-compressed sample.
     lda @(-- sample_addrs_l),x
     ldy @(-- sample_addrs_h),x
     jsr init_decruncher
     ldx music_tmp
     jsr exm_start
+
+    ; Store current tune.
 r:  lda music_tmp
     sta current_song
     lda #$ff
     sta requested_song
     jmp +n
 
+    ; Play RLE-compressed sample.
 m:  lsr
     bne +l
     jsr rle_start
     jmp -r
 
+    ; Play VIC tune.
 l:  lda #$ff
     sta exm_needs_data
     lda music_tmp

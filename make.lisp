@@ -102,6 +102,7 @@
                           "joystick.asm"
                           "keyboard.asm"
                           "math.asm"
+                          "music-index.asm"
                           "music.asm"
                           "screen.asm"
                           "random.asm"

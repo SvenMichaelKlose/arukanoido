@@ -2,7 +2,8 @@
 
 (fn assemble-loader ()
   (apply #'assemble-files "c2nwarp.prg"
-         `("loader/zeropage.asm"
+         `("src/music-index.asm"
+           "loader/zeropage.asm"
            "bender/vic-20/basic-loader.asm"
            "loader/main.asm"
            "bender/vic-20/minigrafik-display.asm"

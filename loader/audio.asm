@@ -7,6 +7,17 @@ r:  sei
     lda $911c
     ora #3
     sta $911c
+
+    ; Copy sample addresses to screen,
+    ldx #0
+l:  lda $7000,x
+    sta $1101,x
+    dex
+    bne -l
+
+    inx
+    stx $1100
+
     jmp start_game
 
     ; Load and recompress audio depending on
@@ -14,9 +25,10 @@ r:  sei
 load_audio:
     lda #0
     sta $9002
+    sta $1100
 
     jsr check_memory_expansion
-;    bcc -r
+    bcc -r
     jsr init_memory_expansion
 
     lda #num_digis
@@ -49,6 +61,20 @@ next_digi:
     sta @(+ 1 raw_size)
     jsr poll_loader_byte
     sta @(+ 2 raw_size)
+
+    lda #num_digis
+    sec
+    sbc digis_left
+    tax
+    lda sample_order,x
+    tax
+    lda bank_ptr
+    sta @(-- samples_l),x
+    lda @(++ bank_ptr)
+    sta @(-- samples_h),x
+    lda bank
+    sta @(-- samples_b),x
+    jsr set_bank
 
     jsr init_decruncher
 
@@ -122,3 +148,21 @@ l:  ldy audio_ptr
     ldy exo_y2
     plp
     rts
+
+sample_order:
+    snd_round_break
+    snd_hit_obstacle
+    snd_growing_vaus
+    snd_bonus_life
+    snd_game_over
+    snd_laser
+    snd_miss
+    snd_hit_doh
+    snd_reflection_silver
+    snd_reflection_high
+    snd_reflection_low
+    snd_theme
+    snd_round
+    snd_doh_dissolving
+    snd_doh_round
+    snd_hiscore
