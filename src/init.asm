@@ -22,6 +22,11 @@ main:
     ldx #$ff
     txs
 
+if @(not *tape?*)
+    lda #0
+    sta has_ultimem
+end
+
 if @*tape?*
     lda $1100
     sta has_ultimem

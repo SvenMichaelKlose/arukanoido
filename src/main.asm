@@ -122,11 +122,11 @@ n:  cmp #keycode_b
     sta is_playing_digis
     beq +n
     jsr audio_boost
-n:  lda #snd_round_break
+n:  lda #snd_coin
     jsr play_sound
     jmp -l
 
-f:  lda #snd_miss
+f:  lda #snd_coin
     jsr play_sound
     jsr wait_sound
     jsr round_intro
