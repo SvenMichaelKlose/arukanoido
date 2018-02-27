@@ -138,11 +138,11 @@ remove_obstacle:
     tax
     rts
 
-ctrl_obstacle:
+animate_obstacle:
     ; Animate.
     lda framecounter
     and #7
-    bne +m
+    bne +r
     lda sprites_gl,x
     clc
     adc #16
@@ -162,46 +162,47 @@ l:  lda sprites_gl,x
     sta sprites_gl,x
     lda gfx_obstacles_gh,y
     sta sprites_gh,x
-    jmp +m
+    jmp +r
 n:  dey
     bpl -l
+r:  rts
 
-m:  lda sprites_y,x
+ctrl_obstacle_move_in:
+    jsr animate_obstacle
+    lda sprites_y,x
     cmp arena_y
     bcs +n
 
     ; Move obstacle in.
     inc sprites_y,x
 r:  rts
- 
-    ; Remove obstacle if it left the screen at the bottom.
-n:  lda sprites_y,x
-    cmp y_max
-    bcc +n
-    dec num_obstacles
-    jmp remove_sprite
 
-n:  lda sprites_d2,x
-    and #64
-    beq +n
+n:  lda #<ctrl_obstacle_pacing
+    ldy #>ctrl_obstacle_pacing
+
+set_obstacle_controller:
+    sta sprites_fl,x
+    sty sprites_fh,x
+    rts
+ 
+ctrl_obstacle_circling:
+    jsr animate_obstacle
     jsr decrement_counter
     jsr circling_obstacle
     jsr half_step_smooth
     jsr half_step_smooth
-    lda sprites_d,x
-    cmp #direction_l
-    beq -r
-    cmp #direction_r
-    beq -r
-    cmp #@(+ 128 direction_l)
-    beq -r
-    cmp #@(+ 128 direction_r)
-    beq -r
-    jsr half_step_smooth
-    jmp half_step_smooth
-
-n:  jsr move_obstacle
-    jmp half_step_smooth
+;    lda sprites_d,x
+;    cmp #direction_l
+;    beq -r
+;    cmp #direction_r
+;    beq -r
+;    cmp #@(+ 128 direction_l)
+;    beq -r
+;    cmp #@(+ 128 direction_r)
+;    beq -r
+;    jsr half_step_smooth
+;    jmp half_step_smooth
+rts
 
 decrement_counter:
     lda sprites_d2,x
@@ -251,6 +252,10 @@ n:  jsr turn_obstacle_clockwise
     sta sprites_d,x
 r:  rts
 
+ctrl_obstacle_pacing:
+    jsr animate_obstacle
+    jsr move_obstacle
+    jmp half_step_smooth
 
 move_obstacle_again:
     sty sprites_d,x
@@ -272,9 +277,9 @@ move_obstacle:
     bcs +m
     lda #%01111111
     sta sprites_d2,x
-    lda #@(+ 128 direction_l)
-    sta sprites_d,x
-    rts
+    lda #<ctrl_obstacle_circling
+    ldy #>ctrl_obstacle_circling
+    jmp set_obstacle_controller
 
 m:  lda #%11111111
     sta sprites_d2,x
