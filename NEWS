@@ -1,4 +1,10 @@
-Changes relative to 841:
+Changes relative to 850:
+   * Circling obstacles again. What a mess…
+
+Changes of 851 relative to 850:
+  * Fixed normal digi playback without Ultimem.
+
+Changes of 850 relative to 841:
   * Ultimem support tape version. (Best digis.)
 
 Changes of 844 relative to 841:

@@ -233,23 +233,22 @@ circling_obstacle:
     cmp #%00111111
     bne -r
 
-    lda arena_y
-    clc
-    adc #@(* 23 8)
-    cmp sprites_y,x
-    bcs +n
-    jmp move_towards_vaus
-
 n:  lda sprites_d2,x
     asl
     lda sprites_d,x
     bcs +n
     jsr turn_obstacle_counterclockwise
     sta sprites_d,x
-    rts
+    cmp #0
+    bne +r
+l:  lda #<ctrl_obstacle_chasing
+    ldy #>ctrl_obstacle_chasing
+    jmp set_obstacle_controller
 
 n:  jsr turn_obstacle_clockwise
     sta sprites_d,x
+    cmp #0
+    beq -l
 r:  rts
 
 ctrl_obstacle_pacing:
@@ -277,7 +276,9 @@ move_obstacle:
     bcs +m
     lda #%01111111
     sta sprites_d2,x
-    lda #<ctrl_obstacle_circling
+    lda #@(+ 128 direction_l)
+    sta sprites_d,x
+k:  lda #<ctrl_obstacle_circling
     ldy #>ctrl_obstacle_circling
     jmp set_obstacle_controller
 
@@ -285,7 +286,7 @@ m:  lda #%11111111
     sta sprites_d2,x
     lda #@(+ 128 direction_r)
     sta sprites_d,x
-    rts
+    bne -k
 
 n:  jsr get_sprite_screen_position
 
@@ -418,7 +419,7 @@ test_gap_top:
     dec scry
     jmp -l
 
-move_towards_vaus:
+ctrl_obstacle_chasing:
     jsr get_vaus_index_in_y
     lda sprites_x,y
     cmp sprites_x,x
@@ -427,4 +428,15 @@ move_towards_vaus:
     ldy #@(- 128 direction_r)
 n:  tya
     sta sprites_d,x
-    rts
+    lda #<ctrl_obstacle_moving
+    ldy #>ctrl_obstacle_moving
+    jmp set_obstacle_controller
+
+ctrl_obstacle_moving:
+    jsr animate_obstacle
+    jsr step_smooth
+    lda sprites_y,x
+    cmp screen_height
+    bne -r
+    dec num_obstacles
+    jmp remove_sprite
