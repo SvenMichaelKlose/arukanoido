@@ -1,4 +1,7 @@
-Changes relative to 840:
+Changes relative to 841:
+  * Slightly faster digi playback.
+
+Changes of 841 relative to 840:
   * Obstacles move towards Vaus at the bottom of the
     arena.
 

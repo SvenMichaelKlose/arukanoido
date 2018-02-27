@@ -29,16 +29,15 @@ m:  ldx #<digisound_timer_fast_pal
     ldy #>digisound_timer_fast_ntsc
 n:  stx $9114
     sty $9115
-    sty exm_timer
 
-    lda #$40        ; Set periodic timer.
+    lda #%01000000  ; Set periodic timer.
     sta $911b
-    lda #$e0        ; Enable NMI timer and interrupt.
+    lda #%11000000  ; Enable NMI timer.
     sta $911e
 
     rts
 
 digi_nmi_stop:
-    lda #$60        ; Disable NMI timer and interrupt.
+    lda #%01000000  ; Disable NMI timer.
     sta $911e
     rts

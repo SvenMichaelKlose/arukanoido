@@ -75,7 +75,6 @@ exo_y:                0
 exo_y2:               0
 exo_s:                0 0
 exm_play_dptr:        0 0
-exm_timer:            0
 
 framecounter:         0 0
 lifes:                0

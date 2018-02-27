@@ -16,6 +16,7 @@ raw_start:
 raw_play_sample:
     sta digisound_a
     sty digisound_y
+    lda $9114
     ldy #0
     lda (@(++ raw_play_ptr)),y
     beq +done
@@ -46,8 +47,7 @@ n:  lda #$a0
 done:
     lda #0
     sta current_song
-    lda #$7f
-    sta $911e
+    jsr digi_nmi_stop
     ldy digisound_y
     lda digisound_a
     rti

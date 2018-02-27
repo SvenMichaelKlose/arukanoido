@@ -38,9 +38,8 @@ m:  inc @(++ rle_play_ptr)
 
 rle_play_single:
     sta digisound_a
-    lda exm_timer
-    sta $9115
     sty digisound_y
+    lda $9114
     ldy #0
     jsr rle_fetch
     ora #$b0
@@ -53,8 +52,7 @@ rle_play_single:
 
 rle_play_multiple:
     sta digisound_a
-    lda exm_timer
-    sta $9115
+    lda $9114
     lda rle_val
     sta $900e
     dec rle_cnt
@@ -94,6 +92,5 @@ r:  ldy digisound_y
 done:
     lda #0
     sta current_song
-    lda #$7f
-    sta $911e
+    jsr digi_nmi_stop
     bne -r
