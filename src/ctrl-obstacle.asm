@@ -1,20 +1,12 @@
-; TODO: New movement rules
-;
-; * After dropping out of the game, Diagonally move half a char to the left or right.
-; * On the upper half of the screen, move horizontally and vertically along tiles.
-; * When hitting the bottom half of the screen, draw a circle to opposite side of the screen.
-; * Move diagonally towards towards Vaus.
-; * There varying delays when new obstacles drop in.
-
 used_obstacle_directions:
-;    direction_l
-    128
+    @(byte (+ 128 direction_r))
+    192
+    direction_l
+;    128
     direction_r
     64
     @(byte (+ 128 direction_l))
     0
-    @(byte (+ 128 direction_r))
-    192
 used_obstacle_directions_end:
 
 get_used_obstacle_direction:
@@ -22,23 +14,26 @@ get_used_obstacle_direction:
 l:  cmp used_obstacle_directions,y
     beq +r
     iny
-    cmp #@(- used_obstacle_directions_end used_obstacle_directions 1)
+    cpy #@(- used_obstacle_directions_end used_obstacle_directions)
     bne -l
+w:  jmp -w
 r:  rts
 
 turn_obstacle_clockwise:
     jsr get_used_obstacle_direction
     iny
-l:  tya
-    and #7
-    tay
-    lda used_obstacle_directions,y
+    cpy #@(- used_obstacle_directions_end used_obstacle_directions)
+    bne +l
+    ldy #0
+l:  lda used_obstacle_directions,y
     rts
 
 turn_obstacle_counterclockwise:
     jsr get_used_obstacle_direction
     dey
-    jmp -l
+    bpl -l
+    ldy #@(- used_obstacle_directions_end used_obstacle_directions 1)
+    bne -l
 
 gfx_obstacles_gl:
     <gfx_obstacle_cone
@@ -112,7 +107,7 @@ add_missing_obstacle:
 n:  lda #direction_down
     sta sprites_d,x
     jsr random
-    and #1          ; Prefers left or right.
+    and #128        ; Prefers left or right.
     sta sprites_d2,x
     inc num_obstacles
 
@@ -179,27 +174,63 @@ m:  lda sprites_y,x
     inc sprites_y,x
 r:  rts
  
-n:  jsr move_obstacle
-    jmp half_step_smooth
-
-move_obstacle_again:
-    sty sprites_d,x
-move_obstacle:
     ; Remove obstacle if it left the screen at the bottom.
-    lda sprites_y,x
+n:  lda sprites_y,x
     cmp y_max
     bcc +n
     dec num_obstacles
     jmp remove_sprite
 
 n:  lda sprites_d2,x
-    and #2
-    beq +pacing
+    and #64
+    beq +n
+    jsr decrement_counter
+    jsr circling_obstacle
+    jsr half_step_smooth
+    jsr half_step_smooth
+    lda sprites_d,x
+    cmp #direction_l
+    beq -r
+    cmp #direction_r
+    beq -r
+    cmp #@(+ 128 direction_l)
+    beq -r
+    cmp #@(+ 128 direction_r)
+    beq -r
+    jsr half_step_smooth
+    jmp half_step_smooth
 
-circling:
-    lda framecounter
+n:  jsr move_obstacle
+    jmp half_step_smooth
+
+decrement_counter:
+    lda sprites_d2,x
     and #31
-    bne +l
+    tay
+    dey
+    bmi +l
+
+    ; Store decremented counter.
+    lda sprites_d2,x
+    and #%11000000
+    sta tmp
+    tya
+    ora tmp
+    sta sprites_d2,x
+    rts
+
+    ; Reset counter.
+l:  lda sprites_d2,x
+    and #%11000000
+    ora #%00111111
+    sta sprites_d2,x
+    rts
+
+circling_obstacle:
+    lda sprites_d2,x
+    and #%00111111
+    cmp #%00111111
+    bne -r
 
     lda arena_y
     clc
@@ -209,31 +240,21 @@ circling:
     jmp move_towards_vaus
 
 n:  lda sprites_d2,x
-    lsr
+    asl
     lda sprites_d,x
     bcs +n
     jsr turn_obstacle_counterclockwise
     sta sprites_d,x
-    jmp +l
+    rts
+
 n:  jsr turn_obstacle_clockwise
     sta sprites_d,x
-l:  lda sprites_d,x
-;    cmp #128
-;    beq -r
-    cmp #0
-    beq +m
-    cmp #192
-    beq +m
-    cmp #64
-    beq +m
-    cmp #@(+ 128 direction_l)
-    beq +m
-    cmp #@(+ 128 direction_r)
-    bne -r
-m:  jsr half_step_smooth
-    jmp half_step_smooth
+r:  rts
 
-pacing:
+
+move_obstacle_again:
+    sty sprites_d,x
+move_obstacle:
     lda level_bottom_y
     asl
     asl
@@ -249,20 +270,17 @@ pacing:
     lda sprites_x,x
     cmp #64
     bcs +m
-    lda #2
+    lda #%01111111
     sta sprites_d2,x
     lda #@(+ 128 direction_l)
     sta sprites_d,x
-    jmp -circling
-m:  lda #3
+    rts
+
+m:  lda #%11111111
     sta sprites_d2,x
     lda #@(+ 128 direction_r)
     sta sprites_d,x
-
-    lda #255
-    sta framecounter
-
-    jmp -circling
+    rts
 
 n:  jsr get_sprite_screen_position
 
@@ -280,7 +298,7 @@ n:  jsr get_sprite_screen_position
 
     ldy #direction_left
     lda sprites_d2,x
-    lsr
+    asl
     bcc +n
     ldy #direction_right
 n:  jmp move_obstacle_again
@@ -292,7 +310,7 @@ move_up:
 
     ; Check on gap left or right.
     lda sprites_d2,x
-    lsr
+    asl
     bcs +n
 
     jsr test_gap_left
@@ -309,7 +327,7 @@ n:  jsr test_gap_right
 l:  jsr test_gap_top
     bcs +r
     lda sprites_d2,x
-    eor #1
+    eor #128
     sta sprites_d2,x
 turn_downwards:
     ldy #direction_down
