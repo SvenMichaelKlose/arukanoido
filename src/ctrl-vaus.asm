@@ -1,12 +1,3 @@
-get_vaus_index_in_x:
-    ldx #@(-- num_sprites)
-l:  lda sprites_i,x
-    and #is_vaus
-    bne +r
-    dex
-    bpl -l
-r:  rts
-
 get_vaus_index_in_y:
     ldy #@(-- num_sprites)
 l:  lda sprites_i,y
