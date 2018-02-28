@@ -128,7 +128,6 @@
                           "score.asm"
 
                           ; Sprite controllers
-                          "step-arcade.asm"
                           "step-smooth.asm"
                           "ctrl-ball.asm"
                           "ctrl-bonus.asm"
