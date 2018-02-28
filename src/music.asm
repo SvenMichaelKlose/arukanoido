@@ -97,7 +97,7 @@ play_sound:
     lda sound_priorities,y
     cmp sound_priorities,x
     beq +m
-    bcs +n
+    bcs +done
 
 m:  jsr digi_nmi_stop
     lda #$ff
@@ -121,26 +121,28 @@ n:  lda digi_types,x
     jsr init_decruncher
     ldx music_tmp
     jsr exm_start
+    jmp +r
+
+    ; Play RLE-compressed sample.
+m:  lsr
+    bne +l
+    jsr rle_start
 
     ; Store current tune.
 r:  lda music_tmp
     sta current_song
     lda #$ff
     sta requested_song
-    jmp +n
-
-    ; Play RLE-compressed sample.
-m:  lsr
-    bne +l
-    jsr rle_start
-    jmp -r
+    jmp +done
 
     ; Play VIC tune.
 l:  lda #$ff
     sta exm_needs_data
     lda music_tmp
     sta requested_song
-n:  pla
+
+done:
+    pla
     tay
     pla
     tax
