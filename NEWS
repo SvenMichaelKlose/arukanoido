@@ -1,4 +1,7 @@
-Changes relative to 851:
+Changes relative to 854:
+   * Waits for sounds to end properly.
+
+Changes of 854 relative to 851:
    * Fixed sound issues a bit.
 
 Changes of 051 relative to 850:

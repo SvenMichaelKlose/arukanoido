@@ -151,13 +151,16 @@ done:
 wait_sound:
     lda is_playing_digis
     bne +n
-    jsr exm_work
-    lda requested_song
+l:  lda requested_song
     cmp #$ff
-    bne wait_sound
-l:  jsr exm_work
-    lda current_song
     bne -l
+l:  lda current_song
+    bne -l
+    rts
+
+n:  jsr exm_work
+    lda current_song
+    bne -n
 n:  jsr exm_work
     lda exm_needs_data
     bpl -n
