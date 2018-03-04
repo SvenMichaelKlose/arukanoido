@@ -1,6 +1,10 @@
 (load "gen-vcpu-tables.lisp")
 (= *model* :vic-20+xk)
 
+(var *audio-rate* 4000)
+(var *audio-rate-fast* 5000)
+(var *audio-rate-expanded* 6000)
+
 (var *demo?* nil)
 (var *all?* t)
 (var *add-charset-base?* t)

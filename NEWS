@@ -1,4 +1,7 @@
-Changes relative to 854:
+Changes relative to 856:
+   * Ultimem sound: 6kHz instead of 4.
+
+Changes of 856 relative to 854:
    * Waits for sounds to end properly.
 
 Changes of 854 relative to 851:

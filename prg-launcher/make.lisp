@@ -1,4 +1,4 @@
-(fn make-prg-launcher (file cmds)
+(fn make-prg-launcher ()
   (make (? *show-cpu?*
            "arukanoido-cpumon.prg"
            "arukanoido.prg")
