@@ -1,25 +1,26 @@
+;(cl:proclaim '(cl:optimize (cl:speed 0) (cl:space 0) (cl:safety 3) (cl:debug 3)))
 (var *audio-rate* 4000)
 (var *audio-rate-fast* 6000)
 
 (const *audio-files*
        '(
-         "lost-ball"
+         ("lost-ball" 3)
 ;        "catch"     ; Play beginning of reflection_low instead.
-         "doh-dissolving"
-         "explosion"
-         "reflection-doh"
-         "game-over"
-         "extra-life"
-         "extension"
-         "break-out"
-         "laser"
-         "round-intro"
-         "reflection-high"
-         "reflection-low"
-         "reflection-med"
-         "final"
-         "doh-intro"
-         "round-start"
+         ("doh-dissolving")
+         ("explosion" 3)
+         ("reflection-doh")
+         ("game-over" 3)
+         ("extra-life" 3)
+         ("extension" 3)
+         ("break-out" 3)
+         ("laser" 2)
+         ("round-intro" 2)
+         ("reflection-high" 4)
+         ("reflection-low" 4)
+         ("reflection-med" 4)
+         ("final" 4)
+         ("doh-intro" 4)
+         ("round-start" 2)
 ))
 
 (fn make-filtered-wav (name rate)
@@ -61,21 +62,20 @@
             (queue-list q)
       (enqueue q (bit-xor ! 32768)))))
 
-(fn around (x f m)
+(fn around (x f)
   (!= (degree-sin (* (/ 89 65536) x))
-    (!= (integer (* ! 65535))
-      (* (integer (/ ! f)) m))))
+    (* (* (integer (/ (* ! 16) f)) f) 4096)))
 
 (fn wav2mon (out in f)
   (@ (! in)
-    (write-word (bit-xor (around ! f f) 32768) out)))
+    (write-word (bit-xor (around ! f) 32768) out)))
 
-(fn wav2raw (out in f m)
+(fn wav2raw (out in f)
   (with-queue q
     (@ (! in)
-      (enqueue q (around ! f m)))
+      (enqueue q (around ! f)))
     (@ (i (reverse (trim-wav (reverse (trim-wav (queue-list q))))))
-      (write-byte (+ i (* 11 16)) out))
+      (write-byte (+ (integer (/ i 4096)) (* 11 16)) out))
     (write-byte 0 out)))
 
 (fn smallest (x)
@@ -123,42 +123,42 @@
 (fn packed (x)
   (@ [+ (<< (| ._. 0) 4) (| _. 0)] (group x 2)))
 
-(fn convert-wavs (x d m)
-  (@ (i x)
-       (with (wav (with-input-file in (+ "obj/" i ".downsampled.wav")
-                    (read-wav in))
-              lo  (smallest wav)
-              hi  (biggest wav)
-              rat (/ 65535 (- hi lo))
-              lwav  (@ #'integer (@ [* _ rat]
-                                    (@ [- _ lo] wav))))
-         (with-output-file out (+ "obj/" i "." (string m) ".raw")
-           (wav2raw out lwav d m))
-         (with-output-file out (+ "obj/" i "." (string m) ".mon")
-           (wav2mon out lwav d))
-         (with-output-file out (+ "obj/" i "." (string m) ".pac")
-           (@ (i (packed (@ [char-code (bit-and _ 15)] (string-list (fetch-file (+ "obj/" i "." (string m) ".raw"))))))
-             (write-byte i out)))
-;         (with-output-file out (+ "obj/" i "." (string m) ".rle")
-;           (@ (i (rle-compress (@ #'char-code (string-list (fetch-file (+ "obj/" i "." (string m) ".raw"))))))
-;             (write-byte i out))
-;           (write-byte 0 out))
-         (with-output-file out (+ "obj/" i "." (string m) ".rle")
-           (@ (i (packed (rle-compress2 (rle-compress (@ #'char-code (string-list (fetch-file (+ "obj/" i "." (string m) ".raw"))))))))
-             (write-byte i out))
-           (write-byte 0 out))
-         (exomize-stream (+ "obj/" i "." (string m) ".raw") (+ "obj/" i "." (string m) ".exm")))))
+(fn convert-wav (i d)
+  (with (wav (with-input-file in (+ "obj/" i ".downsampled.wav")
+               (read-wav in))
+         lo  (smallest wav)
+         hi  (biggest wav)
+         rat (/ 65535 (- hi lo))
+         lwav  (@ #'integer (@ [* _ rat]
+                               (@ [- _ lo] wav))))
+    (with-output-file out (+ "obj/" i "." (string d) ".raw")
+      (wav2raw out lwav d))
+    (with-output-file out (+ "obj/" i "." (string d) ".mon")
+      (wav2mon out lwav d))
+    (with-output-file out (+ "obj/" i "." (string d) ".pac")
+      (@ (i (packed (@ [bit-and (char-code _) 15] (string-list (fetch-file (+ "obj/" i "." (string d) ".raw"))))))
+        (write-byte i out)))
+;    (with-output-file out (+ "obj/" i "." (string m) ".rle")
+;      (@ (i (rle-compress (@ #'char-code (string-list (fetch-file (+ "obj/" i "." (string m) ".raw"))))))
+;        (write-byte i out))
+;      (write-byte 0 out))
+    (with-output-file out (+ "obj/" i "." (string d) ".rle")
+      (@ (i (packed (rle-compress2 (rle-compress (@ #'char-code (string-list (fetch-file (+ "obj/" i "." (string d) ".raw"))))))))
+        (write-byte i out))
+      (write-byte 0 out))
+    (exomize-stream (+ "obj/" i "." (string d) ".raw") (+ "obj/" i "." (string d) ".exm"))))
 
 (fn make-arcade-sounds ()
   (@ (i (+ *audio-files*))
-    (print i)
-    (!= (? (in? i "doh-dissolving")
+    (print i.)
+    (!= (? (in? i. "doh-dissolving")
            *audio-rate-fast*
            *audio-rate*)
-      (make-filtered-wav i !)
-      (make-conversion i !)))
-;  (convert-wavs *audio-files* 32768 8)    ; 1 bit
-  (convert-wavs *audio-files* 16384 4)     ; 2 bits
-  (convert-wavs *audio-files* 8192 2)      ; 3 bits
-  (convert-wavs *audio-files* 4096 1)      ; 4 bits
-)
+      (make-filtered-wav i. !)
+      (make-conversion i. !))
+;    (convert-wavs *audio-files* 32768 8)    ; 1 bit
+    (? (member 2 .i)
+       (convert-wav i. 4))
+    (? (member 3 .i)
+       (convert-wav i. 2))
+    (convert-wav i. 1)))

@@ -40,15 +40,11 @@ sample_addrs_b:
     fill num_tunes
 
 exm_break_out:          @(fetch-file "obj/break-out.2.exm")
-;exm_doh_intro:         @(fetch-file "obj/doh-intro.2.exm")
 exm_explosion:         @(fetch-file "obj/explosion.2.rle")
 exm_extension:         @(fetch-file "obj/extension.2.rle")
 exm_extra_life:         @(fetch-file "obj/extra-life.2.rle")
-;exm_game_over:         @(fetch-file "obj/game-over.2.exm")
 exm_laser:         @(fetch-file "obj/laser.4.rle")
 exm_lost_ball:         @(fetch-file "obj/lost-ball.2.exm")
 ;exm_reflection_doh:         @(fetch-file "obj/reflection-doh.2.exm")
 exm_reflection_high:         @(fetch-file "obj/reflection-high.1.rle")
 exm_reflection_low:         @(fetch-file "obj/reflection-low.1.rle")
-;exm_round_intro:         @(fetch-file "obj/round-intro.2.exm")
-;exm_round_start:         @(fetch-file "obj/round-start.2.exm")
