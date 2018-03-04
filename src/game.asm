@@ -191,7 +191,6 @@ n2: jsr get_keypress
 q:  jsr wait_keyunpress
     jmp +l
 
-if @*demo?*
 n:  ldx #8
 m:  cmp bonus_keys,x
     bne +n
@@ -199,7 +198,6 @@ m:  cmp bonus_keys,x
     beq -q
 n:  dex
     bpl -m
-end
 
 n:  cmp #keycode_n
     bne +l
@@ -239,7 +237,6 @@ level_end:
     jsr wait_sound
     jmp next_level
 
-if @*demo?*
 bonus_keys:
     keycode_0
     keycode_1
@@ -249,6 +246,5 @@ bonus_keys:
     keycode_5
     keycode_6
     keycode_7
-end
 
 txt_game_over: @(string4x8 "GAME OVER") 255
