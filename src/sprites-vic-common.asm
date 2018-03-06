@@ -36,7 +36,9 @@ n:  lda sprites_x,x
     sta sprites_sh,y
 
     cli
-    jsr exm_work
+;if @*has-digis?*
+;    jsr exm_work
+;end
 
 next:
     dex

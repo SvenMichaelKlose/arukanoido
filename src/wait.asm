@@ -1,12 +1,21 @@
 wait:
+if @*shadowvic?*
+    $22 $02
+    dex
+    bne wait
+    rts
+end
     lda framecounter
-l:  pha
+l:
+if @*has-digis?*
+    pha
     txa
     pha
     jsr exm_work
     pla
     tax
     pla
+end
     cmp framecounter
     beq -l
     dex

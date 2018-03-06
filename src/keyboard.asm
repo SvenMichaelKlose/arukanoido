@@ -48,6 +48,9 @@ via2_portb0 = $9120
 via2_porta0 = $9121
 
 wait_keyunpress:
+if @*shadowvic?*
+    rts
+end
     lda #0
     sta via2_portb0
     lda via2_porta0
@@ -58,6 +61,9 @@ wait_keyunpress:
 get_keypress_x: 0
 
 get_keypress:
+if @*shadowvic?*
+    jmp no_keypress
+end
     stx get_keypress_x
     lda #255            ; Set port B to output.
     sta $9122

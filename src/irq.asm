@@ -120,6 +120,9 @@ if @*show-cpu?*
     sta $900f
 end
 
+if @*shadowvic?*
+    rts
+end
     pla
     tay
     pla

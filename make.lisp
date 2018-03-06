@@ -5,7 +5,7 @@
 (var *audio-rate-fast* 5000)
 (var *audio-rate-expanded* 6000)
 
-(var *demo?* nil)
+(var *demo?* t)
 (var *all?* t)
 (var *add-charset-base?* t)
 (var *debug?* nil)
@@ -16,6 +16,7 @@
 (var *tape?* nil)
 (var *shadowvic?* nil)
 (var *show-cpu?* nil)
+(var *has-digis?* t)
 
 (fn exomize-stream (from to)
   (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
@@ -101,6 +102,7 @@
                           "bcd.asm"
                           ,@(unless *rom?*
                               '("blitter.asm"))
+                          "blit-char.asm"
                           "chars.asm"
                           "exomizer-stream-decrunsh.asm"
                           "joystick.asm"
@@ -162,24 +164,27 @@
                           "round-start.asm"
 
                           ; Digital audio
-                          ,@(unless *rom?*
-                              '("exm-nmi.asm"))
-                          "audio-boost.asm"
-                          "digi-nmi.asm"
-                          "exm-player.asm"
-                          "raw-player.asm"
-                          "rle-player.asm"
-
-                          "music-arcade.asm"
+                          ,@(when *has-digis?*
+                              `(,@(unless *rom?*
+                                    '("exm-nmi.asm"))
+                                "audio-boost.asm"
+                                "digi-nmi.asm"
+                                "exm-player.asm"
+                                "raw-player.asm"
+                                "rle-player.asm"
+                                "music-arcade.asm"))
 
                           ,@(when *rom?*
-                              '("init.asm"
+                              `("init.asm"
                                 "patch.asm"
                                 "moveram.asm"
-                                "music-arcade-blk5.asm"
+                                ,@(when *has-digis?*
+                                    `("music-arcade-blk5.asm"
+                                      "blk5-end.asm"))
                                 "lowmem-start.asm"
                                 "blitter.asm"
-                                "exm-nmi.asm"
+                                ,@(when *has-digis?*
+                                    `("exm-nmi.asm"))
                                 "lowmem-end.asm"))
 
                           "end.asm"))
@@ -190,19 +195,23 @@
        (quit)))
   (!= (- #x8000 (get-label 'the_end))
     (format t "~A bytes free before $a000.~%" !))
-  (!= (- #xc000 (get-label 'blk5_end))
-    (format t "~A bytes free before $C000.~%" !)))
+  (when *has-digis?*
+    (!= (- #xc000 (get-label 'blk5_end))
+      (format t "~A bytes free before $C000.~%" !))))
 
 (fn make-prg (file)
-  (make "obj/music-arcade-blk5.bin"
-        `("prg-launcher/blk5.asm"
-          "src/music-arcade-blk5.asm")
-        "obj/music-arcade-blk5.vice.lst")
+  (when *has-digis?*
+    (make "obj/music-arcade-blk5.bin"
+          `("prg-launcher/blk5.asm"
+            "src/music-arcade-blk5.asm"
+            "src/blk5-end.asm")
+          "obj/music-arcade-blk5.vice.lst"))
   (with-temporary *imported-labels* (get-labels)
     (make-game (+ "obj/" file ".prg") (+ "obj/" file ".prg.vice.txt")))
-  (sb-ext:run-program "/usr/local/bin/exomizer"
-                      (list "sfx" "basic" "-B" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
-                      :pty cl:*standard-output*))
+  (unless *shadowvic?*
+    (sb-ext:run-program "/usr/local/bin/exomizer"
+                        (list "sfx" "basic" "-B" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
+                        :pty cl:*standard-output*)))
 
 (fn make-cart ()
   (with-temporary *rom?* t
@@ -240,9 +249,10 @@
   (with-temporary *show-cpu?* t
     (make-prg "arukanoido-cpumon")
     (make-prg-launcher))
-  ;(with-temporary *shadowvic?* t
-  ;  (make-game "arukanoido-shadowvic.bin" "arukanoido-shadowvic.vice.txt"))
-  )
+  (with-temporary *shadowvic?* t
+    (with-temporary *has-digis?* nil
+      (make-prg "arukanoido-shadowvic")
+      (unix-sh-cp "obj/arukanoido-shadowvic.prg" "."))))
 
 (make-prg "arukanoido")
 (make-prg-launcher)

@@ -168,6 +168,10 @@ end
     sty is_running_game
 
 mainloop:
+if @*shadowvic?*
+    $22 $02
+    jsr irq
+end
     lda bricks_left
     beq level_end
     lda is_running_game
@@ -205,7 +209,10 @@ n:  cmp #keycode_n
     sta bricks_left
     jmp next_level
 
-l:  jsr exm_work
+l:
+if @*has-digis?*
+    jsr exm_work
+end
     lda has_moved_sprites
     beq -n2
     lda #0
@@ -228,11 +235,15 @@ level_end:
     jsr wait
     jsr draw_sprites
     jsr remove_sprites
+if @*has-digis?*
     jsr exm_work
+end
     ldx #3
     jsr wait
+if @*has-digis?*
     jsr exm_work
     jsr exm_work
+end
     jsr clear_sprites
     jsr wait_sound
     jmp next_level

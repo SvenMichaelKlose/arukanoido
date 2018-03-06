@@ -6,6 +6,10 @@ if @*rom?*
     "A0" $c3 $c2 $cd
 end
 
+if @*shadowvic?*
+    org $1000
+end
+
 main:
     sei
     lda #$7f
@@ -27,7 +31,7 @@ if @(not *tape?*)
     sta has_ultimem
 end
 
-if @*tape?*
+if @(& *tape?* *has-digis?*)
     lda $1100
     sta has_ultimem
     beq +n
@@ -60,6 +64,7 @@ if @*rom?*
     jsr moveram
 end
 
+if @(not *shadowvic?*)
     ; Detect if PAL or NTSC VIC.
 l:  lda $9004
     bne -l
@@ -72,6 +77,10 @@ n:  ldx #0
     cmp #$90
     bcs +n
     inx
+end
+if @*shadowvic?*
+    ldx #1
+end
 n:  stx is_ntsc
     stx is_landscape
     jsr set_format
@@ -82,4 +91,7 @@ n:  stx is_ntsc
     lda #>exec_script
     sta $317
 
+if @*shadowvic?*
+    jmp start
+end
     jmp patch

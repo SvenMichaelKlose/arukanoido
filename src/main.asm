@@ -72,10 +72,16 @@ m:  stx scrx2
     ldy #>txt_credit
     jsr print_string_ay
 
+if @*shadowvic?*
+    $22 $02
+end
+
 l:  jsr test_fire
     beq +f
 
+if @*has-digis?*
     jsr exm_work
+end
 
     jsr poll_keypress
     bcc -l
@@ -115,6 +121,10 @@ n:  cmp #keycode_f
 n:  cmp #keycode_b
     beq boot_basic
 
+if @(not *has-digis?*)
+    bne -l
+end
+if @*has-digis?*
     cmp #keycode_m
     bne -l
     lda is_playing_digis
@@ -125,6 +135,7 @@ n:  cmp #keycode_b
 n:  lda #snd_coin
     jsr play_sound
     jmp -l
+end
 
 f:  lda #snd_coin
     jsr play_sound

@@ -39,7 +39,11 @@ l5: lda playfield_yc
     lda tmp4
     sta curchar
 
-l:  lda #0
+l:
+if @*shadowvic?*
+    $22 $02
+end
+    lda #0
     sta scrx2
 l2: jsr print_char
     cmp #254

@@ -1,14 +1,17 @@
-Changes relative to 856:
-   * Ultimem sound: 6kHz instead of 4.
+Changes relative 828:
+  * shadowVIC version available.
+
+Changes 858 relative to 856:
+  * Ultimem sound: 6kHz instead of 4.
 
 Changes of 856 relative to 854:
-   * Waits for sounds to end properly.
+  * Waits for sounds to end properly.
 
 Changes of 854 relative to 851:
-   * Fixed sound issues a bit.
+  * Fixed sound issues a bit.
 
 Changes of 051 relative to 850:
-   * Circling obstacles again. What a mess…
+  * Circling obstacles again. What a mess…
 
 Changes of 851 relative to 850:
   * Fixed normal digi playback without Ultimem.
