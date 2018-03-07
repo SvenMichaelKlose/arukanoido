@@ -7,6 +7,6 @@
 
 (sb-ext:run-program "/usr/bin/zip" (list "-r" "-9" "arukanoido.zip" "arukanoido")
                     :pty cl:*standard-output*)
-;(sb-ext:run-program "/bin/cp" (list "arukanoido.zip" (+ "arukanoido." *revision* ".zip"))
-;                    :pty cl:*standard-output*)
+(sb-ext:run-program "/bin/cp" (list "arukanoido.zip" (+ "arukanoido." *revision* ".zip"))
+                    :pty cl:*standard-output*)
 (quit)

@@ -2,6 +2,8 @@ Changes relative 828:
   * shadowVIC version available.
   * Fixed non-Ultimem digi sound issues.
   * No WAV file in demo archive anymore.
+  * Duplicate data blocks of primary loader reintroduced
+    to avoid confusion. No LOAD ERROR.
 
 Changes 858 relative to 856:
   * Ultimem sound: 6kHz instead of 4.

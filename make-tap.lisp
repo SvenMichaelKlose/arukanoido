@@ -25,7 +25,6 @@
                (+ (bin2cbmtap (cddr (string-list (fetch-file "c2nwarp.prg")))
                               "ARUKANOIDO"
                               :start #x1201
-                              :short-data? t
                               :no-gaps? t)
                   (with-input-file i "obj/title.bin.exo"
                     (with-string-stream s (c2ntap s i)))
