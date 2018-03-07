@@ -67,7 +67,7 @@ n:
     sta is_using_paddle
 
 handle_paddle:
-    ldy $9008
+    ldy paddle_x
     lda paddle_xlat,y
     jsr test_vaus_hit_right
     bcc +n

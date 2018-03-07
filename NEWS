@@ -1,4 +1,7 @@
-Changes relative 828:
+Changes relative 864:
+  * PAL reads paddle at the about the same beam position.
+
+Changes of 864444 relative 828:
   * shadowVIC version available.
   * Fixed non-Ultimem digi sound issues.
   * No WAV file in demo archive anymore.
