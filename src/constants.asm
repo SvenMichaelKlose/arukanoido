@@ -60,7 +60,8 @@ score_char0         = 16    ; Digit '0' in 4x8 charset.
 
 ; Miscellaneous
 
-num_brickfx     = 16
+num_brickfx         = 16
+playfield_columns   = 15
 
 vaus_x              = 52
 

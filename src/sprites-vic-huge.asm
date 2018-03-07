@@ -198,7 +198,7 @@ l:  lda scry
     cmp screen_rows
     bcs +n               ; Don't plot over the bottom…
     lda scrx
-    cmp #15
+    cmp #playfield_columns
     bcs +n               ; Don't plot over the right…
     jsr scrcoladdr
     lda (scr),y
