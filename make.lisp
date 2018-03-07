@@ -5,7 +5,7 @@
 (var *audio-rate-fast* 5000)
 (var *audio-rate-expanded* 6000)
 
-(var *demo?* t)
+(var *demo?* nil)
 (var *all?* t)
 (var *add-charset-base?* t)
 (var *debug?* nil)
