@@ -15,9 +15,6 @@ l:  lda $7000,x
     dex
     bne -l
 
-    inx
-    stx $1100
-
     jmp start_game
 
     ; Load and recompress audio depending on
@@ -29,6 +26,11 @@ load_audio:
 
     jsr check_memory_expansion
     bcc -r
+
+    ; Tell loaded game that we have an Ultimem expansion.
+    lda #1
+    stx $1100
+
     jsr init_memory_expansion
 
     lda #num_digis
