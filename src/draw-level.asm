@@ -3,6 +3,7 @@ draw_level:
     ldy #>level_data
     jsr init_decruncher
 
+    ; Decompress until current level.
     ldx level
 l:  dex
     beq +n
@@ -15,16 +16,13 @@ m:  jsr get_decrunched_byte
     tax
     jmp -l
 
-    ; Clear brick map.
-n:  ldx #0
-    txa
-l:  sta bricks,x
-    sta @(+ bricks 256),x
-    dex
-    bne -l
+n:  stx bricks_left
 
-    lda #0
-    sta bricks_left
+    ; Clear brick map.
+    0
+    clrmw <bricks >bricks 0 2
+    0
+
     jsr get_decrunched_byte
     sec
     adc playfield_yc
@@ -33,16 +31,22 @@ l:  sta bricks,x
 m:  lda #1
     sta scrx
 l:  jsr scrcoladdr
+
+    ; Make pointer into brick map.
     lda scr
     sta tmp
     lda @(++ scr)
     ora #>bricks
     sta @(++ tmp)
+
+    ; Get brick.
     jsr get_decrunched_byte
     cmp #0
-    beq +o
+    beq +o  ; No brick.
     cmp #15
-    beq +r
+    beq +r  ; End of level data.
+
+    ; Plot brick.
     ldy scrx
     pha
     jsr brick_to_char
@@ -50,25 +54,35 @@ l:  jsr scrcoladdr
     lda curcol
     sta (col),y
     pla
+
+    ; Count number of bricks.
     cmp #b_golden
     beq +n
     inc bricks_left
+
+    ; Store brick type in brick map.
 n:  cmp #b_silver
     bne +n
+
+    ; (One more hit for silver bricks every 8th level.)
     lda level
     lsr
     lsr
     lsr
     clc
     adc #@(++ b_silver)
+
 n:  sta (tmp),y
+
+    ; Step to next position.
 o:  inc scrx
     lda scrx
     cmp #14
     bne -l
     inc scry
     jmp -m
-    
+
+    ; Save lowest row index for obstacle movements.
 r:  ldy scry
     dey
     sty level_bottom_y
