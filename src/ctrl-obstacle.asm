@@ -190,19 +190,7 @@ ctrl_obstacle_circling:
     jsr decrement_counter
     jsr circling_obstacle
     jsr half_step_smooth
-    jsr half_step_smooth
-;    lda sprites_d,x
-;    cmp #direction_l
-;    beq -r
-;    cmp #direction_r
-;    beq -r
-;    cmp #@(+ 128 direction_l)
-;    beq -r
-;    cmp #@(+ 128 direction_r)
-;    beq -r
-;    jsr half_step_smooth
-;    jmp half_step_smooth
-rts
+    jmp half_step_smooth
 
 decrement_counter:
     lda sprites_d2,x
