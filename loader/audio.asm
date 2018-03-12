@@ -10,7 +10,7 @@ r:  sei
 
     ; Copy sample addresses to screen,
     ldx #0
-l:  lda $7000,x
+l:  lda $7300,x
     sta $1101,x
     dex
     bne -l
@@ -29,7 +29,7 @@ load_audio:
 
     ; Tell loaded game that we have an Ultimem expansion.
     lda #1
-    stx $1100
+    sta $1100
 
     jsr init_memory_expansion
 
@@ -81,6 +81,7 @@ next_digi:
     jsr init_decruncher
 
 l:  jsr get_decrunched_byte
+    tax
     sta $900e
     inc $900f
     ldy #0
@@ -95,17 +96,7 @@ l:  jsr get_decrunched_byte
     sta @(++ bank_ptr)
     inc bank
     jsr set_bank
-n:  dec raw_size
-    lda raw_size
-    cmp #255
-    bne -l
-    dec @(+ 1 raw_size)
-    lda @(+ 1 raw_size)
-    cmp #255
-    bne -l
-    dec @(+ 2 raw_size)
-    lda @(+ 2 raw_size)
-    cmp #255
+n:  txa
     bne -l
     dec digis_left
     jmp next_digi
