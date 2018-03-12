@@ -38,7 +38,7 @@
                                                            (string (code-char (mod (>> l 8) 256)))
                                                            (string (code-char (>> l 16)))
                                                            (fetch-file (+ "obj/" _ ".1.6000.exm")))
-                                    (with-string-stream s (c2ntap s i :sync? nil :gap #x6000000)))]
+                                    (with-string-stream s (c2ntap s i :sync? nil :gap #x4000000)))]
                                 '("break-out"
                                   "explosion" "extension"
                                   "extra-life" "game-over" "laser" "lost-ball" "reflection-doh"
