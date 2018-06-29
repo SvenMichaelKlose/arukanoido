@@ -45,7 +45,7 @@
 
 (fn ball-directions-y ()
   (let m (/ 360 256)
-    (@ #'byte (maptimes [integer (* (* (/ 127 224) 120) (degree-cos (* m _)))] 256))))
+    (@ #'byte (maptimes [integer (* 127 (degree-cos (* m _)))] 256))))
 
 (fn paddle-xlat ()
   (maptimes [bit-and (integer (+ 8 (/ (- 255 _) ; TODO: Häh?
