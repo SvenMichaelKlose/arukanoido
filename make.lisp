@@ -16,10 +16,10 @@
 (var *tape?* nil)
 (var *shadowvic?* nil)
 (var *show-cpu?* nil)
-(var *has-digis?* t)
+(var *has-digis?* nil)
 
 (fn exomize-stream (from to)
-  (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
+  (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m" "256" "-M" "256" "-o" to from)
                       :pty cl:*standard-output*))
 
 (load "build/audio.lisp")
@@ -45,7 +45,7 @@
 
 (fn ball-directions-y ()
   (let m (/ 360 256)
-    (@ #'byte (maptimes [integer (* 127 (degree-cos (* m _)))] 256))))
+    (@ #'byte (maptimes [integer (* (* (/ 127 224) 120) (degree-cos (* m _)))] 256))))
 
 (fn paddle-xlat ()
   (maptimes [bit-and (integer (+ 8 (/ (- 255 _) ; TODO: Häh?
@@ -210,7 +210,7 @@
     (make-game (+ "obj/" file ".prg") (+ "obj/" file ".prg.vice.txt")))
   (unless *shadowvic?*
     (sb-ext:run-program "/usr/local/bin/exomizer"
-                        (list "sfx" "basic" "-B" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
+                        (list "sfx" "basic" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
                         :pty cl:*standard-output*)))
 
 (fn make-cart ()
@@ -227,7 +227,7 @@
                       :pty cl:*standard-output*))
 
 (fn make-zip ()
-  (unix-sh-cp "arukanoido.prg" "arukanoido/")
+  (unix-sh-cp "obj/arukanoido.exo.prg" "arukanoido/arukanoido.prg")
   (unix-sh-cp "arukanoido-cpumon.prg" "arukanoido/arukanoido-cpumon.prg")
   (sb-ext:run-program "/bin/cp"
                       (list "README.md" "NEWS" "arukanoido/")
