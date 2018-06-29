@@ -42,18 +42,19 @@ j:  lda #128
 l:  clc
     adc side_degrees
     sta side_degrees
+    rts
 
     ; Deviate (counter-)clockwise randomly.
-    sty tmp
-    jsr random
-    bmi +n
-    lda sprites_d,x
-    jsr turn_clockwise
-    sta sprites_d,x
-    ldy tmp
-    rts
-n:  lda sprites_d,x
-    jsr turn_counterclockwise
-    sta sprites_d,x
-    ldy tmp
-    rts
+;    sty tmp
+;    jsr random
+;    bmi +n
+;    lda sprites_d,x
+;    jsr turn_clockwise
+;    sta sprites_d,x
+;    ldy tmp
+;    rts
+;n:  lda sprites_d,x
+;    jsr turn_counterclockwise
+;    sta sprites_d,x
+;    ldy tmp
+;    rts
