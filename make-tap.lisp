@@ -31,8 +31,8 @@
                   (list-string (@ #'code-char '(0 0 0 8)))
                   (with-input-file i "obj/arukanoido-tape.exo.prg"
                     (with-string-stream s (c2ntap s i :sync? nil)))
-                  (with-input-file i "obj/music-arcade-blk5.bin"
-                    (with-string-stream s (c2ntap s i :sync? nil)))
+;                  (with-input-file i "obj/music-arcade-blk5.bin"
+;                    (with-string-stream s (c2ntap s i :sync? nil)))
                   (apply #'+ (@ [let l (length (fetch-file (+ "obj/" _ ".1.6000.raw")))
                                   (with-stream-string i (+ (string (code-char (mod l 256)))
                                                            (string (code-char (mod (>> l 8) 256)))
