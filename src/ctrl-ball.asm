@@ -342,7 +342,7 @@ ball_accelerations_after_brick_hits:
     $00 $19 $19 $23 $23 $2d $3c $50 $78 $8c $a0 $b4 $c8 $dc $f0 $ff
 
 ; From arcade ROM (check code at 0x1442 and this table at 0x1462).
-minimum_ball_speed_when_hit_top_per_round:
+ball_speeds_when_top_hit:
     7 7 8 0 7 7 7 0 7 5
     7 7 8 6 7 5 7 7 7 0
     7 0 0 0 0 7 8 7 0 7
@@ -353,19 +353,13 @@ adjust_ball_speed_hitting_top:
     cmp ball_min_y
     bne +n
     ldy level
-    dey
-    lda minimum_ball_speed_when_hit_top_per_round,y
-    cmp ball_speed
-    bcc +n
+    lda @(-- ball_speeds_when_top_hit),y
+    beq +n
     ldy is_using_paddle
-    bne +m
+    bne +l
     cmp #max_ball_speed_joystick_top
     bcc +l
     lda #max_ball_speed_joystick_top
-    bne +l      ; (jmp)
-m:  cmp #max_ball_speed
-    bcc +l
-    lda #max_ball_speed
 l:  sta ball_speed
 n:  rts
 
@@ -386,7 +380,7 @@ increase_ball_speed:
     bne +m
     cmp #max_ball_speed_joystick
     bcs +n
-    bcc +l
+    bcc +l                  ; (jmp)
 m:  cmp #max_ball_speed
     bcs +n                  ; Already at maximum speed. Do nothing…
 l:  inc ball_speed          ; Play the blues…
