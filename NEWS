@@ -1,5 +1,7 @@
 Changes relative 865:
   * Fixed Ultimem version.
+  * Playable paddle mode.
+  * Removed arcade sounds from +32K version.
 
 Changes of 865 relative 864:
   * PAL reads paddle at the about the same beam position.
