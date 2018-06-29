@@ -8,6 +8,7 @@
                                    "main.asm"
                                    "start.asm"
                                    "blk5.asm"
-                                   "../src/music-arcade-blk5.asm"
+                                   ,@(when *has-digis?*
+                                       '("../src/music-arcade-blk5.asm"))
                                    "blk5-end.asm"))
         "obj/prg-launcher.vice.txt"))
