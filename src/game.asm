@@ -44,10 +44,6 @@ game:
     jsr init_screen
     jsr init_foreground
 
-    ; Prepare paddle auto–detection.
-    lda $9008
-    sta old_paddle_value
-
     lda #default_num_lifes
     sta lifes
     jsr init_score
@@ -166,6 +162,10 @@ end
     sty @(++ framecounter)
     iny
     sty is_running_game
+
+    ; Prepare paddle auto–detection.
+    lda $9008
+    sta old_paddle_value
 
 mainloop:
 if @*shadowvic?*

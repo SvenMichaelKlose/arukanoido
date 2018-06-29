@@ -63,11 +63,17 @@ n:
     jsr abs
     and #%11111000
     beq handle_joystick
-    lda #1
-    sta is_using_paddle
+    inc is_using_paddle
+    lda $9008
+    sta old_paddle_value
 
 handle_paddle:
-    ldy paddle_x
+    lda $9008
+    clc
+    adc old_paddle_value
+    ror
+    tay
+    sta old_paddle_value
     lda paddle_xlat,y
     jsr test_vaus_hit_right
     bcc +n

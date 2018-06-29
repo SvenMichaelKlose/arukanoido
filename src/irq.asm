@@ -46,9 +46,6 @@ if @*show-cpu?*
     sta $900f
 end
 
-    lda $9008
-    sta paddle_x
-
     lda has_paused
     bne +done
 
