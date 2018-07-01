@@ -1,5 +1,5 @@
-frame_timer_pal = @(- (/ (cpu-cycles :pal) 50) 18)
-frame_timer_ntsc = @(- (/ (cpu-cycles :ntsc) 50) 158)
+frame_timer_pal = @(- (/ (cpu-cycles :pal) 60) 18)
+frame_timer_ntsc = @(- (/ (cpu-cycles :ntsc) 60) 158)
 
 start_irq:
     lda #0

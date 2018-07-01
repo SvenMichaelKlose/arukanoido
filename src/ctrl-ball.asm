@@ -211,7 +211,7 @@ l:  jsr reflect
 
 k:  jsr check_hit_with_obstacle
     jsr avoid_endless_flight
-    jmp step_smooth
+    jmp half_step_smooth
 
     ; Deal with reflect_edge.
 m:  lda #0
@@ -220,8 +220,7 @@ m:  lda #0
     eor #$80                ; Opposite direction.
     sta sprites_d,x
 
-n:  jsr adjust_ball_speed
-    jsr adjust_ball_speed_hitting_top
+n:  jsr adjust_ball_speed_hitting_top
     lda has_removed_brick
     beq +n
 
@@ -249,7 +248,7 @@ f:  inc sprites_d2,x
 
 l:  jsr apply_reflection
     jsr play_reflection_sound
-    jmp step_smooth
+    jmp half_step_smooth
 
 play_reflection_sound:
     lda has_hit_vaus

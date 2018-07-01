@@ -37,11 +37,11 @@ direction_rs    = @(- 128 deg_shallow)
 ; Game settings
 
 default_num_lifes       = 3
-default_ball_speed      = 3
+default_ball_speed      = 5
 min_ball_speed          = 1
-max_ball_speed          = 4
-max_ball_speed_joystick = 3
-max_ball_speed_joystick_top = 3
+max_ball_speed          = 8
+max_ball_speed_joystick = 6
+max_ball_speed_joystick_top = 6
 default_ball_direction          = direction_r
 default_ball_direction_skewed   = direction_rs
 ball_width              = 3
