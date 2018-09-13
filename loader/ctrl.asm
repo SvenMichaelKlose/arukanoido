@@ -39,6 +39,11 @@ n:  inc @(++ exo_s)
     rts
 
 show_title:
+    ; Stop tape motor.
+    lda $911c
+    ora #3
+    sta $911c
+
     lda #<get_mg_byte
     sta get_byte
     lda #>get_mg_byte
@@ -182,4 +187,5 @@ bin_cfg:
 ;    <blk5_size @(++ (high blk5_size))
 ;    <load_audio >load_audio
 
+fill @(- 256 (mod *pc* 256))
 target:

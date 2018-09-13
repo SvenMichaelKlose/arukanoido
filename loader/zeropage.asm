@@ -1,8 +1,7 @@
 screen          = $1e00
 colors          = $9600
-buffer_start_hi = $7a
+buffer_start_hi = $5a
 buffer_len_hi   = $01
-tape_buffer     = $7b00
 decrunch_table  = $0200
 samples_l       = $7300
 samples_h       = $7320

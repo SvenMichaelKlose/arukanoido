@@ -32,28 +32,23 @@ c2nwarp_start:
     cli
     rts
 
-tape_get_bit:
-    lda $912d               ; Get timer underflow bit.
-    ldx #@(high *tape-pulse*) ; Restart timer.
-    stx $9125
-    ldx $9121
-    asl     ; Move underflow bit into carry.
-    asl
-    rts
-
 tape_leader1:
     jsr tape_get_bit
     bcc +n
     lda tape_leader_countdown
-    bmi +j
+    beq +j
     lda #tape_leader_length
     sta tape_leader_countdown
     jmp intret
+
 j:  ldx #<tape_leader1end
     ldy #>tape_leader1end
     jmp intretn
+
 n:  dec tape_leader_countdown
-    jmp intret
+    bpl +i
+    inc tape_leader_countdown
+i:  jmp intret
 
 tape_leader1end:
     lda #<timer
@@ -166,7 +161,7 @@ tape_leader2:
     jsr tape_get_bit
     bcc +n
     lda tape_leader_countdown
-    bmi +j
+    beq +j
     lda #tape_leader_length
     sta tape_leader_countdown
     jmp intret
@@ -174,6 +169,8 @@ j:  ldx #<tape_leader2end
     ldy #>tape_leader2end
     jmp intretn
 n:  dec tape_leader_countdown
+    bpl intret
+    inc tape_leader_countdown
     jmp intret
 
 tape_leader2end:
@@ -248,6 +245,15 @@ n:  dec tape_counter        ; All bytes loaded?
 
     jmp (tape_callback)
 
+tape_get_bit:
+    lda $912d               ; Get timer underflow bit.
+    ldx #@(high *tape-pulse*) ; Restart timer.
+    stx $9125
+    ldx $9121
+    asl     ; Move underflow bit into carry.
+    asl
+    rts
+
 get_pulse_length:
     lda $9124       ; Read the timer's low byte which is your sample.
     ldx $9125
@@ -259,45 +265,6 @@ get_pulse_length:
     cmp #4
     bcs +n
     inx
-n:
-    sta s               ; Make timer value index into map.
+n:  sta s               ; Make timer value index into map.
     stx @(++ s)
-    rts
-
-inc_s:
-    inc s
-    bne +n
-    inc @(+ 1 s)
-n:  rts
-
-inc_d:
-    inc d
-    bne +n
-    inc @(+ 1 d)
-n:  rts
-
-inc_c:
-    inc c
-    bne +n
-    inc @(+ 1 c)
-n:  rts
-
-dec_d:
-    pha
-    dec d
-    lda d
-    cmp #$ff
-    bne +n
-    dec @(+ 1 d)
-n:  pla
-    rts
-
-dec_c:
-    dec c
-    lda c
-    cmp #$ff
-    bne +n
-    dec @(+ 1 c)
-n:  lda c
-    ora @(+ 1 c)
     rts

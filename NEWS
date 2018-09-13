@@ -1,7 +1,8 @@
-Changes relative 865:
-  * Fixed Ultimem version.
+Changes relative to 865:
+  * Can be loaded with +16K RAM.
+  * More random bonuses.
   * Playable paddle mode.
-  * Removed arcade sounds from +32K version.
+  * Removed removed arcade sounds (including Ultimem).
   * Obstacles don't change the ball's steepness.
   * Upped to 60Hz per second for original turns of speed.
 
