@@ -30,6 +30,8 @@ start:
     lda #0
     sta @(++ requested_song)
     jsr init_score
+    lda #snd_bonus_life
+    jsr play_sound
 
 toplevel:
     jsr clear_data
