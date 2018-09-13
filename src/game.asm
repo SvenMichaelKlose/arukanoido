@@ -135,6 +135,7 @@ retry:
     sta vaus_width
     lda #255
     sta current_bonus
+    sta last_bonus
 
     jsr clear_sprites
     jsr remove_sprites
