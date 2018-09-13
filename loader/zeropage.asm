@@ -63,4 +63,8 @@ bank:           0
 get_byte:       0 0
 
 total_counter:  0 0
+
+pulses:         0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0
+pulsesm:        0 0 0 0 0 0 0 0
     end

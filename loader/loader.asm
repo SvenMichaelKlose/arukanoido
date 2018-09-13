@@ -1,31 +1,13 @@
 tape_leader_length = 32
-tape_map = $7c00
-tape_map_length = $400
-tape_map_end = @(+ tape_map tape_map_length)
 
 timer = @(* 8 *pulse-long*)
 
 c2nwarp_reset:
-    ; Init pulse length map.
-    lda #<tape_map
-    sta s
-    sta d
-    lda #>tape_map
-    sta @(++ s)
-    sta @(++ d)
-    ldy #0
-l:  lda #$ff
-    sta (d),y
-    iny
-    bne -l
-    inc @(++ d)
-    lda @(++ d)
-    cmp #>tape_map_end
-    bne -l
     lda #0
-    sta tape_map
-    lda #3
-    sta @(+ tape_map tape_map_length -1)
+    ldy #15
+l:  sta pulses,y
+    dey
+    bpl -l
     rts
 
 c2nwarp_start:
@@ -87,12 +69,51 @@ tape_leader1end:
     jmp intretn
 
 tape_sync:
-    jsr pulse_to_map
+    jsr get_pulse_length
     lda tape_bit_counter
     eor tape_leader_countdown
     and #3
-    sta (s),y
-    lda tape_bit_counter
+    asl
+    asl
+    tay
+
+    ; Lower bound
+    lda pulses,y
+    ora @(++ pulses),y
+    beq +m
+    lda @(++ s)
+    cmp @(++ pulses),y
+    beq +k
+    bcs +l
+    bcc +m
+k:  lda s
+    cmp pulses,y
+    bcs +l
+m:  lda s
+    sta pulses,y
+    lda @(++ s)
+    sta @(++ pulses),y
+
+    ; Upper bound
+l:  lda @(+ 2 pulses),y
+    ora @(+ 3 pulses),y
+    beq +m
+    lda @(++ s)
+    cmp @(+ 3 pulses),y
+    beq +k
+    bcs +m
+    bcc +l
+k:  lda s
+    cmp @(+ 2 pulses),y
+    beq +l
+    bcc +l
+m:  lda s
+    sta @(+ 2 pulses),y
+    lda @(++ s)
+    sta @(+ 3 pulses),y
+
+    ; Determine next pulse length.
+l:  lda tape_bit_counter
     clc
     adc #1
     and #3
@@ -102,54 +123,29 @@ n:  dec tape_leader_countdown
     beq fill_map
     bne intret
 
-intretn:
-    stx $314
-    sty $315
-intret:
-    lda #$7f
-    sta $912d
-    jmp $eb18
-
 fill_map:
-    lda #<tape_map
-    sta s
-    lda #>tape_map
-    sta @(++ s)
+    ldx #4
+    ldy #10
+l:  lda @(+ 0 pulses),y
+    clc
+    adc @(+ 2 pulses),y
+    sta tmp
+    lda @(+ 1 pulses),y
+    adc @(+ 3 pulses),y
+    lsr
+    sta @(++ pulsesm),x
+    lda tmp
+    ror
+    sta pulsesm,x
+    dex
+    dex
+    dey
+    dey
+    dey
+    dey
+    bpl -l
 
-    ldy #0
-l:  lda (s),y
-    bmi +f
-    tax
-    jsr inc_s
-    lda @(++ s)
-    cmp #>tape_map_end
-    beq +r
-    bne -l
-f:  lda s
-    sta d
-    lda @(++ s)
-    sta @(++ d)
-    lda #0
-    sta c
-    sta @(++ c)
-m:  jsr inc_d
-    jsr inc_c
-    lda (d),y
-    bmi -m
-n:  txa
-    sta (s),y
-    jsr inc_s
-    sta (s),y
-    lda (d),y
-    jsr dec_d
-    sta (d),y
-    jsr dec_c
-    beq -l
-    jsr dec_c
-    bne -n
-    beq -l
-
-r:  lda #tape_leader_length
+    lda #tape_leader_length
     sta tape_leader_countdown
     ldx #@(low *tape-pulse*)
     sta $9124
@@ -157,7 +153,14 @@ r:  lda #tape_leader_length
     sta $9125
     ldx #<tape_leader2
     ldy #>tape_leader2
-    jmp intretn
+
+intretn:
+    stx $314
+    sty $315
+intret:
+    lda #$7f
+    sta $912d
+    jmp $eb18
 
 tape_leader2:
     jsr tape_get_bit
@@ -185,9 +188,31 @@ tape_leader2end:
     jmp intretn
 
 tape_loader_data:
-    jsr pulse_to_map
-    lda (s),y
-    asl tape_current_byte
+    jsr get_pulse_length
+
+    ldx #4
+l:  lda @(++ s)
+    cmp @(++ pulsesm),x
+    beq +k
+    bcs +m
+    bcc +n
+
+k:  lda s
+    cmp pulsesm,x
+    bcs +m
+
+n:  dex
+    dex
+    bpl -l
+    lda #0
+    beq +n
+
+m:  txa
+    lsr
+    clc
+    adc #1
+
+n:  asl tape_current_byte
     asl tape_current_byte
     ora tape_current_byte
     sta tape_current_byte
@@ -223,7 +248,7 @@ n:  dec tape_counter        ; All bytes loaded?
 
     jmp (tape_callback)
 
-pulse_to_map:
+get_pulse_length:
     lda $9124       ; Read the timer's low byte which is your sample.
     ldx $9125
     ldy #<timer
@@ -237,12 +262,6 @@ pulse_to_map:
 n:
     sta s               ; Make timer value index into map.
     stx @(++ s)
-    lda @(++ s)
-    and #7
-    clc
-    adc #>tape_map
-    sta @(++ s)
-
     rts
 
 inc_s:
