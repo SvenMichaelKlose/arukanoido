@@ -1,5 +1,9 @@
 round_intro:
     jsr clear_screen
+    lda $9002
+    pha
+    lda #0
+    sta $9002
     jsr init_foreground
     jsr make_stars
     lda #1
@@ -18,6 +22,9 @@ round_intro:
     lda #<gfx_ship
     ldy #>gfx_ship
     jsr draw_bitmap
+
+    pla
+    sta $9002
 
     lda curchar
     sta tmp4
