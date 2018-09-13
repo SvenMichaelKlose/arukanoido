@@ -63,6 +63,7 @@ mode_extended   = 4
 mode:                 0
 mode_break:           0
 current_bonus:        0
+last_bonus:           0
 
 side_degrees:         0
 caught_ball:          0

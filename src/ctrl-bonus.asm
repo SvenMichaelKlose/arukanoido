@@ -126,7 +126,7 @@ apply_bonus_c:
 apply_bonus_s:
     lda #min_ball_speed
     sta ball_speed
-    lda #0              ; Time acceleration back to default.
+    lda #$15
     sta num_hits
     rts
 
@@ -288,28 +288,14 @@ if @*demo?*
 end
 
     jsr random
-
-    ; Check for bonus P or B.
-    ldy #5
-l:  cmp bonus_p_probabilities,y
-    beq make_bonus_p
-    dey
-    bpl -l
-
     and #7
     bne +n
     lda #bonus_e
 n:  cmp current_bonus
     beq -a              ; Bonus already active…
-    cmp #bonus_b
+    cmp last_bonus
     beq -a
-    cmp #bonus_p
-    beq -a
-n:  cmp #bonus_s
-    bne +ok
-    ldy ball_speed
-    cpy #min_ball_speed
-    beq -a
+    sta last_bonus
 
 ok: sta @(+ bonus_init sprite_init_data)
     sec
