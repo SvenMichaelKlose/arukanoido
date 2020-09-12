@@ -20,7 +20,7 @@ game_over:
     call <display_score >display_score
 
     stzb curcol white
-    stmb <scrx2 >scrx2 12
+    stmb <scrx2 >scrx2 10
     0
     lda playfield_yc
     clc
@@ -259,4 +259,4 @@ bonus_keys:
     keycode_6
     keycode_7
 
-txt_game_over: @(string4x8 "GAME OVER") 255
+txt_game_over: @(string4x8 "GAME  OVER") 255
