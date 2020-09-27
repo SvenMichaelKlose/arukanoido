@@ -1,10 +1,10 @@
-title_size = @(length (fetch-file "obj/title.bin.exo"))
-title_size_raw = @(length (fetch-file "obj/title.bin"))
-binary_size = @(length (fetch-file "obj/arukanoido-tape.exo.prg"))
-;blk5_size = @(length (fetch-file "obj/music-arcade-blk5.bin"))
-core_size = binary_size ;@(+ binary_size blk5_size)
-cdec = @(/ core_size 72)                                                                                        
-number_0 = @(-- (+ #x8000 (* #x30 8)))
+title_size      = @(length (fetch-file "obj/title.bin.exo"))
+title_size_raw  = @(length (fetch-file "obj/title.bin"))
+binary_size     = @(length (fetch-file "obj/arukanoido-tape.exo.prg"))
+blk5_size       = @(length (fetch-file "obj/music-arcade-blk5.bin"))
+core_size       = binary_size ;@(+ binary_size blk5_size)
+cdec            = @(/ core_size 72)                                                                                        
+number_0        = @(-- (+ #x8000 (* #x30 8)))
 
 load_title:
     lda #0
@@ -116,19 +116,19 @@ l3: lda (tmp),y
 
 load_blk5:
     ; Load game.
-;    ldx #5
-;l:  lda blk5_cfg,x
-;    sta tape_ptr,x
-;    dex
-;    bpl -l
-;
-;    ; Set IRQ vector.
-;    lda #<tape_leader2
-;    sta $314
-;    lda #>tape_leader2
-;    sta $315
-;    jsr c2nwarp_start
-;    jmp show_countdown
+    ldx #5
+l:  lda blk5_cfg,x
+    sta tape_ptr,x
+    dex
+    bpl -l
+
+    ; Set IRQ vector.
+    lda #<tape_leader2
+    sta $314
+    lda #>tape_leader2
+    sta $315
+    jsr c2nwarp_start
+    jmp show_countdown
 
 start_game:
     lda #$00
@@ -144,6 +144,7 @@ l:  lda copy_forwards,x
     sta $1000,x
     dex
     bpl -l
+
     jmp $1000
 
 copy_forwards:
@@ -182,10 +183,10 @@ bin_cfg:
     <binary_size @(++ (high binary_size))
     <load_blk5 >load_blk5
 
-;blk5_cfg:
-;    $00 $a0
-;    <blk5_size @(++ (high blk5_size))
-;    <load_audio >load_audio
+blk5_cfg:
+    $00 $a0
+    <blk5_size @(++ (high blk5_size))
+    <start_game >start_game ;<load_audio >load_audio
 
 fill @(- 256 (mod *pc* 256))
 target:

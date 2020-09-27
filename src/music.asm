@@ -28,88 +28,96 @@ num_tunes             = 17
 
 sound_priorities:
     0 ; no sound
-    2 ; 1
-    2 ; 2
-    2 ; 3
-    2 ; 4
-    2 ; 5
-    2 ; 6
-    0 ; 7
-    0 ; 8
-    0 ; 9
-    0 ; 10
-    2 ; 11
-    1 ; 12
-    2 ; 13
-    2 ; 14
-    1 ; 15
-    1 ; 16
-    1 ; 17
+    2 ; 1   theme
+    2 ; 2   round
+    2 ; 3   bonus life
+    2 ; 4   game over
+    2 ; 5   DOH round
+    2 ; 6   hiscore
+    0 ; 7   reflection low
+    0 ; 8   reflection high
+    0 ; 9   reflection silver
+    0 ; 10  caught ball
+    2 ; 11  miss
+    1 ; 12  hit DOH
+    2 ; 13  DOH dissolving
+    2 ; 14  growing vaus
+    1 ; 15  explosion
+    1 ; 16  laser
+    1 ; 17  warp
 
 if @*has-digis?*
 digi_types:
     0 ; no sound
-    0 ; 1
-    0 ; 2
-    1 ; 3
-    0 ; 4
-    2 ; 5
-    0 ; 6
-    1 ; 7
-    1 ; 8
-    1 ; 9
-    1 ; 10
-    0 ; 11
-    1 ; 12
-    0 ; 13
-    1 ; 14
-    1 ; 15
-    1 ; 16
-    0 ; 17
+    0 ; 1   theme
+    0 ; 2   round
+    1 ; 3   bonus life
+    0 ; 4   game over
+    2 ; 5   DOH round
+    0 ; 6   hiscore
+    2 ; 7   reflection low
+    2 ; 8   reflection high
+    2 ; 9   reflection silver
+    2 ; 10  caught ball
+    0 ; 11  miss
+    1 ; 12  hit DOH
+    0 ; 13  DOH dissolving
+    1 ; 14  growing vaus
+    1 ; 15  explosion
+    1 ; 16  laser
+    0 ; 17  warp
 
 digi_rates:
-    0 ; 1
-    0 ; 2
-    0 ; 3
-    0 ; 4
-    0 ; 5
-    0 ; 6
-    0 ; 7
-    0 ; 8
-    0 ; 9
-    0 ; 10
-    0 ; 11
-    0 ; 12
-    1 ; 13
-    0 ; 14
-    0 ; 15
-    0 ; 16
-    0 ; 17
+    0 ; no sound
+    0 ; 1   theme
+    0 ; 2   round
+    0 ; 3   bonus life
+    0 ; 4   game over
+    0 ; 5   DOH round
+    0 ; 6   hiscore
+    0 ; 7   reflection low
+    0 ; 8   reflection high
+    0 ; 9   reflection silver
+    0 ; 10  caught ball
+    0 ; 11  miss
+    0 ; 12  hit DOH
+    1 ; 13  DOH dissolving
+    0 ; 14  growing vaus
+    0 ; 15  explosion
+    0 ; 16  laser
+    0 ; 17  warp
 end
 
 play_sound:
     sta music_tmp
+
     txa
     pha
     tya
     pha
+
     ldx music_tmp
     ldy current_song
     beq +play
+
     lda sound_priorities,y
     cmp sound_priorities,x
     beq +play
     bcs +done
 
-if @*has-digis?*
 play:
-    jsr digi_nmi_stop
-    lda #$ff
+    jmp play_native
+if @*has-digis?*
+    jsr digi_nmi_stop       ; Disable sample player.
+    lda #$ff                ; Disable sample decruncher.
     sta exm_needs_data
+
     lda is_playing_digis
     beq +l
+
     lda has_ultimem
     beq +n
+    bne +n                  ; (disable Ultimem raw player)
 
     ; Play raw sample from Ultimem.
     ldx music_tmp
@@ -135,7 +143,7 @@ m:  lsr
     ; Store current tune.
 r:  lda music_tmp
     sta current_song
-    lda #$ff
+    lda #$ff                ; Stop native player.
     sta requested_song
     jmp +done
 
@@ -143,13 +151,8 @@ l:
 end
 
     ; Play VIC tune.
-if @(not *has-digis?*)
-play:
-end
-if @*has-digis?*
-l:
-end
-    lda #$ff
+play_native:
+    lda #$ff                ; Disable EXM player.
     sta exm_needs_data
     lda music_tmp
     sta requested_song

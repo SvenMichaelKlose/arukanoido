@@ -39,12 +39,12 @@ sample_addrs_h:
 sample_addrs_b:
     fill num_tunes
 
-exm_break_out:          @(fetch-file "obj/break-out.2.4000.exm")
-exm_explosion:          @(fetch-file "obj/explosion.2.4000.rle")
-exm_extension:          @(fetch-file "obj/extension.2.4000.rle")
-exm_extra_life:         @(fetch-file "obj/extra-life.2.4000.rle")
-exm_laser:              @(fetch-file "obj/laser.4.4000.rle")
-exm_lost_ball:          @(fetch-file "obj/lost-ball.2.4000.exm")
-;exm_reflection_doh:     @(fetch-file "obj/reflection-doh.2.4000.exm")
-exm_reflection_high:    @(fetch-file "obj/reflection-high.1.4000.rle")
-exm_reflection_low:     @(fetch-file "obj/reflection-low.1.4000.rle")
+exm_break_out:          @(fetch-file "obj-audio/break-out.2.4000.exm")
+exm_explosion:          @(fetch-file "obj-audio/explosion.2.4000.rle")
+exm_extension:          @(fetch-file "obj-audio/extension.2.4000.rle")
+exm_extra_life:         @(fetch-file "obj-audio/extra-life.2.4000.rle")
+exm_laser:              @(fetch-file "obj-audio/laser.4.4000.rle")
+exm_lost_ball:          @(fetch-file "obj-audio/lost-ball.2.4000.exm")
+;exm_reflection_doh:     @(fetch-file "obj-audio/reflection-doh.2.4000.exm")
+;exm_reflection_high:    @(fetch-file "obj-audio/reflection-high.1.4000.rle")
+;xm_reflection_low:      @(fetch-file "obj-audio/reflection-low.1.4000.rle")

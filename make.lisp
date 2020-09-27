@@ -16,10 +16,10 @@
 (var *tape?* nil)
 (var *shadowvic?* nil)
 (var *show-cpu?* nil)
-(var *has-digis?* nil)
+(var *has-digis?* t)
 
 (fn exomize-stream (from to)
-  (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-m" "256" "-M" "256" "-o" to from)
+  (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
                       :pty cl:*standard-output*))
 
 (load "build/audio.lisp")
@@ -234,6 +234,7 @@
                       :pty cl:*standard-output*))
 
 (unix-sh-mkdir "obj")
+(unix-sh-mkdir "obj-audio")
 (unix-sh-mkdir "arukanoido")
 
 (gen-vcpu-tables "src/_vcpu.asm")
