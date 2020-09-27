@@ -26,7 +26,7 @@
                       `(
 ;                        "-v 0.9"
                         ,(+ "media/audio/" name ".wav")
-                        ,(+ "obj/" name ".filtered.wav")
+                        ,(+ "obj-audio/" name ".filtered.wav")
 ;                        "bass" "12"
                         "lowpass" ,(princ (half rate) nil)
 ;"compand" "0.3,1" "6:-70,-60,-20" "-5" "-90" ; podcast
@@ -36,11 +36,11 @@
                        :pty cl:*standard-output*))
 
 (fn downsampled-audio-name (name)
-  (+ "obj/" name ".downsampled.wav"))
+  (+ "obj-audio/" name ".downsampled.wav"))
 
 (fn make-conversion (name rate)
   (sb-ext:run-program "/usr/bin/sox"
-                      (list (+ "obj/" name ".filtered.wav")
+                      (list (+ "obj-audio/" name ".filtered.wav")
                             "-c" "1"
                             "-b" "16"
                             "-r" (princ rate nil)
@@ -122,7 +122,7 @@
   (@ [+ (<< (| ._. 0) 4) (| _. 0)] (group x 2)))
 
 (fn convert-wav (i d rate)
-  (with (wav (with-input-file in (+ "obj/" i ".downsampled.wav")
+  (with (wav (with-input-file in (+ "obj-audio/" i ".downsampled.wav")
                (read-wav in))
          lo  (smallest wav)
          hi  (biggest wav)
@@ -130,22 +130,24 @@
          lwav  (@ #'integer (@ [* _ rat]
                                (@ [- _ lo] wav)))
          name (+ "." (string d) "." (string rate)))
-    (with-output-file out (+ "obj/" i name ".raw")
+    (with-output-file out (+ "obj-audio/" i name ".raw")
       (wav2raw out lwav d))
-    (with-output-file out (+ "obj/" i name ".mon")
+    (with-output-file out (+ "obj-audio/" i name ".mon")
       (wav2mon out lwav d))
-    (with-output-file out (+ "obj/" i name ".pac")
-      (@ (i (packed (@ [bit-and (char-code _) 15] (string-list (fetch-file (+ "obj/" i name ".raw"))))))
+    (with-output-file out (+ "obj-audio/" i name ".pac")
+      (@ (i (packed (@ [bit-and (char-code _) 15] (string-list (fetch-file (+ "obj-audio/" i name ".raw"))))))
         (write-byte i out)))
-    (with-output-file out (+ "obj/" i name ".rle")
-      (@ (i (packed (rle-compress2 (rle-compress (@ #'char-code (string-list (fetch-file (+ "obj/" i name ".raw"))))))))
+    (with-output-file out (+ "obj-audio/" i name ".rle")
+      (@ (i (packed (rle-compress2 (rle-compress (@ #'char-code (string-list (fetch-file (+ "obj-audio/" i name ".raw"))))))))
         (write-byte i out))
       (write-byte 0 out))
-    (exomize-stream (+ "obj/" i name ".raw") (+ "obj/" i name ".exm"))))
+    (exomize-stream (+ "obj-audio/" i name ".raw") (+ "obj-audio/" i name ".exm"))))
 
 (fn make-arcade-sounds ()
   (@ (i *audio-files*)
-    (@ (j .i)
-      (make-filtered-wav i. .j.)
-      (make-conversion i. .j.)
-      (convert-wav i. j. .j.))))
+;    (@ (j .i)
+     (@ (rate '(4000 6000 8000))
+       (make-filtered-wav i. rate)
+       (make-conversion i. rate)
+       (@ (bits '(1 2 3 4))
+         (convert-wav i. bits rate)))))
