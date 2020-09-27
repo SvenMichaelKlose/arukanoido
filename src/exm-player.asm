@@ -64,6 +64,9 @@ l:  sta (exm_play_dptr),y
 n:  dey
     sty exm_needs_data
 
+    lda #$7e
+    sta $900b
+    sta $900c
     jmp -r2
 
 buffer_filled:
