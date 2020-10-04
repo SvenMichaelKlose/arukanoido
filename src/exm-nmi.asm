@@ -24,6 +24,6 @@ r:  lda $9114               ; Clear interrupt flag.
 done:
     lda #0
     sta current_song
-    lda #$7f
+    lda #%01000000
     sta $911e
     bne -r  ; (jmp)
