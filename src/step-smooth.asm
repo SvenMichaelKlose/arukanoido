@@ -14,9 +14,9 @@ half_step_smooth:
     sbc #$40
     tay
     lda ball_directions_y,y
-    asl
+    asl                 ; Store sign in carry flag.
     lda ball_directions_y,y
-    ror
+    ror                 ; Signed division by 2 to keep aspect ratio.
     sta tmp
     bmi +m
     lda sprites_dx,x
