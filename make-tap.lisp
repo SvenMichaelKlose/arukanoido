@@ -37,7 +37,7 @@
                   (with-input-file i "obj/music-arcade-blk5.bin"
                     (format t "Appending BLK5…~%")
                     (with-string-stream s (c2ntap s i)))
-                  (when *has-digis?*
+                  (when nil ;*has-digis?*
                   (format t "Appending Ultimem arcade audio…~%")
                   (apply #'+ (@ [let l (length (fetch-file (+ "obj-audio/" _ ".1.6000.raw")))
                                   (with-stream-string i (+ (string (code-char (mod l 256)))
