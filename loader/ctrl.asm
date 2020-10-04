@@ -115,7 +115,6 @@ l3: lda (tmp),y
     bmi show_countdown
 
 load_blk5:
-    ; Load game.
     ldx #5
 l:  lda blk5_cfg,x
     sta tape_ptr,x
@@ -139,6 +138,7 @@ start_game:
     ora #3
     sta $911c
 
+    ; Copy copying procedure to screen ($1000).
     ldx #@(- copy_forwards_end copy_forwards 1)
 l:  lda copy_forwards,x
     sta $1000,x
@@ -156,7 +156,7 @@ copy_forwards:
     sta d
     lda #$11
     sta @(++ d)
-    ldx #@(low binary_size)
+    ldx #@(++ (low binary_size))
     lda #@(++ (high binary_size))
     sta @(++ c)
     ldy #0
@@ -175,17 +175,17 @@ copy_forwards_end:
 
 title_cfg:
     <target >target
-    <title_size @(++ (high title_size))
+    @(++ (low title_size)) @(++ (high title_size))
     <show_title >show_title
 
 bin_cfg:
     <target >target
-    <binary_size @(++ (high binary_size))
+    @(++ (low binary_size)) @(++ (high binary_size))
     <load_blk5 >load_blk5
 
 blk5_cfg:
     $00 $a0
-    <blk5_size @(++ (high blk5_size))
+    @(++ (low blk5_size)) @(++ (high blk5_size))
     <start_game >start_game ;<load_audio >load_audio
 
 fill @(- 256 (mod *pc* 256))
