@@ -228,7 +228,7 @@
 
 (fn make-zip ()
   (unix-sh-cp "obj/arukanoido.exo.prg" "arukanoido/arukanoido.prg")
-  (unix-sh-cp "arukanoido-cpumon.prg" "arukanoido/arukanoido-cpumon.prg")
+  ;(unix-sh-cp "arukanoido-cpumon.prg" "arukanoido/arukanoido-cpumon.prg")
   (sb-ext:run-program "/bin/cp"
                       (list "README.md" "NEWS" "arukanoido/")
                       :pty cl:*standard-output*))
