@@ -21,9 +21,9 @@ rle_start:
 rle_fetch:
     lda rle_bit
     inc rle_bit
-    lsr
+    lsr             ; Left or right nibble?
     lda (rle_play_ptr),y
-    bcc +n
+    bcc +n          ; Right…
     lsr
     lsr
     lsr
@@ -42,7 +42,7 @@ rle_play_single:
     lda $9114
     ldy #0
     jsr rle_fetch
-    ora #$b0
+    ora #$b0            ; (auxiliary colour)
     sta $900e
     dec rle_singles
     beq +n
@@ -60,13 +60,15 @@ rle_play_multiple:
     lda digisound_a
     rti
 
+; Start next run.
 m:  sty digisound_y
     ldy #0
 n:  jsr rle_fetch
     cmp #0
     beq +done
-    cmp #8
-    bcc +n
+    cmp #8              ; High nibble bit set?
+    bcc +n              ; No…
+
     and #7
     sta rle_singles
     lda #<rle_play_single
