@@ -15,15 +15,15 @@ digi_nmi_start:
     lda @(-- sample_addrs_h),x
     sta @(++ rle_play_ptr)
 
-    lda has_ultimem
-    beq +m
-    ldx #<digisound_timer_8000_pal
-    ldy #>digisound_timer_8000_pal
-    lda is_ntsc
-    beq +n
-    ldx #<digisound_timer_8000_ntsc
-    ldy #>digisound_timer_8000_ntsc
-    jmp +n
+;    lda has_ultimem
+;    beq +m
+;    ldx #<digisound_timer_8000_pal
+;    ldy #>digisound_timer_8000_pal
+;    lda is_ntsc
+;    beq +n
+;    ldx #<digisound_timer_8000_ntsc
+;    ldy #>digisound_timer_8000_ntsc
+;    jmp +n
 
 m:  lda @(-- digi_rates),x
     bne +m

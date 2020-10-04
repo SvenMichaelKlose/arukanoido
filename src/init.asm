@@ -27,10 +27,10 @@ main:
     ldx #$ff
     txs
 
-if @(not *tape?*)
-    lda #0
-    sta has_ultimem
-end
+;if @(not *tape?*)
+;    lda #0
+;    sta has_ultimem
+;end
 
 ;if @(& *tape?* *has-digis?*)
 ;    lda $1100

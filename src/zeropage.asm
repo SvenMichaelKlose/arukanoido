@@ -158,6 +158,7 @@ is_playing_digis:           0
 currently_playing_digis:    0
 has_ultimem:            0
 
+    ; fb instead of fc to keep space for native player?
     @(check-zeropage-size (- #x00fc num_score_digits))
     org @(- #x00fc num_score_digits)
 
