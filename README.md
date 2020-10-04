@@ -1,7 +1,7 @@
 # Arukanoido
 
 Arukanoido is a clone of the famous arcade game "Arkanoid" for the
-Commodore VIC–20 with at least 32K memory expansion.  It should be
+Commodore VIC–20 with at least 24K memory expansion.  It should be
 played best with paddles, which are detected automatically as soon
 as you move them.  If you don't have paddles Arukanoido switches
 to a more convenient and slower joystick mode.
@@ -32,7 +32,7 @@ Sven Michael Klose <pixel@hugbox.org>.
 # Title screen keys
 
 * H, J, K, L: Move screen around.
-* F: Switch between landscape and portrait format.
+* F: Switch between landscape (NTSC) and portrait (PAL) format.
 * M: Switch between beamrider's blasting VIC sounds or arcade digis.
 * B: Start BASIC.
 
@@ -101,7 +101,6 @@ URL: https://bitbucket.org/magli143/exomizer/wiki/Home
 # Contributions
 
 This project has been initiated by Sabine Kuhn <eimer@devcon.net>.
-Contributions are listed by time.
 
 Code has been contributed by Sven Michael Klose <pixel@hugbox.org>.
 
