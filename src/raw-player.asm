@@ -4,6 +4,8 @@ raw_start:
 
     lda @(-- sample_addrs_b),x
     sta $9ffe
+    lda #0
+    sta $9fff
 
     ; Set NMI vector.
     lda #<raw_play_sample

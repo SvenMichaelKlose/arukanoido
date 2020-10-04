@@ -1,3 +1,5 @@
+tape_buffer = $7400
+
 r:  sei
     lda #$7f
     sta $912e
@@ -48,6 +50,7 @@ next_digi:
 
     lda #0
     sta audio_ptr
+    lda #<tape_buffer
     sta tape_ptr
     lda #>tape_buffer
     sta @(++ tape_ptr)

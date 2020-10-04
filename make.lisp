@@ -243,8 +243,8 @@
 (make-media)
 
 (when *all?*
-  (when *has-digis?*
-    (make-arcade-sounds))
+;  (when *has-digis?*
+;    (make-arcade-sounds))
   (make-cart)
   (with-temporary *tape?* t
     (make-prg "arukanoido-tape"))

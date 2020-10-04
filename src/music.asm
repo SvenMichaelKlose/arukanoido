@@ -114,14 +114,14 @@ if @*has-digis?*
     lda is_playing_digis
     beq play_native
 
-;    lda has_ultimem
-;    beq +n
-;    bne +n                  ; (disable Ultimem raw player)
+    lda has_ultimem
+    beq +n
+    bne +n                  ; (disable Ultimem raw player)
 
     ; Play raw sample from Ultimem. (0)
-;    ldx music_tmp
-;    jsr raw_start
-;    jmp +r
+    ldx music_tmp
+    jsr raw_start
+    jmp +r
 
 n:  lda digi_types,x
     bne +m

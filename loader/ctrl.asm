@@ -186,7 +186,7 @@ bin_cfg:
 blk5_cfg:
     $00 $a0
     @(++ (low blk5_size)) @(++ (high blk5_size))
-    <start_game >start_game ;<load_audio >load_audio
+    <load_audio >load_audio
 
 fill @(- 256 (mod *pc* 256))
 target:
