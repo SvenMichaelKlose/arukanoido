@@ -1,3 +1,8 @@
+Changes relative to 881:
+  * Requires +24K RAM.
+  * Original arcade sounds alongside native VIC sounds
+    (Requiring +32K RAM.).
+
 Changes relative to 865:
   * Can be loaded with +16K RAM.
   * More random bonuses.
