@@ -84,7 +84,7 @@ n:  lda mode_break
     jmp +n
 m:  pla
     
-n:  lda is_playing_digis
+n:  lda currently_playing_digis
     bne +n
     jsr play_music
 n:  jsr set_vaus_color

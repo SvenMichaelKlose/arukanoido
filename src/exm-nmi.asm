@@ -26,4 +26,4 @@ done:
     sta current_song
     lda #$7f
     sta $911e
-    bne -r
+    bne -r  ; (jmp)

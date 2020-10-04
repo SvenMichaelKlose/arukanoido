@@ -21,6 +21,7 @@ main:
     lda #0
     sta $9002
     sta is_playing_digis
+    sta currently_playing_digis
     sta current_song
 
     ldx #$ff
@@ -31,21 +32,21 @@ if @(not *tape?*)
     sta has_ultimem
 end
 
-if @(& *tape?* *has-digis?*)
-    lda $1100
-    sta has_ultimem
-    beq +n
-    ldx #@(-- num_tunes)
-l:  lda $1101,x
-    sta sample_addrs_l,x
-    lda $1121,x
-    sta sample_addrs_h,x
-    lda $1141,x
-    sta sample_addrs_b,x
-    dex
-    bpl -l
-n:
-end
+;if @(& *tape?* *has-digis?*)
+;    lda $1100
+;    sta has_ultimem
+;    beq +n
+;    ldx #@(-- num_tunes)
+;l:  lda $1101,x
+;    sta sample_addrs_l,x
+;    lda $1121,x
+;    sta sample_addrs_h,x
+;    lda $1141,x
+;    sta sample_addrs_b,x
+;    dex
+;    bpl -l
+;n:
+;end
 
 if @*rom?*
     lda #<loaded_lowmem
