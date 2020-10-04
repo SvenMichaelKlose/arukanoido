@@ -149,5 +149,5 @@
      (@ (rate '(4000 6000 8000))
        (make-filtered-wav i. rate)
        (make-conversion i. rate)
-       (@ (bits '(1 2 3 4))
+       (@ (bits '(1 2 4))
          (convert-wav i. bits rate)))))
