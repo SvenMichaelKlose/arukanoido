@@ -69,9 +69,9 @@ l:  lda bin_cfg,x
     sta tape_ptr,x
     dex
     bpl -l
-    lda #<tape_leader2
+    lda #<tape_leader1
     sta $314
-    lda #>tape_leader2
+    lda #>tape_leader1
     sta $315
     jsr c2nwarp_start
 
@@ -122,9 +122,9 @@ l:  lda blk5_cfg,x
     bpl -l
 
     ; Set IRQ vector.
-    lda #<tape_leader2
+    lda #<tape_leader1
     sta $314
-    lda #>tape_leader2
+    lda #>tape_leader1
     sta $315
     jsr c2nwarp_start
     jmp show_countdown
