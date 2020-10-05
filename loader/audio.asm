@@ -23,8 +23,8 @@ l:  lda $7300,x
     ; available memory expansion.
 load_audio:
     lda #0
-    sta $9002
-    sta $1100
+    sta $9002   ; Blank screen.
+    sta $1100   ; Tell loaded game that there's no Ultimem (yet).
 
     jsr check_memory_expansion
     bcc -r
