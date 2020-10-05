@@ -18,7 +18,7 @@ l:  dey
 
     ; Waste 56 cycles.
     ; 2+10*5+4
-    ldy #10     ; 2
+    ldy #11     ; 2
 l:  dey         ; 2
     bne -l      ; 3
 
@@ -27,7 +27,7 @@ l:  dey         ; 2
 
     ; Start soprano channel at same frequency as alto.
     ; Takes 6 cycles. Then it's exactly half a wave
-    ; (512 cycles) apart from the alto.
+    ; (642 cycles) apart from the alto.
     lda #$fd    ; 2
     sta $900c   ; 4
 
