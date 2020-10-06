@@ -114,6 +114,7 @@ if @*has-digis?*
     lda is_playing_digis
     beq play_native
 
+    jsr audio_boost
     lda has_ultimem
     beq +n
     bne +n                  ; (disable Ultimem raw player)
@@ -132,7 +133,6 @@ n:  lda digi_types,x
     lda @(-- sample_addrs_l),x
     ldy @(-- sample_addrs_h),x
     jsr init_decruncher
-    jsr audio_boost
     ldx music_tmp
     jsr exm_start
     jmp +r
@@ -142,7 +142,6 @@ m:  lsr
     bne play_native
     lda #1
     sta currently_playing_digis
-    jsr audio_boost
     jsr rle_start
 
     ; Store current tune.
@@ -191,9 +190,5 @@ if @*has-digis?*
 n:  jsr exm_work
     lda current_song
     bne -n
-n:  jsr exm_work
-    lda exm_needs_data
-    bpl -n
-
     rts
 end
