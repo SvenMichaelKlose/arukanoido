@@ -37,14 +37,15 @@
                   (with-input-file i "obj/music-arcade-blk5.bin"
                     (format t "Appending BLK5…~%")
                     (with-string-stream s (c2ntap s i)))
-                  (when nil ;*has-digis?*
+                  (when nil
                   (format t "Appending Ultimem arcade audio…~%")
-                  (apply #'+ (@ [let l (length (fetch-file (+ "obj-audio/" _ ".1.6000.raw")))
-                                  (with-stream-string i (+ (string (code-char (mod l 256)))
-                                                           (string (code-char (mod (>> l 8) 256)))
-                                                           (string (code-char (>> l 16)))
-                                                           (fetch-file (+ "obj-audio/" _ ".1.6000.exm")))
-                                    (with-string-stream s (c2ntap s i :sync? nil :gap #x4000000)))]
+                  (apply #'+ (@ [(format t "Appending \"~A\"…~%" _)
+                                 (let l (length (fetch-file (+ "obj-audio/" _ ".1.6000.raw")))
+                                   (with-stream-string i (+ (string (code-char (mod l 256)))
+                                                            (string (code-char (mod (>> l 8) 256)))
+                                                            (string (code-char (>> l 16)))
+                                                            (fetch-file (+ "obj-audio/" _ ".1.6000.exm")))
+                                     (with-string-stream s (c2ntap s i :sync? nil :gap #x4000000))))]
                                 '("break-out"
                                   "explosion" "extension"
                                   "extra-life" "game-over" "laser" "lost-ball" "reflection-doh"
