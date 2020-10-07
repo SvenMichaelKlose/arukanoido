@@ -32,3 +32,9 @@ l:  dey         ; 2
     sta $900c   ; 4
 
     rts
+
+stop_audio_boost:
+    lda #$7e
+    sta $900b
+    sta $900c
+    rts

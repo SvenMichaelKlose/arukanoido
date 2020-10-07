@@ -95,7 +95,5 @@ done:
     lda #0
     sta current_song
     jsr digi_nmi_stop
-    lda #$7e                ; Turn off audio boost.
-    sta $900b
-    sta $900c
+    jsr stop_audio_boost
     bne -r

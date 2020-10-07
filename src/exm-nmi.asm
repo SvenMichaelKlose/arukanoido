@@ -23,9 +23,7 @@ r:  lda digisound_a
 done:
     lda #0
     sta current_song
-    lda #$7e                ; Turn off audio boost.
-    sta $900b
-    sta $900c
+    jsr stop_audio_boost
     lda #%01000000          ; Disable NMI timer.
     sta $911e
     bne -r  ; (jmp)
