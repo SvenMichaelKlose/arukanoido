@@ -27,8 +27,6 @@ lowmem_ofs = @(- lowmem #x320)
 start:
     jsr init_hiscore
     jsr start_irq
-    lda #0
-    sta @(++ requested_song)
     jsr init_score
     lda #snd_bonus_life
     jsr play_sound
