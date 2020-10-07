@@ -40,10 +40,9 @@ round_intro:
     lda #>txt_round_intro
     sta @(++ s)
 
-l5: lda playfield_yc
-    clc
-    adc #1
-    sta scry
+l5: ldx playfield_yc
+    inx
+    stx scry
     lda tmp4
     sta curchar
 
