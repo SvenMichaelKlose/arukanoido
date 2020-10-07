@@ -1,10 +1,9 @@
 round_intro:
-    jsr clear_screen
     lda $9002
     pha
 
-    lda #0
-    sta $9002
+    jsr blank_screen
+    jsr clear_screen
     jsr init_foreground
     jsr make_stars
     lda #1
@@ -12,6 +11,7 @@ round_intro:
     jsr make_score_screen_title
     jsr display_score
 
+    ; Draw ship.
     lda #@(+ multicolor blue)
     sta curcol
     lda #0
@@ -24,6 +24,7 @@ round_intro:
     ldy #>gfx_ship
     jsr draw_bitmap
 
+    jsr wait_retrace
     pla
     sta $9002
 

@@ -77,3 +77,15 @@ reset_volume:
     lda #@(* light_cyan 16) ; Auxiliary color.
     sta $900e
     rts
+
+wait_retrace:
+    lda $9004
+    bne wait_retrace
+    rts
+
+blank_screen:
+    jsr wait_retrace
+
+    lda #0
+    sta $9002
+    rts

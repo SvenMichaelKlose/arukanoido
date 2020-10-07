@@ -17,9 +17,7 @@ main:
     sta $912d
     sta $911e       ; Disable restore key NMIs.
 
-    ; Blank screen.
-    lda #0
-    sta $9002
+    jsr blank_screen
     sta is_playing_digis
     sta currently_playing_digis
     sta current_song
