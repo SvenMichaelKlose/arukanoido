@@ -2,6 +2,7 @@ round_intro:
     jsr clear_screen
     lda $9002
     pha
+
     lda #0
     sta $9002
     jsr init_foreground
