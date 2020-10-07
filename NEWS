@@ -1,9 +1,13 @@
-Changes relative to 881:
+Changes of 915 relative to 908:
+  * Fixes output quality of original arcade sounds.
+  * No crashes at end of level warp.
+
+Changes of 908 relative to 881:
   * Requires +24K RAM.
   * Original arcade sounds alongside native VIC sounds
     (Requiring +32K RAM.).
 
-Changes relative to 865:
+Changes of 881 relative to 865:
   * Can be loaded with +16K RAM.
   * More random bonuses.
   * Playable paddle mode.
