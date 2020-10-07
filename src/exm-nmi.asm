@@ -1,11 +1,11 @@
 exm_play_sample:
     sta digisound_a
+    lda $9114               ; Clear interrupt flag.
 exm_play_ptr:
     lda $ffff
     sta $900e
     inc @(+ 1 exm_play_ptr)
     beq +l
-    lda $9114               ; Clear interrupt flag.
     lda digisound_a
     rti
 
@@ -17,13 +17,15 @@ l:  lda @(+ 2 exm_play_ptr)
     ora #1
     sta exm_needs_data
 
-r:  lda $9114               ; Clear interrupt flag.
-    lda digisound_a
+r:  lda digisound_a
     rti
 
 done:
     lda #0
     sta current_song
-    lda #%01000000
+    lda #$7e                ; Turn off audio boost.
+    sta $900b
+    sta $900c
+    lda #%01000000          ; Disable NMI timer.
     sta $911e
     bne -r  ; (jmp)
