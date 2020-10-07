@@ -1,6 +1,7 @@
 make_score_screen:
     lda #foreground
     sta curchar
+
 make_score_screen_title:
     ; Print "HIGH SCORE".
     lda #red
@@ -15,9 +16,11 @@ make_score_screen_title:
     lda #>txt_hiscore
     sta @(++ s)
     jsr print_string
+
     inc curchar
     lda curchar
     sta scorechar_start
+
     rts
 
 display_score:
@@ -48,7 +51,9 @@ display_score:
     lda #>hiscore
     sta @(++ s)
     jsr print_score_string
+
     inc curchar
+
     rts
 
 ; scrx2/scry: Text position
