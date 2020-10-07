@@ -63,9 +63,9 @@ l:  sta (d),y
 ; Clear memory area. Word length.
 i_clrmw:
     ldx cl
-    beq +n
+    inx
     inc ch
-n:  ldy dl
+    ldy dl
     lda #0
     sta dl
 l:  sta (d),y
@@ -81,9 +81,9 @@ n:  dex
 ; Move memory area upwards.
 i_movmw:
     ldx cl
-    beq +n
+    inx
     inc ch
-n:  ldy #0
+    ldy #0
 l:  lda (s),y
     sta (d),y
     iny
@@ -108,9 +108,9 @@ l:  sta (d),y
 ; Fill memory area. Word length.
 i_setmw:
     ldx cl
-    beq +n
+    inx
     inc ch
-n:  ldy dl
+    ldy dl
     lda a4
     sta dl
 l:  sta (d),y
