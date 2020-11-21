@@ -266,6 +266,7 @@ sprite_inits:           fill @sprite_inits_size
 
 line_addresses_l:       fill 33
 
+get_crunched_byte_tmp:  0
 attraction_mode:        0
 
 ;if @*demo?*

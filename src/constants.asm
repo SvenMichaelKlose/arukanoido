@@ -1,7 +1,6 @@
 ; Fixed addresses
 
 screen          = $1000
-decrunch_table  = $1250      ; 156 bytes
 buffer_start_hi = $13
 buffer_len_hi   = $01
 charset         = $1400
