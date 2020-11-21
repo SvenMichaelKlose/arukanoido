@@ -48,6 +48,7 @@ turn_counterclockwise:
     dey
     jmp -l
 
+n2: pla
 n:  jmp play_reflection_sound
 
 l:  dec ball_release_timer
@@ -59,16 +60,15 @@ ctrl_ball:
     lda caught_ball
     bpl -l
 
-    jsr ctrl_ball_vaus
-    lda has_hit_vaus
-    bne -n
-
     ; Call the ball controller ball_speed times.
 ball_loop:
     ldy ball_speed
 l:  tya
     pha
     jsr ctrl_ball_subpixel
+    jsr ctrl_ball_vaus
+    lda has_hit_vaus
+    bne -n2
     lda sprites_i,x
     bmi +e              ; Ball sprite has been removed…
     pla
