@@ -215,7 +215,7 @@
 
 (fn make-cart ()
   (with-temporary *rom?* t
-    (make-game "arukanoido.img" "obj/arukanoido.img.vice.txt")
+    (make-game "obj/arukanoido.img" "obj/arukanoido.img.vice.txt")
     (!= (- #x3ce (+ (get-label 'lowmem) (get-label 'lowmem_size)))
       (format t "~A bytes till $3ce.~%" !)
       (? (< ! 0)
@@ -223,11 +223,11 @@
     (!= (- #xc000 (get-label 'the_end))
       (format t "~A bytes till $c000.~%" !)))
   (sb-ext:run-program "/usr/bin/split"
-                      (list "-b" "8192" "arukanoido.img" "arukanoido/arukanoido.img.")
+                      (list "-b" "8192" "obj/arukanoido.img" "arukanoido/arukanoido.img.")
                       :pty cl:*standard-output*))
 
 (fn make-zip ()
-  (unix-sh-cp "obj/arukanoido.exo.prg" "arukanoido/arukanoido.prg")
+  ;(unix-sh-cp "obj/arukanoido.exo.prg" "arukanoido/arukanoido.prg")
   ;(unix-sh-cp "arukanoido-cpumon.prg" "arukanoido/arukanoido-cpumon.prg")
   (sb-ext:run-program "/bin/cp"
                       (list "README.md" "NEWS" "arukanoido/")
@@ -253,10 +253,9 @@
     (make-prg-launcher))
   (with-temporary *shadowvic?* t
     (with-temporary *has-digis?* nil
-      (make-prg "arukanoido-shadowvic")
-      (unix-sh-cp "obj/arukanoido-shadowvic.prg" "."))))
+      (make-prg "arukanoido-shadowvic"))))
 
-(make-prg "arukanoido")
+(make-prg "arukanoido-disk")
 (make-prg-launcher)
 
 (when *all?*
