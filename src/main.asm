@@ -76,6 +76,9 @@ if @*shadowvic?*
     $22 $02
 end
 
+    lda #0
+    sta attraction_mode
+
 l:  jsr test_fire
     beq +f
 
