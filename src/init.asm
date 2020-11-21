@@ -18,9 +18,11 @@ main:
     sta $911e       ; Disable restore key NMIs.
 
     jsr blank_screen
-    sta is_playing_digis
     sta currently_playing_digis
     sta current_song
+
+    lda #1
+    sta is_playing_digis
 
     ldx #$ff
     txs
