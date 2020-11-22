@@ -337,9 +337,6 @@ make_ball:
     sta ball_release_timer
     rts
 
-ball_accelerations_after_brick_hits:
-    $00 $19 $19 $23 $23 $2d $3c $50 $78 $8c $a0 $b4 $c8 $dc $f0 $ff
-
 ; From arcade ROM (check code at 0x1442 and this table at 0x1462).
 ball_speeds_when_top_hit:
     7 7 8 0 7 7 7 0 7 5
@@ -353,7 +350,8 @@ adjust_ball_speed_hitting_top:
     bne +n
     ldy level
     lda @(-- ball_speeds_when_top_hit),y
-    beq +n
+    cmp ball_speed
+    bcc +n
     ldy is_using_paddle
     bne +l
     cmp #max_ball_speed_joystick_top
@@ -362,16 +360,19 @@ adjust_ball_speed_hitting_top:
 l:  sta ball_speed
 n:  rts
 
+ball_accelerations_after_brick_hits:
+    $00 $19 $19 $23 $23 $2d $3c $50 $78 $8c $a0 $b4 $c8 $dc $f0 $ff
+
 adjust_ball_speed:
     inc num_hits
     ldy #0
 l:  lda ball_accelerations_after_brick_hits,y
-    cmp #$ff
-    beq +n
     cmp num_hits
     beq increase_ball_speed
     iny
-    jmp -l
+    cpy #16
+    bne -l
+    beq +n      ; (jmp)
 
 increase_ball_speed:
     lda ball_speed
