@@ -67,7 +67,7 @@ n:  ldx #60
     ldx #255
     jsr print_string
 
-    jsr wait_sound
+    jsr wait_for_silence
 
     ; Remove message.
     lda #5

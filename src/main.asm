@@ -142,7 +142,7 @@ end
 
 f:  lda #snd_coin
     jsr play_sound
-    jsr wait_sound
+    jsr wait_for_silence
     jsr round_intro
     jsr game
     jmp toplevel

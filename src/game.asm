@@ -6,7 +6,7 @@ end
 game_done:
     lda #snd_doh_dissolving
     jsr play_sound
-    jsr wait_sound
+    jsr wait_for_silence
 
 game_over:
     lda #0
@@ -33,7 +33,7 @@ game_over:
 
     lda #snd_game_over
     jsr play_sound
-    jsr wait_sound
+    jsr wait_for_silence
     ldx #100
     jsr wait
 
@@ -176,7 +176,7 @@ end
     lda bricks_left
     beq level_end
     lda is_running_game
-    beq loose_life
+    beq lose_life
 
     ; Toggle sprite frame.
     lda spriteframe
@@ -222,8 +222,8 @@ end
 
     jmp mainloop
 
-loose_life:
-    jsr wait_sound
+lose_life:
+    jsr wait_for_silence
     jsr remove_sprites
     jsr clear_sprites
     dec lifes
@@ -246,7 +246,7 @@ if @*has-digis?*
     jsr exm_work
 end
     jsr clear_sprites
-    jsr wait_sound
+    jsr wait_for_silence
     jmp next_level
 
 bonus_keys:

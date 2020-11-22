@@ -171,7 +171,7 @@ done:
     tax
     rts
 
-wait_sound:
+wait_for_silence:
 if @*shadowvic?*
     rts
 end
