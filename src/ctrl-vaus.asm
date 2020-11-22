@@ -63,7 +63,9 @@ n:
     jsr abs
     and #%11111000
     beq handle_joystick
-    inc is_using_paddle
+    sta is_using_paddle
+    lda #0                  ; Disable original arcade sounds or the VIC will explode.
+    sta is_playing_digis
     lda $9008
     sta old_paddle_value
 
