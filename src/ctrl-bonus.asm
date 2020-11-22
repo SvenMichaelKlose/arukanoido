@@ -165,7 +165,7 @@ apply_bonus_b:
 n:  rts
 
 apply_bonus_d:
-    lda #@(+ is_bonus is_laser)
+    lda #is_laser
     jsr remove_sprites_by_type
 
     ; Find ball.
