@@ -15,7 +15,7 @@ main:
     cmp #$12
     beq +f
 
-    bne +n
+;    bne +n
 
     ; Activate all Ultimem RAM.
 f:  lda #%00111111

@@ -3,7 +3,7 @@
 (var *has-digis?* t)
 
 (fn assemble-loader ()
-  (apply #'assemble-files "c2nwarp.prg"
+  (apply #'assemble-files "obj/tape-loader.prg"
          `("src/music-index.asm"
            "loader/zeropage.asm"
            "bender/vic-20/basic-loader.asm"
@@ -24,7 +24,7 @@
   (format t "C2NWARP rate NTSC: ~A~%" (integer (* 2 (/ (cpu-cycles :ntsc) *tape-pulse*))))
   (with-output-file o "arukanoido/arukanoido.tap"
     (write-tap o
-               (+ (bin2cbmtap (cddr (string-list (fetch-file "c2nwarp.prg")))
+               (+ (bin2cbmtap (cddr (string-list (fetch-file "obj/tape-loader.prg")))
                               "ARUKANOIDO"
                               :start #x1201
                               :no-gaps? t)
@@ -37,21 +37,30 @@
                   (with-input-file i "obj/music-arcade-blk5.bin"
                     (format t "Appending BLK5…~%")
                     (with-string-stream s (c2ntap s i)))
-                  (when nil
+                  (when t
                   (format t "Appending Ultimem arcade audio…~%")
                   (apply #'+ (@ [(format t "Appending \"~A\"…~%" _)
-                                 (let l (length (fetch-file (+ "obj-audio/" _ ".1.6000.raw")))
+                                 (let l (length (fetch-file (+ "obj-audio/" _ ".1.8000.raw")))
                                    (with-stream-string i (+ (string (code-char (mod l 256)))
                                                             (string (code-char (mod (>> l 8) 256)))
                                                             (string (code-char (>> l 16)))
-                                                            (fetch-file (+ "obj-audio/" _ ".1.6000.exm")))
+                                                            (fetch-file (+ "obj-audio/" _ ".1.8000.exm")))
                                      (with-string-stream s (c2ntap s i :sync? nil :gap #x4000000))))]
                                 '("break-out"
-                                  "explosion" "extension"
-                                  "extra-life" "game-over" "laser" "lost-ball" "reflection-doh"
-                                  "reflection-high" "reflection-med" "reflection-low"
-                                  "round-intro" "round-start"
-                                  "doh-dissolving" "doh-intro"
+                                  "explosion"
+                                  "extension"
+                                  "extra-life"
+                                  "game-over"
+                                  "laser"
+                                  "lost-ball"
+                                  "reflection-doh"
+                                  "reflection-high"
+                                  "reflection-med"
+                                  "reflection-low"
+                                  "round-intro"
+                                  "round-start"
+                                  "doh-dissolving"
+                                  "doh-intro"
                                   "final"))))))))
 
 (assemble-loader)

@@ -146,7 +146,7 @@
 (fn make-arcade-sounds ()
   (@ (i *audio-files*)
 ;    (@ (j .i)
-     (@ (rate '(4000 6000))
+     (@ (rate '(4000 8000))
        (make-filtered-wav i. rate)
        (make-conversion i. rate)
        (@ (bits '(1 2 4))
