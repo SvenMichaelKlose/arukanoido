@@ -20,8 +20,6 @@ main:
     jsr blank_screen
     sta currently_playing_digis
     sta current_song
-
-    lda #1
     sta is_playing_digis
 
     ldx #$ff
@@ -63,6 +61,13 @@ if @*rom?*
     sta @(++ c)
     lda #0
     jsr moveram
+
+    ; Copy sprite blitter to beginning of the stack.
+    ldx #@(-- (- blit_end blit_right))
+l:  lda blit_origin,x
+    sta $100,x
+    dex
+    bpl -l
 end
 
 if @(not *shadowvic?*)

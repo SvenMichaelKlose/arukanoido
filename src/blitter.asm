@@ -1,3 +1,9 @@
+blit_origin:
+
+if @*rom?*
+    org $100
+end
+
 ; Blit bytes from s to d, shifting them to the right.
 ;
 ; In:
@@ -53,3 +59,9 @@ l:  ora (d),y
     dey
     bpl _blit_left_loop
     rts
+
+blit_end:
+
+if @*rom?*
+    org @(+ blit_origin (- blit_end blit_right))
+end
