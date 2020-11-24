@@ -15,6 +15,7 @@
 (var *rom?* nil)
 (var *tape?* nil)
 (var *shadowvic?* nil)
+(var *ultimem?* nil)
 (var *show-cpu?* nil)
 (var *has-digis?* t)
 
@@ -170,7 +171,8 @@
                                 "audio-boost.asm"
                                 "digi-nmi.asm"
                                 "exm-player.asm"
-                                "raw-player.asm"
+                                ,@(when *ultimem?*
+                                    '("raw-player.asm"))
                                 "rle-player.asm"
                                 "music-arcade.asm"))
 
@@ -262,5 +264,70 @@
   (make-zip))
 
 (format t "Level data: ~A B~%" (length +level-data+))
+
+(load "c2nwarp/make.lisp")
+
+(fn make-tap ()
+  (apply #'assemble-files "obj/tape-loader.prg"
+         `("src/music-index.asm"
+           "loader/zeropage.asm"
+           "bender/vic-20/basic-loader.asm"
+           "loader/main.asm"
+           "bender/vic-20/minigrafik-display.asm"
+           "loader/exomizer-stream-decrunsh.asm"
+           "loader/audio.asm"
+           "loader/loader.asm"
+           "loader/ctrl.asm"))
+  (make-vice-commands "loader.vice.txt" "break .stop")
+  (format t "Short pulse: ~A~%" *pulse-short*)
+  (format t "Long pulse: ~A~%" *pulse-long*)
+  (format t "Pulse interval: ~A~%" *pulse-interval*)
+  (format t "Pulse subinterval: ~A~%" (/ *pulse-interval* 4))
+  (format t "Pulse rate PAL: ~A~%" (integer (/ (cpu-cycles :pal) *tape-pulse*)))
+  (format t "C2NWARP rate PAL: ~A~%" (integer (* 2 (/ (cpu-cycles :pal) *tape-pulse*))))
+  (format t "Pulse rate NTSC: ~A~%" (integer (/ (cpu-cycles :ntsc) *tape-pulse*)))
+  (format t "C2NWARP rate NTSC: ~A~%" (integer (* 2 (/ (cpu-cycles :ntsc) *tape-pulse*))))
+  (with-output-file o "arukanoido/arukanoido.tap"
+    (write-tap o
+               (+ (bin2cbmtap (cddr (string-list (fetch-file "obj/tape-loader.prg")))
+                              "ARUKANOIDO"
+                              :start #x1201
+                              :no-gaps? t)
+                  (with-input-file i "obj/title.bin.exo"
+                    (format t "Appending title screen…~%")
+                    (with-string-stream s (c2ntap s i)))
+                  (with-input-file i "obj/arukanoido-tape.exo.prg"
+                    (format t "Appending executable…~%")
+                    (with-string-stream s (c2ntap s i :gap 2000000)))
+                  (with-input-file i "obj/music-arcade-blk5.bin"
+                    (format t "Appending BLK5…~%")
+                    (with-string-stream s (c2ntap s i)))
+                  (when *ultimem?*
+                    (format t "Appending Ultimem arcade audio…~%")
+                    (apply #'+ (@ [(format t "Appending \"~A\"…~%" _)
+                                   (let l (length (fetch-file (+ "obj-audio/" _ ".1.8000.raw")))
+                                     (with-stream-string i (+ (string (code-char (mod l 256)))
+                                                              (string (code-char (mod (>> l 8) 256)))
+                                                              (string (code-char (>> l 16)))
+                                                              (fetch-file (+ "obj-audio/" _ ".1.8000.exm")))
+                                       (with-string-stream s (c2ntap s i :sync? nil :gap #x4000000))))]
+                                  '("break-out"
+                                    "explosion"
+                                    "extension"
+                                    "extra-life"
+                                    "game-over"
+                                    "laser"
+                                    "lost-ball"
+                                    "reflection-doh"
+                                    "reflection-high"
+                                    "reflection-med"
+                                    "reflection-low"
+                                    "round-intro"
+                                    "round-start"
+                                    "doh-dissolving"
+                                    "doh-intro"
+                                    "final"))))))))
+
+(make-tap)
 
 (quit)

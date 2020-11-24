@@ -30,7 +30,7 @@ if @(not *tape?*)
     sta has_ultimem
 end
 
-if @(& *tape?* *has-digis?*)
+if @(& *tape?* *has-digis?* *ultimem?*)
     lda $1100
     sta has_ultimem
     beq +n

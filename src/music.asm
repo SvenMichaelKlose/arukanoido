@@ -115,19 +115,23 @@ if @*has-digis?*
     beq play_native
 
     jsr audio_boost
+end
+
+if @*ultimem?*
     lda has_ultimem
     beq +n
-    bne +n                  ; (disable Ultimem raw player)
 
-    ; Play raw sample from Ultimem. (0)
+    ; Play raw sample from Ultimem.
     ldx music_tmp
     jsr raw_start
     jmp +r
+end
 
+if @*has-digis?*
 n:  lda digi_types,x
     bne +m
 
-    ; Play EXM-compressed sample. (0)
+    ; Play EXM-compressed sample. (type 0)
     lda #1
     sta currently_playing_digis
     lda @(-- sample_addrs_l),x
@@ -137,19 +141,18 @@ n:  lda digi_types,x
     jsr exm_start
     jmp +r
 
-    ; Play RLE-compressed sample. (1)
+    ; Play RLE-compressed sample. (type 1)
 m:  lsr
     bne play_native
     lda #1
     sta currently_playing_digis
     jsr rle_start
 
-    ; Store current tune.
 r:  lda music_tmp
     sta current_song
     lda #$ff                ; Stop native player.
     sta requested_song
-    bne +done   ; (jmp)
+    bne +done               ; (jmp)
 end
 
     ; Play VIC tune.
