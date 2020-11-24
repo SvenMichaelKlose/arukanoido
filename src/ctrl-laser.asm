@@ -31,7 +31,6 @@ o:  lda sprites_x,x
     jsr hit_brick
     bcs +m
     inc laser_has_hit
-    jsr make_bonus
 
     ; Hit left or right?
 m:  lda laser_has_hit
