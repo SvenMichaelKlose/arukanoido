@@ -18,6 +18,7 @@ is_vaus      = 1
 
 multiwhite  = @(+ multicolor white)
 
+; TODO: Not copy these to the zero page?
 loaded_sprite_inits:
     org sprite_inits
 

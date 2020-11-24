@@ -124,7 +124,7 @@ retry:
     sta @(++ framecounter)
     sta num_obstacles
     sta num_hits
-    sta has_bonus_on_screen
+    sta bonus_on_screen
     sta laser_delay_type
     sta removed_bricks
     lda #1
@@ -133,9 +133,6 @@ retry:
     sta ball_speed
     lda #16
     sta vaus_width
-    lda #255
-    sta current_bonus
-    sta last_bonus
 
     jsr clear_sprites
     jsr remove_sprites

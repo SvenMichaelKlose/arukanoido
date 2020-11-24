@@ -69,7 +69,8 @@ n:  lda #0
     lda @(-- bonus_funs_h),y
     sta @(++ d)
     jsr +j
-r:  dec has_bonus_on_screen
+r:  lda #0
+    sta bonus_on_screen
     jmp remove_sprite
     
 m:  lda #1
@@ -198,7 +199,7 @@ f:  lda sprites_x,y                     ; Copy coordinates of current ball.
     inc balls
     lda #mode_disruption
     sta mode
-    rts
+r:  rts
 
 apply_bonus_p:
     lda #snd_bonus_life
@@ -206,9 +207,26 @@ apply_bonus_p:
     inc lifes
     jmp draw_lifes
 
-rotate_bonus:
+rotate_bonuses:
+    lda framecounter
+    and #%111
+    bne -r
+
+    lda bonus_on_screen
+    beq -r
+
+    ; Get char of current bonus.
+    asl
+    asl
+    asl
+bonus_base = @(- gfx_bonus_l 8)
+    clc
+    adc #<bonus_base
     sta s
-    stx @(++ s)
+    lda #>bonus_base
+    adc #0
+    sta @(++ s)
+
     ldy #6
     lda (s),y
     pha
@@ -223,38 +241,6 @@ l:  lda (s),y
     iny
     sta (s),y
 r:  rts
-
-rotate_bonuses:
-    lda framecounter
-    lsr
-    bcc -r
-    lsr
-    bcc +n
-    lsr
-    bcc +m
-    lda #<gfx_bonus_l
-    ldx #>gfx_bonus_l
-    jsr rotate_bonus
-    lda #<gfx_bonus_e
-    ldx #>gfx_bonus_e
-    jmp rotate_bonus
-m:  lda #<gfx_bonus_c
-    ldx #>gfx_bonus_c
-    jsr rotate_bonus
-    lda #<gfx_bonus_s
-    ldx #>gfx_bonus_s
-    jmp rotate_bonus
-n:  lsr
-    bcc +m
-    lda #<gfx_bonus_b
-    ldx #>gfx_bonus_b
-    jsr rotate_bonus
-    lda #<gfx_bonus_d
-    ldx #>gfx_bonus_d
-    jmp rotate_bonus
-m:  lda #<gfx_bonus_p
-    ldx #>gfx_bonus_p
-    jmp rotate_bonus
 
 bonus_p_probabilities:
     $07 $df $3d $b9 $1b $5e
@@ -277,7 +263,7 @@ make_bonus:
     and #7
     bne -r
 
-o:  lda has_bonus_on_screen
+o:  lda bonus_on_screen
     ora has_hit_silver_brick
     bne -r
 
@@ -298,6 +284,7 @@ n:  cmp current_bonus
     sta last_bonus
 
 ok: sta @(+ bonus_init sprite_init_data)
+    sta bonus_on_screen
     sec
     sbc #1
     tay
@@ -322,5 +309,4 @@ ok: sta @(+ bonus_init sprite_init_data)
     sta @(+ bonus_init sprite_init_y)
 
     ldy #@(- bonus_init sprite_inits)
-    inc has_bonus_on_screen
     jmp add_sprite

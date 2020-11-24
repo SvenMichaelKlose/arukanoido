@@ -180,7 +180,7 @@ has_new_score:        0
 has_hiscore:          0
 
 has_removed_brick:      0
-has_bonus_on_screen:    0
+bonus_on_screen:        0
 num_lifes_by_score:     0
 has_paused:             0
 
