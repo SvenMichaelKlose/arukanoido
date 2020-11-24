@@ -20,7 +20,6 @@ ctrl_laser:
     jsr hit_brick
     bcs +o              ; No brick hit.
     inc laser_has_hit
-    jsr make_bonus
 
     ; Check on collision on the right hand side.
 o:  lda sprites_x,x
