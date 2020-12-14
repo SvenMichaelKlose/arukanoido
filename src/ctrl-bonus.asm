@@ -255,12 +255,13 @@ make_bonus_p:
     jmp +ok
 
 make_bonus:
+    ; Check if we should make a bonus.
     lda removed_bricks
-    cmp #1
+    cmp #1  ; Always for the first brick.
     beq +o
-    cmp #4
+    cmp #4  ; Always for the fourth brick.
     beq +o
-    and #7
+    and #7  ; Then every eight bricks.
     bne -r
 
 o:  lda bonus_on_screen
