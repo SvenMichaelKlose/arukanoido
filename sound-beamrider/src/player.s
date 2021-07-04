@@ -161,7 +161,7 @@ ProcessPlayer:
 	  bne nofade
 	  dec volumereg
 	  lda volumereg
-	  and #(~volumeregmask)
+	  and #(volumeregmask ^ 255)
 	  beq fadedone
 	  lda volfadespd
 

@@ -1,4 +1,4 @@
-.include "Music.h"
+.include "music.h"
 .segment "CODE"
 
 ; Globals--------------------------------------------------------------------
