@@ -152,3 +152,4 @@ txt_round_intro:
     @(string4x8 " TRAPPED IN SPACE WARPED") 254
     @(string4x8 " BY SOMEONE........") 255
     253
+__end_round_intro:

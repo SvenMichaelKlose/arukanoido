@@ -172,3 +172,5 @@ end
 txt_copyright:  @(string4x8 " DEMO VERSION") 255
 txt_rights:     @(string4x8 (+ "   REVISION " *revision*)) 255
 txt_credit:     @(string4x8 " CREDIT  0") 255
+
+__end_game:

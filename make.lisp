@@ -62,8 +62,7 @@
         (@ [+ "src/" _] `("../bender/vic-20/vic.asm"
                           "constants.asm"
                           "zeropage.asm"
-                          ,@(unless (| *shadowvic?*
-                                       *rom?*)
+                          ,@(unless (| *shadowvic?* *rom?*)
                               '("../bender/vic-20/basic-loader.asm"))
                           ,@(unless *rom?*
                               '("init.asm"
@@ -86,39 +85,43 @@
                           "gfx-obstacle-spheres.asm"
                           "gfx-sprites.asm"
 
-                          ; Tables
+                          ; Mixed data
                           "bits.asm"
                           "paddle-xlat.asm"
                           "ball-directions.asm"
                           "score-infos.asm"
                           "brick-info.asm"
                           "sprite-inits.asm"
+                          "level-data.asm"
 
-                          ; VCPU
+                          ; Virtual CPU
                           "vcpu.asm"
                           "vcpu-instructions.asm"
                           "_vcpu.asm"
 
                           ; Library
                           "bcd.asm"
-                          ,@(unless *rom?*
-                              '("blitter.asm"))
-                          "blit-char.asm"
-                          "chars.asm"
-                          "exomizer-stream-decrunsh.asm"
+                          "random.asm"
                           "joystick.asm"
                           "keyboard.asm"
                           "math.asm"
-                          "music-index.asm"
-                          "music.asm"
-                          "screen.asm"
-                          "random.asm"
+                          "exomizer-stream-decrunsh.asm"
+                          "wait.asm"
+
+                          ; Graphics
                           "print.asm"
+                          "format.asm"
+                          "chars.asm"
+                          "screen.asm"
+
+                          ; Sprites
+                          ,@(unless *rom?*
+                              '("blitter.asm"))
+                          "blit-char.asm"
                           "sprites.asm"
                           "sprites-vic-common.asm"
 ;                          "sprites-vic.asm"
                           "sprites-vic-huge.asm"
-                          "wait.asm"
 
                           ; Level display
                           "brick-fx.asm"
@@ -144,25 +147,29 @@
                           "ctrl-vaus.asm"
                           "doh.asm"
 
-                          ; Top level
+                          ; Music
+                          "music-index.asm"
+                          "music.asm"
+
+                          ; Game control
                           ,@(when *debug?*
                               '("debug.asm"))
                           "irq.asm"
-                          "format.asm"
                           "game.asm"
-                          "hiscore.asm"
 
-                          "main.asm"
-
-                          ; Level data
-                          "level-data.asm"
-
+                          ; Program entry point
                           "draw-bitmap.asm"
                           "gfx-taito.asm"
+                          "main.asm"
 
+                          "round-start.asm"
+
+                          ; Hiscore table
+                          "hiscore.asm"
+
+                          ; Round intro
                           "gfx-ship.asm"
                           "round-intro.asm"
-                          "round-start.asm"
 
                           ; Digital audio
                           ,@(when *has-digis?*
@@ -191,12 +198,16 @@
 
                           "end.asm"))
         cmds)
+  (format t "Game end: ~X~%" (get-label '__end_game))
+  (format t "Round start end: ~X~%" (get-label '__end_round_start))
+  (format t "Round intro end: ~X~%" (get-label '__end_round_intro))
+  (format t "Low digi end: ~X~%" (get-label 'the_end))
   (!= (- #x314 (get-label 'before_int_vectors))
     (format t "~A bytes free before interrupt vectors.~%" !)
     (? (< ! 0)
        (quit)))
   (!= (- #x8000 (get-label 'the_end))
-    (format t "~A bytes free before $a000.~%" !))
+    (format t "~A bytes free before $8000.~%" !))
   (when *has-digis?*
     (!= (- #xc000 (get-label 'blk5_end))
       (format t "~A bytes free before $C000.~%" !))))

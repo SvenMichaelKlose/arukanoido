@@ -1,8 +1,3 @@
-if @*demo?*
-txt_preview:  @(string4x8 "   SOON TO BE AVAILABLE ON") 255
-txt_preview2: @(string4x8 "      TAPESONDEMAND.COM") 255
-end
-
 game_done:
     lda #snd_doh_dissolving
     jsr play_sound
@@ -193,6 +188,7 @@ n2: jsr get_keypress
 q:  jsr wait_keyunpress
     jmp +l
 
+if @*demo?*
 n:  ldx #8
 m:  cmp bonus_keys,x
     bne +n
@@ -206,6 +202,8 @@ n:  cmp #keycode_n
     lda #0
     sta bricks_left
     jmp next_level
+end
+n:
 
 l:
 if @*has-digis?*
@@ -246,6 +244,7 @@ end
     jsr wait_for_silence
     jmp next_level
 
+if @*demo?*
 bonus_keys:
     keycode_0
     keycode_1
@@ -255,5 +254,12 @@ bonus_keys:
     keycode_5
     keycode_6
     keycode_7
+end
 
 txt_game_over: @(string4x8 "GAME  OVER") 255
+
+if @*demo?*
+txt_preview:  @(string4x8 "   SOON TO BE AVAILABLE ON") 255
+txt_preview2: @(string4x8 "      TAPESONDEMAND.COM") 255
+end
+

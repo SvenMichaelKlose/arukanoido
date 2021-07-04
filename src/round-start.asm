@@ -100,3 +100,4 @@ l:  ldx #1
 
 txt_round_nn:   @(string4x8 " ROUND  XX") 255
 txt_ready:      @(string4x8 " READY") 255
+__end_round_start:
