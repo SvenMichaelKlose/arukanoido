@@ -9,3 +9,5 @@ txt_second:     @(string4x8 "2ND") 255
 txt_third:      @(string4x8 "3RD") 255
 txt_fourth:     @(string4x8 "4TH") 255
 txt_fifth:      @(string4x8 "5TH") 255
+
+__end_hiscore:
