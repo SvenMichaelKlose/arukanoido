@@ -14,10 +14,10 @@ test_vaus_hit_right:
     ldy mode
     cpy #mode_extended
     bne +n
-    cmp #@(* (- 15 4) 8)
+    cmp #@(+ 2 (* (- 15 4) 8))
     bcs +r
     bcc +r
-n:  cmp #@(* (- 15 3) 8)
+n:  cmp #@(+ 2 (* (- 15 3) 8))
 r:  rts
 
 ctrl_vaus:
@@ -82,8 +82,8 @@ handle_paddle:
 
     ldy mode_break
     beq +m
-    lda #0
-    sta bricks_left
+;    lda #0
+;    sta bricks_left
     jmp enter_break_mode
 
 m:  lda #@(* 14 8)
