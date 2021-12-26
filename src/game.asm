@@ -105,15 +105,12 @@ m:  jsr draw_walls
     jsr make_score_screen
     jsr display_score
 
-;lda level
-;cmp #33
-;bne next_level
-
 retry:
     lda #0
     sta is_running_game
     sta is_firing
     sta mode
+    sta mode_break
     sta sprites_d2,x
     sta framecounter
     sta @(++ framecounter)
