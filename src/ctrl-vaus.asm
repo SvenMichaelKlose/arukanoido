@@ -28,6 +28,9 @@ ctrl_vaus:
     lda framecounter
     and #7
     bne +m
+    lda sprites_x,x
+    cmp ball_max_x
+    bcs +m
     lda #2
     jsr sprite_right
 m:  lda #<score_100
