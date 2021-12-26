@@ -221,9 +221,9 @@
           `("prg-launcher/blk5.asm"
             "src/music-arcade-blk5.asm"
             "src/blk5-end.asm")
-          "obj/music-arcade-blk5.vice.lst"))
+          "obj/music-arcade-blk5.lbl"))
   (with-temporary *imported-labels* (get-labels)
-    (make-game (+ "obj/" file ".prg") (+ "obj/" file ".prg.vice.txt")))
+    (make-game (+ "obj/" file ".prg") (+ "obj/" file ".prg.lbl")))
   (unless *shadowvic?*
     (sb-ext:run-program "/usr/local/bin/exomizer"
                         (list "sfx" "basic" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
@@ -231,7 +231,7 @@
 
 (fn make-cart ()
   (with-temporary *rom?* t
-    (make-game "obj/arukanoido.img" "obj/arukanoido.img.vice.txt")
+    (make-game "obj/arukanoido.img" "obj/arukanoido.img.lbl")
     (!= (- #x3ce (+ (get-label 'lowmem) (get-label 'lowmem_size)))
       (format t "~A bytes till $3ce.~%" !)
       (? (< ! 0)
@@ -292,7 +292,7 @@
            "loader/audio.asm"
            "loader/loader.asm"
            "loader/ctrl.asm"))
-  (make-vice-commands "loader.vice.txt" "break .stop")
+  (make-vice-commands "loader.lbl" "break .stop")
   (format t "Short pulse: ~A~%" *pulse-short*)
   (format t "Long pulse: ~A~%" *pulse-long*)
   (format t "Pulse interval: ~A~%" *pulse-interval*)
