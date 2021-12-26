@@ -125,8 +125,6 @@ sprite_right:
 ; C: Clear when a hit was found.
 ; Y: Sprite index of other sprite.
 find_hit:
-    stx find_hit_tmp
-
     ; Get opposite corner's coordinates of sprite.
     lda sprites_dimensions,x
     and #%111
@@ -143,6 +141,7 @@ find_hit:
     adc sprites_y,x
     sta find_hit_tmp3
 
+    stx find_hit_tmp
     ldy #@(-- num_sprites)
 
 l:  cpy find_hit_tmp    ; Skip same sprite.
