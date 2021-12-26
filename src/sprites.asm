@@ -184,7 +184,6 @@ n:  dey
 ok: rts
 
 call_sprite_controllers:
-    ; Call the functions that control sprite behaviour.
     ldx #@(-- num_sprites)
 l1: lda sprites_i,x
     bmi +n1
