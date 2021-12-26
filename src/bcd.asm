@@ -14,7 +14,7 @@ n:  sta (d),y
     rts
 
 ; X = length - 1
-; CC: s <= d
+; CC: s < d
 bcd_cmp:
     ldy #0
 l:  lda (s),y
