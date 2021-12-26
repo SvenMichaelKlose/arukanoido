@@ -82,8 +82,6 @@ handle_paddle:
 
     ldy mode_break
     beq +m
-;    lda #0
-;    sta bricks_left
     jmp enter_break_mode
 
 m:  lda #@(* 14 8)
