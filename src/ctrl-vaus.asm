@@ -45,11 +45,9 @@ m:  lda #<score_100
     rts
 
     ; Check on collision with obstacle.
-n:  jsr find_hit
+n:  lda #is_obstacle
+    jsr find_hit
     bcs +n
-    lda sprites_i,y
-    and #is_obstacle
-    beq +n
     jsr remove_obstacle
 n:
 

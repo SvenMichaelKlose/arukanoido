@@ -19,12 +19,9 @@ ctrl_bonus:
     lda sprites_y,x
     cmp screen_height
     beq +r              ; Bonus left playfield…
+    lda #is_vaus
     jsr find_hit
     bcs +m              ; Nothing hit…
-
-    lda sprites_i,y
-    and #is_vaus
-    beq +m              ; Didn't hit the Vaus…
 
     lda sprites_d,x
     sta current_bonus

@@ -249,6 +249,7 @@ print_score_tmp:        0
 find_hit_tmp:           0
 find_hit_tmp2:          0
 find_hit_tmp3:          0
+find_hit_types:         0
 draw_sprites_tmp:       0
 draw_sprites_tmp2:      0
 draw_sprites_tmp3:      0

@@ -38,11 +38,9 @@ m:  lda laser_has_hit
     bne +n
 
     ; Hit obstacle instead?
+    lda #is_obstacle
     jsr find_hit
     bcs +r
-    lda sprites_i,y
-    and #is_obstacle
-    beq +r
     jsr remove_obstacle
 
 n:  jsr remove_sprite

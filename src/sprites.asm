@@ -120,11 +120,14 @@ sprite_right:
 ; Find collision with other sprite.
 ;
 ; X: sprite index
+; A: sprite types to check
 ;
 ; Returns:
 ; C: Clear when a hit was found.
 ; Y: Sprite index of other sprite.
 find_hit:
+    sta find_hit_types
+
     ; Get opposite corner's coordinates of sprite.
     lda sprites_dimensions,x
     and #%111
@@ -148,7 +151,8 @@ l:  cpy find_hit_tmp    ; Skip same sprite.
     beq +n
 
     lda sprites_i,y     ; Skip inactive sprite.
-    bmi +n
+    and find_hit_types
+    beq +n
 
     lda sprites_x,y
     cmp find_hit_tmp2
