@@ -72,6 +72,7 @@ l:  tya
     dey
     bne -l
 r:  rts
+
 e:  pla
     rts
 
@@ -79,7 +80,7 @@ ctrl_ball_vaus:
     lda #0
     sta has_hit_vaus
 
-    ; Test on vertical collision with Vaus.
+    ; Test on vertical range of Vaus.
     lda sprites_y,x
     iny
     iny
@@ -99,7 +100,6 @@ ctrl_ball_vaus:
     bcc -r              ; Ball is off to the left.
     cmp vaus_width
     bcs -r
-    beq -r
     tay
 
     lda #16
@@ -328,24 +328,24 @@ ball_speeds_when_top_hit:
     7 0 0 0 0 7 8 7 0 7
     0 0 0 0
 
+ball_accelerations_after_brick_hits:
+    $00 $19 $19 $23 $23 $2d $3c $50 $78 $8c $a0 $b4 $c8 $dc $f0 $ff
+
 adjust_ball_speed_hitting_top:
     lda sprites_y,x
     cmp ball_min_y
-    bne +n
+    bne adjust_ball_speed
     ldy level
     lda @(-- ball_speeds_when_top_hit),y
     cmp ball_speed
-    bcc +n
+    bcc adjust_ball_speed
     ldy is_using_paddle
     bne +l
     cmp #max_ball_speed_joystick_top
     bcc +l
     lda #max_ball_speed_joystick_top
 l:  sta ball_speed
-n:  rts
-
-ball_accelerations_after_brick_hits:
-    $00 $19 $19 $23 $23 $2d $3c $50 $78 $8c $a0 $b4 $c8 $dc $f0 $ff
+    rts
 
 adjust_ball_speed:
     inc num_hits
