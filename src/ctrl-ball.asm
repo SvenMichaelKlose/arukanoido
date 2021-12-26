@@ -1,20 +1,16 @@
 vaus_directions:
-    direction_ls
     direction_ls direction_ls direction_ls direction_ls
     direction_l direction_l direction_l direction_l
     direction_r direction_r direction_r direction_r
     direction_rs direction_rs direction_rs direction_rs
-    direction_rs
 
 vaus_directions_extended:
-    direction_ls
     direction_ls direction_ls direction_ls direction_ls
     direction_l direction_l direction_l direction_l
     direction_l direction_l direction_l direction_l
     direction_r direction_r direction_r direction_r
     direction_r direction_r direction_r direction_r
     direction_rs direction_rs direction_rs direction_rs
-    direction_rs
 
 used_ball_directions:
     direction_ls
@@ -31,7 +27,7 @@ get_used_ball_direction:
 l:  cmp used_ball_directions,y
     beq +r
     dey
-    jmp -l
+    bpl -l     ; (jmp)
 r:  rts
 
 turn_clockwise:
@@ -53,7 +49,6 @@ n:  jmp play_reflection_sound
 
 l:  dec ball_release_timer
     bne +r
-;beq +r
     jsr release_ball
 
 ctrl_ball:
@@ -86,6 +81,8 @@ ctrl_ball_vaus:
 
     ; Test on vertical collision with Vaus.
     lda sprites_y,x
+    iny
+    iny
     cmp ball_vaus_y_upper
     bcc -r
     cmp ball_vaus_y_lower
@@ -93,38 +90,23 @@ ctrl_ball_vaus:
 
     jsr get_vaus_index_in_y
 
-    ; Test on horizontal collision with Vaus (middle pixel).
+    ; Test on horizontal collision with Vaus (middle pixel of ball).
     lda sprites_x,x
-    clc
+    clc                 ; To X centre of ball.
     adc #1
-    sta tmp
-    lda sprites_x,y
-    sec                 ; Allow one pixel off to the left.
-    sbc #1
-    sta tmp2
-    cmp tmp
-    bcs -r
-
-    lda tmp2
-    clc
-    adc #1              ; Allow a pixel off to the right as well.
-    adc vaus_width
-    cmp tmp
-    bcc -r
-
-    jsr adjust_ball_speed
-
-    ; Get reflection from Vaus.
-    lda tmp
     sec
-    sbc tmp2
+    sbc sprites_x,y
+    bcc -r              ; Ball is off to the left.
+    cmp vaus_width
+    bcs -r
+    beq -r
     tay
 
     lda #16
     cmp vaus_width
     bcc +n
     lda vaus_directions,y
-    jmp +m
+    bne +m              ; (jmp)
 n:  lda vaus_directions_extended,y
 m:  sta sprites_d,x
 
@@ -132,6 +114,8 @@ m:  sta sprites_d,x
     sta sprites_y,x
     lda #0
     sta sprites_d2,x
+
+    jsr adjust_ball_speed
 
     lda mode
     cmp #mode_catching
@@ -293,7 +277,8 @@ f:  lda sprites_x,y
     sta sprites_d2,x
     jsr reflect_ball_obstacle
     jsr apply_reflection_unconditionally
-    jmp remove_obstacle
+    jsr remove_obstacle
+    jmp adjust_ball_speed
 
 n:  dey
     bpl -l
