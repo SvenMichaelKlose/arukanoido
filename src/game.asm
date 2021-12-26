@@ -262,4 +262,3 @@ if @*demo?*
 txt_preview:  @(string4x8 "   SOON TO BE AVAILABLE ON") 255
 txt_preview2: @(string4x8 "      TAPESONDEMAND.COM") 255
 end
-

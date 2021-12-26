@@ -251,7 +251,6 @@ l:  jmp play_sound
 r:  rts
 
 check_hit_with_obstacle:
-    ; Hit obstacle?
     ldy #@(-- num_sprites)
 l:  lda sprites_i,y
     and #is_obstacle
