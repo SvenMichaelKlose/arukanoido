@@ -169,9 +169,8 @@ l:  stx user_screen_origin_x
     adc #0
     sta @(++ screen_gate)
 
-    lda screen_height
-    sec
-    sbc #ball_height
-    sta ball_max_y
+    ldx screen_height
+    dex
+    stx ball_max_y
 
     rts
