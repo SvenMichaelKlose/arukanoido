@@ -1,5 +1,5 @@
 (fn assemble-loader ()
-  (with-output-file o "arukanoido-noturbo.tap"
+  (with-output-file o "arukanoido/arukanoido-noturbo.tap"
     (write-tap o
                (bin2cbmtap (cddr (string-list (fetch-file "arukanoido/arukanoido.prg")))
                               "ARUKANOIDO"
@@ -8,5 +8,5 @@
 
 (assemble-loader)
 
-(with-input-file i "arukanoido-noturbo.tap" (with-output-file o "arukanoido-noturbo.wav" (tap2wav i o 44100 (cpu-cycles :pal))))
+(with-input-file i "arukanoido/arukanoido-noturbo.tap" (with-output-file o "arukanoido/arukanoido-noturbo.wav" (tap2wav i o 44100 (cpu-cycles :pal))))
 (quit)
