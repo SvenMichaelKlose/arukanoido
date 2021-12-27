@@ -6,6 +6,7 @@ game_done:
 game_over:
     lda #0
     sta is_running_game
+    sta mode_break
 
     jsr clear_screen
 
