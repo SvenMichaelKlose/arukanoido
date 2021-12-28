@@ -44,6 +44,7 @@ turn_counterclockwise:
     dey
     jmp -l
 
+
 n2: pla
 n:  jmp play_reflection_sound
 
@@ -61,7 +62,6 @@ ball_loop:
 l:  tya
     pha
     jsr ctrl_ball_subpixel
-    jsr ctrl_ball_vaus
     lda has_hit_vaus
     bne -n2
     lda sprites_i,x
@@ -76,30 +76,10 @@ r:  rts
 e:  pla
     rts
 
-ctrl_ball_vaus:
-    lda #0
-    sta has_hit_vaus
-
-    ; Test on vertical range of Vaus.
-    lda sprites_y,x
-    iny
-    iny
-    cmp ball_vaus_y_upper
-    bcc -r
-    cmp ball_vaus_y_lower
-    bcs -r
-
-    jsr get_vaus_index_in_y
-
-    ; Test on horizontal collision with Vaus (middle pixel of ball).
-    lda sprites_x,x
-    clc                 ; To X centre of ball.
-    adc #1
+hit_vaus:
+    lda ball_x
     sec
     sbc sprites_x,y
-    bcc -r              ; Ball is off to the left.
-    cmp vaus_width
-    bcs -r
     tay
 
     lda #16
@@ -136,6 +116,14 @@ m:  sta sprites_d,x
 
 r:  inc has_hit_vaus
     rts
+hit_obstacle:
+    lda #0
+    sta sprites_d2,x
+    jsr reflect_ball_obstacle
+    jsr apply_reflection_unconditionally
+    jsr remove_obstacle
+    jmp adjust_ball_speed
+
 
 lose_ball:
     pla
@@ -173,9 +161,23 @@ ctrl_ball_subpixel:
     iny
     sty ball_y
 
+    lda #0
+    sta has_hit_vaus
+    lda #@(+ is_vaus is_obstacle)
+    jsr find_point_hit
+    bcs +n
+    lda sprites_i,y
+    and #is_vaus
+    beq +m
+    jmp hit_vaus
+m:  lda sprites_i,y
+    and #is_obstacle
+    bne hit_obstacle
+n:
+
     ; Quick check if foreground collision detection would
     ; detect something at all.
-    tya
+    lda ball_y
     and #%111
     beq +l
     cmp #%111
@@ -193,7 +195,7 @@ l:  jsr reflect
     lda has_collision
     bne +m
 
-k:  jsr check_hit_with_obstacle
+k:  ;jsr check_hit_with_obstacle
     jsr avoid_endless_flight
     jmp half_step_smooth
 
@@ -249,39 +251,6 @@ n:  lda has_hit_brick
 n:  lda #snd_reflection_high
 l:  jmp play_sound
 r:  rts
-
-check_hit_with_obstacle:
-    ldy #@(-- num_sprites)
-l:  lda sprites_i,y
-    and #is_obstacle
-    beq +n
-f:  lda sprites_x,y
-    cmp ball_x
-    bcs +n
-    lda sprites_y,y
-    cmp ball_y
-    bcs +n
-    lda sprites_x,y
-    clc
-    adc #8
-    cmp ball_x
-    bcc +n
-    lda sprites_y,y
-    clc
-    adc #16
-    cmp ball_y
-    bcc +n
-
-    lda #0
-    sta sprites_d2,x
-    jsr reflect_ball_obstacle
-    jsr apply_reflection_unconditionally
-    jsr remove_obstacle
-    jmp adjust_ball_speed
-
-n:  dey
-    bpl -l
-    rts
 
 avoid_endless_flight:
     lda sprites_d2,x
