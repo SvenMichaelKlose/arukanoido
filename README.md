@@ -78,7 +78,7 @@ Discussion: http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?f=14&t
 
 URL: https://cid-05ef0a8eae2a4f4a.onedrive.live.com/self.aspx/.Public/denial/minigrafik/
 
-Discussion: http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?f=2&t=3752
+Discussion: http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?t=7584
 
 ## pixel's assembler "bender"
 
