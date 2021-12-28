@@ -14,10 +14,10 @@ test_vaus_hit_right:
     ldy mode
     cpy #mode_extended
     bne +n
-    cmp #@(+ 2 (* (- 15 4) 8))
+    cmp #@(* (- 15 4) 8)
     bcs +r
     bcc +r
-n:  cmp #@(+ 2 (* (- 15 3) 8))
+n:  cmp #@(* (- 15 3) 8)
 r:  rts
 
 ctrl_vaus:
