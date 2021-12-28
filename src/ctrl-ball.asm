@@ -62,8 +62,6 @@ ball_loop:
 l:  tya
     pha
     jsr ctrl_ball_subpixel
-    lda has_hit_vaus
-    bne -n2
     lda sprites_i,x
     bmi +e              ; Ball sprite has been removed…
     pla
@@ -124,8 +122,8 @@ m:  sta sprites_d,x
     lda #snd_caught_ball
     jmp play_sound
 
-r:  inc has_hit_vaus
-    rts
+r:  lda #snd_reflection_low
+    jmp play_sound
 
 hit_obstacle:
     lda #0
@@ -171,8 +169,6 @@ ctrl_ball_subpixel:
     iny
     sty ball_y
 
-    lda #0
-    sta has_hit_vaus
     lda #@(+ is_vaus is_obstacle)
     jsr find_point_hit
     bcs +n
@@ -180,6 +176,7 @@ ctrl_ball_subpixel:
     and #is_vaus
     beq +m
     jmp hit_vaus
+
 m:  lda sprites_i,y
     and #is_obstacle
     bne hit_obstacle
@@ -247,11 +244,7 @@ l:  jsr apply_reflection
     jmp half_step_smooth
 
 play_reflection_sound:
-    lda has_hit_vaus
-    beq +n
-    lda #snd_reflection_low
-    bne +l
-n:  lda has_hit_brick
+    lda has_hit_brick
     beq +r
     lda has_hit_golden_brick
     ora has_hit_silver_brick
