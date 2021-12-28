@@ -23,10 +23,6 @@ set_format_portrait:
     sta score_x
     lda #1
     sta score_y
-    lda screen_height
-    sec
-    sbc #ball_height
-    sta ball_max_y
 
     jmp set_format_common
 
@@ -50,9 +46,6 @@ set_format_landscape:
     sta hiscore_y
     lda #1
     sta score_y
-    ldx screen_height
-    dex
-    stx ball_max_y
 
 set_format_common:
     ; Make line addresses.
@@ -176,4 +169,18 @@ l:  stx user_screen_origin_x
     adc #0
     sta @(++ screen_gate)
 
+    lda is_landscape
+    bne set_format_landscape2
+
+set_format_portrait2:
+    lda screen_height
+    sec
+    sbc #ball_height
+    sta ball_max_y
+    rts
+
+set_format_landscape2:
+    ldx screen_height
+    dex
+    stx ball_max_y
     rts
