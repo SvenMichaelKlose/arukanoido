@@ -259,34 +259,44 @@ make_bonus_p:
     jmp +ok
 
 make_bonus:
-    ; Check if we should make a bonus.
-    lda removed_bricks
-    cmp #1  ; Always for the first brick.
-    beq +o
-    cmp #4  ; Always for the fourth brick.
-    beq +o
-    and #7  ; Then every eight bricks.
-    bne -r
-
-o:  lda bonus_on_screen
+    ; No bonus if one's already on the screen
+    ; or if a silver brick has been removed.
+    lda bonus_on_screen
     ora has_hit_silver_brick
     bne -r
 
-a:
+    ; Check if we should make a bonus.
+    lda removed_bricks
+    cmp #1  ; Always for the first brick.
+    beq +n
+    cmp #4  ; Always for the fourth brick.
+    beq +n
+    and #7  ; Then every eight bricks.
+    bne -r
+n:
+
 if @*demo?*
     lda next_bonus
     bne +ok
 end
 
+a:
     jsr random
     and #7
     bne +n
     lda #bonus_e
 n:  cmp current_bonus
     beq -a              ; Bonus already active…
-    cmp last_bonus
+    cmp last_bonus      ; Never same bonus in succession.
     beq -a
-    sta last_bonus
+
+    ; No break mode if already active.
+    cmp #bonus_b
+    bne +n
+    lda mode_break
+    bne -a
+    lda #bonus_b
+n:  sta last_bonus
 
 ok: sta @(+ bonus_init sprite_init_data)
     sta bonus_on_screen
