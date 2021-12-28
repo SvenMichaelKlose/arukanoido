@@ -127,7 +127,7 @@ retry:
     lda #16
     sta vaus_width
 
-    jsr clear_sprites
+    jsr clear_screen_of_sprites
     jsr remove_sprites
     jsr draw_walls      ; Freshen up after mode_break.
     jsr draw_lifes
@@ -218,7 +218,7 @@ end
 lose_life:
     jsr wait_for_silence
     jsr remove_sprites
-    jsr clear_sprites
+    jsr clear_screen_of_sprites
     dec lifes
     beq +l
     jmp retry
@@ -238,7 +238,7 @@ if @*has-digis?*
     jsr exm_work
     jsr exm_work
 end
-    jsr clear_sprites
+    jsr clear_screen_of_sprites
     jsr wait_for_silence
     jmp next_level
 

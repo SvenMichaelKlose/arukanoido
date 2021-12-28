@@ -128,7 +128,7 @@ end
 
     rts
 
-clear_sprites:
+clear_screen_of_sprites:
     ldx #0
 l:  lda screen,x
     jsr +j
