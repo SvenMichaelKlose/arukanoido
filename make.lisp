@@ -261,7 +261,7 @@
 (when *all?*
 ;  (when *has-digis?*
 ;    (make-arcade-sounds))
-  (make-cart)
+;  (make-cart)
   (with-temporary *tape?* t
     (make-prg "arukanoido-tape"))
   (with-temporary *show-cpu?* t
