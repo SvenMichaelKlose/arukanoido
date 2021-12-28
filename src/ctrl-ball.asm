@@ -77,26 +77,36 @@ e:  pla
     rts
 
 hit_vaus:
+    ; Get relative X position on Vaus
+    ; which is our reflection table index.
     lda ball_x
     sec
     sbc sprites_x,y
     tay
 
+    ; Chose between normal and exended Vaus'
+    ; relection table.
     lda #16
     cmp vaus_width
     bcc +n
     lda vaus_directions,y
     bne +m              ; (jmp)
 n:  lda vaus_directions_extended,y
-m:  sta sprites_d,x
 
-    lda ball_vaus_y_above
-    sta sprites_y,x
+    ; Save new ball direction.
+m:  sta sprites_d,x
     lda #0
     sta sprites_d2,x
 
+    ; And move it away from the Vaus to
+    ; circument another collision detection.
+    lda ball_vaus_y_above
+    sta sprites_y,x
+
+    ; Increase ball speed if it's time.
     jsr adjust_ball_speed
 
+    ; Check if ball has to be catched.
     lda mode
     cmp #mode_catching
     bne +r
@@ -116,6 +126,7 @@ m:  sta sprites_d,x
 
 r:  inc has_hit_vaus
     rts
+
 hit_obstacle:
     lda #0
     sta sprites_d2,x
@@ -123,7 +134,6 @@ hit_obstacle:
     jsr apply_reflection_unconditionally
     jsr remove_obstacle
     jmp adjust_ball_speed
-
 
 lose_ball:
     pla
