@@ -328,8 +328,8 @@ ball_speeds_when_top_hit:
     7 0 0 0 0 7 8 7 0 7
     0 0 0 0
 
-ball_accelerations_after_brick_hits:
-    $00 $19 $19 $23 $23 $2d $3c $50 $78 $8c $a0 $b4 $c8 $dc $f0 $ff
+ball_accelerations:
+    $00 $19 $19 $23 $23 $2d $3c $50 $78 $8c $a0 $b4 $c8 $dc $f0
 
 adjust_ball_speed_hitting_top:
     lda sprites_y,x
@@ -348,17 +348,19 @@ l:  sta ball_speed
     rts
 
 adjust_ball_speed:
+    lda ball_speed
+    cmp #$0f
+    beq +n
+    lsr
+    tay
     inc num_hits
-    ldy #0
-l:  lda ball_accelerations_after_brick_hits,y
-    cmp num_hits
-    beq increase_ball_speed
-    iny
-    cpy #16
-    bne -l
-    beq +n      ; (jmp)
+    lda num_hits
+    cmp ball_accelerations,y
+    bcc +n
 
 increase_ball_speed:
+    lda #0
+    sta num_hits
     lda ball_speed
     ldy is_using_paddle
     bne +m

@@ -37,10 +37,10 @@ direction_rs    = @(- 128 deg_shallow)
 ; Game settings
 
 default_num_lifes       = 3
-default_ball_speed      = 5
 
+default_ball_speed      = 5
 min_ball_speed          = 2
-max_ball_speed          = 16
+max_ball_speed          = 15
 max_ball_speed_joystick = 6
 max_ball_speed_joystick_top = 6
 

@@ -122,10 +122,17 @@ apply_bonus_c:
     rts
 
 apply_bonus_s:
-    lda #min_ball_speed
-    sta ball_speed
-    lda #$15
+    lda #0
     sta num_hits
+    ldy ball_speed
+    dey
+    dey
+    cpy #min_ball_speed
+    bcc +n
+    sty ball_speed
+    rts
+n:  lda #min_ball_speed
+    sta ball_speed
     rts
 
 apply_bonus_b:
