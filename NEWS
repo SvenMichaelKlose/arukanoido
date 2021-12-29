@@ -1,7 +1,8 @@
 Changes orelative to 915:
    * Many small bug fixes.
-   * Speed increase more like the original arcade coin-op.
-   * Dropped cart version.
+   * Ball acceleration more like the original arcade coin-op.
+   * Dropped cart and cpumon version.
+   * Fixed sprite collision detection.
 
 Changes of 915 relative to 908:
   * Fixes output quality of original arcade sounds.
