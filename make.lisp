@@ -243,7 +243,7 @@
                       :pty cl:*standard-output*))
 
 (fn make-zip ()
-  (unix-sh-cp "arukanoido.prg" "arukanoido/")
+  (unix-sh-cp "obj/arukanoido.prg" "arukanoido/")
   ;(unix-sh-cp "arukanoido-cpumon.prg" "arukanoido/arukanoido-cpumon.prg")
   (sb-ext:run-program "/bin/cp"
                       (list "README.md" "NEWS" "arukanoido/")
@@ -279,7 +279,8 @@
 (load "c2nwarp/make.lisp")
 
 (fn make-tap ()
-  (apply #'assemble-files "obj/tape-loader.prg"
+  (apply #'assemble-files
+         "obj/tape-loader.prg"
          `("src/music-index.asm"
            "loader/zeropage.asm"
            "bender/vic-20/basic-loader.asm"
@@ -289,7 +290,7 @@
            "loader/audio.asm"
            "loader/loader.asm"
            "loader/ctrl.asm"))
-  (make-vice-commands "loader.lbl" "break .stop")
+  (make-vice-commands "obj/loader.lbl" "break .stop")
   (format t "Short pulse: ~A~%" *pulse-short*)
   (format t "Long pulse: ~A~%" *pulse-long*)
   (format t "Pulse interval: ~A~%" *pulse-interval*)
@@ -315,29 +316,30 @@
                     (with-string-stream s (c2ntap s i)))
                   (when *ultimem?*
                     (format t "Appending Ultimem arcade audio…~%")
-                    (apply #'+ (@ [(format t "Appending \"~A\"…~%" _)
-                                   (let l (length (fetch-file (+ "obj-audio/" _ ".1.8000.raw")))
-                                     (with-stream-string i (+ (string (code-char (mod l 256)))
-                                                              (string (code-char (mod (>> l 8) 256)))
-                                                              (string (code-char (>> l 16)))
-                                                              (fetch-file (+ "obj-audio/" _ ".1.8000.exm")))
-                                       (with-string-stream s (c2ntap s i :sync? nil :gap #x4000000))))]
-                                  '("break-out"
-                                    "explosion"
-                                    "extension"
-                                    "extra-life"
-                                    "game-over"
-                                    "laser"
-                                    "lost-ball"
-                                    "reflection-doh"
-                                    "reflection-high"
-                                    "reflection-med"
-                                    "reflection-low"
-                                    "round-intro"
-                                    "round-start"
-                                    "doh-dissolving"
-                                    "doh-intro"
-                                    "final"))))))))
+                    (apply #'+
+                           (@ [(format t "Appending \"~A\"…~%" _)
+                               (let l (length (fetch-file (+ "obj-audio/" _ ".1.8000.raw")))
+                                 (with-stream-string i (+ (string (code-char (mod l 256)))
+                                                          (string (code-char (mod (>> l 8) 256)))
+                                                          (string (code-char (>> l 16)))
+                                                          (fetch-file (+ "obj-audio/" _ ".1.8000.exm")))
+                                    (with-string-stream s (c2ntap s i :sync? nil :gap #x4000000))))]
+                              '("break-out"
+                                "explosion"
+                                "extension"
+                                "extra-life"
+                                "game-over"
+                                "laser"
+                                "lost-ball"
+                                "reflection-doh"
+                                "reflection-high"
+                                "reflection-med"
+                                "reflection-low"
+                                "round-intro"
+                                "round-start"
+                                "doh-dissolving"
+                                "doh-intro"
+                                "final"))))))))
 
 (make-tap)
 

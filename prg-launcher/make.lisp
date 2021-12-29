@@ -1,6 +1,5 @@
 (fn make-prg-launcher ()
-  (make 
-        "arukanoido.prg"
+  (make "obj/arukanoido.prg"
         (@ [+ "prg-launcher/" _]
            `("../bender/vic-20/vic.asm"
              "zeropage.asm"
@@ -11,4 +10,4 @@
              ,@(& *has-digis?*
                   '("../src/music-arcade-blk5.asm"))
              "blk5-end.asm"))
-        "obj/prg-launcher.vice.txt"))
+        "obj/prg-launcher.lbl"))
