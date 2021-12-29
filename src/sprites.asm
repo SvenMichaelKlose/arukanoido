@@ -166,6 +166,8 @@ l:  cpy find_hit_tmp    ; Skip same sprite.
     asl
     asl
     asl
+    sec
+    sbc #1
     clc
     adc sprites_x,y
     cmp sprites_x,x
@@ -173,6 +175,8 @@ l:  cpy find_hit_tmp    ; Skip same sprite.
 
     lda sprites_dimensions,y
     and #%111000
+    sec
+    sbc #1
     clc
     adc sprites_y,y
     cmp sprites_y,x
@@ -217,19 +221,21 @@ l:  lda sprites_i,y
     and find_hit_types
     beq +n
 
-    lda sprites_x,y
-    cmp ball_x
-    bcs +n
+    lda ball_x
+    cmp sprites_x,y
+    bcc +n
 
-    lda sprites_y,y
-    cmp ball_y
-    bcs +n
+    lda ball_y
+    cmp sprites_y,y
+    bcc +n
 
     lda sprites_dimensions,y
     and #%111
     asl
     asl
     asl
+    sec
+    sbc #1
     clc
     adc sprites_x,y
     cmp ball_x
@@ -239,6 +245,8 @@ l:  lda sprites_i,y
     and #%111000
     clc
     adc sprites_y,y
+    sec
+    sbc #1
     cmp ball_y
     bcc +n
     clc
