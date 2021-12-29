@@ -264,9 +264,6 @@
 ;  (make-cart)
   (with-temporary *tape?* t
     (make-prg "arukanoido-tape"))
-;  (with-temporary *show-cpu?* t
-;    (make-prg "arukanoido-cpumon")
-;    (make-prg-launcher))
   (with-temporary *shadowvic?* t
     (with-temporary *has-digis?* nil
       (make-prg "arukanoido-shadowvic"))))
