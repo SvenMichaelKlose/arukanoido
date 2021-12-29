@@ -60,7 +60,6 @@ n:  pla
 
     ; Silver brick's score is 50 multiplied by round number.
 remove_silver:
-    inc removed_bricks
     lda #<score_silver
     sta s
     lda #>score_silver

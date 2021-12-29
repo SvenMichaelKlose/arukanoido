@@ -3,6 +3,7 @@ Changes orelative to 915:
    * Ball acceleration more like the original arcade coin-op.
    * Dropped cart and cpumon version.
    * Fixed sprite collision detection.
+   * Hitting silver bricks does not delay bonuses.
 
 Changes of 915 relative to 908:
   * Fixes output quality of original arcade sounds.
