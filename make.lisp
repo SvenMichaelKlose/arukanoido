@@ -221,7 +221,7 @@
           `("prg-launcher/blk5.asm"
             "src/music-arcade-blk5.asm"
             "src/blk5-end.asm")
-          "obj/music-arcade-blk5.lbl"))
+          "obj/music-arcade-blk5.bin.lbl"))
   (with-temporary *imported-labels* (get-labels)
     (make-game (+ "obj/" file ".prg") (+ "obj/" file ".prg.lbl")))
   (unless *shadowvic?*
@@ -290,7 +290,7 @@
            "loader/audio.asm"
            "loader/loader.asm"
            "loader/ctrl.asm"))
-  (make-vice-commands "obj/loader.lbl" "break .stop")
+  (make-vice-commands "obj/tape-loader.prg.lbl" "break .stop")
   (format t "Short pulse: ~A~%" *pulse-short*)
   (format t "Long pulse: ~A~%" *pulse-long*)
   (format t "Pulse interval: ~A~%" *pulse-interval*)
