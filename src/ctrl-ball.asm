@@ -45,9 +45,6 @@ turn_counterclockwise:
     jmp -l
 
 
-n2: pla
-n:  jmp play_reflection_sound
-
 l:  dec ball_release_timer
     bne +r
     jsr release_ball
@@ -63,18 +60,22 @@ l:  tya
     pha
     jsr ctrl_ball_subpixel
     lda sprites_i,x
-    bmi +e              ; Ball sprite has been removed…
     pla
+    bmi +r              ; Ball sprite has been removed…
     tay
 
     dey
     bne -l
 r:  rts
 
-e:  pla
-    rts
-
+l:  jmp no_vaus_collision
 hit_vaus:
+    ; Ignore ball if it's not headed downwards.
+    lda sprites_d,x
+    sec
+    sbc #64
+    bpl -l
+
     ; Get relative X position on Vaus
     ; which is our reflection table index.
     lda ball_x
@@ -96,12 +97,7 @@ m:  sta sprites_d,x
     lda #0
     sta sprites_d2,x
 
-    ; And move it away from the Vaus to
-    ; circument another collision detection.
-    lda ball_vaus_y_above
-    sta sprites_y,x
-
-    ; Increase ball speed if it's time.
+    ; Increase ball speed on occasion.
     jsr adjust_ball_speed
 
     ; Check if ball has to be catched.
@@ -182,6 +178,7 @@ m:  lda sprites_i,y
     bne hit_obstacle
 n:
 
+no_vaus_collision:
     ; Quick check if foreground collision detection would
     ; detect something at all.
     lda ball_y
