@@ -10,4 +10,4 @@
              ,@(& *has-digis?*
                   '("../src/music-arcade-blk5.asm"))
              "blk5-end.asm"))
-        "obj/prg-launcher.lbl"))
+        "obj/arukanoido.lbl"))
