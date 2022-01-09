@@ -122,6 +122,7 @@
                           "sprites-vic-common.asm"
 ;                          "sprites-vic.asm"
                           "sprites-vic-huge.asm"
+                          "sprites-vic-huge-preshifted.asm"
 
                           ; Level display
                           "brick-fx.asm"
