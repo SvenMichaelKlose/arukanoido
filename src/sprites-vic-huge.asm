@@ -78,6 +78,8 @@ l:  sta sprite_char
 n:
 
     ; Copy background graphics into allocated chars.
+    ; TODO: Try just clearing the destination as it might not
+    ; interfere with the game play so much and improve performance.
     lda sprite_cols_on_screen
     sta draw_sprites_tmp3
     lda sprite_x
