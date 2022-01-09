@@ -99,9 +99,12 @@ n:  rts
 preshift_huge_sprite:
     ldy #0
 l:  tya
+    pha
     jsr preshift_huge_sprite_one_offset
-    lda sprites_c,x
+    pla
+    tay
     iny
+    lda sprites_c,x
     and #multicolor ; Multicolor flag?
     beq +n          ; No, step on a single bit.
     iny             ; Yes, step one two bits.
