@@ -1,12 +1,13 @@
 ; Preshift sprite graphics for a sprite.
 ;
 ; A: Number of bits to shift.
-; X: Sprite index
+; Y: Sprite dimensions (lower octet is number of chars for X axis, next octet is Y axis)
+; s: Graphics address
 ; d: Destination address
 preshift_huge_sprite_one_offset:
     ; Determine width.
     pha
-    lda sprites_dimensions,x
+    lda draw_sprites_tmp
     and #%111
     sta sprite_cols
     sta sprite_cols_on_screen
@@ -19,7 +20,7 @@ preshift_huge_sprite_one_offset:
 n:
 
     ; Determine height.
-    lda sprites_dimensions,x
+    lda draw_sprites_tmp
     lsr
     lsr
     lsr
@@ -94,20 +95,31 @@ n:  rts
 ; Will shift 4 times for multicoloured sprites and 8 times
 ; for hires ones.
 ;
-; X: Sprite index
+; X: hires (0)/multicolor (not 0)
+; Y: Sprite dimensions (lower octet is number of chars for X axis, next octet is Y axis)
+; s: Sprite graphics
 ; d: Destination address
 preshift_huge_sprite:
+    sta draw_sprites_tmp
+    stx draw_sprites_tmp2
     ldy #0
-l:  tya
+l:  lda s
+    pha
+    lda @(+ s 1)
+    pha
+    tya
     pha
     jsr preshift_huge_sprite_one_offset
     pla
     tay
+    pla
+    sta @(+ s 1)
+    pla
+    sta s
     iny
-    lda sprites_c,x
-    and #multicolor ; Multicolor flag?
-    beq +n          ; No, step on a single bit.
-    iny             ; Yes, step one two bits.
+    lda draw_sprites_tmp2
+    beq +n          ; Hires, step on a single bit.
+    iny             ; Multicolor, step two bits.
 n:  cpy #8
     bne -l
     rts
