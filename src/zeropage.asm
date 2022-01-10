@@ -15,8 +15,8 @@ ch:                   0
 
 scr:                  0 0 ; Screen pointer (line start)
 col:                  0 0 ; Colour RAM pointer
-scrx:                 8   ; X position
-scry:                 0   ; Y position
+scrx:                 8   ; Screen char X position
+scry:                 0   ; Screen char Y position
 curchar:              0   ; Last allocated character
 curcol:               0   ; Character colour
 
@@ -98,15 +98,14 @@ ball_y:               0
 scorechar_start:      0
 
 ; Currently processed sprite
-sprite_char:        0   ; First char.
-sprite_x:           0   ; X position (text).
-sprite_y:           0   ; Y position (text).
-sprite_cols:        0
-sprite_cols_on_screen:  0
-sprite_rows:        0
-sprite_rows_on_screen:  0
-sprite_width:       0
-sprite_lines:       0
+sprite_char:            0   ; First char.
+sprite_x:               0   ; X char position
+sprite_y:               0   ; Y char position
+sprite_cols:            0   ; Numer of columns.
+sprite_cols_on_screen:  0   ; Numer of columns (+1 on shift).
+sprite_rows:            0   ; Number of rows.
+sprite_rows_on_screen:  0   ; Number of rows (+1 with offset line).
+sprite_lines:           0
 sprite_lines_on_screen: 0
 
 sprites_i:          fill num_sprites  ; Flags.
@@ -129,11 +128,11 @@ sprites_h:      fill num_sprites
 
 score:      fill num_score_digits
 
+; De-exomizer.
 zp_src_hi:      0
 zp_src_lo:      0
 zp_src_bi:      0
 zp_bitbuf:      0
-
 zp_len_lo:      0 0
 zp_bits_lo:     0
 zp_bits_hi:     0
@@ -141,6 +140,7 @@ zp_dest_hi:     0
 zp_dest_lo:     0
 zp_dest_bi:     0
 
+; Run-length audio decoder.
 rle_val:        0
 rle_cnt:        0
 rle_bit:        0
@@ -148,17 +148,19 @@ rle_singles:    0
 raw_play_ptr:
 rle_play_ptr:   0 0
 
+; No need to zero out the zero page from here on for a game restart.
+
 uncleaned_zp:
 user_screen_origin_x:   0
 user_screen_origin_y:   0
 
-is_ntsc:                0
-is_landscape:           0
+; These do not have to be on page zero.
+is_ntsc:                    0
+is_landscape:               0
 is_playing_digis:           0
 currently_playing_digis:    0
-has_ultimem:            0
+has_ultimem:                0
 
-    ; fb instead of fc to keep space for native player?
     @(check-zeropage-size (- #x00fc num_score_digits))
     org @(- #x00fc num_score_digits)
 
@@ -236,7 +238,6 @@ ball_max_x:         0
 ball_max_y:         0
 ball_min_y:         0
 screen_gate:        0 0
-
 
 ; Temporaries
 
