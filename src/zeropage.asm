@@ -116,7 +116,7 @@ sprites_gl:         fill num_sprites  ; Low character addresses.
 sprites_gh:         fill num_sprites  ; High character addresses.
 sprites_fl:         fill num_sprites  ; Function controlling the sprite (low).
 sprites_fh:         fill num_sprites  ; Function controlling the sprite (high).
-sprites_dimensions: fill num_sprites  ; %0000rrcc
+sprites_dimensions: fill num_sprites  ; %00rrrccc (r = num rows, c = num cols).
 sprites_d:          fill num_sprites  ; Whatever the controllers want.
 
 sprites_dx:     fill num_sprites ; Ball subpixel position
