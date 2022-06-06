@@ -153,16 +153,25 @@ l:  cpy find_hit_tmp    ; Skip same sprite.
     and find_hit_types
     beq +n
 
-    lda sprites_x,y
-    cmp find_hit_tmp2
-    bcs +n
-
     lda sprites_y,y
     cmp find_hit_tmp3
     bcs +n
 
+    lda sprites_x,y
+    cmp find_hit_tmp2
+    bcs +n
+
     lda sprites_dimensions,y
-    and #%111
+    and #%00111000
+    sec
+    sbc #1
+    clc
+    adc sprites_y,y
+    cmp sprites_y,x
+    bcc +n
+
+    lda sprites_dimensions,y
+    and #%00000111
     asl
     asl
     asl
@@ -173,14 +182,6 @@ l:  cpy find_hit_tmp    ; Skip same sprite.
     cmp sprites_x,x
     bcc +n
 
-    lda sprites_dimensions,y
-    and #%111000
-    sec
-    sbc #1
-    clc
-    adc sprites_y,y
-    cmp sprites_y,x
-    bcc +n
     clc
     rts
 
