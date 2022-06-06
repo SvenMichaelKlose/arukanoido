@@ -5,22 +5,25 @@
 (var *audio-rate-fast* 5000)
 (var *audio-rate-expanded* 6000)
 
-(var *demo?* nil)
-(var *all?* t)
-(var *add-charset-base?* t)
+(var *demo?* nil)       ; Limit to first eight levels.
+(var *all?* t)          ; Cart, tape, shadowVIC. Only PRG if nil.
+(var *wav?* nil)        ; Tape WAV.
+(var *has-digis?* t)    ; Original arcade sounds, highly compressed
+                        ; with exomizer or home-made RLE.
+(var *add-charset-base?* t) ; TODO: Hard code it.
 (var *debug?* nil)
 (var *revision* (!= (fetch-file "_revision")
                   (subseq ! 0 (-- (length !)))))
 
-(var *rom?* nil)
+(var *rom?* nil)        ; By that we mean 'cart'.
 (var *tape?* nil)
 (var *shadowvic?* nil)
-(var *ultimem?* nil)
-(var *show-cpu?* nil)
-(var *has-digis?* t)
+(var *ultimem?* nil)    ; Add support for high-end arcade audio
+                        ; (from tape or SD only).
+(var *show-cpu?* nil)   ; Border effects by sprite engine.
 
 (fn exomize-stream (from to)
-  (sb-ext:run-program "/usr/local/bin/exomizer" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
+  (sb-ext:run-program "/usr/local/bin/exomizer-2.0.10" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
                       :pty cl:*standard-output*))
 
 (load "build/audio.lisp")
@@ -28,6 +31,7 @@
 (load "build/level-data.lisp")
 (load "media/make.lisp")
 (load "prg-launcher/make.lisp")
+(load "c2nwarp/make.lisp")
 
 (fn gen-sprite-nchars ()
   (with-queue q
@@ -199,19 +203,18 @@
 
                           "end.asm"))
         cmds)
+  (format t "Level data (uncompressed): ~A B~%" (length +level-data+))
   (format t "Game end: ~X~%" (get-label '__end_game))
   (format t "Round start end: ~X~%" (get-label '__end_round_start))
   (format t "Round start size: ~A~%" (- (get-label '__end_round_start) (get-label '__end_game)))
   (format t "Hiscore size: ~A~%" (- (get-label '__end_hiscore) (get-label '__end_round_start)))
   (format t "Round intro end: ~X~%" (get-label '__end_round_intro))
   (format t "Round intro size: ~A~%" (- (get-label '__end_round_intro) (get-label '__end_hiscore)))
-  (format t "Low digi end: ~X~%" (get-label 'the_end))
+  (!= (- #x8000 (get-label 'the_end))
+    (format t "End: ~X (~A bytes free before $8000.)~%" (get-label 'the_end) !))
   (!= (- #x314 (get-label 'before_int_vectors))
     (format t "~A bytes free before interrupt vectors.~%" !)
-    (? (< ! 0)
-       (quit)))
-  (!= (- #x8000 (get-label 'the_end))
-    (format t "~A bytes free before $8000.~%" !))
+    (& (< ! 0) (quit)))
   (when *has-digis?*
     (!= (- #xc000 (get-label 'blk5_end))
       (format t "~A bytes free before $C000.~%" !))))
@@ -226,7 +229,7 @@
   (with-temporary *imported-labels* (get-labels)
     (make-game (+ "obj/" file ".prg") (+ "obj/" file ".prg.lbl")))
   (unless *shadowvic?*
-    (sb-ext:run-program "/usr/local/bin/exomizer"
+    (sb-ext:run-program "/usr/local/bin/exomizer-2.0.10"
                         (list "sfx" "basic" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
                         :pty cl:*standard-output*)))
 
@@ -242,42 +245,6 @@
   (sb-ext:run-program "/usr/bin/split"
                       (list "-b" "8192" "obj/arukanoido.img" "arukanoido/arukanoido.img.")
                       :pty cl:*standard-output*))
-
-(fn make-zip ()
-  (unix-sh-cp "obj/arukanoido.prg" "arukanoido/")
-  ;(unix-sh-cp "arukanoido-cpumon.prg" "arukanoido/arukanoido-cpumon.prg")
-  (sb-ext:run-program "/bin/cp"
-                      (list "README.md" "NEWS" "arukanoido/")
-                      :pty cl:*standard-output*))
-
-(unix-sh-mkdir "obj")
-(unix-sh-mkdir "obj-audio")
-(unix-sh-mkdir "arukanoido")
-
-(gen-vcpu-tables "src/_vcpu.asm")
-(make-font)
-(make-level-data)
-(make-media)
-
-(when *all?*
-;  (when *has-digis?*
-;    (make-arcade-sounds))
-;  (make-cart)
-  (with-temporary *tape?* t
-    (make-prg "arukanoido-tape"))
-  (with-temporary *shadowvic?* t
-    (with-temporary *has-digis?* nil
-      (make-prg "arukanoido-shadowvic"))))
-
-(make-prg "arukanoido-disk")
-(make-prg-launcher)
-
-(when *all?*
-  (make-zip))
-
-(format t "Level data: ~A B~%" (length +level-data+))
-
-(load "c2nwarp/make.lisp")
 
 (fn make-tap ()
   (apply #'assemble-files
@@ -342,6 +309,49 @@
                                 "doh-intro"
                                 "final"))))))))
 
-(make-tap)
+(unix-sh-mkdir "obj")
+(unix-sh-mkdir "obj-audio")
+(unix-sh-mkdir "arukanoido")
+
+(gen-vcpu-tables "src/_vcpu.asm")
+(make-font)
+(make-level-data)
+(make-media)
+
+(make-prg "arukanoido-disk")
+(? *has-digis?*
+   (progn
+     (make-prg-launcher)
+     (unix-sh-cp "obj/arukanoido.prg" "arukanoido/"))
+   (unix-sh-cp "obj/arukanoido-disk.exo.prg" "arukanoido/arukanoido.prg"))
+
+(when *all?*
+;  (when *has-digis?*
+;    (make-arcade-sounds))
+;  (make-cart)
+  (with-temporary *tape?* t
+    (make-prg "arukanoido-tape")
+    (make-tap))
+  (with-temporary *shadowvic?* t
+    (with-temporary *has-digis?* nil
+      (make-prg "arukanoido-shadowvic"))))
+
+;(unix-sh-cp "arukanoido-cpumon.prg" "arukanoido/arukanoido-cpumon.prg")
+(sb-ext:run-program "/bin/cp"
+                    (list "README.md" "NEWS" "arukanoido/")
+                    :pty cl:*standard-output*)
+
+(when *wav?*
+  (with-input-file i "arukanoido/arukanoido.tap"
+    (with-output-file o "arukanoido/arukanoido.wav"
+      (tap2wav i o 44100 (cpu-cycles :ntsc)))))
+
+(sb-ext:run-program "/usr/bin/zip" (list "-r" "-9" "arukanoido.zip" "arukanoido")
+                    :pty cl:*standard-output*)
+(sb-ext:run-program "/bin/cp" (list "arukanoido.zip"
+                                    (+ "arukanoido."
+                                       (? *demo?* "demo." "")
+                                       *revision* ".zip"))
+                    :pty cl:*standard-output*)
 
 (quit)
