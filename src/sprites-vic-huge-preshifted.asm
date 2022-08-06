@@ -1,12 +1,15 @@
 ; Preshift sprite graphics for a sprite.
 ;
 ; A: Number of bits to shift.
-; Y: Sprite dimensions (lower octet is number of chars for X axis, next octet is Y axis)
+; Y: Sprite dimensions (00YYYXXX)
+;    X: width of X axis
+;    Y: height of Y axis
 ; s: Graphics address
 ; d: Destination address
 preshift_huge_sprite_one_offset:
-    ; Determine width.
     pha
+
+    ; Determine width.
     lda draw_sprites_tmp
     and #%111
     sta sprite_cols
@@ -100,7 +103,7 @@ n:  rts
 ; s: Sprite graphics
 ; d: Destination address
 preshift_huge_sprite:
-    sta draw_sprites_tmp
+    sty draw_sprites_tmp
     stx draw_sprites_tmp2
     ldy #0
 l:  lda s
