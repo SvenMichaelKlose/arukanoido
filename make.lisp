@@ -66,14 +66,14 @@
         (@ [+ "src/" _] `("../bender/vic-20/vic.asm"
                           "constants.asm"
                           "zeropage.asm"
+
                           ,@(unless (| *shadowvic?* *rom?*)
                               '("../bender/vic-20/basic-loader.asm"))
-                          ,@(unless *rom?*
+                          ,@(? *rom?*
+                              '("init-rom.asm")
                               '("init.asm"
                                 "patch.asm"
                                 "gap.asm"))
-                          ,@(when *rom?*
-                              '("init-rom.asm"))
 
                           ; Imported music player binary.
                           "music-player.asm"
@@ -88,6 +88,8 @@
                           "gfx-obstacle-pyramid.asm"
                           "gfx-obstacle-spheres.asm"
                           "gfx-sprites.asm"
+                          "gfx-taito.asm"
+                          "gfx-ship.asm"
 
                           ; Mixed data
                           "bits.asm"
@@ -112,11 +114,12 @@
                           "exomizer-stream-decrunsh.asm"
                           "wait.asm"
 
-                          ; Graphics
+                          ; Graphics library
                           "print.asm"
                           "format.asm"
                           "chars.asm"
                           "screen.asm"
+                          "draw-bitmap.asm"
 
                           ; Sprites
                           ,@(unless *rom?*
@@ -129,13 +132,25 @@
                           ,@(unless *has-digis?*
                               '("sprites-vic-huge-preshifted.asm"))
 
+                          ; Digital audio
+                          ,@(when *has-digis?*
+                              `(,@(unless *rom?*
+                                    '("exm-nmi.asm"))
+                                "audio-boost.asm"
+                                "digi-nmi.asm"
+                                "exm-player.asm"
+                                ,@(when *ultimem?*
+                                    '("raw-player.asm"))
+                                "rle-player.asm"
+                                "music-arcade.asm"))
+
                           ; Level display
                           "brick-fx.asm"
                           "draw-level.asm"
                           "lifes.asm"
                           "score-display.asm"
 
-                          ; Display object interactions
+                          ; Collisions
                           "get-collision.asm"
                           "hit-brick.asm"
                           "reflect.asm"
@@ -157,37 +172,15 @@
                           "music-index.asm"
                           "music.asm"
 
-                          ; Game control
+                          ; Top-level
                           ,@(when *debug?*
                               '("debug.asm"))
                           "irq.asm"
                           "game.asm"
-
-                          ; Program entry point
-                          "draw-bitmap.asm"
-                          "gfx-taito.asm"
                           "main.asm"
-
                           "round-start.asm"
-
-                          ; Hiscore table
                           "hiscore.asm"
-
-                          ; Round intro
-                          "gfx-ship.asm"
                           "round-intro.asm"
-
-                          ; Digital audio
-                          ,@(when *has-digis?*
-                              `(,@(unless *rom?*
-                                    '("exm-nmi.asm"))
-                                "audio-boost.asm"
-                                "digi-nmi.asm"
-                                "exm-player.asm"
-                                ,@(when *ultimem?*
-                                    '("raw-player.asm"))
-                                "rle-player.asm"
-                                "music-arcade.asm"))
 
                           ,@(when *rom?*
                               `("init.asm"
@@ -196,6 +189,7 @@
                                 ,@(when *has-digis?*
                                     `("music-arcade-blk5.asm"
                                       "blk5-end.asm"))
+
                                 "lowmem-start.asm"
                                 "blitter.asm"
                                 ,@(when *has-digis?*
