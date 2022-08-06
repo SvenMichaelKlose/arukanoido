@@ -18,7 +18,7 @@ rle_start:
 
     jmp digi_nmi_start
 
-rle_fetch:
+rle_fetch_nibble:
     lda rle_bit
     inc rle_bit
     lsr             ; Left or right nibble?
@@ -41,7 +41,7 @@ rle_play_single:
     sty digisound_y
     lda $9114
     ldy #0
-    jsr rle_fetch
+    jsr rle_fetch_nibble
     ora #$b0            ; (auxiliary colour)
     sta $900e
     dec rle_singles
@@ -63,7 +63,7 @@ rle_play_multiple:
 ; Start next run.
 m:  sty digisound_y
     ldy #0
-n:  jsr rle_fetch
+n:  jsr rle_fetch_nibble
     cmp #0
     beq +done
     cmp #8              ; High nibble bit set?
@@ -80,7 +80,7 @@ n:  jsr rle_fetch
     rti
 
 n:  sta rle_cnt
-    jsr rle_fetch
+    jsr rle_fetch_nibble
     ora #$b0
     sta rle_val
     lda #<rle_play_multiple
@@ -96,4 +96,4 @@ done:
     sta current_song
     jsr digi_nmi_stop
     jsr stop_audio_boost
-    bne -r
+    bne -r              ; (jmp)
