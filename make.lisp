@@ -8,7 +8,7 @@
 (var *demo?* nil)       ; Limit to first eight levels.
 (var *all?* t)          ; Cart, tape, shadowVIC. Only PRG if nil.
 (var *wav?* nil)        ; Tape WAV.
-(var *has-digis?* t)    ; Original arcade sounds, highly compressed
+(var *has-digis?* nil)  ; Original arcade sounds, highly compressed
                         ; with exomizer or home-made RLE.
 (var *add-charset-base?* t) ; TODO: Hard code it.
 (var *debug?* nil)
@@ -126,7 +126,8 @@
                           "sprites-vic-common.asm"
 ;                          "sprites-vic.asm"
                           "sprites-vic-huge.asm"
-                          "sprites-vic-huge-preshifted.asm"
+                          ,@(unless *has-digis?*
+                              '("sprites-vic-huge-preshifted.asm"))
 
                           ; Level display
                           "brick-fx.asm"
@@ -210,14 +211,14 @@
   (format t "Hiscore size: ~A~%" (- (get-label '__end_hiscore) (get-label '__end_round_start)))
   (format t "Round intro end: ~X~%" (get-label '__end_round_intro))
   (format t "Round intro size: ~A~%" (- (get-label '__end_round_intro) (get-label '__end_hiscore)))
+  (format t "~A zero page bytes free.~%" (- #x00fc (get-label 'zp_end)))
+  (format t "~A bytes free before interrupt vectors.~%" (- #x314 (get-label 'before_int_vectors)))
+  (format t "~A low memory bytes free.~%" (- #x0400 (get-label 'lowmem)))
   (!= (- #x8000 (get-label 'the_end))
-    (format t "End: ~X (~A bytes free before $8000.)~%" (get-label 'the_end) !))
-  (!= (- #x314 (get-label 'before_int_vectors))
-    (format t "~A bytes free before interrupt vectors.~%" !)
-    (& (< ! 0) (quit)))
+    (format t "~A bytes free before $8000.~%" !))
   (when *has-digis?*
     (!= (- #xc000 (get-label 'blk5_end))
-      (format t "~A bytes free before $C000.~%" !))))
+      (format t "~A bytes free before $c000.~%" !))))
 
 (fn make-prg (file)
   (when *has-digis?*
@@ -328,7 +329,7 @@
 (when *all?*
 ;  (when *has-digis?*
 ;    (make-arcade-sounds))
-;  (make-cart)
+  (make-cart)
   (with-temporary *tape?* t
     (make-prg "arukanoido-tape")
     (make-tap))
