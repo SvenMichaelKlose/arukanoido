@@ -5,6 +5,7 @@ if @*shadowvic?*
     bne wait
     rts
 end
+
     lda framecounter
 l:
 if @*has-digis?*
@@ -16,8 +17,10 @@ if @*has-digis?*
     tax
     pla
 end
+
     cmp framecounter
     beq -l
+
     dex
     bne wait
     rts

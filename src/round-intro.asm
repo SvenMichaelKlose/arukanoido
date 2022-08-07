@@ -23,15 +23,13 @@ round_intro:
     lda #<gfx_ship
     ldy #>gfx_ship
     jsr draw_bitmap
-
     jsr wait_retrace
     pla
     sta $9002
 
+    ; Save free char position before printing text page.
     lda curchar
     sta tmp4
-    lda #white
-    sta curcol
 
     lda #snd_theme
     jsr play_sound
@@ -46,6 +44,8 @@ l5: ldx playfield_yc
     stx scry
     lda tmp4
     sta curchar
+    lda #white
+    sta curcol
 
 l:
 if @*shadowvic?*
@@ -56,10 +56,12 @@ end
 l2: jsr print_char
     cmp #254
     bne +n
+
     inc scry
     inc scry
     inc curchar
     jmp -l
+
 n:  cmp #253
     beq +r
     cmp #255
@@ -69,7 +71,6 @@ n:  cmp #253
 
     ldx #2
     jsr wait
-
     jmp -l2
 
 r2: jsr wait_fire_released
