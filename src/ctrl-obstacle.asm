@@ -126,6 +126,11 @@ n:  sty sprites_x,x
     sta sprites_gl,x
     lda gfx_obstacles_gh,y
     sta sprites_gh,x
+    lda gfx_obstacles_pg
+    sta sprites_pgl,x
+    lda @(++ gfx_obstacles_pg),y
+    sta sprites_pgh,x
+
 done:
     rts
 
