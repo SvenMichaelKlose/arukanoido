@@ -57,6 +57,38 @@ next_level:
     cmp #34
     beq game_done
 
+    ; Pre-shift obstacle animation.
+    ldy level
+    lda @(-- level_obstacle),y
+    tay
+    lda gfx_obstacles_gl,y
+    sta s
+    lda gfx_obstacles_gh,y
+    sta @(++ s)
+    lda gfx_obstacles_gl_end,y
+    sta c
+    lda gfx_obstacles_gh_end,y
+    sta @(++ c)
+    lda gfx_obstacles
+    sta d
+    lda @(++ gfx_obstacles)
+    sta @(++ d)
+l:  ldx #0
+    ldy #17
+    jsr preshift_huge_sprite
+    lda s
+    clc
+    adc #16
+    sta s
+    bcc +n
+    inc @(++ s)
+n:  lda s
+    cmp c
+    bne -l
+    lda @(++ s)
+    cmp @(++ c)
+    bne -l
+
 if @*demo?*
     cmp #9
     bne +n
