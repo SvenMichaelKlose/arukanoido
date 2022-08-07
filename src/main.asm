@@ -45,33 +45,9 @@ preshift_sprites:
     jsr preshift_huge_sprite
 
     lda d
-    sta @(+ vaus_init sprite_init_pgl)
+    sta gfx_obstacles
     lda @(++ d)
-    sta @(+ vaus_init sprite_init_pgh)
-    lda #<gfx_vaus
-    sta s
-    lda #>gfx_vaus
-    sta @(++ s)
-    ldx #1
-    ldy #10
-    jsr preshift_huge_sprite
-
-    lda d
-    sta @(+ laser_init sprite_init_pgl)
-    lda @(++ d)
-    sta @(+ laser_init sprite_init_pgh)
-    lda #<gfx_laser
-    sta s
-    lda #>gfx_laser
-    sta @(++ s)
-    ldx #0
-    ldy #9
-    jsr preshift_huge_sprite
-
-    lda d
-    sta @(+ obstacle_init sprite_init_pgl)
-    lda @(++ d)
-    sta @(+ obstacle_init sprite_init_pgh)
+    sta @(++ gfx_obstacles)
     rts
 
 start:
