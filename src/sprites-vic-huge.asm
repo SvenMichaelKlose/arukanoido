@@ -1,4 +1,5 @@
-sprites_nchars: @(gen-sprite-nchars)
+sprites_nchars:    @(gen-sprite-nchars)
+preshift_indexes:  @(gen-preshift-indexes)
 
 ; Draw sprite, masking out the background
 draw_huge_sprite:
@@ -134,13 +135,12 @@ l:  sta @(++ s)
     sta s
     lda sprites_x,x
     and #%111
-    beq +l2
-    asl
-    sec
-    sbc #1
     asl
     asl
     asl
+    ora sprite_rows
+    tay
+    lda preshift_indexes,y
     adc s
     sta s
     bcc +l2

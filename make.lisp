@@ -40,6 +40,16 @@
         (enqueue q (* a b))))
     (queue-list q)))
 
+(fn gen-preshift-indexes ()
+  (with-queue q
+    (dotimes (bits 8)
+      (dotimes (height 8)
+        (? (== 0 bits)
+           (enqueue q 0)
+           (!= (- (* height 16 bits) (* height 8))
+             (enqueue q (? (< ! 256) (byte !) 0))))))
+    (queue-list q)))
+
 (fn make-reverse-patch-id ()
   (string4x8 (list-string (reverse (string-list "ARUKANOIDO PATCH")))))
 
