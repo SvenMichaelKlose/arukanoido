@@ -70,9 +70,7 @@ n:
     adc next_sprite_char
     sta next_sprite_char
 
-    ; Copy background graphics into allocated chars.
-    ; TODO: Try just clearing the destination as it might not
-    ; interfere with the game play so much and improve performance.
+    ; Copy existing graphics into allocated chars.
     lda sprite_cols_on_screen
     sta draw_sprites_tmp3
     lda sprite_x
@@ -110,17 +108,10 @@ n:  dec draw_sprites_tmp2
     dec draw_sprites_tmp3
     bne -l2
 
-    ; Configure the blitter.
-    lda sprites_x,x
-    and #%111
-    sta @(++ blit_left_addr)
-    tay
-    lda negate7,y
-    sta @(++ blit_right_addr)
-
-    ; Get sprite charset address.
+    ; Get destination address in charset.
     lda sprite_char
     jsr get_char_addr
+    ; Add Y char offset.
     lda sprites_y,x
     and #%111
     clc
@@ -130,14 +121,152 @@ n:  dec draw_sprites_tmp2
     inc @(++ d)
 n:
 
+    lda sprite_cols
+    sta draw_sprites_tmp2
+
+    lda sprites_pgh,x
+    bne +l
+    jmp slow_shift
+
+    ; Get sprite graphics.
+l:  sta @(++ s)
+    lda sprites_pgl,x
+    sta s
+    lda sprites_x,x
+    and #%111
+    beq +l2
+    asl
+    sec
+    sbc #1
+    asl
+    asl
+    asl
+    adc s
+    sta s
+    bcc +l2
+    inc @(++ s)
+
+    ; Draw left sprite column.
+l2: lda sprite_rows
+    sta draw_sprites_tmp3
+    ldy #0
+l:  lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    dec draw_sprites_tmp3
+    bne -l
+
+    ; Step to next screen column.
+    lda d
+    clc
+    adc sprite_lines_on_screen
+    sta d
+    bcc +n
+    inc @(++ d)
+n:
+
+    ; Skip right column if not shifted.
+    lda sprites_x,x
+    and #%111
+    beq +n2
+
+    ; Step to next sprite column.
+    lda s
+    clc
+    adc sprite_lines
+    sta s
+    bcc +n
+    inc @(++ s)
+n:
+
+    ; Draw right sprite column.
+    lda sprite_rows
+    sta draw_sprites_tmp3
+    ldy #0
+l:  lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    lda (s),y
+    ora (d),y
+    sta (d),y
+    iny
+    dec draw_sprites_tmp3
+    bne -l
+
+n2:
+    dec draw_sprites_tmp2
+    beq +l3
+    jmp -l2
+l3: jmp +plot_chars
+
+slow_shift:
+    ; Configure the blitter.
+    lda sprites_x,x
+    and #%111
+    sta @(++ blit_left_addr)
+    tay
+    lda negate7,y
+    sta @(++ blit_right_addr)
+
     ; Get sprite graphics.
     lda sprites_gl,x
     sta s
     lda sprites_gh,x
     sta @(++ s)
-
-    lda sprite_cols
-    sta draw_sprites_tmp2
 
     ; Draw left half of sprite column.
 l:  ldy sprite_lines

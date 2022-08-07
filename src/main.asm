@@ -24,7 +24,7 @@ lowmem_ofs = @(- lowmem #x320)
 
     jmp set_format
 
-preshift_sprites:
+preshift_common_sprites:
     0
     clrmw <the_end >the_end $00 $10
     0
@@ -52,7 +52,6 @@ preshift_sprites:
 
 start:
     jsr init_hiscore
-    jsr preshift_sprites
     jsr start_irq
     jsr init_score
     lda #snd_bonus_life
