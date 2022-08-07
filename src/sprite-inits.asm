@@ -8,6 +8,8 @@ sprite_init_ctrl_l      = 6
 sprite_init_ctrl_h      = 7
 sprite_init_dimensions  = 8
 sprite_init_data        = 9
+sprite_init_pgl         = 10
+sprite_init_pgh         = 11
 
 is_inactive  = 128
 is_laser     = 16
@@ -22,11 +24,11 @@ multiwhite  = @(+ multicolor white)
 loaded_sprite_inits:
     org sprite_inits
 
-vaus_init:      is_vaus     0 0 multiwhite <gfx_vaus >gfx_vaus    <ctrl_vaus >ctrl_vaus 10 0
-ball_init:      is_ball     0 0 white      <gfx_ball >gfx_ball    <ctrl_ball >ctrl_ball 9 0
-laser_init:     is_laser    0 0 yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0
-bonus_init:     is_bonus    0 0 black      0 >gfx_bonus_l         <ctrl_bonus >ctrl_bonus 9 0
-obstacle_init:  is_obstacle 0 0 0          0 0                    <ctrl_obstacle_move_in >ctrl_obstacle_move_in 17 0
+vaus_init:      is_vaus     0 0 multiwhite <gfx_vaus >gfx_vaus    <ctrl_vaus >ctrl_vaus 10 0 0 0
+ball_init:      is_ball     0 0 white      <gfx_ball >gfx_ball    <ctrl_ball >ctrl_ball 9 0 0 0
+laser_init:     is_laser    0 0 yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0 0 0
+bonus_init:     is_bonus    0 0 black      0 >gfx_bonus_l         <ctrl_bonus >ctrl_bonus 9 0 0 0
+obstacle_init:  is_obstacle 0 0 0          0 0                    <ctrl_obstacle_move_in >ctrl_obstacle_move_in 17 0 0 0
 sprite_inits_end:
 
 sprite_inits_size = @(- *pc* sprite_inits)

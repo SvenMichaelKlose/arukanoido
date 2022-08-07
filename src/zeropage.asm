@@ -62,14 +62,8 @@ mode_disruption = 3
 mode_extended   = 4
 mode:                 0
 mode_break:           0
-current_bonus:        0
-last_bonus:           0
 
 side_degrees:         0
-caught_ball:          0
-ball_release_timer:   0
-vaus_width:           0
-vaus_last_x:          0
 
 exo_x:                0
 exo_y:                0
@@ -78,17 +72,6 @@ exo_s:                0 0
 exm_play_dptr:        0 0
 
 framecounter:         0 0
-lifes:                0
-balls:                0
-
-is_running_game:      0
-has_moved_sprites:    0
-
-ball_speed:           0
-is_firing:            0   ; Laser interval countdown.
-laser_delay_type:     0   ; 0: short, 1: long
-is_using_paddle:      0
-old_paddle_value:     0
 digisound_counter:    0 0
 
 has_collision:        0                                                               
@@ -118,6 +101,8 @@ sprites_fl:         fill num_sprites  ; Function controlling the sprite (low).
 sprites_fh:         fill num_sprites  ; Function controlling the sprite (high).
 sprites_dimensions: fill num_sprites  ; %00rrrccc (r = num rows, c = num cols).
 sprites_d:          fill num_sprites  ; Whatever the controllers want.
+sprites_pgl:        fill num_sprites  ; Pre-shifted graphics
+sprites_pgh:        fill num_sprites
 
 sprites_dx:     fill num_sprites ; Ball subpixel position
 sprites_dy:     fill num_sprites
@@ -178,22 +163,6 @@ sprites_sh:     fill @(* 2 num_sprites)
 
 laser_has_hit:        0   ; For the laser controller to remember if it hit one the left.
 is_testing_laser_hit: 0
-
-has_new_score:        0
-has_hiscore:          0
-
-has_removed_brick:      0
-bonus_on_screen:        0
-num_lifes_by_score:     0
-has_paused:             0
-
-has_hit_brick:          0
-has_hit_silver_brick:   0 ; TODO: Perhaps merge with has_golden_brick.
-has_hit_golden_brick:   0
-num_hits:               0 ; Used to increase the ball speed.
-
-num_obstacles:        0
-joystick_status:      0
 
 brickfx_x:      fill num_brickfx
 brickfx_y:      fill num_brickfx
@@ -279,8 +248,41 @@ before_int_vectors:
 
     org $320
 
-line_addresses_h:       fill 33
-level_bottom_y:         0
+line_addresses_h:   fill 33
+level_bottom_y:     0
+
+lifes:              0
+balls:              0
+
+is_running_game:    0
+has_moved_sprites:  0
+
+current_bonus:      0
+last_bonus:         0
+caught_ball:        0
+ball_release_timer: 0
+vaus_width:         0
+vaus_last_x:        0
+ball_speed:         0
+is_firing:          0   ; Laser interval countdown.
+laser_delay_type:   0   ; 0: short, 1: long
+is_using_paddle:    0
+old_paddle_value:   0
+
+has_new_score:        0
+has_hiscore:          0
+
+has_removed_brick:      0
+bonus_on_screen:        0
+num_lifes_by_score:     0
+has_paused:             0
+has_hit_brick:          0
+has_hit_silver_brick:   0 ; TODO: Perhaps merge with has_golden_brick.
+has_hit_golden_brick:   0
+num_hits:               0 ; Used to increase the ball speed.
+
+num_obstacles:        0
+joystick_status:      0
 
 lowmem:
     end

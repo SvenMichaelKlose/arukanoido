@@ -59,7 +59,7 @@ n:  txa
     ldy #0
     sty @(++ d)
 
-    ; Copy rest of init values.
+    ; Copy values.
 l:  lda (s),y
     sta (d),y
     inc s
@@ -69,9 +69,9 @@ n:  lda d
     clc
     adc #num_sprites
     sta d
-    cmp #@(+ sprites_d num_sprites)
+    cmp #@(+ sprites_pgh num_sprites)
     bcs sprite_added
-    jmp -l
+    bcc -l      ; (jmp)
 
 remove_sprites:
     ldx #@(-- num_sprites)

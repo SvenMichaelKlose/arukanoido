@@ -24,8 +24,59 @@ lowmem_ofs = @(- lowmem #x320)
 
     jmp set_format
 
+preshift_sprites:
+    0
+    clrmw <the_end >the_end $00 $10
+    0
+
+    lda #<the_end
+    sta d
+    sta @(+ ball_init sprite_init_pgl)
+    lda #>the_end
+    sta @(++ d)
+    sta @(+ ball_init sprite_init_pgh)
+
+    lda #<gfx_ball
+    sta s
+    lda #>gfx_ball
+    sta @(++ s)
+    ldx #0
+    ldy #9
+    jsr preshift_huge_sprite
+
+    lda d
+    sta @(+ vaus_init sprite_init_pgl)
+    lda @(++ d)
+    sta @(+ vaus_init sprite_init_pgh)
+    lda #<gfx_vaus
+    sta s
+    lda #>gfx_vaus
+    sta @(++ s)
+    ldx #1
+    ldy #10
+    jsr preshift_huge_sprite
+
+    lda d
+    sta @(+ laser_init sprite_init_pgl)
+    lda @(++ d)
+    sta @(+ laser_init sprite_init_pgh)
+    lda #<gfx_laser
+    sta s
+    lda #>gfx_laser
+    sta @(++ s)
+    ldx #0
+    ldy #9
+    jsr preshift_huge_sprite
+
+    lda d
+    sta @(+ obstacle_init sprite_init_pgl)
+    lda @(++ d)
+    sta @(+ obstacle_init sprite_init_pgh)
+    rts
+
 start:
     jsr init_hiscore
+    jsr preshift_sprites
     jsr start_irq
     jsr init_score
     lda #snd_bonus_life
