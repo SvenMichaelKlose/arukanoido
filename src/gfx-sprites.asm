@@ -96,6 +96,8 @@ gfx_laser:
     %11000011
     %10000001
 
+;;; Bonuses have to be on the same page!
+
 gfx_bonus_l:
     %00010100
     %01010101
