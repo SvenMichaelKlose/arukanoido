@@ -57,7 +57,7 @@ n:
 
     ; Allocate chars.
     lda next_sprite_char
-l:  sta sprite_char
+    sta sprite_char
     jsr get_char_addr
     lda sprite_rows_on_screen
     asl
@@ -69,13 +69,6 @@ l:  sta sprite_char
     clc
     adc next_sprite_char
     sta next_sprite_char
-    and #foreground
-    beq +n
-    lda spriteframe
-    ora #first_sprite_char
-    sta next_sprite_char
-    jmp -l
-n:
 
     ; Copy background graphics into allocated chars.
     ; TODO: Try just clearing the destination as it might not
