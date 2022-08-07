@@ -10,22 +10,24 @@ game_over:
 
     jsr clear_screen
 
-    0
-    stzb curchar 1
-    call <make_score_screen_title >make_score_screen_title
-    call <display_score >display_score
+    lda #1
+    sta curchar
+    jsr make_score_screen_title
+    jsr display_score
 
-    stzb curcol white
-    stmb <scrx2 >scrx2 10
-    0
+    lda #white
+    sta curcol
+    lda #10
+    sta scrx2
+
     lda playfield_yc
     clc
     adc #20
     sta scry
-    0
-    lday <txt_game_over >txt_game_over
-    call <print_string_ay >print_string_ay
-    0
+
+    lda #<txt_game_over
+    ldy #>txt_game_over
+    jsr print_string_ay
 
     lda #snd_game_over
     jsr play_sound
@@ -142,16 +144,16 @@ retry:
     ora #first_sprite_char
     sta next_sprite_char
 
+    ; Prepare paddle auto–detection.
+    lda $9008
+    sta old_paddle_value
+
     ; Kick off game code in IRQ handler.
     ldy #0
     sty framecounter
     sty @(++ framecounter)
     iny
     sty is_running_game
-
-    ; Prepare paddle auto–detection.
-    lda $9008
-    sta old_paddle_value
 
 mainloop:
 if @*shadowvic?*
