@@ -136,11 +136,6 @@ retry:
     jsr make_vaus
     jsr make_ball
 
-if @*debug?*
-    jsr clear_screen
-    jsr show_charset
-end
-
     ; Initialise sprite frame.
     lda #0
     sta spriteframe
