@@ -2,7 +2,6 @@ used_obstacle_directions:
     @(byte (+ 128 direction_r))
     192
     direction_l
-;    128
     direction_r
     64
     @(byte (+ 128 direction_l))
@@ -82,8 +81,7 @@ level_obstacle:
 
 add_missing_obstacle:
     ldy level
-    dey
-    lda level_obstacle,y
+    lda @(-- level_obstacle),y
     bmi +done               ; No obstacles in level.
     lda num_obstacles
     cmp #3
@@ -93,12 +91,15 @@ add_missing_obstacle:
 
     ldy #@(- obstacle_init sprite_inits)
     jsr add_sprite
+
+    ; Set Y position.
     tax
     lda arena_y
     sec
     sbc #7
     sta sprites_y,x
 
+    ; Set X position.
     ldy #@(+ 4 (* 3 8))
     jsr random
     lsr
@@ -106,16 +107,18 @@ add_missing_obstacle:
     ldy #@(+ 4 (* 10 8))
 n:  sty sprites_x,x
 
+    ; Set initial direction.
     lda #direction_down
     sta sprites_d,x
     jsr random
-    and #128        ; Prefers left or right.
+    and #128
     sta sprites_d2,x
+
     inc num_obstacles
 
+    ; Set graphics.
     ldy level
-    dey
-    lda level_obstacle,y
+    lda @(-- level_obstacle),y
     tay
     lda gfx_obstacles_c,y
     sta sprites_c,x

@@ -284,8 +284,3 @@ level_bottom_y:         0
 
 lowmem:
     end
-
-; Minigrafik viewer
-mg_s    = s
-mg_d    = d
-mg_c    = scr
