@@ -43,6 +43,18 @@ preshift_common_sprites:
     ldx #0
     ldy #9
     jsr preshift_huge_sprite
+    lda d
+    sta @(+ laser_init sprite_init_pgl)
+    lda @(++ d)
+    sta @(+ laser_init sprite_init_pgh)
+
+    lda #<gfx_laser
+    sta s
+    lda #>gfx_laser
+    sta @(++ s)
+    ldx #0
+    ldy #9
+    jsr preshift_huge_sprite
 
     lda d
     sta gfx_obstacles
