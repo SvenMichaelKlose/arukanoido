@@ -84,12 +84,13 @@ add_missing_obstacle:
     ldy level
     dey
     lda level_obstacle,y
-    bmi +done
+    bmi +done               ; No obstacles in level.
     lda num_obstacles
     cmp #3
-    beq +done
+    beq +done               ; Three are enough.
     lda framecounter
-    bne +done
+    bne +done               ; Only every 256 frames.
+
     ldy #@(- obstacle_init sprite_inits)
     jsr add_sprite
     tax
@@ -97,14 +98,15 @@ add_missing_obstacle:
     sec
     sbc #7
     sta sprites_y,x
-    lda #@(+ 4 (* 3 8))
-    sta sprites_x,x
+
+    ldy #@(+ 4 (* 3 8))
     jsr random
     lsr
     bcs +n
-    lda #@(+ 4 (* 10 8))
-    sta sprites_x,x
-n:  lda #direction_down
+    ldy #@(+ 4 (* 10 8))
+n:  sty sprites_x,x
+
+    lda #direction_down
     sta sprites_d,x
     jsr random
     and #128        ; Prefers left or right.
