@@ -13,23 +13,14 @@ preshift_huge_sprite_one_offset:
     lda negate7,y
     sta @(++ blit_right_addr)
 
-    ; Determine width.
+    ; Determine dimensions.
     lda draw_sprites_tmp
-    and #%111
+    tay
+    and #%00000111
     sta sprite_cols
-
-    ; Determine height.
-    lda draw_sprites_tmp
-    lsr
-    lsr
-    lsr
+    tya
+    and #%00111000
     sta sprite_lines
-
-    ; Save sprite graphics pointer for right column.
-    lda s
-    sta tmp2
-    lda @(++ s)
-    sta tmp3
 
     ; Draw left half of sprite column.
 l:  ldy sprite_lines
@@ -41,17 +32,13 @@ l:  ldy sprite_lines
     lda @(++ blit_left_addr)
     beq +n          ; No, not shifting…
 
-    ; Draw right half of sprite column.
-    lda tmp2
-    sta s
-    lda tmp3
-    sta @(++ s)
     ldy sprite_lines
     dey
     jsr _blit_left_loop
-n:  dec sprite_cols
+
+    dec sprite_cols
     bne +n2
-    beq step_to_next_column
+    beq step_to_next_column ; (jmp) Was the last column.
 
 n:  dec sprite_cols
     beq +done
@@ -76,7 +63,7 @@ step_to_next_column:
 done:
     rts
 
-; Preshift sprite graphics for a sprite for all offsets.
+; Preshift sprite graphics of a sprite for all offsets.
 ;
 ; Destination must be zeroed out beforehand.
 ;
