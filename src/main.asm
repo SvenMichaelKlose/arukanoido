@@ -43,17 +43,43 @@ preshift_common_sprites:
     ldx #0
     ldy #9
     jsr preshift_huge_sprite
+
     lda d
     sta @(+ laser_init sprite_init_pgl)
     lda @(++ d)
     sta @(+ laser_init sprite_init_pgh)
-
     lda #<gfx_laser
     sta s
     lda #>gfx_laser
     sta @(++ s)
     ldx #0
     ldy #9
+    jsr preshift_huge_sprite
+
+    lda d
+    sta @(+ vaus_init sprite_init_pgl)
+    sta gfx_vaus_pre
+    lda @(++ d)
+    sta @(+ vaus_init sprite_init_pgh)
+    sta @(++ gfx_vaus_pre)
+    lda #<gfx_vaus
+    sta s
+    lda #>gfx_vaus
+    sta @(++ s)
+    ldx #0
+    ldy #10
+    jsr preshift_huge_sprite
+
+    lda d
+    sta gfx_vaus_extended_pre
+    lda @(++ d)
+    sta @(++ gfx_vaus_extended_pre)
+    lda #<gfx_vaus_extended
+    sta s
+    lda #>gfx_vaus_extended
+    sta @(++ s)
+    ldx #0
+    ldy #11
     jsr preshift_huge_sprite
 
     lda d
