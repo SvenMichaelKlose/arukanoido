@@ -129,6 +129,7 @@ n:
     bne +l
     jmp slow_shift
 
+    ;; Draw pre-shifted graphics.
     ; Get sprite graphics.
 l:  sta @(++ s)
     lda sprites_pgl,x
@@ -194,11 +195,6 @@ l:  lda (s),y
     inc @(++ d)
 n:
 
-    ; Skip right column if not shifted.
-    lda sprites_x,x
-    and #%111
-    beq +n2
-
     ; Step to next sprite column.
     lda s
     clc
@@ -207,6 +203,11 @@ n:
     bcc +n
     inc @(++ s)
 n:
+
+    ; Skip right column if not shifted.
+    lda sprites_x,x
+    and #%111
+    beq +n2
 
     ; Draw right sprite column.
     lda sprite_rows
@@ -247,10 +248,20 @@ l:  lda (s),y
     dec draw_sprites_tmp3
     bne -l
 
+    ; Step to next sprite column.
+    lda s
+    clc
+    adc sprite_lines
+    sta s
+    bcc +n
+    inc @(++ s)
+n:
+
 n2:
     dec draw_sprites_tmp2
     beq +l3
     jmp -l2
+
 l3: jmp +plot_chars
 
 slow_shift:

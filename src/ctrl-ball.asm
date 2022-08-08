@@ -69,6 +69,7 @@ l:  tya
 r:  rts
 
 l:  jmp no_vaus_collision
+
 hit_vaus:
     ; Ignore ball if it's not headed downwards.
     lda sprites_d,x
@@ -143,7 +144,7 @@ lose_ball:
 n:  lda balls
     cmp #1
     bne +n
-    lda #0              ; Reset from disruption bonus.
+    lda #0              ; Reset disruption mode.
     sta mode
 n:  jmp remove_sprite
 
@@ -165,18 +166,19 @@ ctrl_ball_subpixel:
     iny
     sty ball_y
 
+    ; Check for hit sprite.
     lda #@(+ is_vaus is_obstacle)
     jsr find_point_hit
-    bcs +n
+    bcs no_vaus_collision
+
     lda sprites_i,y
     and #is_vaus
-    beq +m
+    beq +n
     jmp hit_vaus
 
-m:  lda sprites_i,y
+n:  lda sprites_i,y
     and #is_obstacle
     bne hit_obstacle
-n:
 
 no_vaus_collision:
     ; Quick check if foreground collision detection would
