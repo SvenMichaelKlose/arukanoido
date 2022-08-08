@@ -92,13 +92,9 @@ l:  ldx #0
     ldy #17
     jsr preshift_huge_sprite
 
+    lda #16
+    jsr add_sb
     lda s
-    clc
-    adc #16
-    sta s
-    bcc +n
-    inc @(++ s)
-n:  lda s
     cmp c
     bne -l
     lda @(++ s)
