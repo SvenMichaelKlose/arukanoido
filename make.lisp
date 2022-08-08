@@ -6,7 +6,7 @@
 (var *audio-rate-expanded* 6000)
 
 (var *demo?* nil)       ; Limit to first eight levels.
-(var *all?* t)          ; Cart, tape, shadowVIC. Only PRG if nil.
+(var *all?* nil)          ; Cart, tape, shadowVIC. Only PRG if nil.
 (var *wav?* nil)        ; Tape WAV.
 (var *has-digis?* nil)  ; Original arcade sounds, highly compressed
                         ; with exomizer or home-made RLE.
@@ -117,11 +117,12 @@
 
                           ; Library
                           "bcd.asm"
-                          "random.asm"
+                          "clrram.asm"
+                          "exomizer-stream-decrunsh.asm"
                           "joystick.asm"
                           "keyboard.asm"
                           "math.asm"
-                          "exomizer-stream-decrunsh.asm"
+                          "random.asm"
                           "wait.asm"
 
                           ; Graphics library

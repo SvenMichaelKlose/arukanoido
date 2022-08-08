@@ -126,9 +126,9 @@ n:  sty sprites_x,x
     sta sprites_gl,x
     lda gfx_obstacles_gh,y
     sta sprites_gh,x
-    lda gfx_obstacles_pg
+    lda gfx_obstacles
     sta sprites_pgl,x
-    lda @(++ gfx_obstacles_pg),y
+    lda @(++ gfx_obstacles),y
     sta sprites_pgh,x
 
 done:
@@ -149,10 +149,10 @@ remove_obstacle:
     rts
 
 animate_obstacle:
-    ; Animate.
+    ; Animate regular sprite.
     lda framecounter
     and #7
-    bne +r
+    bne +done
     lda sprites_gl,x
     clc
     adc #16
@@ -175,7 +175,28 @@ l:  lda sprites_gl,x
     jmp +r
 n:  dey
     bpl -l
-r:  rts
+r:
+
+    ; Animate pre-shifted sprite.
+    lda sprites_pgl,x
+    clc
+    adc #@(* 8 30)
+    sta sprites_pgl,x
+    bcc +n
+    inc sprites_pgh,x
+n:  lda sprites_pgl,x
+    cmp gfx_obstacles_end
+    bne +done
+    lda sprites_pgh,x
+    cmp @(++ gfx_obstacles_end)
+    bcc +done
+    lda gfx_obstacles
+    sta sprites_pgl,x
+    lda @(++ gfx_obstacles)
+    sta sprites_pgh,x
+
+done:
+    rts
 
 ctrl_obstacle_move_in:
     jsr animate_obstacle

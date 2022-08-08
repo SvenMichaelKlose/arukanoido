@@ -58,6 +58,16 @@ next_level:
     beq game_done
 
     ; Pre-shift obstacle animation.
+    lda gfx_obstacles
+    sta d
+    lda @(++ gfx_obstacles)
+    sta @(++ d)
+    lda #$00
+    sta c
+    lda #$20
+    sta @(++ c)
+    jsr clrram
+
     ldy level
     lda @(-- level_obstacle),y
     tay
@@ -88,6 +98,10 @@ n:  lda s
     lda @(++ s)
     cmp @(++ c)
     bne -l
+    lda d
+    sta gfx_obstacles_end
+    lda @(++ d)
+    sta @(++ gfx_obstacles_end)
 
 if @*demo?*
     cmp #9
