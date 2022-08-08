@@ -284,8 +284,10 @@ num_hits:               0 ; Used to increase the ball speed.
 num_obstacles:      0
 joystick_status:    0
 
-gfx_obstacles:      0 0
-gfx_obstacles_end:  0 0
+gfx_vaus_pre:           0 0
+gfx_vaus_extended_pre:  0 0
+gfx_obstacles:          0 0
+gfx_obstacles_end:      0 0
 
 lowmem:
     end
