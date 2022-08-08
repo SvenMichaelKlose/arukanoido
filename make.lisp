@@ -124,6 +124,7 @@
                           "math.asm"
                           "random.asm"
                           "wait.asm"
+                          "zeropage-utils.asm"
 
                           ; Graphics library
                           "print.asm"

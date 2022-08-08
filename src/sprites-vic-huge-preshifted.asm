@@ -35,30 +35,19 @@ l:  ldy sprite_lines
     ldy sprite_lines
     dey
     jsr _blit_left_loop
-
-    dec sprite_cols
-    bne +n2
-    beq step_to_next_column ; (jmp) Was the last column.
+    jsr step_to_next_column
 
 n:  dec sprite_cols
     beq +done
 
     ; Step to next sprite graphics column.
-n2: lda s
-    clc
-    adc sprite_lines
-    sta s
-    bcc -l
-    inc @(++ s)
+n2: lda sprite_lines
+    jsr add_sb
     jmp -l
 
 step_to_next_column:
-    lda d
-    clc
-    adc sprite_lines
-    sta d
-    bcc +done
-    inc @(++ d)
+    lda sprite_lines
+    jmp add_db
 
 done:
     rts
