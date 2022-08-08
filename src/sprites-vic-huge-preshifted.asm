@@ -6,6 +6,8 @@
 ;    Y: height of Y axis
 ; s: Graphics address
 ; d: Destination address
+;
+; X remains untouched.
 preshift_huge_sprite_one_offset:
     ; Configure the blitter.
     sta @(++ blit_left_addr)
@@ -49,9 +51,6 @@ step_to_next_column:
     lda sprite_lines
     jmp add_db
 
-done:
-    rts
-
 ; Preshift sprite graphics of a sprite for all offsets.
 ;
 ; Destination must be zeroed out beforehand.
@@ -65,7 +64,6 @@ done:
 ; d: Destination address
 preshift_huge_sprite:
     sty draw_sprites_tmp
-    stx draw_sprites_tmp2
 
     ldy #0
 l:  lda s
@@ -83,9 +81,11 @@ l:  lda s
     sta s
 
     iny
-    lda draw_sprites_tmp2
+    txa
     beq +n          ; Hires, step on a single bit.
     iny             ; Multicolor, step two bits.
 n:  cpy #8
     bne -l
+
+done:
     rts
