@@ -1,6 +1,8 @@
 make_explosion:
     lda #0
     sta sprites_i,x
+    sta sprites_pgl,x
+    sta sprites_pgh,x
     lda sprites_x,x
     and #$fe
     sta sprites_x,x
