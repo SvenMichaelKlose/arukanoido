@@ -57,7 +57,8 @@ next_level:
     cmp #34
     beq game_done
 
-    ; Pre-shift obstacle animation.
+    ;; Pre-shift obstacle animation.
+    ; Clear destination area.
     lda gfx_obstacles
     sta d
     lda @(++ gfx_obstacles)
@@ -68,6 +69,7 @@ next_level:
     sta @(++ c)
     jsr clrram
 
+    ; Get graphics for current level.
     ldy level
     lda @(-- level_obstacle),y
     tay
@@ -79,13 +81,17 @@ next_level:
     sta c
     lda gfx_obstacles_gh_end,y
     sta @(++ c)
+
+    ; Pre-shift animation.
     lda gfx_obstacles
     sta d
     lda @(++ gfx_obstacles)
     sta @(++ d)
+
 l:  ldx #0
     ldy #17
     jsr preshift_huge_sprite
+
     lda s
     clc
     adc #16
@@ -98,6 +104,8 @@ n:  lda s
     lda @(++ s)
     cmp @(++ c)
     bne -l
+
+    ; Save end of animation.
     lda d
     sta gfx_obstacles_end
     lda @(++ d)
@@ -140,8 +148,9 @@ n:
 end
 
     jsr increase_silver_score
-
     jsr clear_screen
+
+    ;; Draw DOH instead of level.
     lda level
     cmp #33
     bne +n
@@ -149,7 +158,8 @@ end
     jsr draw_doh
     lda #16
     sta bricks_left
-    jmp +m
+    bne +m                  ; (jmp)
+
 n:  jsr draw_level
 m:  jsr draw_walls
     jsr make_score_screen

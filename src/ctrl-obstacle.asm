@@ -128,7 +128,7 @@ n:  sty sprites_x,x
     sta sprites_gh,x
     lda gfx_obstacles
     sta sprites_pgl,x
-    lda @(++ gfx_obstacles),y
+    lda @(++ gfx_obstacles)
     sta sprites_pgh,x
 
 done:
@@ -177,7 +177,7 @@ n:  dey
     bpl -l
 r:
 
-    ; Animate pre-shifted sprite.
+    ; Animate pre-shifted graphics.
     lda sprites_pgl,x
     clc
     adc #@(* 8 30)
