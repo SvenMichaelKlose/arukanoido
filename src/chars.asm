@@ -21,11 +21,6 @@ get_char_addr:
     asl
     asl
     asl
-if @*add-charset-base?*
-    clc
-    adc #<charset
-    php
-end
     sta d
     lda tmp
     lsr
@@ -34,7 +29,7 @@ end
     lsr
     lsr
 if @*add-charset-base?*
-    plp
+    clc
     adc #>charset
 end
 if @(not *add-charset-base?*)
@@ -49,11 +44,6 @@ get_char_addr_s:
     asl
     asl
     asl
-if @*add-charset-base?*
-    clc
-    adc #<charset
-    php
-end
     sta s
     lda tmp
     lsr
@@ -62,7 +52,7 @@ end
     lsr
     lsr
 if @*add-charset-base?*
-    plp
+    clc
     adc #>charset
 end
 if @(not *add-charset-base?*)
