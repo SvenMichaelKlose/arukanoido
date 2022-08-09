@@ -3,7 +3,7 @@ preshift_indexes:  @(gen-preshift-indexes)
 
 ; Draw sprite, masking out the background
 draw_huge_sprite:
-    ; Get screen position.
+    ;; Get screen position.
     lda sprites_x,x
     lsr
     lsr
@@ -15,7 +15,7 @@ draw_huge_sprite:
     lsr
     sta sprite_y
 
-    ; Determine width.
+    ;; Determine width.
     lda sprites_dimensions,x
     and #%111
     sta sprite_cols
@@ -27,7 +27,7 @@ draw_huge_sprite:
     inc sprite_cols_on_screen     ; One more due to shift.
 n:
 
-    ; Determine height.
+    ;; Determine height.
     lda sprites_dimensions,x
     lsr
     lsr
@@ -51,13 +51,13 @@ n:
     sta sprite_lines_on_screen
 n:
 
-    ; Save dimensions for cleanup.
+    ;; Save dimensions for cleanup.
     lda sprite_cols_on_screen
     sta sprites_w,x
     lda sprite_rows_on_screen
     sta sprites_h,x
 
-    ; Allocate chars.
+    ;; Allocate chars.
     lda next_sprite_char
     sta sprite_char
     jsr get_char_addr
@@ -72,7 +72,7 @@ n:
     adc next_sprite_char
     sta next_sprite_char
 
-    ; Copy existing graphics into allocated chars.
+    ;; Copy existing graphics into allocated chars.
     lda sprite_cols_on_screen
     sta draw_sprites_tmp3
     lda sprite_x
@@ -150,11 +150,11 @@ n:  dec draw_sprites_tmp2
     dec draw_sprites_tmp3
     bne -l2
 
-    ; Get destination address in charset.
+    ;; Get destination address in charset.
     lda sprite_char
     jsr get_char_addr
 
-    ; Add Y char offset.
+    ;; Add Y char offset.
     lda sprites_y,x
     and #%111
     clc
@@ -167,7 +167,7 @@ n:
     lda sprite_cols
     sta draw_sprites_tmp2
 
-    ; Draw pre-shifted?
+    ;; Draw pre-shifted?
     lda sprites_pgh,x
     bne +l
     jmp slow_shift          ; No…
@@ -194,7 +194,7 @@ n:  asl
     inc @(++ s)
 n:
 
-    ; Draw left sprite column.
+    ;; Draw left sprite column.
 l2: lda sprite_rows
     sta draw_sprites_tmp3
     ldy #0
@@ -229,11 +229,10 @@ l:  lda (s),y
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
     dec draw_sprites_tmp3
     bne -l
 
-    ; Step to next screen column.
+    ;; Step to next screen column.
     lda d
     clc
     adc sprite_lines_on_screen
@@ -242,7 +241,7 @@ l:  lda (s),y
     inc @(++ d)
 n:
 
-    ; Step to next sprite column.
+    ;; Step to next sprite column.
     lda s
     clc
     adc sprite_lines
@@ -251,12 +250,12 @@ n:
     inc @(++ s)
 n:
 
-    ; Skip right column if not shifted.
+    ;; Skip right column if not shifted.
     lda sprites_x,x
     and #%111
     beq +n2
 
-    ; Draw right sprite column.
+    ;; Draw right sprite column.
     lda sprite_rows
     sta draw_sprites_tmp3
     ldy #0
@@ -291,11 +290,10 @@ l:  lda (s),y
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
     dec draw_sprites_tmp3
     bne -l
 
-    ; Step to next sprite column.
+    ;; Step to next sprite column.
     lda s
     clc
     adc sprite_lines
@@ -312,7 +310,7 @@ n2:
 l3: jmp +plot_chars
 
 slow_shift:
-    ; Configure the blitter.
+    ;; Configure the blitter.
     lda sprites_x,x
     and #%111
     sta @(++ blit_left_addr)
@@ -320,18 +318,18 @@ slow_shift:
     lda negate7,y
     sta @(++ blit_right_addr)
 
-    ; Get sprite graphics.
+    ;; Get sprite graphics.
     lda sprites_gl,x
     sta s
     lda sprites_gh,x
     sta @(++ s)
 
-    ; Draw left half of sprite column.
+    ;; Draw left half of sprite column.
 l:  ldy sprite_lines
     dey
     jsr _blit_right_loop
 
-    ; Step to next screen column.
+    ;; Step to next screen column.
     lda d
     clc
     adc sprite_lines_on_screen
@@ -340,7 +338,7 @@ l:  ldy sprite_lines
     inc @(++ d)
 n:
 
-    ; Draw right half of sprite column.
+    ;; Draw right half of sprite column.
     lda sprites_x,x
     and #%111
     beq +n      ; We might as well not if not shifted.
@@ -349,11 +347,11 @@ n:
     jsr _blit_left_loop
 n:
 
-    ; Break here when all columns are done.
+    ;; Break here when all columns are done.
     dec draw_sprites_tmp2
     beq +plot_chars
 
-    ; Step to next sprite graphics column.
+    ;; Step to next sprite graphics column.
     lda s
     clc
     adc sprite_lines
@@ -362,41 +360,48 @@ n:
     inc @(++ s)
     jmp -l
 
-    ; Plot the filled chars to screen.
+    ;;; Plot the filled chars to screen.
 plot_chars:
+    ;; Get initial sprite char and screen position.
     lda sprite_char
     sta draw_sprites_tmp
     lda sprite_x
     sta scrx
 
+    ;; Do a column.
 l2: lda sprite_y
     sta scry
     lda sprite_rows_on_screen
     sta draw_sprites_tmp2
 
-l:  lda scry
+l:  ;; Check if position is plottable.
+    lda scry
     cmp playfield_yc
-    bcc +n               ; Don't plot into score area…
+    bcc +n                  ; Don't plot into score area…
     cmp screen_rows
-    bcs +n               ; Don't plot over the bottom…
+    bcs +n                  ; Don't plot over the bottom…
     lda scrx
     cmp #playfield_columns
-    bcs +n               ; Don't plot over the right…
+    bcs +n                  ; Don't plot over the right…
+
+    ;; Check if on a background char.
     jsr scrcoladdr
     lda (scr),y
     and #foreground
-    bne +n
+    bne +n                  ; Do not plot over background.
     lda draw_sprites_tmp
     sta (scr),y
     lda sprites_c,x
     sta (col),y
-n:  inc draw_sprites_tmp
-    inc scry
+
+    ;;
+n:  inc draw_sprites_tmp    ; To next sprite char.
+    inc scry                ; To next row.
     dec draw_sprites_tmp2
-    bne -l
+    bne -l                  ; Next row…
 
     inc scrx
     dec sprite_cols_on_screen
-    bne -l2
+    bne -l2                 ; Next column.
 
     rts
