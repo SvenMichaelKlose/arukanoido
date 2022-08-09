@@ -19,8 +19,8 @@ draw_huge_sprite:
     lda sprites_dimensions,x
     and #%111
     sta sprite_cols
-    sta sprite_cols_on_screen
 
+    sta sprite_cols_on_screen
     lda sprites_x,x
     and #%111
     beq +n
@@ -33,6 +33,7 @@ n:
     lsr
     lsr
     sta sprite_rows
+
     sta sprite_rows_on_screen
     asl
     asl
@@ -88,6 +89,7 @@ l:  jsr scraddr
     and #framemask
     cmp spriteframe
     bne +m
+
     tya
     jsr get_char_addr_s
     ldy #0
@@ -151,6 +153,7 @@ n:  dec draw_sprites_tmp2
     ; Get destination address in charset.
     lda sprite_char
     jsr get_char_addr
+
     ; Add Y char offset.
     lda sprites_y,x
     and #%111
@@ -187,8 +190,9 @@ n:  asl
     lda preshift_indexes,y
     adc s
     sta s
-    bcc +l2
+    bcc +n
     inc @(++ s)
+n:
 
     ; Draw left sprite column.
 l2: lda sprite_rows
@@ -339,7 +343,7 @@ n:
     ; Draw right half of sprite column.
     lda sprites_x,x
     and #%111
-    beq +n
+    beq +n      ; We might as well not if not shifted.
     ldy sprite_lines
     dey
     jsr _blit_left_loop
