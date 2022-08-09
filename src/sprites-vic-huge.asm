@@ -164,9 +164,10 @@ n:
     lda sprite_cols
     sta draw_sprites_tmp2
 
+    ; Draw pre-shifted?
     lda sprites_pgh,x
     bne +l
-    jmp slow_shift
+    jmp slow_shift          ; No…
 
     ;; Draw pre-shifted graphics.
     ; Get sprite graphics.
@@ -175,7 +176,10 @@ l:  sta @(++ s)
     sta s
     lda sprites_x,x
     and #%111
-    asl
+    ldy sprites_c,x
+    bpl +n
+    lsr     ; Half X resolution for multicolor.
+n:  asl
     asl
     asl
     ora sprite_rows

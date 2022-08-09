@@ -24,7 +24,7 @@ multiwhite  = @(+ multicolor white)
 loaded_sprite_inits:
     org sprite_inits
 
-vaus_init:      is_vaus     0 0 multiwhite <gfx_vaus >gfx_vaus    <ctrl_vaus >ctrl_vaus 10 0 0 0
+vaus_init:      is_vaus     0 0 @(+ 128 multiwhite) <gfx_vaus >gfx_vaus    <ctrl_vaus >ctrl_vaus 10 0 0 0
 ball_init:      is_ball     0 0 white      <gfx_ball >gfx_ball    <ctrl_ball >ctrl_ball 9 0 0 0
 laser_init:     is_laser    0 0 yellow     <gfx_laser >gfx_laser  <ctrl_laser >ctrl_laser 9 0 0 0
 bonus_init:     is_bonus    0 0 black      0 >gfx_bonus_l         <ctrl_bonus >ctrl_bonus 9 0 0 0
