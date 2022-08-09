@@ -43,6 +43,10 @@ n:  jsr get_vaus_index_in_y
     sta sprites_gl,y
     lda #>gfx_vaus
     sta sprites_gh,y
+    lda gfx_vaus_pre
+    sta sprites_pgl,y
+    lda @(++ gfx_vaus_pre)
+    sta sprites_pgh,y
 
     ; Un-extend Vaus.
     lda mode
@@ -107,6 +111,10 @@ apply_bonus_e:
     sta sprites_gl,y
     lda #>gfx_vaus_extended
     sta sprites_gh,y
+    lda gfx_vaus_extended_pre
+    sta sprites_pgl,y
+    lda @(++ gfx_vaus_extended_pre)
+    sta sprites_pgh,y
     lda #11
     sta sprites_dimensions,y
     lda #mode_extended
