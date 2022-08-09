@@ -3,6 +3,11 @@ preshift_indexes:  @(gen-preshift-indexes)
 
 ; Draw sprite, masking out the background
 draw_huge_sprite:
+    lda sprites_i,x
+    cmp #is_vaus
+    bne +n
+    nop
+n:
     ;; Get screen position.
     lda sprites_x,x
     lsr
@@ -60,7 +65,27 @@ n:
     ;; Allocate chars.
     lda next_sprite_char
     sta sprite_char
-    jsr get_char_addr
+
+    ;; Get char adress.
+    asl
+    asl
+    asl
+    sta d
+    lda sprite_char
+    lsr
+    lsr
+    lsr
+    lsr
+    lsr
+if @*add-charset-base?*
+    clc
+    adc #>charset
+end
+if @(not *add-charset-base?*)
+    ora #>charset
+end
+    sta @(++ d)
+
     lda sprite_rows_on_screen
     asl
     asl
@@ -83,15 +108,41 @@ l2: lda sprite_rows_on_screen
     lda sprite_y
     sta scry
 
-l:  jsr scraddr
+l:  ; Get screen address.
+    ldy scry
+    lda line_addresses_l,y
+    sta scr
+    lda line_addresses_h,y
+    sta @(++ scr)
+    ldy scrx
+
     lda (scr),y
     tay
     and #framemask
     cmp spriteframe
     bne +m
 
+    ; Get char address.
     tya
-    jsr get_char_addr_s
+    asl
+    asl
+    asl
+    sta s
+    tya
+    lsr
+    lsr
+    lsr
+    lsr
+    lsr
+if @*add-charset-base?*
+    clc
+    adc #>charset
+end
+if @(not *add-charset-base?*)
+    ora #>charset
+end
+    sta @(++ s)
+
     ldy #0
     lda (s),y
     sta (d),y
@@ -144,15 +195,32 @@ n:  inc scry
     bcc +n
     inc @(++ d)
 n:  dec draw_sprites_tmp2
-    bne -l
+    bne +l3
 
     inc scrx
     dec draw_sprites_tmp3
-    bne -l2
+    bne +l2b
 
     ;; Get destination address in charset.
     lda sprite_char
-    jsr get_char_addr
+    asl
+    asl
+    asl
+    sta d
+    lda sprite_char
+    lsr
+    lsr
+    lsr
+    lsr
+    lsr
+if @*add-charset-base?*
+    clc
+    adc #>charset
+end
+if @(not *add-charset-base?*)
+    ora #>charset
+end
+    sta @(++ d)
 
     ;; Add Y char offset.
     lda sprites_y,x
@@ -171,6 +239,9 @@ n:
     lda sprites_pgh,x
     bne +l
     jmp slow_shift          ; No…
+
+l3: jmp -l
+l2b:jmp -l2
 
     ;; Draw pre-shifted graphics.
     ; Get sprite graphics.
@@ -385,10 +456,23 @@ l:  ;; Check if position is plottable.
     bcs +n                  ; Don't plot over the right…
 
     ;; Check if on a background char.
-    jsr scrcoladdr
+    ; Get screen and color RAM adresses.
+    ldy scry
+    lda line_addresses_l,y
+    sta scr
+    sta col
+    lda line_addresses_h,y
+    sta @(++ scr)
+    ora #>colors
+    sta @(++ col)
+    ldy scrx
+
+    ; Check on background.
     lda (scr),y
     and #foreground
     bne +n                  ; Do not plot over background.
+
+    ; Plot.
     lda draw_sprites_tmp
     sta (scr),y
     lda sprites_c,x
