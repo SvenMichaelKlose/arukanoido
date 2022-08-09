@@ -6,4 +6,6 @@
   (apply #'assemble-files "obj/gfx-taito.bin" '("media/gfx-taito.asm"))
   (exomize-stream "obj/gfx-taito.bin" "obj/gfx-taito.bin.exo")
   (apply #'assemble-files "obj/gfx-background.bin" '("media/gfx-background.asm"))
-  (exomize-stream "obj/gfx-background.bin" "obj/gfx-background.bin.exo"))
+  (exomize-stream "obj/gfx-background.bin" "obj/gfx-background.bin.exo")
+  (apply #'assemble-files "obj/round-intro-text.bin" '("media/round-intro-text.asm"))
+  (exomize-stream "obj/round-intro-text.bin" "obj/round-intro-text.bin.exo"))
