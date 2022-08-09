@@ -90,12 +90,51 @@ l:  jsr scraddr
     bne +m
     tya
     jsr get_char_addr_s
-    jsr blit_char
+    ldy #0
+    lda (s),y
+    sta (d),y
+    iny
+    lda (s),y
+    sta (d),y
+    iny
+    lda (s),y
+    sta (d),y
+    iny
+    lda (s),y
+    sta (d),y
+    iny
+    lda (s),y
+    sta (d),y
+    iny
+    lda (s),y
+    sta (d),y
+    iny
+    lda (s),y
+    sta (d),y
+    iny
+    lda (s),y
+    sta (d),y
     jmp +n
-m:  jsr blit_clear_char
-n:
 
-    inc scry
+m:  lda #0
+    tay
+    sta (d),y
+    iny
+    sta (d),y
+    iny
+    sta (d),y
+    iny
+    sta (d),y
+    iny
+    sta (d),y
+    iny
+    sta (d),y
+    iny
+    sta (d),y
+    iny
+    sta (d),y
+
+n:  inc scry
     lda d
     clc
     adc #8
