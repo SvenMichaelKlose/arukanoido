@@ -284,7 +284,7 @@ n3: dey
     bne -l4
     sta s
 
-    ;; Draw left sprite column.
+    ;; Draw sprite column.
 l2: lda sprite_rows
     sta draw_sprites_tmp3
     ldy #0
@@ -323,6 +323,9 @@ l:  lda (s),y
     dec draw_sprites_tmp3
     bne -l
 
+    dec draw_sprites_tmp2
+    beq plot_chars
+
     ;; Step to next screen column.
     lda d
     clc
@@ -339,58 +342,7 @@ n:
     sta s
     bcc +n
     inc @(++ s)
-n:
-
-    ;; Skip right column if not shifted.
-    lda sprites_x,x
-    and #%111
-    beq +n2
-
-    ;; Draw right sprite column.
-    lda sprite_rows
-    sta draw_sprites_tmp3
-    ldy #0
-l:  lda (s),y
-    ora (d),y
-    sta (d),y
-    iny
-    lda (s),y
-    ora (d),y
-    sta (d),y
-    iny
-    lda (s),y
-    ora (d),y
-    sta (d),y
-    iny
-    lda (s),y
-    ora (d),y
-    sta (d),y
-    iny
-    lda (s),y
-    ora (d),y
-    sta (d),y
-    iny
-    lda (s),y
-    ora (d),y
-    sta (d),y
-    iny
-    lda (s),y
-    ora (d),y
-    sta (d),y
-    iny
-    lda (s),y
-    ora (d),y
-    sta (d),y
-    iny
-    dec draw_sprites_tmp3
-    bne -l
-
-n2:
-    dec draw_sprites_tmp2
-    beq +l3
-    jmp -l2
-
-l3: jmp +plot_chars
+n:  jmp -l2
 
 slow_shift:
     ;; Configure the blitter.
