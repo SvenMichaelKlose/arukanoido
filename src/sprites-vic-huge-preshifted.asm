@@ -28,7 +28,7 @@ preshift_huge_sprite_one_offset:
 l:  ldy sprite_lines
     dey
     jsr _blit_right_loop
-    jsr step_to_next_column
+    jsr step_to_next_shifted_column
 
     ; Check if we have to draw a right column.
     lda @(++ blit_left_addr)
@@ -37,21 +37,23 @@ l:  ldy sprite_lines
     ldy sprite_lines
     dey
     jsr _blit_left_loop
-    jsr step_to_next_column
+    dec sprite_cols
+    beq step_to_next_shifted_column
+    bne +n2
 
 n:  dec sprite_cols
     beq +done
 
-    ; Step to next sprite graphics column.
+    ; Step to next sprite column.
 n2: lda sprite_lines
     jsr add_sb
     jmp -l
 
-step_to_next_column:
+step_to_next_shifted_column:
     lda sprite_lines
     jmp add_db
 
-; Preshift sprite graphics of a sprite for all offsets.
+; Shift sprite graphics of a sprite for all offsets.
 ;
 ; Destination must be zeroed out beforehand.
 ;
@@ -65,21 +67,21 @@ step_to_next_column:
 preshift_huge_sprite:
     sty draw_sprites_tmp
 
-    ldy #0
-l:  lda s
-    pha
+    lda s
+    sta tmp
     lda @(++ s)
-    pha
-    tya
-    pha
-    jsr preshift_huge_sprite_one_offset
-    pla
-    tay
-    pla
-    sta @(++ s)
-    pla
-    sta s
+    sta tmp2
 
+    ldy #0
+l:  lda tmp
+    sta s
+    lda tmp2
+    sta @(++ s)
+    sty tmp3
+    tya
+    jsr preshift_huge_sprite_one_offset
+
+    ldy tmp3
     iny
     txa
     beq +n          ; Hires, step on a single bit.

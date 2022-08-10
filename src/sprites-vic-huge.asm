@@ -248,22 +248,41 @@ l2b:jmp -l2
 l:  sta @(++ s)
     lda sprites_pgl,x
     sta s
+
+    ; Make number of chars number of bytes.
+    ldy sprites_dimensions,x
+    lda sprites_nchars,y
+    asl
+    asl
+    asl
+    clc                 ; Add that extra column.
+    adc sprite_lines
+    sta draw_sprites_tmp3
+
+    ; Get number of times to shift.
     lda sprites_x,x
     and #%111
+    beq +l2             ; No shift. Ready to draw…
     ldy sprites_c,x
     bpl +n
-    lsr     ; Half X resolution for multicolor.
-n:  asl
-    asl
-    asl
-    ora sprite_rows
-    tay
-    lda preshift_indexes,y
-    adc s
-    sta s
-    bcc +n
+    lsr                 ; Half X resolution for multicolor.
+n:  tay
+
+    ; Subtract column bytes from total.
+    lda s
+    sec
+    sbc sprite_lines
+    bcs +l4
+    dec @(++ s)
+
+    ; Multiply bytes by shifts.
+l4: clc
+    adc draw_sprites_tmp3
+    bcc +n3
     inc @(++ s)
-n:
+n3: dey
+    bne -l4
+    sta s
 
     ;; Draw left sprite column.
 l2: lda sprite_rows
@@ -300,6 +319,7 @@ l:  lda (s),y
     lda (s),y
     ora (d),y
     sta (d),y
+    iny
     dec draw_sprites_tmp3
     bne -l
 
@@ -361,17 +381,9 @@ l:  lda (s),y
     lda (s),y
     ora (d),y
     sta (d),y
+    iny
     dec draw_sprites_tmp3
     bne -l
-
-    ;; Step to next sprite column.
-    lda s
-    clc
-    adc sprite_lines
-    sta s
-    bcc +n
-    inc @(++ s)
-n:
 
 n2:
     dec draw_sprites_tmp2

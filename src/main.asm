@@ -34,6 +34,15 @@ preshift_common_sprites:
     lda #>the_end
     sta @(++ d)
 
+    lda #<gfx_dummy
+    sta s
+    lda #>gfx_dummy
+    sta @(++ s)
+    ldx #1
+    ldy #10
+    jsr preshift_huge_sprite
+stop:
+
     lda d
     sta @(+ vaus_init sprite_init_pgl)
     sta gfx_vaus_pre
