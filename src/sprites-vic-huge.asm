@@ -1,5 +1,4 @@
 sprites_nchars:    @(gen-sprite-nchars)
-preshift_indexes:  @(gen-preshift-indexes)
 
 ; Draw sprite, masking out the background
 draw_huge_sprite:
