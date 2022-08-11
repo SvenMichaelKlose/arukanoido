@@ -1,4 +1,4 @@
-blit_origin:
+blitter_origin:
 
 if @*rom?*
     org $100
@@ -60,8 +60,8 @@ l:  ora (d),y
     bpl _blit_left_loop
     rts
 
-blit_end:
+blitter_end:
 
 if @*rom?*
-    org @(+ blit_origin (- blit_end blit_right))
+    org @(+ blitter_origin (- blitter_end blit_right))
 end

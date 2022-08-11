@@ -62,9 +62,10 @@ if @*rom?*
     lda #0
     jsr moveram
 
+if @*rom?*
     ; Copy sprite blitter to beginning of the stack.
-    ldx #@(-- (- blit_end blit_right))
-l:  lda blit_origin,x
+    ldx #@(-- (- blitter_end blit_right))
+l:  lda blitter_origin,x
     sta $100,x
     dex
     bpl -l
