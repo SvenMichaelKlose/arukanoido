@@ -284,6 +284,9 @@ n3: dey
     bne -l4
     sta s
 
+    lda sprite_cols_on_screen
+    sta draw_sprites_tmp2
+
     ;; Draw sprite column.
 l2: lda sprite_rows
     sta draw_sprites_tmp3
