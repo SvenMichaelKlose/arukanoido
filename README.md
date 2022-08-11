@@ -115,7 +115,7 @@ A demo title screen has been contributed by tokra with help of
 Mike's MINIGRAFIK. Also no ,1 in the LOAD command.
 
 VIC conversions of the original tunes and sounds have been contributed
-by beamrider as well.
+by beamrider.
 
 
 # External resources
