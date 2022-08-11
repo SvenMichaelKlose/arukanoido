@@ -6,9 +6,9 @@
 (var *audio-rate-expanded* 6000)
 
 (var *demo?* nil)       ; Limit to first eight levels.
-(var *all?* nil)          ; Cart, tape, shadowVIC. Only PRG if nil.
+(var *all?* t)          ; Cart, tape, shadowVIC. Only PRG if nil.
 (var *wav?* nil)        ; Tape WAV.
-(var *has-digis?* nil)  ; Original arcade sounds, highly compressed
+(var *has-digis?* t)    ; Original arcade sounds, highly compressed
                         ; with exomizer or home-made RLE.
 (var *add-charset-base?* t) ; TODO: Hard code it.
 (var *debug?* nil)
@@ -18,7 +18,7 @@
 (var *rom?* nil)        ; By that we mean 'cart'.
 (var *tape?* nil)
 (var *shadowvic?* nil)
-(var *ultimem?* nil)    ; Add support for high-end arcade audio
+(var *ultimem?* t)      ; Add support for high-end arcade audio
                         ; (from tape or SD only).
 (var *show-cpu?* nil)   ; Border effects by sprite engine.
 
@@ -38,16 +38,6 @@
     (dotimes (a 8)
       (dotimes (b 8)
         (enqueue q (* a b))))
-    (queue-list q)))
-
-(fn gen-preshift-indexes ()
-  (with-queue q
-    (dotimes (bits 8)
-      (dotimes (height 8)
-        (? (== 0 bits)
-           (enqueue q 0)
-           (!= (- (* height 16 bits) (* height 8))
-             (enqueue q (? (< ! 256) (byte !) 0))))))
     (queue-list q)))
 
 (fn make-reverse-patch-id ()
@@ -141,8 +131,7 @@
                           "sprites-vic-common.asm"
 ;                          "sprites-vic.asm"
                           "sprites-vic-huge.asm"
-                          ,@(unless *has-digis?*
-                              '("sprites-vic-huge-preshifted.asm"))
+                          "sprites-vic-huge-preshifted.asm"
 
                           ; Digital audio
                           ,@(when *has-digis?*
@@ -333,8 +322,8 @@
    (unix-sh-cp "obj/arukanoido-disk.exo.prg" "arukanoido/arukanoido.prg"))
 
 (when *all?*
-;  (when *has-digis?*
-;    (make-arcade-sounds))
+  (when *has-digis?*
+    (make-arcade-sounds))
   (make-cart)
   (with-temporary *tape?* t
     (make-prg "arukanoido-tape")
