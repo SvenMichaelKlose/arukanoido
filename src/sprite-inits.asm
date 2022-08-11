@@ -12,7 +12,7 @@ sprite_init_pgl         = 10
 sprite_init_pgh         = 11
 
 is_inactive    = 128
-is_dp_obstacle = 64
+is_doh_obstacle = 64
 is_laser       = 16
 is_ball        = 8
 is_obstacle    = 4

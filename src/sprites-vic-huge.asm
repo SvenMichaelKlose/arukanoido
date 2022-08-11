@@ -433,13 +433,18 @@ l:  ;; Check if position is plottable.
     sta @(++ col)
     ldy scrx
 
+    ; Plot over background if DOH projectile.
+    lda sprites_i,x
+    and #is_doh_obstacle
+    bne +l3
+
     ; Check on background.
     lda (scr),y
     and #foreground
     bne +n                  ; Do not plot over background.
 
     ; Plot.
-    lda draw_sprites_tmp
+l3: lda draw_sprites_tmp
     sta (scr),y
     lda sprites_c,x
     sta (col),y
