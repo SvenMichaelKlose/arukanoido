@@ -26,12 +26,12 @@ lowmem_ofs = @(- lowmem #x320)
 
 preshift_common_sprites:
     0
-    clrmw <the_end >the_end $00 $10
+    clrmw $00 $04 $d0 $05
     0
 
-    lda #<the_end
+    lda #$00
     sta d
-    lda #>the_end
+    lda #$04
     sta @(++ d)
 
     lda d
