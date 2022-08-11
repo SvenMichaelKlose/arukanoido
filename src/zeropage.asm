@@ -233,8 +233,6 @@ digisound_y:            0
 apply_tmp:              0 0
 vcpu_tmp:               0 0
 
-sprite_inits:           fill @sprite_inits_size
-
 line_addresses_l:       fill 33
 
 get_crunched_byte_tmp:  0
@@ -288,6 +286,8 @@ gfx_vaus_pre:           0 0
 gfx_vaus_extended_pre:  0 0
 gfx_obstacles:          0 0
 gfx_obstacles_end:      0 0
+
+sprite_inits:           fill @sprite_inits_size
 
 lowmem:
     end

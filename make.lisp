@@ -6,7 +6,7 @@
 (var *audio-rate-expanded* 6000)
 
 (var *demo?* nil)       ; Limit to first eight levels.
-(var *all?* t)          ; Cart, tape, shadowVIC. Only PRG if nil.
+(var *all?* nil)          ; Cart, tape, shadowVIC. Only PRG if nil.
 (var *wav?* nil)        ; Tape WAV.
 (var *has-digis?* t)    ; Original arcade sounds, highly compressed
                         ; with exomizer or home-made RLE.
@@ -166,6 +166,7 @@
                           "ctrl-explosion.asm"
                           "ctrl-laser.asm"
                           "ctrl-obstacle.asm"
+                          "ctrl-doh-obstacle.asm"
                           "ctrl-vaus.asm"
                           "doh.asm"
 
@@ -322,8 +323,8 @@
    (unix-sh-cp "obj/arukanoido-disk.exo.prg" "arukanoido/arukanoido.prg"))
 
 (when *all?*
-  (when *has-digis?*
-    (make-arcade-sounds))
+;  (when *has-digis?*
+;    (make-arcade-sounds))
   (make-cart)
   (with-temporary *tape?* t
     (make-prg "arukanoido-tape")
