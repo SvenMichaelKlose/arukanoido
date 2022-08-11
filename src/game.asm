@@ -65,13 +65,15 @@ next_level:
     sta @(++ d)
     lda #$00
     sta c
-    lda #$20
+    lda #$09
     sta @(++ c)
     jsr clrram
 
     ; Get graphics for current level.
     ldy level
     lda @(-- level_obstacle),y
+    cmp #none
+    beq no_obstacle_preshifts
     tay
     lda gfx_obstacles_gl,y
     sta s
@@ -106,6 +108,8 @@ l:  ldx #0
     sta gfx_obstacles_end
     lda @(++ d)
     sta @(++ gfx_obstacles_end)
+
+no_obstacle_preshifts:
 
 if @*demo?*
     cmp #9
