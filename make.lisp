@@ -1,30 +1,33 @@
 (load "gen-vcpu-tables.lisp")
-(= *model* :vic-20+xk)
 
+(= *model* :vic-20+xk)
 (var *audio-rate* 4000)
 (var *audio-rate-fast* 5000)
 (var *audio-rate-expanded* 6000)
-
-(var *demo?* nil)       ; Limit to first eight levels.
-(var *all?* nil)          ; Cart, tape, shadowVIC. Only PRG if nil.
-(var *wav?* nil)        ; Tape WAV.
-(var *has-digis?* t)    ; Original arcade sounds, highly compressed
-                        ; with exomizer or home-made RLE.
-(var *add-charset-base?* t) ; TODO: Hard code it.
-(var *debug?* nil)
 (var *revision* (!= (fetch-file "_revision")
                   (subseq ! 0 (-- (length !)))))
 
-(var *rom?* nil)        ; By that we mean 'cart'.
-(var *tape?* nil)
+(var *demo?* nil)       ; Limit to first eight levels.
+(var *rom?* nil)
+(var *tape?* t)         ; Make TAP.
+(var *wav?* nil)          ; Also make WAV.
+(var *has-digis?* t)    ; Original arcade sounds, highly compressed
+                        ; with exomizer or home-made RLE.
+(var *debug?* nil)
 (var *shadowvic?* nil)
-(var *ultimem?* t)      ; Add support for high-end arcade audio
+(var *ultimem?* nil)    ; Add support for high-end arcade audio
                         ; (from tape or SD only).
-(var *show-cpu?* nil)   ; Border effects by sprite engine.
+(var *make-arcade-sounds?* nil) ; Lengthy process.
+(var *all?* nil)        ; *rom*, *tape*, *shadowvic?*
 
-(fn exomize-stream (from to)
-  (sb-ext:run-program "/usr/local/bin/exomizer-2.0.10" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
-                      :pty cl:*standard-output*))
+(var *add-charset-base?* t) ; TODO: Hard code it.
+(var *show-cpu?* nil)       ; Border effects by sprite engine.
+
+
+(when *all?*
+  (= *rom* t
+     *tape* t
+     *shadowvic?* t))
 
 (load "build/audio.lisp")
 (load "build/font.lisp")
@@ -32,6 +35,10 @@
 (load "media/make.lisp")
 (load "prg-launcher/make.lisp")
 (load "c2nwarp/make.lisp")
+
+(fn exomize-stream (from to)
+  (sb-ext:run-program "/usr/local/bin/exomizer-2.0.10" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
+                      :pty cl:*standard-output*))
 
 (fn gen-sprite-nchars ()
   (with-queue q
@@ -230,7 +237,7 @@
                         (list "sfx" "basic" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
                         :pty cl:*standard-output*)))
 
-(fn make-cart ()
+(fn make-rom ()
   (with-temporary *rom?* t
     (make-game "obj/arukanoido.img" "obj/arukanoido.img.lbl")
     (!= (- #x3ce (+ (get-label 'lowmem) (get-label 'lowmem_size)))
@@ -275,7 +282,7 @@
                     (with-string-stream s (c2ntap s i)))
                   (with-input-file i "obj/arukanoido-tape.exo.prg"
                     (format t "Appending executable…~%")
-                    (with-string-stream s (c2ntap s i :gap 2000000)))
+                    (with-string-stream s (c2ntap s i)))
                   (with-input-file i "obj/music-arcade-blk5.bin"
                     (format t "Appending BLK5…~%")
                     (with-string-stream s (c2ntap s i)))
@@ -322,26 +329,24 @@
      (unix-sh-cp "obj/arukanoido.prg" "arukanoido/"))
    (unix-sh-cp "obj/arukanoido-disk.exo.prg" "arukanoido/arukanoido.prg"))
 
-(when *all?*
-;  (when *has-digis?*
-;    (make-arcade-sounds))
-  (make-cart)
-  (with-temporary *tape?* t
-    (make-prg "arukanoido-tape")
-    (make-tap))
-  (with-temporary *shadowvic?* t
-    (with-temporary *has-digis?* nil
-      (make-prg "arukanoido-shadowvic"))))
-
+(when *make-arcade-sounds?*
+  (make-arcade-sounds))
+(when *rom?*
+  (make-rom))
+(when *tape?*
+  (make-prg "arukanoido-tape")
+  (make-tap))
+(when *shadowvic?*
+  (with-temporary *has-digis?* nil
+    (make-prg "arukanoido-shadowvic")))
 ;(unix-sh-cp "arukanoido-cpumon.prg" "arukanoido/arukanoido-cpumon.prg")
-(sb-ext:run-program "/bin/cp"
-                    (list "README.md" "NEWS" "arukanoido/")
-                    :pty cl:*standard-output*)
-
-(when *wav?*
+(when (& *tape?* *wav?*)
   (with-input-file i "arukanoido/arukanoido.tap"
     (with-output-file o "arukanoido/arukanoido.wav"
       (tap2wav i o 44100 (cpu-cycles :ntsc)))))
+(sb-ext:run-program "/bin/cp"
+                    (list "README.md" "NEWS" "arukanoido/")
+                    :pty cl:*standard-output*)
 
 (sb-ext:run-program "/usr/bin/zip" (list "-r" "-9" "arukanoido.zip" "arukanoido")
                     :pty cl:*standard-output*)
