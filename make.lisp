@@ -7,21 +7,21 @@
 (var *revision* (!= (fetch-file "_revision")
                   (subseq ! 0 (-- (length !)))))
 
-(var *demo?* nil)       ; Limit to first eight levels.
-(var *rom?* nil)
-(var *tape?* t)         ; Make TAP.
-(var *wav?* nil)          ; Also make WAV.
-(var *has-digis?* t)    ; Original arcade sounds, highly compressed
-                        ; with exomizer or home-made RLE.
-(var *debug?* nil)
-(var *shadowvic?* nil)
-(var *ultimem?* nil)    ; Add support for high-end arcade audio
-                        ; (from tape or SD only).
+(var *demo?*        nil)    ; Limit to first eight levels.
+(var *rom?*         nil)
+(var *tape?*        t)      ; Make TAP.
+(var *wav?*         t)      ; Also make WAV.
+(var *has-digis?*   t)      ; Original arcade sounds, highly compressed
+                            ; with exomizer or home-made RLE.
+(var *debug?*       nil)
+(var *shadowvic?*   nil)
+(var *ultimem?*     nil)    ; Add support for high-end arcade audio
+                            ; (from tape or SD only).
 (var *make-arcade-sounds?* nil) ; Lengthy process.
-(var *all?* nil)        ; *rom*, *tape*, *shadowvic?*
+(var *all?*         nil)    ; *rom*, *tape*, *shadowvic?*
 
 (var *add-charset-base?* t) ; TODO: Hard code it.
-(var *show-cpu?* nil)       ; Border effects by sprite engine.
+(var *show-cpu?*    nil)    ; Border effects by sprite engine.
 
 
 (when *all?*
@@ -344,6 +344,7 @@
   (with-input-file i "arukanoido/arukanoido.tap"
     (with-output-file o "arukanoido/arukanoido.wav"
       (tap2wav i o 44100 (cpu-cycles :ntsc)))))
+
 (sb-ext:run-program "/bin/cp"
                     (list "README.md" "NEWS" "arukanoido/")
                     :pty cl:*standard-output*)
@@ -351,7 +352,7 @@
 (sb-ext:run-program "/usr/bin/zip" (list "-r" "-9" "arukanoido.zip" "arukanoido")
                     :pty cl:*standard-output*)
 (sb-ext:run-program "/bin/cp" (list "arukanoido.zip"
-                                    (+ "arukanoido."
+                                    (+ "archive/arukanoido."
                                        (? *demo?* "demo." "")
                                        *revision* ".zip"))
                     :pty cl:*standard-output*)

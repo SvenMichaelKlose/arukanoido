@@ -4,7 +4,7 @@ Arukanoido is a clone of the famous arcade game "Arkanoid" for the
 Commodore VIC–20 with at least 35K memory expansion.  It should be
 played best with paddles, which are detected automatically as soon
 as you move them.  If you don't have paddles Arukanoido switches
-to a more convenient and slower joystick mode.
+to a slower joystick mode.
 
 This demo comes with the first eight of 33 levels.
 
