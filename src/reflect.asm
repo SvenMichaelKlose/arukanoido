@@ -26,11 +26,11 @@ j:  lda #64
 
 m:  lda #7
     sta sprites_x,x
-    jmp -j
+    bne -j              ; (jmp)
 
 k:  lda #@(* 8 14)
     sta sprites_x,x
-    jmp -j
+    bne -j              ; (jmp)
 
 reflect:
     lda #0
