@@ -113,16 +113,24 @@ l:  ; Get screen address.
     sta scr
     lda line_addresses_h,y
     sta @(++ scr)
-    ldy scrx
 
+    ldy scrx
     lda (scr),y
+
+    ; DOH char?
     tay
+    and #%01100000
+    cmp #%01100000
+    beq +q      ; Yes. Copy…
+
+    ; Char of current frame?
+    tya
     and #framemask
     cmp spriteframe
-    bne +m      ; Nothing existing. Just clear…
+    bne +m      ; No. Clear…
 
-    ; Get char address.
-    tya
+    ; Get char address to copy from.
+q:  tya
     asl
     asl
     asl
