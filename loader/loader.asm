@@ -57,7 +57,6 @@ tape_leader1end:
     sta $9125
     lda #0
     sta tape_bit_counter
-    lda #0
     sta tape_leader_countdown
     ldx #<tape_sync
     ldy #>tape_sync
