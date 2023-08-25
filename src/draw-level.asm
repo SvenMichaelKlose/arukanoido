@@ -82,7 +82,7 @@ o:  inc scrx
     inc scry
     jmp -m
 
-    ; Save lowest row index for obstacle movements.
+    ; Save lowest row index to guide obstacle movements.
 r:  ldy scry
     dey
     sty level_bottom_y
