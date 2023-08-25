@@ -1,7 +1,12 @@
 show_charset:
+    sei
+    lda #$7f
+    sta $912e
+    sta $912d
+
     0
-    c_clrmw <screen >screen @(low 512) @(high 512)
-    c_setmw <colors >colors @(low 512) @(high 512) white
+    clrmw <screen >screen @(low 512) @(high 512)
+    setmw <colors >colors @(low 512) @(high 512) white
     0
 
     lda #0
@@ -21,5 +26,4 @@ l:  jsr scraddr
     lda scry
     cmp #32
     bne -l2
-sei
 w:  jmp -w
