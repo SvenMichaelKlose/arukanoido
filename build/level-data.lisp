@@ -487,7 +487,7 @@
 "  sssssssss")
 
 ; Round 33: Unused round 33 that is in the original ROMs but never used.
-; Not yet actived in Arukanoido.
+; Not yet activated in Arukanoido.
 (5
 "   pp   pp   "
 "  pppp pppp  "
