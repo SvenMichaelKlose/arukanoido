@@ -86,7 +86,6 @@ apply_reflection_unconditionally:
     jsr neg             ; Get opposite deviation from general direction.
     clc
     adc side_degrees    ; Rotate back to original axis.
-    clc
-    adc #128            ; Rotate to opposite direction.
+    eor #128            ; Rotate to opposite direction.
     sta sprites_d,x
 r:  rts
