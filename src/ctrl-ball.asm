@@ -288,7 +288,7 @@ make_ball:
     sta sprites_d,x
     lda #0
     sta sprites_d2,x
-    lda #initial_delay_until_ball_is_released
+    lda #delay_until_forced_release
     sta ball_release_timer
     rts
 
