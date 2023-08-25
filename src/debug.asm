@@ -20,10 +20,10 @@ l:  jsr scraddr
     inc tmp
     inc scrx
     lda scrx
-    cmp #8
+    cmp #16
     bne -l
     inc scry
     lda scry
-    cmp #32
+    cmp #16
     bne -l2
 w:  jmp -w
