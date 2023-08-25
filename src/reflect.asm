@@ -1,3 +1,8 @@
+reflect:
+    lda #0
+    sta side_degrees
+    sta has_collision
+
 reflect_h:
     ; Bounce back left.
     lda sprites_d,x         ; Moving to the left?
@@ -9,7 +14,7 @@ reflect_h:
     cmp #7                  ; Avoid over-stepping the walls.
     bcc +m
     jsr get_soft_collision
-    beq +r
+    beq reflect_v
     bne +j
 
     ; Bounce back right.
@@ -20,7 +25,7 @@ n:  ldy ball_x
     cmp #@(++ (* 8 14))     ; Avoid over-stepping the walls.
     bcs +k
     jsr get_soft_collision
-    beq +r
+    beq reflect_v
 j:  lda #64
     jmp +l
 
@@ -31,13 +36,6 @@ m:  lda #7
 k:  lda #@(* 8 14)
     sta sprites_x,x
     bne -j              ; (jmp)
-
-reflect:
-    lda #0
-    sta side_degrees
-    sta has_collision
-
-    jsr reflect_h
 
 reflect_v:
     ; Bounce back top.

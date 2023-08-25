@@ -1,3 +1,7 @@
+reflect_ball_obstacle:
+    lda #0
+    sta side_degrees
+
 reflect_ball_obstacle_h:
     ; Bounce back left.
     lda sprites_d,x         ; Moving to the left?
@@ -5,22 +9,15 @@ reflect_ball_obstacle_h:
     lda sprites_x,x
     cmp sprites_x,y
     bcs +j
-    rts
+    bcc reflect_ball_obstacle_v ; (jmp)
 
     ; Bounce back right.
 n:  lda sprites_x,x
     cmp sprites_x,y
-    bcc +j
-    rts
+    bcs reflect_ball_obstacle_v
 
 j:  lda #64
     jmp +l
-
-reflect_ball_obstacle:
-    lda #0
-    sta side_degrees
-
-    jsr reflect_ball_obstacle_h
 
 reflect_ball_obstacle_v:
     ; Bounce back from top.
@@ -43,18 +40,3 @@ l:  clc
     adc side_degrees
     sta side_degrees
     rts
-
-    ; Deviate (counter-)clockwise randomly.
-;    sty tmp
-;    jsr random
-;    bmi +n
-;    lda sprites_d,x
-;    jsr turn_clockwise
-;    sta sprites_d,x
-;    ldy tmp
-;    rts
-;n:  lda sprites_d,x
-;    jsr turn_counterclockwise
-;    sta sprites_d,x
-;    ldy tmp
-;    rts
