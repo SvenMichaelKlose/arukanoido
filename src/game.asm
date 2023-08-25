@@ -250,10 +250,14 @@ n:  dex
     bpl -m
 
 n:  cmp #keycode_n
-    bne +l
+    bne +n
     lda #0
     sta bricks_left
     jmp next_level
+
+n:  cmp #keycode_space
+    bne +n
+    jmp show_charset
 ;end
 n:
 
