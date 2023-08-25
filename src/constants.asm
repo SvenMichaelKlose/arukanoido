@@ -1,13 +1,13 @@
 ; Fixed addresses
 
 screen          = $1000
-decrunch_table  = $1250      ; 156 bytes
+decrunch_table  = $1250     ; 156 bytes
 buffer_start_hi = $13
 buffer_len_hi   = $01
 charset         = $1400
-bricks          = $1c00
+bricks          = $1c00     ; Map of brick types
 txt_tmp         = bricks
-exm_buffers     = $1e00
+exm_buffers     = $1e00     ; 2x256 bytes
 colors          = $9400
 
 ; Charset settings
@@ -62,7 +62,8 @@ score_char0         = 16    ; Digit '0' in 4x8 charset.
 
 ; Miscellaneous
 
-num_brickfx         = 16
+num_brickfx         = 16    ; List of hit silver/golden bricks that
+                            ; are being animated.
 playfield_columns   = 15
 
 vaus_x              = 52
