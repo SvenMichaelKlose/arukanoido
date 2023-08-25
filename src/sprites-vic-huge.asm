@@ -119,7 +119,7 @@ l:  ; Get screen address.
     tay
     and #framemask
     cmp spriteframe
-    bne +m
+    bne +m      ; Nothing existing. Just clear…
 
     ; Get char address.
     tya
