@@ -284,7 +284,7 @@ make_ball:
     sta sprites_gl,x
     lda #>gfx_ball_caught
     sta sprites_gh,x
-    lda #default_ball_direction
+    lda #initial_ball_direction
     sta sprites_d,x
     lda #0
     sta sprites_d2,x

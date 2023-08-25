@@ -33,6 +33,8 @@ direction_ls    = @(+ 128 deg_shallow)
 direction_l     = @(+ 128 deg_steep)
 direction_r     = @(- 128 deg_steep)
 direction_rs    = @(- 128 deg_shallow)
+initial_ball_direction          = direction_r
+initial_ball_direction_skewed   = direction_rs
 
 ; Game settings
 
@@ -44,8 +46,6 @@ max_ball_speed          = 15
 max_ball_speed_joystick = 6
 max_ball_speed_joystick_top = 6
 
-default_ball_direction          = direction_r
-default_ball_direction_skewed   = direction_rs
 ball_width              = 3
 ball_height             = 5
 vaus_edge_distraction   = 16

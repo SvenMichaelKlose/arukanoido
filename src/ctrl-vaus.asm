@@ -160,7 +160,7 @@ do_fire:
     lda vaus_last_x
     cmp sprites_x,x
     beq +m
-    lda #default_ball_direction_skewed
+    lda #initial_ball_direction_skewed
     sta sprites_d,y
 m:  jmp release_ball
 
