@@ -15,7 +15,12 @@ n:  dex
     clrmw $00 $03 $13 $00
 lowmem_ofs = @(- lowmem #x320)
     clrmw $20 $03 <lowmem_ofs >lowmem_ofs
+if @(not *debug?*)
     clrmw <charset >charset $08 $00
+end
+if @*debug?*
+    clrmw <charset >charset $00 $08
+end
     movmw <loaded_sprite_inits >loaded_sprite_inits <sprite_inits >sprite_inits sprite_inits_size 0
     0
 
