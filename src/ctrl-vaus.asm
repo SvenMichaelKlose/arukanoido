@@ -25,13 +25,14 @@ ctrl_vaus:
     beq +n
     bmi +n
 
+    ; Break mode: move Vaus out through the port.
     lda framecounter
     and #7
     bne +m
     lda sprites_x,x
     cmp ball_max_x
     bcs +m
-    lda #2
+    lda #2              ; (1 multi-color pixel)
     jsr sprite_right
 m:  lda #<score_100
     sta s
@@ -42,7 +43,7 @@ m:  lda #<score_100
     bne -r
     lda #0
     sta bricks_left
-    rts
+    jmp remove_sprite
 
     ; Check on collision with obstacle.
 n:  lda #is_obstacle
