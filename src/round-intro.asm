@@ -13,7 +13,7 @@ round_intro:
     jsr clear_screen
     jsr init_foreground
     jsr make_stars
-    lda #1
+    lda #5
     sta curchar
     jsr make_score_screen_title
     jsr display_score
@@ -101,13 +101,21 @@ l3: jsr clear_intro_text
     jmp -l5
 
 make_stars:
-    lda #bg_star
+    ldx #31
+l:  lda bg_stars,x
+    sta @(+ charset 8),x
+    dex
+    bpl -l
+
+    lda #1
     sta curchar
     lda #white
     sta curcol
 
-    lda #64
+    lda #128
     sta make_stars_tmp
+
+    ; Get random position.
 l1: jsr random
     cmp #15
     bcs -l1
@@ -118,15 +126,20 @@ l:  jsr random
     cmp yc_max
     bcs -l
     sta scry
+
+    ; Get random colour.
     jsr random
-    ldy #cyan
-    lsr
-    bcc +m
-    ldy #white
-    jmp +n
-m:  lsr
-    ldy #blue
-n:  sty curcol
+    and #3
+    tax
+    lda star_colors,x
+    sta curcol
+
+    ; Get random star.
+    jsr random
+    and #3
+    clc
+    adc #1
+    sta curchar
     lda scrx
     ldy scry
     jsr plot
@@ -182,5 +195,45 @@ txt_game_won:
     @(string4x8 " \"ARKANOID\" IN THE GALAXY") 254
     @(string4x8 " HAS ONLY STARTED......") 255
     253
+
+bg_stars:
+    %00000000
+    %00000000
+    %01000000
+    %00000000
+    %00000000
+    %00000000
+    %00000000
+    %00000000
+
+    %00000000
+    %00000000
+    %00000000
+    %00000100
+    %00000000
+    %00000000
+    %00000000
+    %00000000
+
+    %00000000
+    %00000000
+    %00000000
+    %00000000
+    %00010000
+    %00000000
+    %00000000
+    %00000000
+
+    %00000001
+    %00000000
+    %00000000
+    %00000000
+    %00000000
+    %00000000
+    %00000000
+    %00000000
+
+star_colors:
+    white cyan cyan blue
 
 __end_round_intro:
