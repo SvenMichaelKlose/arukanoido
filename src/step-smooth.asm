@@ -26,7 +26,9 @@ half_step_smooth:
     inc sprites_x,x
     jmp +n
 
-m:  jsr neg
+m:  eor #$ff
+    clc
+    adc #1
     sta tmp
     lda sprites_dx,x
     sec
@@ -47,7 +49,9 @@ n:  sta sprites_dx,x
     inc sprites_y,x
     jmp +n
 
-m:  jsr neg
+m:  eor #$ff
+    clc
+    adc #1
     sta tmp
     lda sprites_dy,x
     sec
