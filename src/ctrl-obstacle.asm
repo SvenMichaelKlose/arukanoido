@@ -153,29 +153,30 @@ animate_obstacle:
     lda framecounter
     and #7
     bne +done
-    lda sprites_gl,x
-    clc
-    adc #16
-    sta sprites_gl,x
-    bcc +n
-    inc sprites_gh,x
+
+;    lda sprites_gl,x
+;    clc
+;    adc #16
+;    sta sprites_gl,x
+;    bcc +n
+;    inc sprites_gh,x
 
     ; Repeat animation.
-n:  ldy #3
-l:  lda sprites_gl,x
-    cmp gfx_obstacles_gl_end,y
-    bne +n
-    lda sprites_gh,x
-    cmp gfx_obstacles_gh_end,y
-    bne +n
-    lda gfx_obstacles_gl,y
-    sta sprites_gl,x
-    lda gfx_obstacles_gh,y
-    sta sprites_gh,x
-    jmp +r
-n:  dey
-    bpl -l
-r:
+;n:  ldy #3
+;l:  lda sprites_gl,x
+;    cmp gfx_obstacles_gl_end,y
+;    bne +n
+;    lda sprites_gh,x
+;    cmp gfx_obstacles_gh_end,y
+;    bne +n
+;    lda gfx_obstacles_gl,y
+;    sta sprites_gl,x
+;    lda gfx_obstacles_gh,y
+;    sta sprites_gh,x
+;    jmp +r
+;n:  dey
+;    bpl -l
+;r:
 
     ; Animate pre-shifted graphics.
     lda sprites_pgl,x
