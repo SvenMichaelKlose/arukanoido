@@ -11,6 +11,11 @@ l:  lda @(-- gfx_doh_a),x
     rts
 
 draw_doh:
+    ; Clear brick map.
+    0
+    clrmw <bricks >bricks 0 2
+    0
+
     lda #@first_doh_char
     sta tmp
     lda #5
@@ -23,8 +28,10 @@ l2: lda #7
     lda #12     ; (number of rows)
     sta tmp2
 l:  jsr scrcoladdr
+    jsr scr2brick
     lda tmp
     sta (scr),y
+    sta (d),y
     lda #yellow
     sta (col),y
     inc scry

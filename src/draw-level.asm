@@ -32,12 +32,7 @@ m:  lda #1
     sta scrx
 l:  jsr scrcoladdr
 
-    ; Make pointer into brick map.
-    lda scr
-    sta tmp
-    lda @(++ scr)
-    ora #>bricks
-    sta @(++ tmp)
+    jsr scr2brick
 
     ; Get brick.
     jsr get_decrunched_byte
@@ -72,7 +67,7 @@ n:  cmp #b_silver
     clc
     adc #@(++ b_silver)
 
-n:  sta (tmp),y
+n:  sta (d),y
 
     ; Step to next position.
 o:  inc scrx
@@ -186,4 +181,13 @@ done:
     pla
     pla
     tax
+    rts
+
+scr2brick:
+    ; Make pointer into brick map.
+    lda scr
+    sta d
+    lda @(++ scr)
+    ora #>bricks
+    sta @(++ d)
     rts
