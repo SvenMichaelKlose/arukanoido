@@ -259,7 +259,12 @@ l:  jsr apply_reflection
 play_reflection_sound:
     lda has_hit_brick
     beq +r
-    lda has_hit_golden_brick
+    lda level
+    cmp #doh_level
+    bne +n
+    lda #snd_hit_doh
+    bne +l
+n:  lda has_hit_golden_brick
     ora has_hit_silver_brick
     beq +n
     lda #snd_reflection_silver

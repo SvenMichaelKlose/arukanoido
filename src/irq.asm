@@ -1,4 +1,4 @@
-frame_timer_pal = @(- (/ (cpu-cycles :pal) 60) 18)
+frame_timer_pal  = @(- (/ (cpu-cycles :pal)  60) 18)
 frame_timer_ntsc = @(- (/ (cpu-cycles :ntsc) 60) 158)
 
 start_irq:
@@ -99,7 +99,7 @@ n:  jsr set_vaus_color
     beq +n
     bpl +done
 n:  lda level
-    cmp #33
+    cmp #doh_level
     beq +done
     jsr rotate_bonuses
     jsr add_missing_obstacle

@@ -1,4 +1,11 @@
 roundstart:
+    lda level
+    cmp #doh_level
+    bne +n
+    lda #snd_doh_round
+    jmp play_sound
+n:
+
     ldx #0
 l:  lda txt_round_nn,x
     sta txt_tmp,x
@@ -41,13 +48,8 @@ n:  clc
 
     lda #snd_round
     jsr play_sound
-    lda level
-    cmp #33
-    bne +n
-    lda #snd_doh_round
-    jsr play_sound
 
-n:  ldx #60
+    ldx #60
     jsr wait
 
     ; Print "READY".

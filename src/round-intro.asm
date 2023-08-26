@@ -1,4 +1,11 @@
 round_intro:
+    sta tmp
+    tya
+    pha
+    txa
+    pha
+    lda tmp
+    pha
     lda $9002
     pha
 
@@ -31,12 +38,12 @@ round_intro:
     lda curchar
     sta tmp4
 
-    lda #snd_theme
+    pla
     jsr play_sound
 
-    lda #<txt_round_intro
+    pla
     sta s
-    lda #>txt_round_intro
+    pla
     sta @(++ s)
 
 l5: ldx playfield_yc
@@ -66,20 +73,30 @@ n:  cmp #253
     beq +r
     cmp #255
     beq +m
+    lda level
+    cmp #@(+ 1 doh_level)
+    beq +n
     jsr test_fire
     beq +r2
 
-    ldx #2
+n:  ldx #2
     jsr wait
     jmp -l2
 
 r2: jsr wait_fire_released
+    rts
+
 r:  rts
 
 m:  ldx #15
     jsr wait
+    lda level
+    cmp #@(+ 1 doh_level)
+    bne +l3
+    ldx #60
+    jsr wait
 
-    jsr clear_intro_text
+l3: jsr clear_intro_text
 
     jmp -l5
 
@@ -153,4 +170,17 @@ txt_round_intro:
     @(string4x8 " TRAPPED IN SPACE WARPED") 254
     @(string4x8 " BY SOMEONE........") 255
     253
+
+txt_game_won:
+    @(string4x8 " DIMENSION-CONTROLLING FORT") 254
+    @(string4x8 " \"DOH\" HAS NOW BEEN") 254
+    @(string4x8 " DEMOLISHED, AND TIME") 254
+    @(string4x8 " STARTED FLOWING REVERSELY.") 255
+    @(string4x8 " \"VAUS\" MANAGED TO ESCAPE") 254
+    @(string4x8 " FROM THE DISTORTED SPACE.") 255
+    @(string4x8 " BUT THE REAL VOYAGE OF") 254
+    @(string4x8 " \"ARKANOID\" IN THE GALAXY") 254
+    @(string4x8 " HAS ONLY STARTED......") 255
+    253
+
 __end_round_intro:

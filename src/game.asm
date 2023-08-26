@@ -2,6 +2,10 @@ game_done:
     lda #snd_doh_dissolving
     jsr play_sound
     jsr wait_for_silence
+    lda #snd_hiscore
+    ldx #<txt_game_won
+    ldy #>txt_game_won
+    jsr round_intro
 
 game_over:
     lda #0
@@ -47,6 +51,8 @@ game:
     sta lifes
     jsr init_score
 
+lda #32
+sta level
 next_level:
     lda #0
     sta is_running_game
@@ -54,11 +60,15 @@ next_level:
 
     inc level
     lda level
-    cmp #34
+    cmp #@(++ doh_level)
     beq game_done
 
     ;; Pre-shift obstacle animation.
     ; Clear destination area.
+;    0
+;   TODO: Read word at gfx_obstacles.
+;    clrmw <gfx_obstacles >gfx_obstacles $00 $09
+;    0
     lda gfx_obstacles
     sta d
     lda @(++ gfx_obstacles)
@@ -152,7 +162,7 @@ end
 
     ;; Draw DOH instead of level.
     lda level
-    cmp #33
+    cmp #doh_level
     bne +n
     jsr init_doh_charset
     jsr draw_doh

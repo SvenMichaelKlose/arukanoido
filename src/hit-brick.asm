@@ -5,8 +5,6 @@ hit_doh:
     cmp #%01100000
     bne +n
     dec bricks_left
-    lda #snd_hit_doh
-    jsr play_sound
     clc
     rts
 
@@ -20,7 +18,7 @@ hit_brick:
     sta has_hit_golden_brick
 
     lda level
-    cmp #33
+    cmp #doh_level
     beq -hit_doh
 
     ; Get pointer into 'bricks'.

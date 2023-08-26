@@ -65,8 +65,8 @@ score_char0         = 16    ; Digit '0' in 4x8 charset.
 num_brickfx         = 16    ; List of hit silver/golden bricks that
                             ; are being animated.
 playfield_columns   = 15
-
 vaus_x              = 52
+doh_level           = 33
 
 ; PAL
 
