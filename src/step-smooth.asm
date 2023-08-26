@@ -4,9 +4,6 @@
 ;     (negate x)
 ;     (reverse (negate x))))
 
-step_smooth:
-    jsr half_step_smooth
-
 half_step_smooth:
     ; Move on X axis.
     lda sprites_d,x     ; Get direction.
@@ -39,6 +36,7 @@ n:  sta sprites_dx,x
     ldy sprites_d,x
     lda ball_directions_y,y
     bmi +m
+
     lda sprites_dy,x
     clc
     adc ball_directions_y,y

@@ -453,7 +453,8 @@ n:  tya
 
 ctrl_obstacle_moving:
     jsr animate_obstacle
-    jsr step_smooth
+    jsr half_step_smooth
+    jsr half_step_smooth
     lda sprites_y,x
     cmp screen_height
     bne -r
