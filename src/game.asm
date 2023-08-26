@@ -185,6 +185,8 @@ retry:
     sta framecounter
     sta @(++ framecounter)
     sta num_obstacles
+    sta num_doh_obstacles
+    sta wait_doh_obstacles
     sta num_hits
     sta bonus_on_screen
     sta laser_delay_type

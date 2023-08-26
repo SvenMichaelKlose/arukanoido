@@ -215,7 +215,7 @@ f:  lda #snd_coin
     lda #snd_theme
     ldx #<txt_round_intro
     ldy #>txt_round_intro
-    jsr round_intro
+    ;jsr round_intro
     jsr game
     jmp toplevel
 

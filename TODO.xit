@@ -1,7 +1,11 @@
-[ ] D bonus: sometimes balls go the same direction
+[ ] D bonus: sometimes balls go the same direction.
 
+Vaus:
+[ ] Vaus does not expand/compand on both sides.
+[ ] B bonus: Vaus is flashing up after exit.
+[ ] NTSC B bonus: Vaus warps off too soon.
 [?] Shallow kick off to the left.
+[?} Laser versipn missing.
 
 NTSC:
 [ ] Portal should be hires, not multicolor.
-[ ] Portal warps one char too early to the left.
