@@ -41,3 +41,36 @@ n:  dec tmp2
     bne -l2
 
     rts
+
+flashing_doh: 0
+
+; A: colour
+flash_doh:
+    lda flashing_doh
+    beq +r
+    lda #white
+    dec flashing_doh
+    bne +l3
+    lda #yellow
+
+l3: sta tmp
+    lda #5
+    sta scrx
+    lda #5      ; (number of columns)
+    sta tmp3
+
+l2: lda #7
+    sta scry
+    lda #12     ; (number of rows)
+    sta tmp2
+l:  jsr scrcoladdr
+    lda tmp
+    sta (col),y
+    inc scry
+    dec tmp2
+    bne -l
+    inc scrx
+    dec tmp3
+    bne -l2
+
+r:  rts

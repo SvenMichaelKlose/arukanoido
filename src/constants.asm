@@ -67,6 +67,7 @@ num_brickfx         = 16    ; List of hit silver/golden bricks that
 playfield_columns   = 15
 vaus_x              = 52
 doh_level           = 33
+doh_flash_duration  = 3
 
 ; PAL
 

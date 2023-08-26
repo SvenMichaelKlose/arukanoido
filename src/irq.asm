@@ -100,8 +100,10 @@ n:  jsr set_vaus_color
     bpl +done
 n:  lda level
     cmp #doh_level
-    beq +done
-    jsr rotate_bonuses
+    bne +n2
+    jsr flash_doh
+    jmp +done
+n2: jsr rotate_bonuses
     jsr add_missing_obstacle
     jsr dyn_brick_fx
 

@@ -4,6 +4,8 @@ hit_doh:
     and #%01100000
     cmp #%01100000
     bne +n
+    lda #doh_flash_duration
+    sta flashing_doh
     dec bricks_left
     clc
     rts
