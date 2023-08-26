@@ -4,7 +4,12 @@
 ;     (negate x)
 ;     (reverse (negate x))))
 
+position_has_changed:  0
+
 half_step_smooth:
+    lda #0
+    sta position_has_changed
+
     ; Move on X axis.
     lda sprites_d,x     ; Get direction.
     sec
@@ -22,6 +27,7 @@ half_step_smooth:
     adc tmp
     bcc +n
     inc sprites_x,x
+    inc position_has_changed
     jmp +n
 
 m:  lda sprites_dx,x
@@ -29,6 +35,7 @@ m:  lda sprites_dx,x
     adc tmp
     bcs +n
     dec sprites_x,x
+    inc position_has_changed
 
 n:  sta sprites_dx,x
 
@@ -42,6 +49,7 @@ n:  sta sprites_dx,x
     adc ball_directions_y,y
     bcc +n
     inc sprites_y,x
+    inc position_has_changed
     jmp +n
 
 m:  lda sprites_dy,x
@@ -49,6 +57,7 @@ m:  lda sprites_dy,x
     adc ball_directions_y,y
     bcs +n
     dec sprites_y,x
+    inc position_has_changed
 
 n:  sta sprites_dy,x
     rts

@@ -54,12 +54,14 @@ ctrl_ball:
     bpl -l
 
     ; Call the ball controller ball_speed times.
-ball_loop:
     ldy ball_speed
 l:  tya
     pha
+    jsr half_step_smooth
+    lda position_has_changed
+    beq +n
     jsr ctrl_ball_subpixel
-    lda sprites_i,x
+n:  lda sprites_i,x
     pla
     bmi +r              ; Ball sprite has been removed…
     tay
@@ -192,18 +194,31 @@ no_vaus_collision:
     and #%111
     beq +l
     cmp #%111
-    bne +k
+    bne avoid_endless_flight
 
 l:  jsr reflect
     lda has_collision
-    bne +n
+    bne +n2
     jsr reflect_edge
     lda has_collision
     bne +m
 
-k:  ;jsr check_hit_with_obstacle
-    jsr avoid_endless_flight
-    jmp half_step_smooth
+avoid_endless_flight:
+    lda sprites_d2,x
+    cmp #64
+    bcc +r
+    lda #0
+    sta sprites_d2,x
+    lda framecounter
+    lsr
+    bcc +n
+    lda sprites_d,x
+    jsr turn_clockwise
+    jmp +l
+n:  lda sprites_d,x
+    jsr turn_counterclockwise
+l:  sta sprites_d,x
+r:  rts
 
     ; Deal with reflect_edge.
 m:  lda #0
@@ -212,7 +227,7 @@ m:  lda #0
     eor #$80                ; Opposite direction.
     sta sprites_d,x
 
-n:  jsr adjust_ball_speed_hitting_top
+n2: jsr adjust_ball_speed_hitting_top
     lda has_removed_brick
     beq +n
 
@@ -239,8 +254,7 @@ n:  lda has_hit_silver_brick
 f:  inc sprites_d2,x
 
 l:  jsr apply_reflection
-    jsr play_reflection_sound
-    jmp half_step_smooth
+    jmp play_reflection_sound
 
 play_reflection_sound:
     lda has_hit_brick
@@ -252,23 +266,6 @@ play_reflection_sound:
     bne +l
 n:  lda #snd_reflection_high
 l:  jmp play_sound
-r:  rts
-
-avoid_endless_flight:
-    lda sprites_d2,x
-    cmp #64
-    bcc +r
-    lda #0
-    sta sprites_d2,x
-    lda framecounter
-    lsr
-    bcc +n
-    lda sprites_d,x
-    jsr turn_clockwise
-    jmp +l
-n:  lda sprites_d,x
-    jsr turn_counterclockwise
-l:  sta sprites_d,x
 r:  rts
 
 make_ball:
