@@ -28,7 +28,7 @@ half_step_smooth:
     bcc +n
     inc sprites_x,x
     inc position_has_changed
-    jmp +n
+    bne +n              ; (jmp)
 
 m:  lda sprites_dx,x
     clc
@@ -50,7 +50,7 @@ n:  sta sprites_dx,x
     bcc +n
     inc sprites_y,x
     inc position_has_changed
-    jmp +n
+    bne +n              ; (jmp)
 
 m:  lda sprites_dy,x
     clc
