@@ -9,7 +9,7 @@ step_smooth:
 
 half_step_smooth:
     ; Move on X axis.
-    lda sprites_d,x
+    lda sprites_d,x     ; Get direction.
     sec
     sbc #$40
     tay
@@ -19,6 +19,7 @@ half_step_smooth:
     ror                 ; Signed division by 2 to keep aspect ratio.
     sta tmp
     bmi +m
+
     lda sprites_dx,x
     clc
     adc tmp
@@ -26,13 +27,9 @@ half_step_smooth:
     inc sprites_x,x
     jmp +n
 
-m:  eor #$ff
+m:  lda sprites_dx,x
     clc
-    adc #1
-    sta tmp
-    lda sprites_dx,x
-    sec
-    sbc tmp
+    adc tmp
     bcs +n
     dec sprites_x,x
 
@@ -49,13 +46,9 @@ n:  sta sprites_dx,x
     inc sprites_y,x
     jmp +n
 
-m:  eor #$ff
+m:  lda sprites_dy,x
     clc
-    adc #1
-    sta tmp
-    lda sprites_dy,x
-    sec
-    sbc tmp
+    adc ball_directions_y,y
     bcs +n
     dec sprites_y,x
 
