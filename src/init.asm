@@ -62,7 +62,6 @@ if @*rom?*
     lda #0
     jsr moveram
 
-if @*rom?*
     ; Copy sprite blitter to beginning of the stack.
     ldx #@(-- (- blitter_end blit_right))
 l:  lda blitter_origin,x
