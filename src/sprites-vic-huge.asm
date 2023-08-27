@@ -128,7 +128,23 @@ l:  ; Get screen address.
     tya
     and #framemask
     cmp spriteframe
+    beq +q      ; Yes, Copy…
+
+    ; Not in our frame. Get pointer into brick map.
+    lda scr
+    sta s
+    lda @(++ scr)
+    ora #>bricks
+    sta @(++ s)
+
+    ; Usually a DOH char at this position?
+    ldy scrx
+    lda (s),y
+    and #%01100000
+    cmp #%01100000
     bne +m      ; No. Clear…
+    lda (s),y   ; Copy DOH char.
+    tay
 
     ; Get char address to copy from.
 q:  tya
