@@ -1,3 +1,5 @@
+;(cl:proclaim '(optimize (speed 1) (space 1) (safety 0) (debug 3)))
+
 (load "gen-vcpu-tables.lisp")
 
 (= *model* :vic-20+xk)
@@ -9,15 +11,15 @@
 
 (var *demo?*        nil)    ; Limit to first eight levels.
 (var *rom?*         nil)
-(var *tape?*        t)      ; Make TAP.
-(var *wav?*         t)      ; Also make WAV.
+(var *tape?*        nil)    ; Make TAP.
+(var *wav?*         nil)    ; Also make WAV.
 (var *has-digis?*   t)      ; Original arcade sounds, highly compressed
                             ; with exomizer or home-made RLE.
-(var *debug?*       nil)
+(var *debug?*       t)
 (var *shadowvic?*   nil)
 (var *ultimem?*     nil)    ; Add support for high-end arcade audio
                             ; (from tape or SD only).
-(var *make-arcade-sounds?* nil) ; Lengthy process.
+(var *make-arcade-sounds?* t) ; Lengthy process.
 (var *all?*         nil)    ; *rom*, *tape*, *shadowvic?*
 
 (var *add-charset-base?* t) ; TODO: Hard code it.
@@ -94,6 +96,7 @@
                           "gfx-obstacle-cube.asm"
                           "gfx-obstacle-pyramid.asm"
                           "gfx-obstacle-spheres.asm"
+                          "gfx-obstacle-doh.asm"
                           "gfx-sprites.asm"
                           "gfx-taito.asm"
                           "gfx-ship.asm"
@@ -216,7 +219,7 @@
   (format t "Round intro size: ~A~%" (- (get-label '__end_round_intro) (get-label '__end_hiscore)))
   (format t "~A zero page bytes free.~%" (- #x00fc (get-label 'zp_end)))
   (format t "~A bytes free before interrupt vectors.~%" (- #x314 (get-label 'before_int_vectors)))
-  (format t "~A low memory bytes free.~%" (- #x0400 (get-label 'lowmem)))
+  (format t "~A low memory bytes free before $0400.~%" (- #x0400 (get-label 'lowmem)))
   (!= (- #x8000 (get-label 'the_end))
     (format t "~A bytes free before $8000.~%" !))
   (when *has-digis?*
@@ -260,7 +263,7 @@
            "bender/vic-20/minigrafik-display.asm"
            "loader/exomizer-stream-decrunsh.asm"
            "loader/audio.asm"
-           "loader/loader.asm"
+           "c2nwarp/loader.asm"
            "loader/ctrl.asm"))
   (make-vice-commands "obj/tape-loader.prg.lbl" "break .stop")
   (format t "Short pulse: ~A~%" *pulse-short*)
@@ -321,6 +324,8 @@
 (make-font)
 (make-level-data)
 (make-media)
+(when *make-arcade-sounds?*
+  (make-arcade-sounds))
 
 (make-prg "arukanoido-disk")
 (? *has-digis?*
@@ -329,8 +334,6 @@
      (unix-sh-cp "obj/arukanoido.prg" "arukanoido/"))
    (unix-sh-cp "obj/arukanoido-disk.exo.prg" "arukanoido/arukanoido.prg"))
 
-(when *make-arcade-sounds?*
-  (make-arcade-sounds))
 (when *rom?*
   (make-rom))
 (when *tape?*
