@@ -61,11 +61,9 @@ n:
     lda sprite_rows_on_screen
     sta sprites_h,x
 
-    ;; Allocate chars.
+    ;; Get char adress.
     lda next_sprite_char
     sta sprite_char
-
-    ;; Get char adress.
     asl
     asl
     asl
@@ -87,6 +85,7 @@ end
     sta @(++ d)
     pha
 
+    ;; Allocate chars.
     lda sprite_rows_on_screen
     asl
     asl
@@ -120,7 +119,7 @@ l:  ; Get screen address.
     lda (scr),y
     tay
 
-    ; DOH char?
+    ; DOH char? (Any frame.)
     and #%01100000
     cmp #%01100000
     beq +q      ; Yes. Copy…
