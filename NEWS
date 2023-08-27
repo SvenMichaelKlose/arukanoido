@@ -2,6 +2,7 @@ Changes orelative to 1071:
    * DOH with obstacles.
    * Ending story.
    * Bunch of bug fixes.
+   * Ball calculations almost twice as fast.
 
 Changes orelative to 915:
    * Many small bug fixes.
