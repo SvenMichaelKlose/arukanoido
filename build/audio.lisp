@@ -1,4 +1,4 @@
-(cl:proclaim '(cl:optimize (cl:speed 3) (cl:space 0) (cl:safety 3) (cl:debug 3)))
+;(cl:proclaim '(cl:optimize (cl:speed 3) (cl:space 0) (cl:safety 3) (cl:debug 3)))
 ;(cl:proclaim '(cl:optimize (cl:speed 3) (cl:space 0) (cl:safety 0) (cl:debug 0)))
 
 (const *audio-files*
@@ -24,14 +24,11 @@
 (fn make-filtered-wav (name rate)
   (sb-ext:run-program "/usr/bin/sox"
                       `(
-;                        "-v 0.9"
                         ,(+ "media/audio/" name ".wav")
                         ,(+ "obj-audio/" name ".filtered.wav")
-;                        "bass" "12"
                         "lowpass" ,(princ (half rate) nil)
-;"compand" "0.3,1" "6:-70,-60,-20" "-5" "-90" ; podcast
-;"compand" "0.1,0.3" "-60,-60,-30,-15,-20,-12,-4,-8,-2,-7" "-2" ; voice/music
-;"compand" "0.01,1" "-90,-90,-70,-70,-60,-20,0,0" "-5" ; voice/radio
+                        "highpass" "100"
+                        "vol" "7db"
                         )
                        :pty cl:*standard-output*))
 
@@ -145,9 +142,9 @@
 
 (fn make-arcade-sounds ()
   (@ (i *audio-files*)
-;    (@ (j .i)
+    (@ (j .i)
      (@ (rate '(4000 8000))
        (make-filtered-wav i. rate)
        (make-conversion i. rate)
        (@ (bits '(1 2 4))
-         (convert-wav i. bits rate)))))
+         (convert-wav i. bits rate))))))
