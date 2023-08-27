@@ -49,8 +49,6 @@ n:  dec tmp2
 
     rts
 
-flashing_doh: 0
-
 ; A: colour
 flash_doh:
     lda flashing_doh

@@ -1,6 +1,3 @@
-num_doh_obstacles: 0
-wait_doh_obstacles: 0
-
 add_missing_doh_obstacle:
     lda wait_doh_obstacles
     bne +r
@@ -88,4 +85,3 @@ l:  lda sprites_gl,x
 n:  dey
     bpl -l
 r:  rts
-

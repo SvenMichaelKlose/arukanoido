@@ -85,7 +85,6 @@ wait_retrace:
 
 blank_screen:
     jsr wait_retrace
-
     lda #0
     sta $9002
     rts

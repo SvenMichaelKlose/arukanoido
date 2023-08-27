@@ -1,11 +1,11 @@
-digisound_rate = @*audio-rate*
-digisound_timer_pal = @(/ (cpu-cycles :pal) digisound_rate)
-digisound_timer_ntsc = @(/ (cpu-cycles :ntsc) digisound_rate)
-digisound_rate_fast = @*audio-rate-fast*
-digisound_rate_expanded = @*audio-rate-expanded*
-digisound_timer_fast_pal = @(/ (cpu-cycles :pal) digisound_rate_fast)
+digisound_rate            = @*audio-rate*
+digisound_timer_pal       = @(/ (cpu-cycles :pal) digisound_rate)
+digisound_timer_ntsc      = @(/ (cpu-cycles :ntsc) digisound_rate)
+digisound_rate_fast       = @*audio-rate-fast*
+digisound_rate_expanded   = @*audio-rate-expanded*
+digisound_timer_fast_pal  = @(/ (cpu-cycles :pal) digisound_rate_fast)
 digisound_timer_fast_ntsc = @(/ (cpu-cycles :ntsc) digisound_rate_fast)
-digisound_timer_8000_pal = @(/ (cpu-cycles :pal) digisound_rate_expanded)
+digisound_timer_8000_pal  = @(/ (cpu-cycles :pal) digisound_rate_expanded)
 digisound_timer_8000_ntsc = @(/ (cpu-cycles :ntsc) digisound_rate_expanded)
 
 ; X: Sound index

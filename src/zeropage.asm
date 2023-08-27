@@ -264,10 +264,10 @@ ball_release_timer: 0
 vaus_width:         0
 vaus_last_x:        0
 ball_speed:         0
-is_firing:          0   ; Laser interval countdown.
-laser_delay_type:   0   ; 0: short, 1: long
-is_using_paddle:    0
-old_paddle_value:   0
+is_firing:          0       ; Laser interval countdown.
+laser_delay_type:   0       ; 0: short, 1: long
+old_paddle_value:   0       ; Used to detect paddles.
+is_using_paddle:    0       ; Tells if paddles have been detected.
 
 has_new_score:        0
 has_hiscore:          0
@@ -284,12 +284,19 @@ num_hits:               0 ; Used to increase the ball speed.
 num_obstacles:      0
 joystick_status:    0
 
+; Position of pre-shifted sprite data.
 gfx_vaus_pre:           0 0
 gfx_vaus_extended_pre:  0 0
 gfx_obstacles:          0 0
 gfx_obstacles_end:      0 0
 
 sprite_inits:           fill @sprite_inits_size
+
+num_doh_obstacles:      0
+wait_doh_obstacles:     0
+flashing_doh:           0
+
+get_keypress_x:         0
 
 lowmem:
     end

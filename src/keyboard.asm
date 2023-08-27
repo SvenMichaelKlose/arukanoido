@@ -58,8 +58,6 @@ end
     bne wait_keyunpress
     rts
 
-get_keypress_x: 0
-
 get_keypress:
 if @*shadowvic?*
     jmp no_keypress

@@ -1,7 +1,7 @@
-init_music = $218d
-play_music = $2027
-current_song = $03d4
-requested_song = $03d6
+init_music      = $218d
+play_music      = $2027
+current_song    = $03d4
+requested_song  = $03d6
 
 snd_test              = 3
 
