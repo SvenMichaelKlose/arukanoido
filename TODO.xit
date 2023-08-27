@@ -1,9 +1,3 @@
-Original arcade audio
-[ ] Correct wave forms.
-
-DOH
-[ ] Transparent backgrond for obstacles
-
 Hiscore table
 [ ] Display
 [ ] Input
@@ -15,7 +9,6 @@ Miscellaneous
 Vaus:
 [ ] Resting ball doesn't stick but hover.
 [ ] Vaus does not expand/compand on both sides.
-[x] B bonus: Vaus is flashing up after exit.
 [ ] NTSC B bonus: Vaus warps off too soon.
 [?] Shallow kick off to the left.
 [?} Laser versipn missing.
