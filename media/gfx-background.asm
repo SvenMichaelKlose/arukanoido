@@ -150,17 +150,7 @@ bg_break = @(+ bg_start 13)
 %00001000
 %00000100
 
-bg_star = @(+ bg_start 15)
-%00000000
-%00000000
-%00000000
-%00000000
-%00001000
-%00000000
-%00000000
-%00000000
-
-bg_minivaus = @(+ bg_start 16)
+bg_minivaus = @(+ bg_start 15)
 %01110100
 %10101000
 %01110100
@@ -170,7 +160,7 @@ bg_minivaus = @(+ bg_start 16)
 %00000000
 %00000000
 
-bg_brick_fx = @(+ bg_start 17)
+bg_brick_fx = @(+ bg_start 16)
 %10101010
 %11111110
 %10101010
@@ -234,7 +224,7 @@ bg_brick_fx = @(+ bg_start 17)
 %10101010
 %00000000
 
-bg_brick_fx_end = @(+ bg_start 24)
+bg_brick_fx_end = @(+ bg_start 23)
 %11111010
 %11111110
 %11101010
