@@ -70,6 +70,7 @@ n:
     asl
     asl
     sta d
+    pha
     lda sprite_char
     lsr
     lsr
@@ -84,6 +85,7 @@ if @(not *add-charset-base?*)
     ora #>charset
 end
     sta @(++ d)
+    pha
 
     lda sprite_rows_on_screen
     asl
@@ -116,9 +118,9 @@ l:  ; Get screen address.
 
     ldy scrx
     lda (scr),y
+    tay
 
     ; DOH char?
-    tay
     and #%01100000
     cmp #%01100000
     beq +q      ; Yes. Copy…
@@ -209,25 +211,10 @@ n:  dec draw_sprites_tmp2
     bne +l2b
 
     ;; Get destination address in charset.
-    lda sprite_char
-    asl
-    asl
-    asl
-    sta d
-    lda sprite_char
-    lsr
-    lsr
-    lsr
-    lsr
-    lsr
-if @*add-charset-base?*
-    clc
-    adc #>charset
-end
-if @(not *add-charset-base?*)
-    ora #>charset
-end
+    pla
     sta @(++ d)
+    pla
+    sta d
 
     ;; Add Y char offset.
     lda sprites_y,x
