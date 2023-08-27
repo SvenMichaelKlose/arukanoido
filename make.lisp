@@ -1,4 +1,21 @@
-;(cl:proclaim '(optimize (speed 1) (space 1) (safety 0) (debug 3)))
+;(cl:proclaim '(optimize (speed 3) (space 1) (safety 0) (debug 3)))
+
+; CONFIGURE HERE!
+
+(const *versions* '(:prg :rom :tap :shadowvic))
+
+(const *demo?* nil)    ; Limit to first eight levels.
+(const *debug?* t)
+(const *make-arcade-sounds?* nil) ; Lengthy process.
+(var *has-digis?* t)
+(var *add-charset-base?* t)
+(var *show-cpu?* nil)
+
+
+; DO NOT TOUCH FROM HERE ON!
+
+(fn version? (x)
+  (member x *versions*))
 
 (load "gen-vcpu-tables.lisp")
 
@@ -9,27 +26,11 @@
 (var *revision* (!= (fetch-file "_revision")
                   (subseq ! 0 (-- (length !)))))
 
-(var *demo?*        nil)    ; Limit to first eight levels.
 (var *rom?*         nil)
-(var *tape?*        nil)    ; Make TAP.
-(var *wav?*         nil)    ; Also make WAV.
-(var *has-digis?*   t)      ; Original arcade sounds, highly compressed
-                            ; with exomizer or home-made RLE.
-(var *debug?*       t)
+(var *tape?*        nil)
 (var *shadowvic?*   nil)
 (var *ultimem?*     nil)    ; Add support for high-end arcade audio
                             ; (from tape or SD only).
-(var *make-arcade-sounds?* t) ; Lengthy process.
-(var *all?*         nil)    ; *rom*, *tape*, *shadowvic?*
-
-(var *add-charset-base?* t) ; TODO: Hard code it.
-(var *show-cpu?*    nil)    ; Border effects by sprite engine.
-
-
-(when *all?*
-  (= *rom* t
-     *tape* t
-     *shadowvic?* t))
 
 (load "build/audio.lisp")
 (load "build/font.lisp")
@@ -243,10 +244,11 @@
 (fn make-rom ()
   (with-temporary *rom?* t
     (make-game "obj/arukanoido.img" "obj/arukanoido.img.lbl")
-    (!= (- #x3ce (+ (get-label 'lowmem) (get-label 'lowmem_size)))
-      (format t "~A bytes till $3ce.~%" !)
-      (? (< ! 0)
-         (quit)))
+;    (!= (- #x3ce (+ (get-label 'lowmem) (get-label 'lowmem_size)))
+;      (format t "~A bytes till $3ce.~%" !)
+;      (when (< ! 0)
+;        (error "Low memory overflow.")
+;        (quit)))
     (!= (- #xc000 (get-label 'the_end))
       (format t "~A bytes till $c000.~%" !)))
   (sb-ext:run-program "/usr/bin/split"
@@ -327,23 +329,33 @@
 (when *make-arcade-sounds?*
   (make-arcade-sounds))
 
-(make-prg "arukanoido-disk")
-(? *has-digis?*
-   (progn
-     (make-prg-launcher)
-     (unix-sh-cp "obj/arukanoido.prg" "arukanoido/"))
-   (unix-sh-cp "obj/arukanoido-disk.exo.prg" "arukanoido/arukanoido.prg"))
+(when (version? :prg)
+  (format t "### Making disk PRG…~%")
+  (make-prg "arukanoido-disk")
+  (? *has-digis?*
+     (progn
+       (make-prg-launcher)
+       (unix-sh-cp "obj/arukanoido.prg" "arukanoido/"))
+     (unix-sh-cp "obj/arukanoido-disk.exo.prg" "arukanoido/arukanoido.prg")))
 
-(when *rom?*
+(when (version? :rom)
+  (format t "### Making ROM image…~%")
   (make-rom))
-(when *tape?*
-  (make-prg "arukanoido-tape")
-  (make-tap))
-(when *shadowvic?*
-  (with-temporary *has-digis?* nil
-    (make-prg "arukanoido-shadowvic")))
-;(unix-sh-cp "arukanoido-cpumon.prg" "arukanoido/arukanoido-cpumon.prg")
-(when (& *tape?* *wav?*)
+
+(when (print (version? :tap))
+  (format t "### Making TAP file…~%")
+  (with-temporary *tape?* t
+    (make-prg "arukanoido-tape")
+    (make-tap)))
+
+(when (version? :shadowvic)
+  (format t "### Making shadowVIC PRG…~%")
+  (with-temporary *shadowvic?* t
+    (with-temporary *has-digis?* nil
+      (make-prg "arukanoido-shadowvic"))))
+
+(when (version? :wav)
+  (format t "### Making WAV file…")
   (with-input-file i "arukanoido/arukanoido.tap"
     (with-output-file o "arukanoido/arukanoido.wav"
       (tap2wav i o 44100 (cpu-cycles :ntsc)))))
