@@ -156,7 +156,9 @@ hiscore:    fill num_score_digits
 
 sprites_d2:     fill num_sprites ; Whatever the controllers want.
 
-sprites_sx:     fill @(* 2 num_sprites) ; Screen position, dimensions in chars and frame.
+; Screen position add dimensions in chars.  Even and odd positions
+; are the two different frames.
+sprites_sx:     fill @(* 2 num_sprites)
 sprites_sy:     fill @(* 2 num_sprites)
 sprites_sw:     fill @(* 2 num_sprites)
 sprites_sh:     fill @(* 2 num_sprites)
