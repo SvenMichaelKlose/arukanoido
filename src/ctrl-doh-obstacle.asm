@@ -26,7 +26,7 @@ l:  lda framecounter
     sta sprites_d,x
     lda #56
     sta sprites_x,x
-    lda #96
+    lda #104
     sta sprites_y,x
     inc num_doh_obstacles
     lda num_doh_obstacles
