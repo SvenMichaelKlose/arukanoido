@@ -145,37 +145,7 @@ n:  lda #min_ball_speed
 
 apply_bonus_b:
     dec mode_break
-    lda #14
-    sta scrx
-    lda #27
-    sta scry
-    jsr scrcoladdr
-    lda #bg_side
-    sta (scr),y
-
-    inc scry
-    jsr scrcoladdr
-    lda #white
-    sta (col),y
-    inc scry
-    jsr scrcoladdr
-    lda #white
-    sta (col),y
-
-    lda is_landscape
-    bne +n
-
-    inc scry
-    jsr scrcoladdr
-    lda #white
-    sta (col),y
-
-    inc scry
-    jsr scrcoladdr
-    lda #@(+ bg_side 2)
-    sta (scr),y
-
-n:  rts
+    rts
 
 apply_bonus_d:
     lda #is_laser

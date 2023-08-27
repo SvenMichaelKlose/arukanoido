@@ -40,6 +40,9 @@ m:  stx $9124
 
     rts
 
+done:
+    jmp +done
+
 irq:
 if @*show-cpu?*
     lda #@(+ 8 3)
@@ -47,7 +50,7 @@ if @*show-cpu?*
 end
 
     lda has_paused
-    bne +done
+    bne -done
 
     inc framecounter
     bne +n
@@ -62,27 +65,36 @@ n:  lda mode_break
 
     lda screen_gate
     sta d
+    sta c
     lda @(++ screen_gate)
     sta @(++ d)
+    ora #>colors
+    sta @(++ c)
     lda framecounter
     lsr
     and #1
     clc
     adc #bg_break
-    pha
+    tax
     ldy #0
     sta (d),y
+    lda #white
+    sta (c),y
     ldy screen_columns
+    txa
     sta (d),y
+    lda #white
+    sta (c),y
     lda is_landscape
-    bne +m
+    bne +n
+    ; Extra gate char in portrait format.
     tya
     asl
     tay
-    pla
+    txa
     sta (d),y
-    jmp +n
-m:  pla
+    lda #white
+    sta (c),y
     
 n:  lda currently_playing_digis
     bne +n
