@@ -121,6 +121,8 @@ apply_bonus_e:
     sta mode
     lda #24
     sta vaus_width
+    jsr move_vaus_left
+    jsr move_vaus_left
     lda #snd_growing_vaus
     jmp play_sound
 
