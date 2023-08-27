@@ -165,7 +165,6 @@ end
     cmp #doh_level
     bne +n
     jsr init_doh_charset
-    jsr draw_doh
     lda #16
     sta bricks_left
     bne +m                  ; (jmp)
@@ -176,7 +175,12 @@ m:  jsr draw_walls
     jsr display_score
 
 retry:
-    lda #0
+    lda level
+    cmp #doh_level
+    bne +n
+    jsr draw_doh
+
+n:  lda #0
     sta is_running_game
     sta is_firing
     sta mode
