@@ -55,6 +55,7 @@ sprites_clear_loop:
 
     sei
 
+    ; Make frame-related index into sprite tables.
     txa
     asl
     tay
@@ -93,22 +94,25 @@ l3: lda (scr),y
     beq +n              ; Nothing to clear…
     and #foreground
     bne +n              ; Don't remove foreground chars…
+
     lda (scr),y
     and #framemask
     cmp spriteframe
     beq +n
 
-    ; Restore DOH char.
+    ; Make pointer into brick map.
     lda scr
     sta d
     lda @(++ scr)
     ora #>bricks
     sta @(++ d)
+
+    ; Check if DOH char
     lda (d),y
     and #%01100000
     cmp #%01100000
-    bne +n2
-    lda (d),y
+    bne +n2     ; No. Just clear…
+    lda (d),y   ; Restore DOH char.
     jmp +n3
 
 n2: lda #0
@@ -162,6 +166,7 @@ n:  dex
 j:  tay
     and #foreground
     bne +n
+    ; TODO: Restore DOH chars.
     ldy #0
 n:  tya
     rts
