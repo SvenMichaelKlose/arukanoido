@@ -298,5 +298,8 @@ flashing_doh:           0
 
 get_keypress_x:         0
 
+preshifted_ball:        0 0
+preshifted_ball_caught: 0 0
+
 lowmem:
     end

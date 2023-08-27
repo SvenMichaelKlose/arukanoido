@@ -65,14 +65,27 @@ preshift_common_sprites:
     jsr preshift_huge_sprite
 
     lda d
+    sta preshifted_ball
     sta @(+ ball_init sprite_init_pgl)
     lda @(++ d)
+    sta @(++ preshifted_ball)
     sta @(+ ball_init sprite_init_pgh)
     lda #<gfx_ball
     sta s
     lda #>gfx_ball
     sta @(++ s)
     dex
+    ldy #9
+    jsr preshift_huge_sprite
+
+    lda d
+    sta preshifted_ball_caught
+    lda @(++ d)
+    sta @(++ preshifted_ball_caught)
+    lda #<gfx_ball_caught
+    sta s
+    lda #>gfx_ball_caught
+    sta @(++ s)
     ldy #9
     jsr preshift_huge_sprite
 

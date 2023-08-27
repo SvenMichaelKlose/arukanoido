@@ -282,10 +282,10 @@ make_ball:
     sta sprites_x,x
     lda ball_vaus_y_caught
     sta sprites_y,x
-    lda #<gfx_ball_caught
-    sta sprites_gl,x
-    lda #>gfx_ball_caught
-    sta sprites_gh,x
+    lda preshifted_ball_caught
+    sta sprites_pgl,x
+    lda @(++ preshifted_ball_caught)
+    sta sprites_pgh,x
     lda #initial_ball_direction
     sta sprites_d,x
     lda #0
@@ -349,6 +349,10 @@ release_ball:
     ldy caught_ball
     lda ball_vaus_y_above
     sta sprites_y,y
+    lda preshifted_ball
+    sta sprites_pgl,y
+    lda @(++ preshifted_ball)
+    sta sprites_pgh,y
 
     ; Correct X position so the ball won't end up in the wall.
     lda sprites_x,y
