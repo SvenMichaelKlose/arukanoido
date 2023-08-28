@@ -38,7 +38,7 @@ ctrl_bonus:
     jsr release_ball
 
     ; Restore default Vaus graphics.
-n:  jsr get_vaus_index_in_y
+n:  ldy vaus_sprite_index
     lda #<gfx_vaus
     sta sprites_gl,y
     lda #>gfx_vaus
@@ -100,7 +100,7 @@ apply_bonus_l:
     rts
 
 apply_bonus_e:
-    jsr get_vaus_index_in_y
+    ldy vaus_sprite_index
     lda gfx_vaus_extended_pre
     sta sprites_pgl,y
     lda @(++ gfx_vaus_extended_pre)

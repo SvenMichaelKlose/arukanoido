@@ -440,7 +440,7 @@ test_gap_top:
     jmp -l
 
 ctrl_obstacle_chasing:
-    jsr get_vaus_index_in_y
+    ldy vaus_sprite_index
     lda sprites_x,y
     cmp sprites_x,x
     ldy #@(- 128 direction_l)

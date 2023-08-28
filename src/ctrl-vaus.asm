@@ -1,12 +1,3 @@
-get_vaus_index_in_y:
-    ldy #@(-- num_sprites)
-l:  lda sprites_i,y
-    and #is_vaus
-    bne +r
-    dey
-    bpl -l
-r:  rts
-
 ctrl_dummy:
     rts
 
@@ -250,6 +241,7 @@ n:  rts
 make_vaus:
     ldy #@(- vaus_init sprite_inits)
     jsr add_sprite
+    sta vaus_sprite_index
     tax
     lda #vaus_x
     sta sprites_x,x
@@ -267,8 +259,6 @@ set_vaus_color:
     bcs +n
     ldy #<gfx_vaus_laser
 n:  tya
-    pha
-    jsr get_vaus_index_in_y
-    pla
+    ldy vaus_sprite_index
     sta sprites_gl,y
 r:  rts

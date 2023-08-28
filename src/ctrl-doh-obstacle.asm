@@ -12,9 +12,7 @@ l:  lda framecounter
 
     ldy #@(- doh_obstacle_init sprite_inits)
     jsr add_sprite
-    pha
-    jsr get_vaus_index_in_y
-    pla
+    ldy vaus_sprite_index
     tax
     lda sprites_x,y
     lsr
