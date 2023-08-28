@@ -237,7 +237,7 @@
   (with-temporary *imported-labels* (get-labels)
     (make-game (+ "obj/" file ".prg") (+ "obj/" file ".prg.lbl")))
   (unless *shadowvic?*
-    (sb-ext:run-program "/usr/local/bin/exomizer-2.0.10"
+    (sb-ext:run-program "/usr/local/bin/exomizer-3.0.2"
                         (list "sfx" "basic" "-t52" "-o" (+ "obj/" file ".exo.prg") (+ "obj/" file ".prg"))
                         :pty cl:*standard-output*)))
 
