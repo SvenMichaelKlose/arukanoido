@@ -26,14 +26,16 @@ i_stzw:
     sta 1,x
     rts
 
-; Set zero page byte.
+; Set byte.
 i_stmb:
     lda a2
     ldy #0
     sta (a0),y
     rts
 
-; Set zero page word s and d.
+; Set zero page locations which are defined
+; as instruction arguments, sp there is nothing
+; left to do.
 i_lday:
 i_ldsd:
     rts
