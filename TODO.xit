@@ -1,11 +1,12 @@
+[ ] Pause before DOH starts spitting obstables.
+[ ] D bonus: sometimes balls go the same direction.
+[ } Re-activate aser version of Vaus.
+[?] Shallow kick off to the left.
+
+[ ] Fast reflection tests using tables.
+[?] Extend VCPU for top-level off-game code to save space.
+
 Hiscore table
 [ ] Display
 [ ] Input
 [ ] KERNAL I/O
-
-Miscellaneous
-[ ] D bonus: sometimes balls go the same direction.
-
-Vaus:
-[?] Shallow kick off to the left.
-[?} Laser version missing.
