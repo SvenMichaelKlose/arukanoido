@@ -285,10 +285,11 @@ num_obstacles:      0
 joystick_status:    0
 
 ; Position of pre-shifted sprite data.
-gfx_vaus_pre:           0 0
-gfx_vaus_extended_pre:  0 0
-gfx_obstacles:          0 0
-gfx_obstacles_end:      0 0
+preshifted_vaus:            0 0
+preshifted_vaus_laser:      0 0
+preshifted_vaus_extended:   0 0
+gfx_obstacles:              0 0
+gfx_obstacles_end:          0 0
 
 sprite_inits:           fill @sprite_inits_size
 

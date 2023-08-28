@@ -43,9 +43,9 @@ n:  ldy vaus_sprite_index
     sta sprites_gl,y
     lda #>gfx_vaus
     sta sprites_gh,y
-    lda gfx_vaus_pre
+    lda preshifted_vaus
     sta sprites_pgl,y
-    lda @(++ gfx_vaus_pre)
+    lda @(++ preshifted_vaus)
     sta sprites_pgh,y
 
     ; Un-extend Vaus.
@@ -97,13 +97,18 @@ bonus_funs_h:
 apply_bonus_l:
     lda #mode_laser
     sta mode
+    ldy vaus_sprite_index
+    lda preshifted_vaus_laser
+    sta sprites_pgl,y
+    lda @(++ preshifted_vaus_laser)
+    sta sprites_pgh,y
     rts
 
 apply_bonus_e:
     ldy vaus_sprite_index
-    lda gfx_vaus_extended_pre
+    lda preshifted_vaus_extended
     sta sprites_pgl,y
-    lda @(++ gfx_vaus_extended_pre)
+    lda @(++ preshifted_vaus_extended)
     sta sprites_pgh,y
     lda #11
     sta sprites_dimensions,y
