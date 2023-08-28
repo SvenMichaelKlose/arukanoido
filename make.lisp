@@ -140,7 +140,6 @@
                           "blit-char.asm"
                           "sprites.asm"
                           "sprites-vic-common.asm"
-;                          "sprites-vic.asm"
                           "sprites-vic-huge.asm"
                           "sprites-vic-huge-preshifted.asm"
 
