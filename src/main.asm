@@ -54,7 +54,6 @@ preshift_common_sprites:
     sta s
     lda #>gfx_vaus_laser
     sta @(++ s)
-    ldx #1
     ldy #10
     jsr preshift_huge_sprite
 
