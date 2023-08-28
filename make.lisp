@@ -2,7 +2,8 @@
 
 ; CONFIGURE HERE!
 
-(const *versions* '(:prg :rom :tap :shadowvic))
+;(const *versions* '(:prg :rom :tap :shadowvic))
+(const *versions* '(:prg))
 
 (const *demo?* nil)    ; Limit to first eight levels.
 (const *debug?* t)
@@ -264,7 +265,7 @@
            "bender/vic-20/minigrafik-display.asm"
            "loader/exomizer-stream-decrunsh.asm"
            "loader/audio.asm"
-           "c2nwarp/loader.asm"
+           "loader/loader.asm"
            "loader/ctrl.asm"))
   (make-vice-commands "obj/tape-loader.prg.lbl" "break .stop")
   (format t "Short pulse: ~A~%" *pulse-short*)
