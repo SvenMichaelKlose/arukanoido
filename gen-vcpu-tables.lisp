@@ -37,6 +37,7 @@
   nil)
 
 (define-bytecode stmb a0 a1 a2)
+(define-bytecode stmw a0 a1 a2 a3)
 (define-bytecode stzb a0 a1)
 (define-bytecode stzw a0 a1 a2)
 (define-bytecode lday sra sry)
