@@ -26,10 +26,20 @@ i_stzw:
     sta 1,x
     rts
 
-; Set byte.
+; Set memory byte.
 i_stmb:
     lda a2
     ldy #0
+    sta (a0),y
+    rts
+
+; Set memory word.
+i_stmw:
+    ldy #0
+    lda a2
+    sta (a0),y
+    iny
+    lda a3
     sta (a0),y
     rts
 

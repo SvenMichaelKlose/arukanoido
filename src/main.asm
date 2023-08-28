@@ -22,22 +22,17 @@ if @*debug?*
     clrmw <charset >charset $00 $08
 end
     movmw <loaded_sprite_inits >loaded_sprite_inits <sprite_inits >sprite_inits sprite_inits_size 0
+    stmb <exm_needs_data >exm_needs_data $ff
     0
-
-    lda #$ff
-    sta exm_needs_data
 
     jmp set_format
 
 preshift_common_sprites:
     0
     clrmw $00 $04 $d0 $05
-    0
 
-    lda #$00
-    sta d
-    lda #$04
-    sta @(++ d)
+    stmw <d >d $00 $04
+    0
 
     lda d
     sta @(+ vaus_init sprite_init_pgl)
