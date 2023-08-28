@@ -51,6 +51,8 @@ game:
     sta lifes
     jsr init_score
 
+lda #32
+sta level
 next_level:
     lda #0
     sta is_running_game
