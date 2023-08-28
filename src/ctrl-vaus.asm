@@ -217,11 +217,9 @@ move_vaus_left:
     ; Move caught ball with Vaus.
     lda caught_ball
     bmi +n
-    stx tmp
     tax
     lda #2
     jsr sprite_left
-    ldx tmp
 n:  pla
     tax
     rts
@@ -239,11 +237,9 @@ move_vaus_right:
     ; Move caught ball with Vaus.
     lda caught_ball
     bmi +n
-    stx tmp
     tax
     lda #2
     jsr sprite_right
-    ldx tmp
 n:  pla
     tax
     rts
