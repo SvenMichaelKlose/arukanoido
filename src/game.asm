@@ -254,7 +254,7 @@ n2: jsr get_keypress
 q:  jsr wait_keyunpress
     jmp +l
 
-;if @*demo?*
+if @*debug?*
 n:  ldx #8
 m:  cmp bonus_keys,x
     bne +n
@@ -272,7 +272,7 @@ n:  cmp #keycode_n
 n:  cmp #keycode_space
     bne +n
     jmp show_charset
-;end
+end
 n:
 
 l:
@@ -314,7 +314,7 @@ end
     jsr wait_for_silence
     jmp next_level
 
-;if @*demo?*
+if @*debug?*
 bonus_keys:
     keycode_0
     keycode_1
@@ -324,7 +324,7 @@ bonus_keys:
     keycode_5
     keycode_6
     keycode_7
-;end
+end
 
 txt_game_over: @(string4x8 "GAME  OVER") 255
 
