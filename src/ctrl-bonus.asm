@@ -54,12 +54,10 @@ n:  jsr get_vaus_index_in_y
     bne +n
     lda #10
     sta sprites_dimensions,y
-    lda sprites_x,y
-    clc
-    adc #4
-    sta sprites_x,y
     lda #16
     sta vaus_width
+    jsr move_vaus_right
+    jsr move_vaus_right
 
 n:  lda #0
     sta mode
@@ -103,14 +101,6 @@ apply_bonus_l:
 
 apply_bonus_e:
     jsr get_vaus_index_in_y
-    lda sprites_x,y
-    sec
-    sbc #4
-    sta sprites_x,y
-    lda #<gfx_vaus_extended
-    sta sprites_gl,y
-    lda #>gfx_vaus_extended
-    sta sprites_gh,y
     lda gfx_vaus_extended_pre
     sta sprites_pgl,y
     lda @(++ gfx_vaus_extended_pre)
