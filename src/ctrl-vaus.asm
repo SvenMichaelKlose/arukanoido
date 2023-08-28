@@ -205,6 +205,9 @@ n:  lda #@(* 14 8)
 r:  rts
 
 move_vaus_left:
+    txa
+    pha
+    ldx vaus_sprite_index
     lda sprites_x,x
     cmp #9
     bcc +n
@@ -219,9 +222,14 @@ move_vaus_left:
     lda #2
     jsr sprite_left
     ldx tmp
-n:  rts
+n:  pla
+    tax
+    rts
 
 move_vaus_right:
+    txa
+    pha
+    ldx vaus_sprite_index
     lda sprites_x,x
     jsr test_vaus_hit_right
     bcs enter_break_mode
@@ -236,7 +244,9 @@ move_vaus_right:
     lda #2
     jsr sprite_right
     ldx tmp
-n:  rts
+n:  pla
+    tax
+    rts
 
 make_vaus:
     ldy #@(- vaus_init sprite_inits)
