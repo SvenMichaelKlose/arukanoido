@@ -110,10 +110,10 @@ m:  sta sprites_d,x
 
     ; Catch ball.
     stx caught_ball
-    lda #<gfx_ball_caught   ; Trick to avoid colour clash.
-    sta sprites_gl,x
-    lda #>gfx_ball_caught
-    sta sprites_gh,x
+    lda preshifted_ball_caught   ; Trick to avoid colour clash.
+    sta sprites_pgl,x
+    lda @(++ preshifted_ball_caught)
+    sta sprites_pgh,x
     lda ball_vaus_y_caught
     sta sprites_y,x
     lda #delay_until_ball_is_released
