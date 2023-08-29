@@ -51,6 +51,8 @@ game:
     sta lifes
     jsr init_score
 
+lda #32
+sta level
 next_level:
     lda #0
     sta is_running_game
@@ -177,6 +179,8 @@ retry:
     cmp #doh_level
     bne +n
     jsr draw_doh
+    lda #240
+    sta doh_wait
 
 n:  lda #0
     sta is_running_game
@@ -188,7 +192,6 @@ n:  lda #0
     sta @(++ framecounter)
     sta num_obstacles
     sta num_doh_obstacles
-    sta wait_doh_obstacles
     sta num_hits
     sta bonus_on_screen
     sta laser_delay_type

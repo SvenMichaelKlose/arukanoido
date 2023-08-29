@@ -240,9 +240,9 @@ line_addresses_l:       fill 33
 get_crunched_byte_tmp:  0
 attraction_mode:        0
 
-;if @*demo?*
+if @*debug?*
 next_bonus:             0
-;end
+end
 
 before_int_vectors:
 
@@ -277,12 +277,12 @@ bonus_on_screen:        0
 num_lifes_by_score:     0
 has_paused:             0
 has_hit_brick:          0
-has_hit_silver_brick:   0 ; TODO: Perhaps merge with has_golden_brick.
+has_hit_silver_brick:   0
 has_hit_golden_brick:   0
 num_hits:               0 ; Used to increase the ball speed.
 
-num_obstacles:      0
-joystick_status:    0
+num_obstacles:          0
+joystick_status:        0
 
 ; Position of pre-shifted sprite data.
 preshifted_vaus:            0 0
@@ -295,8 +295,8 @@ gfx_obstacles_end:          0 0
 
 sprite_inits:           fill @sprite_inits_size
 
+doh_wait:               0
 num_doh_obstacles:      0
-wait_doh_obstacles:     0
 flashing_doh:           0
 
 get_keypress_x:         0
