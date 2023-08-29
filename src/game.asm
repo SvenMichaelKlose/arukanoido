@@ -51,8 +51,6 @@ game:
     sta lifes
     jsr init_score
 
-lda #32
-sta level
 next_level:
     lda #0
     sta is_running_game
@@ -65,10 +63,6 @@ next_level:
 
     ;; Pre-shift obstacle animation.
     ; Clear destination area.
-;    0
-;   TODO: Read word at gfx_obstacles.
-;    clrmw <gfx_obstacles >gfx_obstacles $00 $09
-;    0
     lda gfx_obstacles
     sta d
     lda @(++ gfx_obstacles)
