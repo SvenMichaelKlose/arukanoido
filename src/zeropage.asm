@@ -288,6 +288,8 @@ joystick_status:    0
 preshifted_vaus:            0 0
 preshifted_vaus_laser:      0 0
 preshifted_vaus_extended:   0 0
+preshifted_ball:            0 0
+preshifted_ball_caught:     0 0
 gfx_obstacles:              0 0
 gfx_obstacles_end:          0 0
 
@@ -298,9 +300,6 @@ wait_doh_obstacles:     0
 flashing_doh:           0
 
 get_keypress_x:         0
-
-preshifted_ball:        0 0
-preshifted_ball_caught: 0 0
 
 vaus_sprite_index:      0
 
