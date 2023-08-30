@@ -56,6 +56,9 @@ an opening to the right immediately.  Otherwise you'll find
 yourself juggling with the ball in a way that might be not
 very much to your liking.  When done right, the ball will
 race upwards, making a visually rewarding impression.
+HINT: Get the ball through the leftmost brick at the bottom
+to impress everyone by vanishing almost all bricks in a
+jiff.
 
 ## Level 4
 
