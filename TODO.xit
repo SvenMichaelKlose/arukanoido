@@ -1,3 +1,4 @@
+[ ] Fix keyboard controls.
 [ ] Paddle translation relative to center of Vaus, not its left edge.
 [ ] Break mode when actually hitting the gate.
 [ ] Break mode sound with higher priority than extension mode.
