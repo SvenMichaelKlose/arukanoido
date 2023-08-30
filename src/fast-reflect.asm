@@ -1,6 +1,9 @@
-; Nice and fast but cannot handle hitting corners with
-; space behind diagonally.
+mod7asl3        = $9800
+mod7            = $9900
+reflection_info = $9a00
+asl6            = $9c00
 
+; 3x3 char offset table indexes.
 b_nw    = 0
 b_n     = 1
 b_ne    = 2
@@ -10,96 +13,285 @@ b_s     = 5
 b_sw    = 6
 b_w     = 7
 
+; Indexes into 'used_ball_directions'.
+di_ls   = 0
+di_l    = 1
+di_r    = 2
+di_rs   = 3
+di_drs  = 4
+di_dr   = 5
+di_dl   = 6
+di_dls  = 7
+
 make_reflection_tables:
     ; Clear all tables.
     0
     clrmw <asl6 >asl6 00 01
     clrmw <mod7asl3 >mod7asl3 00 01
     clrmw <mod7 >mod7 00 01
-    clrmw <reflection_info >reflection_info 00 02
     0
 
     ; Table to convert direction to one of 8 ball directions.
     ldx #7
-l:  ldy used_ball_directions,x
+l:  txa
+    asl
+    asl
+    asl
+    asl
+    asl
+    asl
+    sta asl6,x
     dex
     bpl -l
 
+    ; Shift/modulo tables.
     ldx #0
 l:  txa
-    and #%11
+    and #%111
     sta mod7,x
     asl
     asl
     asl
     sta mod7asl3,x
+    lda #$ff
+    sta reflection_info,x
+    sta @(+ reflection_info 256),x
     inx
     bne -l
 
+    lda #<reflection_corners
+    sta s
+    lda #>reflection_corners
+    sta @(++ s)
+
+    lda #0
+    sta ball_x
+    sta ball_y
+    ldx #6
+    jsr make_spots
+    lda #7
+    sta ball_x
+    ldx #6
+    jsr make_spots
+    lda #7
+    sta ball_y
+    ldx #6
+    jsr make_spots
+    lda #0
+    sta ball_x
+    ldx #6
+    jsr make_spots
+
+
+    ldx #6
+l:  stx ball_x
+    txa
+    pha
+
+    lda #<reflection_top
+    sta s
+    lda #>reflection_top
+    sta @(++ s)
+    lda #0
+    sta ball_y
+    ldx #4
+    jsr make_spots
+
+    lda #<reflection_bottom
+    sta s
+    lda #>reflection_bottom
+    sta @(++ s)
+    lda #7
+    sta ball_y
+    ldx #4
+    jsr make_spots
+
+    pla
+    sta ball_y
+    pha
+
+    lda #<reflection_left
+    sta s
+    lda #>reflection_left
+    sta @(++ s)
+    lda #0
+    sta ball_x
+    ldx #4
+    jsr make_spots
+
+    lda #<reflection_right
+    sta s
+    lda #>reflection_right
+    sta @(++ s)
+    lda #7
+    sta ball_x
+    ldx #4
+    jsr make_spots
+
+    pla
+    tax
+    dex
+    bne -l
+
+    ; Char offsets
+    lda #<test_offsets
+    sta d
+    lda #>test_offsets
+    sta @(++ d)
+    lda #0
+    jsr out_d
+    lda #1
+    jsr out_d
+    lda #2
+    jsr out_d
+    lda screen_columns
+    jsr out_d
+    lda screen_columns
+    clc
+    adc #2
+    jsr out_d
+    lda screen_columns
+    asl
+    sta @(-- test_offsets)
+    jsr out_d
+    clc
+    adc #1
+    jsr out_d
+    clc
+    adc #1
+    jsr out_d
+    lda #0
+    jsr out_d
+
     rts
 
-reflection_sides:
-    ; Top
-    direction_ls    b_n     direction_dls
-    direction_l     b_n     direction_dl
-    direction_r     b_n     direction_dr
-    direction_rs    b_n     direction_drs
-    ; ...
+make_spots:
+    txa
+    pha
+    tya
+    pha
+    lda ball_y
+    pha
+    asl ball_y
+    asl ball_y
+    asl ball_y
+l:  jsr make_spot
+    dex
+    bne -l
+    pla
+    sta ball_y
+    pla
+    tay
+    pla
+    tax
+    rts
 
-    ; Bottom
-    direction_dls   b_s     direction_ls
-    direction_dl    b_s     direction_l
-    direction_dr    b_s     direction_r
-    direction_drs   b_s     direction_rs
-    ; ...
+make_spot:
+    ; Fetch direction index and save its MSB to 'tmp'.
+    ldy #0
+    lda (s),y
+    lsr
+    lsr
+    sta tmp
 
-    ; Left
-    direction_dl    b_w     direction_dr
-    direction_dls   b_w     direction_drs
-    direction_ls    b_w     direction_rs
-    direction_l     b_w     direction_r
-    ; ...
+    ; Fetch it again and shift the other two bits to bits 6 and 7.
+    lda (s),y
+    jsr inc_s
+    asl
+    asl
+    asl
+    asl
+    asl
+    asl
 
-    ; Right
-    direction_r     b_e     direction_l
-    direction_rs    b_e     direction_ls
-    direction_drs   b_e     direction_dls
-    direction_dr    b_e     direction_dl
-    ; ...
+    ; Add the mod7 coordinates.
+    ora ball_y
+    ora ball_x
+
+    ; Take those 9 bits and make them an index into reflection_info.
+    clc
+    adc #<reflection_info
+    sta c
+    lda #>reflection_info
+    adc tmp
+    sta @(++ c)
+    lda (s),y
+    jsr inc_s
+    sta (c),y
+    rts
+
+inc_s:
+    inc s
+    bne +n
+    inc @(++ s)
+n:  rts
+
+out_d:
+    ldy #0
+    sta (d),y
+
+inc_d:
+    inc d
+    bne +n
+    inc @(++ d)
+n:  rts
+
+reflection_top:
+    di_ls    @(+ b_n     (* 8 di_dls))
+    di_l     @(+ b_n     (* 8 di_dl))
+    di_r     @(+ b_n     (* 8 di_dr))
+    di_rs    @(+ b_n     (* 8 di_drs))
+
+reflection_bottom:
+    di_dls   @(+ b_s     (* 8 di_ls))
+    di_dl    @(+ b_s     (* 8 di_l))
+    di_dr    @(+ b_s     (* 8 di_r))
+    di_drs   @(+ b_s     (* 8 di_rs))
+
+reflection_left:
+    di_dl    @(+ b_w     (* 8 di_dr))
+    di_dls   @(+ b_w     (* 8 di_drs))
+    di_ls    @(+ b_w     (* 8 di_rs))
+    di_l     @(+ b_w     (* 8 di_r))
+
+reflection_right:
+    di_r     @(+ b_e     (* 8 di_l))
+    di_rs    @(+ b_e     (* 8 di_ls))
+    di_drs   @(+ b_e     (* 8 di_dls))
+    di_dr    @(+ b_e     (* 8 di_dl))
 
 reflection_corners:
     ; Top left corner
-    direction_dl    b_w     direction_dr
-    direction_dls   b_w     direction_drs
-    direction_ls    b_w     direction_dls
-    direction_l     b_nw    direction_dr
-    direction_r     b_n     direction_dr
-    direction_rs    b_n     direction_drs
+    di_dl    @(+ b_w     (* 8 di_dr))
+    di_dls   @(+ b_w     (* 8 di_drs))
+    di_ls    @(+ b_w     (* 8 di_dls))
+    di_l     @(+ b_nw    (* 8 di_dr))
+    di_r     @(+ b_n     (* 8 di_dr))
+    di_rs    @(+ b_n     (* 8 di_drs))
 
     ; Top right corner
-    direction_ls    b_n     direction_dls
-    direction_l     b_n     direction_dl
-    direction_r     b_ne    direction_dl
-    direction_rs    b_e     direction_ls
-    direction_drs   b_e     direction_dls
-    direction_dr    b_e     direction_dl
-
-
-    ; Bottom left corner
-    direction_drs   b_s     direction_rs
-    direction_dr    b_s     direction_r
-    direction_dl    b_sw    direction_r
-    direction_dls   b_w     direction_ls
-    direction_ls    b_w     direction_rs
-    direction_l     b_w     direction_r
+    di_ls    @(+ b_n     (* 8 di_dls))
+    di_l     @(+ b_n     (* 8 di_dl))
+    di_r     @(+ b_ne    (* 8 di_dl))
+    di_rs    @(+ b_e     (* 8 di_ls))
+    di_drs   @(+ b_e     (* 8 di_dls))
+    di_dr    @(+ b_e     (* 8 di_dl))
 
     ; Bottom right corner
-    direction_r     b_e     direction_l
-    direction_rs    b_e     direction_ls
-    direction_drs   b_e     direction_rs
-    direction_dr    b_se    direction_l
-    direction_dl    b_s     direction_l
-    direction_dls   b_s     direction_ls
+    di_r     @(+ b_e     (* 8 di_l))
+    di_rs    @(+ b_e     (* 8 di_ls))
+    di_drs   @(+ b_e     (* 8 di_rs))
+    di_dr    @(+ b_se    (* 8 di_l))
+    di_dl    @(+ b_s     (* 8 di_l))
+    di_dls   @(+ b_s     (* 8 di_ls))
+
+    ; Bottom left corner
+    di_drs   @(+ b_s     (* 8 di_rs))
+    di_dr    @(+ b_s     (* 8 di_r))
+    di_dl    @(+ b_sw    (* 8 di_r))
+    di_dls   @(+ b_w     (* 8 di_ls))
+    di_ls    @(+ b_w     (* 8 di_rs))
+    di_l     @(+ b_w     (* 8 di_r))
 
 fast_reflect:
     ; Get ball positino and direction.
@@ -108,6 +300,8 @@ fast_reflect:
     lda sprites_y,x
     sta ball_y
     lda sprites_d,x
+    jsr get_used_ball_direction
+    tya
 
     ; Pack three direction bits and three position bits for
     ; each axis into a 9-bit index as in %dddyyyxxx.
@@ -180,18 +374,3 @@ n:  txa
     lda (scr),y
     and #foreground
     rts
-
-;    @(+ 2 double_screen_columns)
-test_offsets:
-    0 1 2
-;    @(+ 2 screen_columns)
-;    @(+ 2 double_screen_columns)
-;    @(+ 1 double_screen_columns)
-;    double_screen_columns
-;    screen_columns
-    0
-
-asl6:               fill 256
-mod7asl3:           fill 256
-mod7:               fill 256
-reflection_info:    fill 512
