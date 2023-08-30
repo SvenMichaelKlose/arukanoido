@@ -1,3 +1,7 @@
+[ ] Crash when hitting right side in joystick/keyboard mode.
+    'enter_break_mode' returns to fuck.
+[ ] Paddle translation relative to center of Vaus, not its left edge.
+[ ] Break mode when actually hitting the gate.
 [ ] Break mode sound with higher priority than extension mode.
 [ ] Pause before DOH starts spitting obstables.
 [ ] D bonus: sometimes balls go the same direction.
