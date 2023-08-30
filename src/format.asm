@@ -48,6 +48,10 @@ set_format_landscape:
     sta score_y
 
 set_format_common:
+    lda screen_columns
+    asl
+    sta double_screen_columns
+
     ; Make line addresses.
     lda #<screen
     sta s

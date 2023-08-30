@@ -187,6 +187,7 @@ exm_needs_data:     0
 ; TV standard dependant constants
 format_params:
 screen_columns:     0
+double_screen_columns:  0
 screen_rows:        0
 vaus_y:             0
 playfield_yc:       0
@@ -302,6 +303,9 @@ flashing_doh:           0
 get_keypress_x:         0
 
 vaus_sprite_index:      0
+
+pagedptr:       0 0
+new_direction:  0
 
 lowmem:
     end

@@ -16,12 +16,12 @@ make_reflection_tables:
     clrmw <asl6 >asl6 00 01
     clrmw <mod7asl3 >mod7asl3 00 01
     clrmw <mod7 >mod7 00 01
-    clrmw <reflection_infp >reflection_infp 00 02
+    clrmw <reflection_info >reflection_info 00 02
     0
 
     ; Table to convert direction to one of 8 ball directions.
     ldx #7
-l:  ldy ball_directions,x
+l:  ldy used_ball_directions,x
     dex
     bpl -l
 
@@ -49,8 +49,8 @@ reflection_sides:
     ; Bottom
     direction_dls   b_s     direction_ls
     direction_dl    b_s     direction_l
-    direction_dr    b_s     direciton_r
-    direction_drs   b_s     direciton_rs
+    direction_dr    b_s     direction_r
+    direction_drs   b_s     direction_rs
     ; ...
 
     ; Left
@@ -89,7 +89,7 @@ reflection_corners:
     direction_drs   b_s     direction_rs
     direction_dr    b_s     direction_r
     direction_dl    b_sw    direction_r
-    direction_dls   b_w     directoin_ls
+    direction_dls   b_w     direction_ls
     direction_ls    b_w     direction_rs
     direction_l     b_w     direction_r
 
@@ -113,9 +113,9 @@ fast_reflect:
     ; each axis into a 9-bit index as in %dddyyyxxx.
     tax
     lda asl6,x
-    ldy ypos
+    ldy ball_y
     ora mod7asl3,y
-    ldy xpos
+    ldy ball_x
     ora mod7,y
     tay
     txa
@@ -123,7 +123,7 @@ fast_reflect:
     lsr
     and #1
     ora #>reflection_info
-    sta pagedptr+1
+    sta @(++ pagedptr)
 
     ; Fetch reflection info from table.  Each byte is the
     ; new direction and a number telling which sides or
@@ -181,12 +181,17 @@ n:  txa
     and #foreground
     rts
 
-    @(+ 2 double_screen_width)
+;    @(+ 2 double_screen_columns)
 test_offsets:
     0 1 2
-    @(+ 2 screen_width)
-    @(+ 2 double_screen_width)
-    @(+ 1 double_screen_width)
-    double_screen_width
-    screen_width
+;    @(+ 2 screen_columns)
+;    @(+ 2 double_screen_columns)
+;    @(+ 1 double_screen_columns)
+;    double_screen_columns
+;    screen_columns
     0
+
+asl6:               fill 256
+mod7asl3:           fill 256
+mod7:               fill 256
+reflection_info:    fill 512
