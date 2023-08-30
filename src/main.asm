@@ -219,14 +219,14 @@ if @*has-digis?*
     sta is_playing_digis
     beq +n
     jsr audio_boost
-n:  lda #snd_coin
+n:  lda #snd_bonus_life
     jsr play_sound
     jmp -l
 end
 
-f:  lda #snd_coin
-    jsr play_sound
-    jsr wait_for_silence
+f:  ;lda #snd_coin
+    ;jsr play_sound
+    ;jsr wait_for_silence
     lda #snd_theme
     ldx #<txt_round_intro
     ldy #>txt_round_intro
