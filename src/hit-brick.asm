@@ -1,7 +1,7 @@
 hit_doh:
     ldy scrx
     lda (scr),y
-    and #%01100000
+    and #%01100000 ; Check on last quarter of chars in frame.
     cmp #%01100000
     bne +n
     lda #doh_flash_duration
@@ -13,6 +13,13 @@ hit_doh:
 n:  sec
     rts
 
+; Check if a brick has been hit.
+;
+; scr: Screen address of brick to hit.
+;
+; Returns:
+; C=0: Regular or silver brick hit.
+; C=1: No brick or golden brick hit.
 hit_brick:
     lda #0
     sta has_removed_brick
@@ -32,7 +39,7 @@ hit_brick:
 
     ldy scrx
     lda (tmp),y
-    beq +r              ; No brick hit…
+    beq +no_brick_hit
 
     pha
     lda is_testing_laser_hit
@@ -94,5 +101,6 @@ o:  jsr add_to_score
 golden:
     jsr add_brick_fx
     inc has_hit_golden_brick
-r:  sec
+no_brick_hit:
+    sec
     rts
