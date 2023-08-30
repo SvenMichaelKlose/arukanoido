@@ -267,7 +267,7 @@ n:  cmp #keycode_n
     sta bricks_left
     jmp next_level
 
-n:  cmp #keycode_space
+n:  cmp #keycode_c
     bne +n
     jmp show_charset
 end

@@ -55,6 +55,7 @@ n:
     jsr abs
     and #%11111000
     beq handle_joystick
+
     sta is_using_paddle
     lda $9008
     sta old_paddle_value
@@ -227,7 +228,7 @@ move_vaus_right:
     ldx vaus_sprite_index
     lda sprites_x,x
     jsr test_vaus_hit_right
-    bcs enter_break_mode
+    bcs +e
     lda #2
     jsr sprite_right
 
@@ -240,6 +241,9 @@ move_vaus_right:
 n:  pla
     tax
     rts
+
+e:  pla
+    jmp enter_break_mode
 
 make_vaus:
     ldy #@(- vaus_init sprite_inits)

@@ -55,7 +55,7 @@ Sven Michael Klose <pixel@hugbox.org>.
 * 5: Drop bonus B only.
 * 6: Drop bonus D only.
 * 7: Drop bonus P only.
-* SPACE: Show character map (NTSC) and halt machine.
+* C: Show character map (NTSC) and halt machine.
 
 
 # Things missing
