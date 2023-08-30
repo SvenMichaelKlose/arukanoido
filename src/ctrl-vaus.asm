@@ -6,10 +6,9 @@ test_vaus_hit_right:
     cpy #mode_extended
     bne +n
     cmp #@(* (- 15 4) 8)
-    bcs +r
-    bcc +r
+    rts
 n:  cmp #@(* (- 15 3) 8)
-r:  rts
+    rts
 
 ctrl_vaus:
     lda mode_break
