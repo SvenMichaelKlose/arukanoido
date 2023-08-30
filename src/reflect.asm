@@ -27,7 +27,7 @@ n:  ldy ball_x
     jsr get_soft_collision
     beq reflect_v
 j:  lda #64
-    jmp +l
+    bne +l              ; (jmp)
 
 m:  lda #7
     sta sprites_x,x
@@ -67,7 +67,6 @@ l:  clc
     jsr hit_brick
     bcs +r
     inc has_hit_brick
-
 r:  rts
 
 m:  lda arena_y
@@ -87,5 +86,4 @@ apply_reflection_unconditionally:
     adc side_degrees    ; Rotate back to original axis.
     eor #128            ; Rotate to opposite direction.
     sta sprites_d,x
-
 r:  rts
