@@ -56,9 +56,9 @@ an opening to the right immediately.  Otherwise you'll find
 yourself juggling with the ball in a way that might be not
 very much to your liking.  When done right, the ball will
 race upwards, making a visually rewarding impression.
-HINT: Get the ball through the leftmost brick at the bottom
-to impress everyone by vanishing almost all bricks in a
-jiff.
+HINT: Get the ball through the leftmost or rightmost brick at
+the bottom to impress everyone by vanishing almost all bricks
+in one go.
 
 ## Level 4
 
@@ -69,7 +69,7 @@ A widened Vaus is of great help.
 
 ## Level 5
 
-Here the wimen are separated from the girls.  If you let the
-ball off to the top, hell will break lose for almost no
+This is where wimen are separated from the girls.  If you let
+the ball off to the top, hell will break lose for almost no
 bonuses, so you better get the bottom cleared as fast as you
 possibly can.  Reaction times are of the essence.
