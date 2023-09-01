@@ -61,12 +61,8 @@ n:
     sta old_paddle_value
 
 handle_paddle:
-    lda $9008
-    clc
-    adc old_paddle_value
-    ror
-    tay
-    sta old_paddle_value
+    ldy $9008
+    sty old_paddle_value
     lda paddle_xlat,y
     jsr test_vaus_hit_right
     bcc +n
