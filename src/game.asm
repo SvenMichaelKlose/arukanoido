@@ -221,7 +221,7 @@ n2: jsr get_keypress
 q:  jsr wait_keyunpress
     jmp +l
 
-if @*debug?*
+if @*demo?*
 n:  ldx #8
 m:  cmp bonus_keys,x
     bne +n
