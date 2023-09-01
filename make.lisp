@@ -362,15 +362,13 @@
       (tap2wav i o 44100 (cpu-cycles :ntsc)))))
 
 (sb-ext:run-program "/bin/cp"
-                    (list "README.md" "NEWS" "arukanoido/")
+                    '("README.md" "NEWS" "TODO.xit" "arukanoido/")
                     :pty cl:*standard-output*)
 
-(sb-ext:run-program "/usr/bin/zip" (list "-r" "-9" "arukanoido.zip" "arukanoido")
+(sb-ext:run-program "/usr/bin/zip" '("-r" "-9" "arukanoido.zip" "arukanoido")
                     :pty cl:*standard-output*)
-(sb-ext:run-program "/bin/cp" (list "arukanoido.zip"
-                                    (+ "archive/arukanoido."
-                                       (? *demo?* "demo." "")
-                                       *revision* ".zip"))
+(sb-ext:run-program "/bin/cp" `("arukanoido.zip"
+                                ,(+ "archive/arukanoido." (? *demo?* "demo." "") *revision* ".zip"))
                     :pty cl:*standard-output*)
 
 (quit)
