@@ -1,18 +1,20 @@
-[ ] Fix keyboard controls.
-[ ] Paddle translation relative to center of Vaus, not its left edge.
-[ ] Break mode when actually hitting the gate.
-[ ] Break mode sound with higher priority than extension mode.
-[ ] Pause before DOH starts spitting obstables.
-[ ] D bonus: sometimes balls go the same direction.
-[ ] Attract mode
-
-[x] Re-activate laser version of Vaus.
-[?] Shallow kick off to the left.
-
-[ ] Fast reflection tests using tables.
-[?] Extend VCPU for top-level off-game code to save space.
+[ ] !!! Fast reflection tests using tables.
+[ ] !!! Fix keyboard controls.  Fetch directly from VIA.
+[ ] !!. Paddle translation relative to center of Vaus, not its left edge.
+[ ] !.. Break mode when actually hitting the gate.
+[ ] !.. Break mode sound with higher priority than extension mode.
+[ ] ... D bonus: sometimes balls go the same direction.
+        Probably going away with faster reflection tests.
+[ ] ... Attract mode
+[ ] ... Update hiscore by copying regular scpre on screen
+        instead of printing it.
 
 Hiscore table
 [ ] Display
 [ ] Input
 [ ] KERNAL I/O
+
+[x] Pause before DOH starts spitting obstables.
+[x] Re-activate laser version of Vaus.
+[?] Shallow kick off to the left.
+[?] Extend VCPU for top-level off-game code to save space.
