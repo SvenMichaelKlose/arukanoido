@@ -37,9 +37,7 @@ game_over:
     jsr play_sound
     jsr wait_for_silence
     ldx #100
-    jsr wait
-
-    rts
+    jmp wait
 
 game:
     jsr clear_data
@@ -119,36 +117,7 @@ no_obstacle_preshifts:
 if @*demo?*
     cmp #9
     bne +n
-    lda #0
-    sta mode_break
-    jsr clear_screen
-    jsr init_doh_charset
-    lda #1
-    sta curchar
-    jsr draw_doh
-    lda #white
-    sta curcol
-    lda #<txt_preview
-    sta s
-    lda #>txt_preview
-    sta @(++ s)
-    lda #0
-    sta scrx2
-    lda #21
-    sta scry
-    ldx #255
-    jsr print_string
-    lda #<txt_preview2
-    sta s
-    lda #>txt_preview2
-    sta @(++ s)
-    lda #0
-    sta scrx2
-    lda #23
-    sta scry
-    ldx #255
-    jsr print_string
-    jmp wait_fire
+    jmp end_of_demo
 n:
 end
 
@@ -263,6 +232,9 @@ n:  dex
 
 n:  cmp #keycode_n
     bne +n
+    lda level
+    cmp #8
+    beq end_of_demo
     lda #0
     sta bricks_left
     jmp next_level
@@ -311,6 +283,41 @@ end
     jsr clear_screen_of_sprites
     jsr wait_for_silence
     jmp next_level
+
+if @*demo?*
+end_of_demo:
+    lda #0
+stop:
+    sta mode_break
+    jsr clear_screen
+    jsr init_doh_charset
+    lda #1
+    sta curchar
+    jsr draw_doh
+    lda #white
+    sta curcol
+    lda #<txt_preview
+    sta s
+    lda #>txt_preview
+    sta @(++ s)
+    lda #0
+    sta scrx2
+    lda #21
+    sta scry
+    ldx #255
+    jsr print_string
+    lda #<txt_preview2
+    sta s
+    lda #>txt_preview2
+    sta @(++ s)
+    lda #0
+    sta scrx2
+    lda #23
+    sta scry
+    ldx #255
+    jsr print_string
+    jmp wait_fire
+end
 
 if @*debug?*
 bonus_keys:
