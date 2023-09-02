@@ -7,10 +7,9 @@ hit_doh:
     lda #doh_flash_duration
     sta flashing_doh
     dec bricks_left
-    clc
+    sec
     rts
-
-n:  sec
+n:  clc
     rts
 
 ; Check if a brick has been hit.
@@ -18,8 +17,8 @@ n:  sec
 ; scr: Screen address of brick to hit.
 ;
 ; Returns:
-; C=0: Regular or silver brick hit.
-; C=1: No brick or golden brick hit.
+; C=0: No brick or golden brick hit.
+; C=1: Regular or silver brick hit.
 hit_brick:
     lda #0
     sta has_removed_brick
@@ -62,7 +61,7 @@ n:  pla
     sbc #1
     sta (tmp),y
     jsr add_brick_fx
-    clc
+    sec
     rts
 
     ; Silver brick's score is 50 multiplied by round number.
@@ -95,12 +94,12 @@ o:  jsr add_to_score
     sty removed_brick_x
     sta (scr),y
     sta (tmp),y
-    clc
+    sec
     rts
 
 golden:
     jsr add_brick_fx
     inc has_hit_golden_brick
 no_brick_hit:
-    sec
+    clc
     rts

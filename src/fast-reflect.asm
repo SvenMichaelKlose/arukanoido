@@ -293,9 +293,9 @@ l3: lda #1
 l2: lda #1
     sta ball_x
 
-l:  ldy tmp2
-    jsr fast_reflect
-    beq +ok
+l:  ldx tmp3
+    jsr fast_reflect_s
+    bcc +ok
 kapoot:
     jmp kapoot
 ok:
@@ -325,26 +325,22 @@ fast_reflect:
     ; Get direction index.
     lda sprites_d,x
     jsr get_used_ball_direction
+    tya
+    tax
     jsr fast_reflect_s
-    beq +done
+    bcc +r
     jsr hit_brick
-    bcs +r
+    bcc +r
     inc has_hit_brick
 r:  rts
 
-done:
-    clc
-    rts
-
-; Y: Direction index
+; X: Direction index
+; ball_x, ball_y: Ball position
 ;
 ; Returns:
-; Z=0: Collisison detected. 
+; C=1: Collisison detected. 
 ; new_direction: New direction index.
 fast_reflect_s:
-    tya
-    tax
-
     ; Pack three direction bits and three position bits for
     ; each axis into a 9-bit index as in %dddyyyxxx.
     lda asl6,x
@@ -368,7 +364,7 @@ fast_reflect_s:
     ; corners of the current char have to be tested for
     ; bricks.
     lda (s),y
-    bmi +done           ; Nothing to be done…
+    bmi +nothing_hit    ; Nothing to be done…
 
     tax
     sta new_direction
@@ -409,11 +405,11 @@ fast_reflect_s:
     lsr new_direction
     lsr new_direction
     lsr new_direction
-done:
+    sec
     rts
 
 nothing_hit:
-    lda #0
+    clc
     rts
 
     ; Check if we're heading into a corner.
@@ -425,7 +421,7 @@ n:  txa
     ldy @(- test_offsets 1),x
     lda (scr),y
     and #foreground
-    beq +r              ; No, fly by…
+    beq -nothing_hit
     lda scr             ; Save for possible brick removal.
     sta scr_cl
     lda @(++ scr)
@@ -433,7 +429,7 @@ n:  txa
     ldy @(+ test_offsets 1),x
     lda (scr),y
     and #foreground
-    beq +r              ; No, fly by…
+    beq -nothing_hit
     lda scr             ; Save for brick removal.
     sta scr_cr
     lda @(++ scr)
@@ -442,4 +438,5 @@ n:  txa
     lsr new_direction
     lsr new_direction
     inc has_hit_corner
-r:  rts
+    sec
+    rts
