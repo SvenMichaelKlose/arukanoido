@@ -196,12 +196,10 @@ no_vaus_collision:
     cmp #%111
     bne avoid_endless_flight
 
-l:  jsr reflect
-    lda has_collision
+l:  stx tmp
+    jsr fast_reflect
     bne +n2
-    jsr reflect_edge
-    lda has_collision
-    bne +m
+    ldx tmp
 
 avoid_endless_flight:
     lda sprites_d2,x
@@ -220,14 +218,15 @@ n:  lda sprites_d,x
 l:  sta sprites_d,x
 r:  rts
 
-    ; Deal with reflect_edge.
-m:  lda #0
-    sta has_collision
-    lda sprites_d,x
-    eor #$80                ; Opposite direction.
+n2: lda new_direction
+    lsr
+    lsr
+    lsr
+    tay
+    lda used_ball_directions,y
+    ldx tmp
     sta sprites_d,x
-
-n2: jsr adjust_ball_speed_hitting_top
+    jsr adjust_ball_speed_hitting_top
     lda has_removed_brick
     beq +n
 
@@ -253,7 +252,7 @@ n:  lda has_hit_silver_brick
 
 f:  inc sprites_d2,x
 
-l:  jsr apply_reflection
+l:  ;jsr apply_reflection
     jmp play_reflection_sound
 
 play_reflection_sound:

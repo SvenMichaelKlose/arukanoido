@@ -75,6 +75,7 @@ framecounter:         0 0
 digisound_counter:    0 0
 
 has_collision:        0                                                               
+has_hit_corner:       0
 ball_x:               0
 ball_y:               0
 
@@ -304,7 +305,6 @@ get_keypress_x:         0
 
 vaus_sprite_index:      0
 
-pagedptr:       0 0
 new_direction:  0
 
     0
@@ -313,6 +313,9 @@ test_offsets:
     0   0
     0 0 0
     0
+
+scr_cl:     0 0
+scr_cr:     0 0
 
 lowmem:
     end

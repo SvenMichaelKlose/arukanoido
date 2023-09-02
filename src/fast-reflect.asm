@@ -71,15 +71,12 @@ l:  txa
     jsr make_spots
     lda #7
     sta ball_x
-    ldx #6
     jsr make_spots
     lda #7
     sta ball_y
-    ldx #6
     jsr make_spots
     lda #0
     sta ball_x
-    ldx #6
     jsr make_spots
 
 
@@ -88,19 +85,10 @@ l:  stx ball_x
     txa
     pha
 
-    lda #<reflection_top
-    sta s
-    lda #>reflection_top
-    sta @(++ s)
     lda #0
     sta ball_y
     ldx #4
     jsr make_spots
-
-    lda #<reflection_bottom
-    sta s
-    lda #>reflection_bottom
-    sta @(++ s)
     lda #7
     sta ball_y
     ldx #4
@@ -110,19 +98,10 @@ l:  stx ball_x
     sta ball_y
     pha
 
-    lda #<reflection_left
-    sta s
-    lda #>reflection_left
-    sta @(++ s)
     lda #0
     sta ball_x
     ldx #4
     jsr make_spots
-
-    lda #<reflection_right
-    sta s
-    lda #>reflection_right
-    sta @(++ s)
     lda #7
     sta ball_x
     ldx #4
@@ -170,6 +149,8 @@ make_spots:
     pha
     tya
     pha
+    lda ball_x
+    pha
     lda ball_y
     pha
     asl ball_y
@@ -180,6 +161,8 @@ l:  jsr make_spot
     bne -l
     pla
     sta ball_y
+    pla
+    sta ball_x
     pla
     tay
     pla
@@ -236,30 +219,6 @@ inc_d:
     inc @(++ d)
 n:  rts
 
-reflection_top:
-    di_ls    @(+ b_n     (* 8 di_dls))
-    di_l     @(+ b_n     (* 8 di_dl))
-    di_r     @(+ b_n     (* 8 di_dr))
-    di_rs    @(+ b_n     (* 8 di_drs))
-
-reflection_bottom:
-    di_dls   @(+ b_s     (* 8 di_ls))
-    di_dl    @(+ b_s     (* 8 di_l))
-    di_dr    @(+ b_s     (* 8 di_r))
-    di_drs   @(+ b_s     (* 8 di_rs))
-
-reflection_left:
-    di_dl    @(+ b_w     (* 8 di_dr))
-    di_dls   @(+ b_w     (* 8 di_drs))
-    di_ls    @(+ b_w     (* 8 di_rs))
-    di_l     @(+ b_w     (* 8 di_r))
-
-reflection_right:
-    di_r     @(+ b_e     (* 8 di_l))
-    di_rs    @(+ b_e     (* 8 di_ls))
-    di_drs   @(+ b_e     (* 8 di_dls))
-    di_dr    @(+ b_e     (* 8 di_dl))
-
 reflection_corners:
     ; Top left corner
     di_dl    @(+ b_w     (* 8 di_dr))
@@ -293,42 +252,79 @@ reflection_corners:
     di_ls    @(+ b_w     (* 8 di_rs))
     di_l     @(+ b_w     (* 8 di_r))
 
+
+reflection_top:
+    di_ls    @(+ b_n     (* 8 di_dls))
+    di_l     @(+ b_n     (* 8 di_dl))
+    di_r     @(+ b_n     (* 8 di_dr))
+    di_rs    @(+ b_n     (* 8 di_drs))
+
+reflection_bottom:
+    di_dls   @(+ b_s     (* 8 di_ls))
+    di_dl    @(+ b_s     (* 8 di_l))
+    di_dr    @(+ b_s     (* 8 di_r))
+    di_drs   @(+ b_s     (* 8 di_rs))
+
+reflection_left:
+    di_dl    @(+ b_w     (* 8 di_dr))
+    di_dls   @(+ b_w     (* 8 di_drs))
+    di_ls    @(+ b_w     (* 8 di_rs))
+    di_l     @(+ b_w     (* 8 di_r))
+
+reflection_right:
+    di_r     @(+ b_e     (* 8 di_l))
+    di_rs    @(+ b_e     (* 8 di_ls))
+    di_drs   @(+ b_e     (* 8 di_dls))
+    di_dr    @(+ b_e     (* 8 di_dl))
+
 fast_reflect:
-    ; Get ball positino and direction.
-    lda sprites_x,x
-    sta ball_x
-    lda sprites_y,x
-    sta ball_y
+    lda #0
+    sta has_collision
+    sta has_hit_corner
+    jsr fast_reflect_s
+    beq +done
+    jsr hit_brick
+    bcs +r
+    inc has_hit_brick
+r:  rts
+
+done:
+    clc
+    rts
+
+fast_reflect_s:
+    ; Get direction index.
     lda sprites_d,x
     jsr get_used_ball_direction
     tya
+    tax
 
     ; Pack three direction bits and three position bits for
     ; each axis into a 9-bit index as in %dddyyyxxx.
-    tax
     lda asl6,x
     ldy ball_y
     ora mod7asl3,y
     ldy ball_x
     ora mod7,y
     tay
+
     txa
     lsr
     lsr
     and #1
     ora #>reflection_info
-    sta @(++ pagedptr)
+    sta @(++ s)
+    lda #0
+    sta s       ; (low byte is in Y register)
 
     ; Fetch reflection info from table.  Each byte is the
     ; new direction and a number telling which sides or
     ; corners of the current char have to be tested for
     ; bricks.
-    lda (pagedptr),y
+    lda (s),y
     bmi +done           ; Nothing to be done…
 
-    ; Save new direction just in case.
     tax
-    and #7
     sta new_direction
 
     ; Get top left corner's screen address.
@@ -338,12 +334,14 @@ fast_reflect:
     lsr
     sta scrx
     dec scrx
+
     lda ball_y
     lsr
     lsr
     lsr
     tay
     dey
+
     lda line_addresses_l,y
     clc
     adc scrx
@@ -353,6 +351,9 @@ fast_reflect:
     sta @(++ scr)
 
     ; Get offset of the char to test.
+    txa
+    and #7
+    tax
     ldy test_offsets,x
 
     ; Test the char.
@@ -362,15 +363,31 @@ fast_reflect:
 done:
     rts
 
-    ; Check if we're into a corner.
+nothing_hit:
+    lda #0
+    rts
+
+    ; Check if we're heading into a corner.
 n:  txa
     and #1
-    beq -done   ; Not a corner…
+    bne -nothing_hit   ; Not a corner…
+
+    ; Check if there is a brick left and right of the corner.
     ldy @(- test_offsets 1),x
     lda (scr),y
     and #foreground
-    beq -done   ; Fly by…
+    beq -done           ; No, fly by…
+    lda scr             ; Save for possible brick removal.
+    sta scr_cl
+    lda @(++ scr)
+    sta @(++ scr_cl)
     ldy @(+ test_offsets 1),x
     lda (scr),y
     and #foreground
-    rts
+    beq +r              ; No, fly by…
+    lda scr             ; Save for brick removal.
+    sta scr_cr
+    lda @(++ scr)
+    sta @(++ scr_cr)
+    inc has_hit_corner
+r:  rts
