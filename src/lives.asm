@@ -1,8 +1,8 @@
-draw_lifes:
+draw_lives:
     lda is_landscape
-    bne draw_lifes_landscape
+    bne draw_lives_landscape
 
-draw_lifes_portrait:
+draw_lives_portrait:
     txa
     pha
     ldx lifes
@@ -26,7 +26,7 @@ done:
     tax
     rts
 
-draw_lifes_landscape:
+draw_lives_landscape:
     txa
     pha
     lda #16

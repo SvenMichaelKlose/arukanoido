@@ -170,7 +170,7 @@ n:  lda #0
     jsr clear_screen_of_sprites
     jsr remove_sprites
     jsr draw_walls      ; Freshen up after mode_break.
-    jsr draw_lifes
+    jsr draw_lives
     jsr roundstart
 
     jsr make_vaus
@@ -251,7 +251,7 @@ n:  cmp #keycode_l
     sta lifes
     lda #snd_bonus_life
     jsr play_sound
-    jsr draw_lifes
+    jsr draw_lives
 end
 n:
 
