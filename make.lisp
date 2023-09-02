@@ -5,7 +5,7 @@
 ;(const *versions* '(:prg :rom :tap :shadowvic))
 (const *versions* '(:prg))
 
-(const *demo?* nil)    ; Limit to first eight levels.
+(const *demo?* t)    ; Limit to first eight levels.
 (const *debug?* t)
 (const *make-arcade-sounds?* nil) ; Lengthy process.
 (var *has-digis?* t)
@@ -363,6 +363,9 @@
 
 (sb-ext:run-program "/bin/cp"
                     '("README.md" "NEWS" "TODO.xit" "arukanoido/")
+                    :pty cl:*standard-output*)
+(sb-ext:run-program "/bin/cp"
+                    '("media/arkanoid-roms-mame.zip" "arukanoido/")
                     :pty cl:*standard-output*)
 
 (sb-ext:run-program "/usr/bin/zip" '("-r" "-9" "arukanoido.zip" "arukanoido")
