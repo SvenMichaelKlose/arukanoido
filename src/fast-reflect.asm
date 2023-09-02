@@ -142,6 +142,9 @@ l:  stx ball_x
     lda #0
     jsr out_d
 
+if @*debug?*
+    jmp test_fast_reflection
+end
     rts
 
 make_spots:
@@ -201,6 +204,7 @@ make_spot:
     lda (s),y
     jsr inc_s
     sta (c),y
+
     rts
 
 inc_s:
@@ -277,10 +281,49 @@ reflection_right:
     di_drs   @(+ b_e     (* 8 di_dls))
     di_dr    @(+ b_e     (* 8 di_dl))
 
+if @*debug?*
+test_fast_reflection:
+    lda #0
+    sta tmp3        ; (direction)
+
+l3: lda #1
+    sta ball_y
+
+l2: lda #1
+    sta ball_x
+
+l:  ldy tmp2
+    jsr fast_reflect
+    beq +ok
+kapoot:
+    jmp kapoot
+ok:
+
+    inc ball_x
+    lda ball_x
+    cmp #7
+    bne -l
+
+    inc ball_y
+    lda ball_y
+    cmp #7
+    bne -l2
+
+    inc tmp3
+    lda tmp3
+    cmp #8
+    bne -l3
+
+    rts
+end
+
 fast_reflect:
     lda #0
     sta has_collision
     sta has_hit_corner
+    ; Get direction index.
+    lda sprites_d,x
+    jsr get_used_ball_direction
     jsr fast_reflect_s
     beq +done
     jsr hit_brick
@@ -292,10 +335,12 @@ done:
     clc
     rts
 
+; Y: Direction index
+;
+; Returns:
+; Z=0: Collisison detected. 
+; new_direction: New direction index.
 fast_reflect_s:
-    ; Get direction index.
-    lda sprites_d,x
-    jsr get_used_ball_direction
     tya
     tax
 
@@ -360,6 +405,9 @@ fast_reflect_s:
     lda (scr),y
     and #foreground
     beq +n
+    lsr new_direction
+    lsr new_direction
+    lsr new_direction
 done:
     rts
 
@@ -376,7 +424,7 @@ n:  txa
     ldy @(- test_offsets 1),x
     lda (scr),y
     and #foreground
-    beq -done           ; No, fly by…
+    beq +r              ; No, fly by…
     lda scr             ; Save for possible brick removal.
     sta scr_cl
     lda @(++ scr)
@@ -389,5 +437,8 @@ n:  txa
     sta scr_cr
     lda @(++ scr)
     sta @(++ scr_cr)
+    lsr new_direction
+    lsr new_direction
+    lsr new_direction
     inc has_hit_corner
 r:  rts
