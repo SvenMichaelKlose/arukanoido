@@ -199,7 +199,7 @@ if @*shadowvic?*
     jsr irq
 end
     lda bricks_left
-    beq level_end
+    beq level_end2
     lda is_running_game
     beq lose_life
 
@@ -221,7 +221,7 @@ n2: jsr get_keypress
 q:  jsr wait_keyunpress
     jmp +l
 
-if @*demo?*
+if @*debug?*
 n:  ldx #8
 m:  cmp bonus_keys,x
     bne +n
@@ -233,8 +233,10 @@ n:  dex
 n:  cmp #keycode_n
     bne +n
     lda level
+if @*demo?*
     cmp #8
     beq end_of_demo
+end
     lda #0
     sta bricks_left
     jmp next_level
@@ -242,6 +244,14 @@ n:  cmp #keycode_n
 n:  cmp #keycode_c
     bne +n
     jmp show_charset
+
+n:  cmp #keycode_l
+    bne +n
+    lda #10
+    sta lifes
+    lda #snd_bonus_life
+    jsr play_sound
+    jsr draw_lifes
 end
 n:
 
@@ -256,6 +266,9 @@ end
     jsr draw_sprites
 
     jmp mainloop
+
+level_end2:
+    jmp level_end
 
 lose_life:
     jsr wait_for_silence
