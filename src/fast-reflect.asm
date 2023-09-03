@@ -228,7 +228,7 @@ reflection_corners:
     ; Top left corner
     di_dl    @(+ b_w     (* 8 di_dr))
     di_dls   @(+ b_w     (* 8 di_drs))
-    di_ls    @(+ b_nw    (* 8 di_dls))
+    di_ls    @(+ b_nw    (* 8 di_drs))
     di_l     @(+ b_nw    (* 8 di_dr))
     di_r     @(+ b_n     (* 8 di_dr))
     di_rs    @(+ b_n     (* 8 di_drs))
@@ -237,14 +237,14 @@ reflection_corners:
     di_ls    @(+ b_n     (* 8 di_dls))
     di_l     @(+ b_n     (* 8 di_dl))
     di_r     @(+ b_ne    (* 8 di_dl))
-    di_rs    @(+ b_ne    (* 8 di_ls))
+    di_rs    @(+ b_ne    (* 8 di_dls))
     di_drs   @(+ b_e     (* 8 di_dls))
     di_dr    @(+ b_e     (* 8 di_dl))
 
     ; Bottom right corner
     di_r     @(+ b_e     (* 8 di_l))
     di_rs    @(+ b_e     (* 8 di_ls))
-    di_drs   @(+ b_se    (* 8 di_rs))
+    di_drs   @(+ b_se    (* 8 di_ls))
     di_dr    @(+ b_se    (* 8 di_l))
     di_dl    @(+ b_s     (* 8 di_l))
     di_dls   @(+ b_s     (* 8 di_ls))
@@ -253,10 +253,9 @@ reflection_corners:
     di_drs   @(+ b_s     (* 8 di_rs))
     di_dr    @(+ b_s     (* 8 di_r))
     di_dl    @(+ b_sw    (* 8 di_r))
-    di_dls   @(+ b_sw    (* 8 di_ls))
+    di_dls   @(+ b_sw    (* 8 di_rs))
     di_ls    @(+ b_w     (* 8 di_rs))
     di_l     @(+ b_w     (* 8 di_r))
-
 
 reflection_top:
     di_ls    @(+ b_n     (* 8 di_dls))
