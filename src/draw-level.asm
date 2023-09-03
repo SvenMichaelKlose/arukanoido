@@ -32,7 +32,7 @@ m:  lda #1
     sta scrx
 l:  jsr scrcoladdr
 
-    jsr scr2brick
+    jsr scr2brick_in_d
 
     ; Get brick.
     jsr get_decrunched_byte
@@ -183,7 +183,7 @@ done:
     tax
     rts
 
-scr2brick:
+scr2brick_in_d:
     ; Make pointer into brick map.
     lda scr
     sta d

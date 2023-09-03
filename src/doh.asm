@@ -28,7 +28,7 @@ l2: lda #7
     lda #12     ; (number of rows)
     sta tmp2
 l:  jsr scrcoladdr
-    jsr scr2brick
+    jsr scr2brick_in_d
     lda tmp
     sta (scr),y
     sta (d),y

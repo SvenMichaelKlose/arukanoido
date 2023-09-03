@@ -159,7 +159,7 @@
                           ; Level display
                           "brick-fx.asm"
                           "draw-level.asm"
-                          "lifes.asm"
+                          "lives.asm"
                           "score-display.asm"
 
                           ; Collisions
@@ -363,6 +363,9 @@
 
 (sb-ext:run-program "/bin/cp"
                     '("README.md" "NEWS" "TODO.xit" "arukanoido/")
+                    :pty cl:*standard-output*)
+(sb-ext:run-program "/bin/cp"
+                    '("media/arkanoid-roms-mame.zip" "arukanoido/")
                     :pty cl:*standard-output*)
 
 (sb-ext:run-program "/usr/bin/zip" '("-r" "-9" "arukanoido.zip" "arukanoido")
