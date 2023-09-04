@@ -1,20 +1,20 @@
-[ ] !!! Fast reflection tests using tables.
-[ ] !!! Fix keyboard controls.  Fetch directly from VIA.
-[ ] !!. Paddle translation relative to center of Vaus, not its left edge.
-[ ] !.. Break mode when actually hitting the gate.
-[ ] !.. Break mode sound with higher priority than extension mode.
+[@] !!! Fast reflection tests using tables.
 [ ] ... D bonus: sometimes balls go the same direction.
         Probably going away with faster reflection tests.
-[ ] ... Attract mode
-[ ] ... Update hiscore by copying regular scpre on screen
+[ ] !!! Fix keyboard controls.  Fetch directly from VIA.
+[ ] ... Update hiscore by copying regular score on screen
         instead of printing it.
-[ ] ... Limit number of lives display in landscape display mode.
+[ ] ... Limit number of lives display in landscape mode.
+[ ] ... Attraction mode
 
 Hiscore table
 [ ] Display
 [ ] Input
 [ ] KERNAL I/O
 
+[x] !.. Break mode sound with higher priority than extension mode.
+[x] !!. Paddle translation relative to center of Vaus, not its left edge.
+[x] !.. Break mode when actually hitting the gate.
 [x] Pause before DOH starts spitting obstables.
 [x] Re-activate laser version of Vaus.
 [?] Shallow kick off to the left.
