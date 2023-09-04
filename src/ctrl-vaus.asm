@@ -63,8 +63,16 @@ n:
 handle_paddle:
     ldy $9008
     sty old_paddle_value
-    lda paddle_xlat,y
-    jsr test_vaus_hit_right
+    lda vaus_width
+    lsr
+    jsr neg
+    clc
+    adc paddle_xlat,y
+    bmi +n2
+    cmp #8
+    bcs +n
+n2: lda #8
+n:  jsr test_vaus_hit_right
     bcc +n
 
     ldy mode_break
