@@ -18,11 +18,14 @@ as you can before the ball hits the roof because that's when it
 accelerates a lot in most levels, requiring impressive reaction
 times to cope with the high speeds of the ball.  It is also a
 good idea to keep the ball's trajectory shallow by hitting it
-with the sides of the Vaus.  Some levels of course will urge
-you to do it the other way around.  Keep in mind that the ball
-will speed up the more it hit something anyhow, so you shouldn't
+with the sides of the Vaus.  Some levels will urge you to do it
+the other way around though.  Keep in mind that the ball will
+speed up the more it hit something anyhow, so you shouldn't
 be wasting time either.  When time becomes a scarce resource,
-laser and disruption mode might come in handy.
+laser and disruption mode might come in handy.  Remember that
+hitting a lot of bricks will also give you extra lives.  The
+disruption mode is especially useful if you the balls won't
+reach the Vaus for some time.
 
 ## Level 1
 
