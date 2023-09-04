@@ -44,7 +44,7 @@ sound_priorities:
     2 ; 14  growing vaus
     1 ; 15  explosion
     1 ; 16  laser
-    1 ; 17  warp
+    2 ; 17  warp
 
 if @*has-digis?*
 digi_types:
