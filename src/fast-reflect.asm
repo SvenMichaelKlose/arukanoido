@@ -4,6 +4,10 @@ reflection_info = $9a00
 asl6            = $9c00
 
 ; 3x3 char offset table indexes.
+;
+; 0 1 2
+; 7   3
+; 6 5 4
 b_nw    = 0
 b_n     = 1
 b_ne    = 2
