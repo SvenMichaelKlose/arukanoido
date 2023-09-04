@@ -17,6 +17,6 @@ Hiscore table
 [x] !!. Paddle translation relative to center of Vaus, not its left edge.
 [x] !.. Break mode when actually hitting the gate.
 [x] Pause before DOH starts spitting obstables.
-[x] Re-activate laser version of Vaus.
+[x] Re-activate differently looking laser version of Vaus.
 [?] Shallow kick off to the left.
 [?] Extend VCPU for top-level off-game code to save space.
