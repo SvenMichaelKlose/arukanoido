@@ -300,7 +300,6 @@ end
 if @*demo?*
 end_of_demo:
     lda #0
-stop:
     sta mode_break
     jsr clear_screen
     jsr init_doh_charset
