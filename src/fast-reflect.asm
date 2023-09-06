@@ -148,7 +148,8 @@ l:  stx ball_x
     jsr out_d
 
 if @*debug?*
-    jmp test_fast_reflection
+    jmp test_fast_reflection_inside_pixels
+    jmp test_fast_reflection_outside_pixels
 end
     rts
 
@@ -286,7 +287,7 @@ reflection_right:
     di_dr    @(+ b_e     (* 8 di_dl))
 
 if @*debug?*
-test_fast_reflection:
+test_fast_reflection_inside_pixels:
     lda #0
     sta tmp3        ; (direction)
 
@@ -318,6 +319,13 @@ ok:
     cmp #8
     bne -l3
 
+    rts
+
+test_fast_reflection_outside_pixels:
+    ; Draw eight bricks around empty centre.
+    ; Do top edge from left to right with all directions on
+    ; every pixel.  Compare new directions to those in init table.
+    ; Also do right, bottom and left.
     rts
 end
 
