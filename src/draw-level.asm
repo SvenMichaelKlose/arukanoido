@@ -16,7 +16,7 @@ m:  jsr get_decrunched_byte
     tax
     bne -l      ; (jmp)
 
-n:  stx bricks_left
+n:  stx bricks_left ; (X=0)
 
     ; Clear brick map.
     0
