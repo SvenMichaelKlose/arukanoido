@@ -14,15 +14,16 @@ m:  jsr get_decrunched_byte
     bne -m
     pla
     tax
-    jmp -l
+    bne -l      ; (jmp)
 
 n:  stx bricks_left
 
     ; Clear brick map.
     0
-    clrmw <bricks >bricks 0 2
+    clrmw <bricks >bricks $00 $02
     0
 
+    ; Get starting row.
     jsr get_decrunched_byte
     sec
     adc playfield_yc
@@ -36,7 +37,7 @@ l:  jsr scrcoladdr
 
     ; Get brick.
     jsr get_decrunched_byte
-    cmp #0
+    tay     ; (Test on 0.)
     beq +o  ; No brick.
     cmp #15
     beq +r  ; End of level data.
@@ -75,7 +76,7 @@ o:  inc scrx
     cmp #14
     bne -l
     inc scry
-    jmp -m
+    bne -m      ; (jmp)
 
     ; Save lowest row index to guide obstacle movements.
 r:  ldy scry
@@ -176,7 +177,7 @@ l:  pha
     inc scry
     dex
     bne -l
-    jmp -a
+    beq -a      ; (jmp)
 done:
     pla
     pla
