@@ -37,10 +37,9 @@ l:  jsr scrcoladdr
 
     ; Get brick.
     jsr get_decrunched_byte
-    tay     ; (Test on 0.)
-    beq +o  ; No brick.
+    beq +o              ; No brick.
     cmp #15
-    beq +r  ; End of level data.
+    beq +r              ; End of level data.
 
     ; Plot brick.
     ldy scrx
