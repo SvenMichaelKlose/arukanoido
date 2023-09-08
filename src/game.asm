@@ -45,6 +45,9 @@ game:
     jsr make_reflection_tables
     jsr init_screen
     jsr init_foreground
+if @*debug?*
+    jsr test_fast_reflection
+end
 
     lda #default_num_lifes
     sta lifes

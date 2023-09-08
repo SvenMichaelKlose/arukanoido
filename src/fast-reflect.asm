@@ -147,10 +147,6 @@ l:  stx ball_x
     lda #0
     jsr out_d
 
-if @*debug?*
-    jmp test_fast_reflection_inside_pixels
-    jmp test_fast_reflection_outside_pixels
-end
     rts
 
 make_spots:
@@ -287,6 +283,11 @@ reflection_right:
     di_dr    @(+ b_e     (* 8 di_dl))
 
 if @*debug?*
+
+test_fast_reflection:
+    jsr test_fast_reflection_inside_pixels
+    jmp test_fast_reflection_outside_pixels
+
 test_fast_reflection_inside_pixels:
     lda #0
     sta tmp3        ; (direction)
@@ -322,12 +323,48 @@ ok:
     rts
 
 test_fast_reflection_outside_pixels:
+    jsr clear_screen
+    jsr draw_walls
+
     ; Draw eight bricks around empty centre.
+    lda #1
+    sta scrx
+    ldy playfield_yc
+    iny
+    sty scry
+    jsr plot_test_brick ; top left
+    inc scrx
+    jsr plot_test_brick ; top
+    inc scrx
+    jsr plot_test_brick ; top right
+    inc scry
+    jsr plot_test_brick ; right
+    inc scry
+    jsr plot_test_brick ; bottom right
+    dec scrx
+    jsr plot_test_brick ; bottom
+    dec scrx
+    jsr plot_test_brick ; bottom left
+    dec scry
+    jsr plot_test_brick ; left
+
     ; Do top edge from left to right with all directions on
     ; every pixel.  Compare new directions to those in init table.
     ; Also do right, bottom and left.
     rts
-end
+
+plot_test_brick:
+    jsr scrcoladdr
+    lda #bg_brick
+    sta (scr),y
+    lda #red
+    sta (col),y
+    jsr scr2brick_in_d
+    lda #b_red
+    sta (d),y
+    rts
+
+end ; if @*debug?*
 
 fast_reflect:
     lda #0
