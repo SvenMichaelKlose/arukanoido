@@ -112,8 +112,6 @@ start:
     jsr init_hiscore
     jsr start_irq
     jsr init_score
-    lda #snd_bonus_life
-    jsr play_sound
 
 toplevel:
     jsr clear_data

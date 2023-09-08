@@ -1,5 +1,6 @@
 ;
 ; Copyright (c) 2002, 2003 Magnus Lind.
+; Three bytes knocked off by Sven Michael Klose in 2023.
 ;
 ; This software is provided 'as-is', without any express or implied warranty.
 ; In no event will the authors be held liable for any damages arising from
@@ -254,7 +255,9 @@ _bit_get_bits:
 	lda zp_bitbuf
 _bit_bits_next:
 	lsr
-	beq +n
+	bne _bit_ok
+    jsr get_crunched_byte
+	ror
 _bit_ok:
 	rol zp_bits_lo
 	rol zp_bits_hi
@@ -264,10 +267,6 @@ _bit_ok:
 	lda zp_bits_lo
 _bit_bits_done:
 	rts
-
-n:  jsr get_crunched_byte
-	ror
-    jmp _bit_ok
 
 _bit_get_bit1:
 	stx zp_bits_lo

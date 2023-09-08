@@ -234,7 +234,7 @@ make_bonus_p:
     jmp +ok
 
 make_bonus:
-    ; No bonus if one's already on the screen
+    ; No bonus if one is already on the screen
     ; or if a silver brick has been removed.
     lda bonus_on_screen
     ora has_hit_silver_brick
@@ -255,11 +255,10 @@ if @*demo?*
     bne +ok
 end
 
-a:
-    jsr random
+a:  jsr random
     and #7
     bne +n
-    lda #bonus_e
+    lda #bonus_e        ; No bonus with index 0.
 n:  cmp current_bonus
     beq -a              ; Bonus already active…
     cmp last_bonus      ; Never same bonus in succession.

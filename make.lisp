@@ -5,7 +5,7 @@
 ;(const *versions* '(:prg :rom :tap :shadowvic))
 (const *versions* '(:prg))
 
-(const *demo?* nil)    ; Limit to first eight levels.
+(const *demo?* t)    ; Limit to first eight levels.
 (const *debug?* t)
 (const *make-arcade-sounds?* nil) ; Lengthy process.
 (var *has-digis?* t)

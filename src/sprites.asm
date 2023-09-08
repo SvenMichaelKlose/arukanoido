@@ -11,12 +11,12 @@ l:  dec sprite_rr
     lda sprite_rr
     and #@(-- num_sprites)
     tax
-    lda sprites_i,x     ; Decorative?
+    lda sprites_i,x     ; Inactive?
     bmi replace_sprite2 ; Yes…
     dey
     bpl -l
 
-    ldx #255
+    ldx #255            ; (Should never be reached.)
 
 sprite_added:
     txa
