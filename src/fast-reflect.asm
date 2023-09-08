@@ -96,7 +96,6 @@ l:  stx ball_x
     jsr make_spots
     lda #7
     sta ball_y
-    ldx #4
     jsr make_spots
 
     pla
@@ -109,7 +108,6 @@ l:  stx ball_x
     jsr make_spots
     lda #7
     sta ball_x
-    ldx #4
     jsr make_spots
 
     pla
@@ -349,6 +347,18 @@ test_fast_reflection_outside_pixels:
     jsr plot_test_brick ; left
 
     ; Do top edge from left to right with all directions on
+    lda #16
+    sta ball_x
+    lda playfield_yc
+    clc
+    adc #2
+    asl
+    asl
+    asl
+    sta ball_y
+    ldx used_ball_directions
+    jsr fast_reflect_s
+stop:
     ; every pixel.  Compare new directions to those in init table.
     ; Also do right, bottom and left.
     rts
