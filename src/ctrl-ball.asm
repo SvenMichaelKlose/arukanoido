@@ -45,35 +45,37 @@ turn_counterclockwise:
     jmp -l
 
 
-l:  dec ball_release_timer
+loosen_caught_ball:
+    dec ball_release_timer
     bne +r
     jsr release_ball
 
 ctrl_ball:
     lda caught_ball
-    bpl -l
+    bpl loosen_caught_ball
 
     ; Call the ball controller ball_speed times.
     ldy ball_speed
 l:  tya
     pha
-    jsr half_step_smooth
+    jsr half_step_smooth    ; Move half a pixel maximum.
     lda position_has_changed
-    beq +n
+    beq +n                  ; Effectively on same position…
     jsr ctrl_ball_subpixel
 n:  lda sprites_i,x
     pla
-    bmi +r              ; Ball sprite has been removed…
+    bmi +r                  ; Ball sprite has been removed…
     tay
 
     dey
     bne -l
 r:  rts
 
-l:  jmp no_vaus_collision
+l:  jmp check_static_collision
 
 hit_vaus:
     ; Ignore ball if it's not headed downwards.
+    ; (This might be called twice due to subpixel moves otherwise.)
     lda sprites_d,x
     sec
     sbc #64
@@ -87,7 +89,7 @@ hit_vaus:
     tay
 
     ; Chose between normal and exended Vaus'
-    ; relection table.
+    ; reflection table.
     lda #16
     cmp vaus_width
     bcc +n
@@ -97,6 +99,8 @@ n:  lda vaus_directions_extended,y
 
     ; Save new ball direction.
 m:  sta sprites_d,x
+
+    ; Reset endless path detection.
     lda #0
     sta sprites_d2,x
 
@@ -124,11 +128,12 @@ m:  sta sprites_d,x
 r:  lda #snd_reflection_low
     jmp play_sound
 
+; We're hitting an obstacle.  Reflect and kill it.
 hit_obstacle:
     lda #0
     sta sprites_d2,x
     jsr reflect_ball_obstacle
-    jsr apply_reflection_unconditionally
+    jsr apply_reflection
     jsr remove_obstacle
     jmp adjust_ball_speed
 
@@ -171,7 +176,7 @@ ctrl_ball_subpixel:
     ; Check for hit sprite.
     lda #@(+ is_vaus is_obstacle)
     jsr find_point_hit
-    bcs no_vaus_collision
+    bcs check_static_collision
 
     lda sprites_i,y
     and #is_vaus
@@ -182,7 +187,7 @@ n:  lda sprites_i,y
     and #is_obstacle
     bne hit_obstacle
 
-no_vaus_collision:
+check_static_collision:
     ; Quick check if foreground collision detection would
     ; detect something at all.
     lda ball_y
@@ -198,44 +203,27 @@ no_vaus_collision:
 
 l:  stx tmp
     jsr fast_reflect
-    bcs +n2
     ldx tmp
+    bcc avoid_endless_flight
 
-avoid_endless_flight:
-    lda sprites_d2,x
-    cmp #64
-    bcc +r
-    lda #0
-    sta sprites_d2,x
-    lda framecounter
-    lsr
-    bcc +n
-    lda sprites_d,x
-    jsr turn_clockwise
-    jmp +l
-n:  lda sprites_d,x
-    jsr turn_counterclockwise
-l:  sta sprites_d,x
-r:  rts
-
-n2: ldy new_direction
+perform_reflection:
+    ldy new_direction
     lda used_ball_directions,y
-    ldx tmp
     sta sprites_d,x
     jsr adjust_ball_speed_hitting_top
+
     lda has_removed_brick
     beq +n
-
     lda level
     cmp #33
     beq +n
 
-    ; Make bonus.
+    ; Make bonus perhaps.
     lda mode
     cmp #mode_disruption    ; No bonuses in disruption mode.
-    beq +l
+    beq play_reflection_sound
     jsr make_bonus
-    jmp +l
+    jmp play_reflection_sound
 
 n:  lda has_hit_silver_brick
     ora has_hit_golden_brick
@@ -244,12 +232,9 @@ n:  lda has_hit_silver_brick
     bne +f
     lda #0
     sta sprites_d2,x
-    jmp +l
+    beq play_reflection_sound   ; (jmp)
 
 f:  inc sprites_d2,x
-
-l:  ;jsr apply_reflection
-    jmp play_reflection_sound
 
 play_reflection_sound:
     lda has_hit_brick
@@ -266,6 +251,22 @@ n:  lda has_hit_golden_brick
     bne +l
 n:  lda #snd_reflection_high
 l:  jmp play_sound
+
+avoid_endless_flight:
+    lda sprites_d2,x
+    cmp #64
+    bcc +r
+    lda #0
+    sta sprites_d2,x
+    lda framecounter
+    lsr
+    bcc +n
+    lda sprites_d,x
+    jsr turn_clockwise
+    jmp +l
+n:  lda sprites_d,x
+    jsr turn_counterclockwise
+l:  sta sprites_d,x
 r:  rts
 
 make_ball:
@@ -366,10 +367,6 @@ n:  lda #255
     jmp play_sound
 
 apply_reflection:
-    lda has_collision
-    beq +r
-
-apply_reflection_unconditionally:
     lda sprites_d,x     ; Get degrees.
     sec
     sbc side_degrees    ; Rotate back to zero degrees.
