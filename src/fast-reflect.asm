@@ -412,6 +412,7 @@ fast_reflect_s:
     ldy ball_x
     ora mod7,y
     tay     ; Store first 8 bit in Y.
+    sta brick_offset
 
     ; s = reflection_info + bit 9 (bit 2 of direction).
     txa
@@ -422,14 +423,15 @@ fast_reflect_s:
     sta @(++ s)
     lda #0
     sta s
-
     ; Fetch from 'reflection info'.
     ; Format: %dddbbb where 'ddd' is the new direction
     ; in 'used_ball_directions' and 'bbb' is the index
-    ; intp 'test_offsets' which contain the address of
+    ; into 'test_offsets' which contain the address of
     ; the brick relative to the top left brick.
     lda (s),y
-    bmi +nothing_hit    ; Nothing to be done…
+; This jump should never happen as the coordinates are
+; already checked for being on char edges in ctrl_vaus().
+;    bmi +nothing_hit    ; Nothing to be done…
 
     tax
     sta new_direction
@@ -440,7 +442,6 @@ fast_reflect_s:
     lsr
     lsr
     sta scrx
-
     lda ball_y
     lsr
     lsr
@@ -448,9 +449,6 @@ fast_reflect_s:
     sta scry
     tay
     dey
-
-    ; TODO: Adjust scrx & scry so bonuses can be placed.
-
     ; Do a 'jsr scraddr' but add X position.
     lda line_addresses_l,y
     clc
@@ -460,16 +458,26 @@ fast_reflect_s:
     adc #0
     sta @(++ scr)
 
-    ; Get offset of the char to test.
+    ; Get offset of the char to test from reflection_info byte.
     txa
     and #7
     tax
     ldy test_offsets,x
 
-    ; Test the char.
+    ; Test char on screen.
     lda (scr),y
     and #foreground
-    beq +n
+    beq +n  ; Nothing there. Check if its a corner
+            ; we might not want to fly through…
+
+    lda scrx
+    clc
+    adc xcorrections,x
+    sta scrx
+    lda scry
+    clc
+    adc ycorrections,x
+    sta scry
 
 got_reflection:
     ; Keep only direction in 'new_direction'.
@@ -479,38 +487,38 @@ got_reflection:
     sec
     rts
 
+    ; Check if we're heading into a corner.
+n:  txa
+    and #1
+    beq check_corner_neighbours
+
 nothing_hit:
     clc
     rts
 
-    ; Check if we're heading into a corner.
-n:  txa
-    and #1
-    bne -nothing_hit   ; Not a corner…
-
-lda #0
-sta scr_cl
-sta @(++ scr_cl)
-sta scr_cr
-sta @(++ scr_cr)
+check_corner_neighbours:
     ; Check if there is a brick counter-clockwise from tested brick.
     ldy @(- test_offsets 1),x
     lda (scr),y
     and #foreground
     beq -nothing_hit
-    lda scr             ; Save its address for removal.
-    sta scr_cl
-    lda @(++ scr)
-    sta @(++ scr_cl)
 
     ; Check if there is a brick clockwise from tested brick.
     ldy @(+ test_offsets 1),x
     lda (scr),y
     and #foreground
     beq -nothing_hit
-    lda scr             ; Save its address for removal.
-    sta scr_cr
-    lda @(++ scr)
-    sta @(++ scr_cr)
     inc has_hit_corner
     bne got_reflection ; (jmp)
+
+    $ff
+xcorrections:
+    $ff $00 $01
+    $ff     $01
+    $ff $00 $01
+
+    $00
+ycorrections:
+    $ff $ff $ff
+    $00     $00
+    $01 $01 $01

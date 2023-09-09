@@ -314,8 +314,7 @@ test_offsets:
     0 0 0
     0
 
-scr_cl:     0 0
-scr_cr:     0 0
+brick_offset:   0   ; Current index into 'test_offsets'.
 
 lowmem:
     end

@@ -14,7 +14,9 @@ n:  clc
 
 ; Check if a brick has been hit.
 ;
-; scr: Screen address of brick to hit.
+; scr:          Screen address of top left brick.
+; brick_offset: Offset to add to 'scr'.
+; scrx,scry:    Screen position of brick to hit.
 ;
 ; Returns:
 ; C=0: No brick or golden brick hit.
@@ -36,7 +38,7 @@ hit_brick:
     ora #>bricks
     sta @(++ tmp)
 
-    ldy #0
+    ldy brick_offset
     lda (tmp),y
     beq +no_brick_hit
 
@@ -55,7 +57,7 @@ n:  pla
     beq remove_silver
 
     ; Degrade silver brick.
-    ldy #0
+    ldy brick_offset
     lda (tmp),y
     sec
     sbc #1
@@ -74,7 +76,7 @@ remove_silver:
 
 remove_brick:
     inc removed_bricks
-    ldy #0
+    ldy brick_offset
     lda (tmp),y
     tay
     lda brick_scores_l,y
@@ -88,10 +90,10 @@ o:  jsr add_to_score
 
     lda scry
     sta removed_brick_y
-    ldy scrx
-    sty removed_brick_x
-    ldy #0
-    tya
+    lda scrx
+    sta removed_brick_x
+    ldy brick_offset
+    lda #0
     sta (scr),y
     sta (tmp),y
     sec
