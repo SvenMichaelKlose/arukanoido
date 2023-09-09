@@ -74,7 +74,6 @@ remove_silver:
 
 remove_brick:
     inc removed_bricks
-
     ldy #0
     lda (tmp),y
     tay
@@ -89,10 +88,10 @@ o:  jsr add_to_score
 
     lda scry
     sta removed_brick_y
-    lda #0
     ldy scrx
     sty removed_brick_x
     ldy #0
+    tya
     sta (scr),y
     sta (tmp),y
     sec
