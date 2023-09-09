@@ -251,7 +251,7 @@ n:  cmp #keycode_l
     sta lifes
     lda #snd_bonus_life
     jsr play_sound
-    jsr draw_lives
+;    jsr draw_lives
 end
 n:
 
