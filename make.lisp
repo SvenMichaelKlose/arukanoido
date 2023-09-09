@@ -165,9 +165,7 @@
                           ; Collisions
                           "get-collision.asm"
                           "hit-brick.asm"
-                          "reflect.asm"
                           "fast-reflect.asm"
-                          "reflect-edge.asm"
                           "reflect-ball-obstacle.asm"
                           "score.asm"
 

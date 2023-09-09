@@ -36,7 +36,7 @@ hit_brick:
     ora #>bricks
     sta @(++ tmp)
 
-    ldy scrx
+    ldy #0
     lda (tmp),y
     beq +no_brick_hit
 
@@ -55,7 +55,7 @@ n:  pla
     beq remove_silver
 
     ; Degrade silver brick.
-    ldy scrx
+    ldy #0
     lda (tmp),y
     sec
     sbc #1
@@ -75,7 +75,7 @@ remove_silver:
 remove_brick:
     inc removed_bricks
 
-    ldy scrx
+    ldy #0
     lda (tmp),y
     tay
     lda brick_scores_l,y
@@ -92,6 +92,7 @@ o:  jsr add_to_score
     lda #0
     ldy scrx
     sty removed_brick_x
+    ldy #0
     sta (scr),y
     sta (tmp),y
     sec

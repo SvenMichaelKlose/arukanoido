@@ -198,7 +198,7 @@ no_vaus_collision:
 
 l:  stx tmp
     jsr fast_reflect
-    bne +n2
+    bcs +n2
     ldx tmp
 
 avoid_endless_flight:
@@ -218,11 +218,7 @@ n:  lda sprites_d,x
 l:  sta sprites_d,x
 r:  rts
 
-n2: lda new_direction
-    lsr
-    lsr
-    lsr
-    tay
+n2: ldy new_direction
     lda used_ball_directions,y
     ldx tmp
     sta sprites_d,x
@@ -368,3 +364,18 @@ n:  lda #255
     sta caught_ball
     lda #snd_reflection_low
     jmp play_sound
+
+apply_reflection:
+    lda has_collision
+    beq +r
+
+apply_reflection_unconditionally:
+    lda sprites_d,x     ; Get degrees.
+    sec
+    sbc side_degrees    ; Rotate back to zero degrees.
+    eor #$ff            ; (neg) Get opposite deviation from general direction.
+    sec
+    adc side_degrees    ; Rotate back to original axis.
+    eor #128            ; Rotate to opposite direction.
+    sta sprites_d,x
+r:  rts

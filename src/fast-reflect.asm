@@ -225,12 +225,12 @@ n:  rts
 
 reflection_corners:
     ; Top left corner
-    di_dl    @(+ b_w     (* 8 di_dr))
-    di_dls   @(+ b_w     (* 8 di_drs))
     di_ls    @(+ b_nw    (* 8 di_drs))
     di_l     @(+ b_nw    (* 8 di_dr))
     di_r     @(+ b_n     (* 8 di_dr))
     di_rs    @(+ b_n     (* 8 di_drs))
+    di_dl    @(+ b_w     (* 8 di_dr))
+    di_dls   @(+ b_w     (* 8 di_drs))
 
     ; Top right corner
     di_ls    @(+ b_n     (* 8 di_dls))
@@ -300,7 +300,7 @@ l:  ldx tmp3
     jsr fast_reflect_s
     bcc +ok
 kapoot:
-    jmp kapoot
+    jmp -kapoot
 ok:
 
     inc ball_x
@@ -347,6 +347,8 @@ test_fast_reflection_outside_pixels:
     jsr plot_test_brick ; left
 
     ; Do top edge from left to right with all directions on
+    ; every pixel.  Compare new directions to those in init table.
+    ; Also do right, bottom and left.
     lda #16
     sta ball_x
     lda playfield_yc
@@ -356,11 +358,13 @@ test_fast_reflection_outside_pixels:
     asl
     asl
     sta ball_y
-    ldx used_ball_directions
+    ldx #di_ls
     jsr fast_reflect_s
-stop:
-    ; every pixel.  Compare new directions to those in init table.
-    ; Also do right, bottom and left.
+    lda #di_drs
+kapoot:
+    cmp new_direction
+    bne -kapoot
+
     rts
 
 plot_test_brick:
@@ -397,17 +401,19 @@ r:  rts
 ;
 ; Returns:
 ; C=1: Collisison detected. 
-; new_direction: New direction index.
+; new_direction: Index to 'used_ball_directions'.
 fast_reflect_s:
-    ; Pack three direction bits and three position bits for
-    ; each axis into a 9-bit index as in %dddyyyxxx.
+    ; Make 9-bit index into 'reflection_info' from character
+    ; pixel positions and direction index into 'used_ball_directions'.
+    ; Index format: %d ddyy yxxx.
     lda asl6,x
     ldy ball_y
     ora mod7asl3,y
     ldy ball_x
     ora mod7,y
-    tay
+    tay     ; Store first 8 bit in Y.
 
+    ; s = reflection_info + bit 9 (bit 2 of direction).
     txa
     lsr
     lsr
@@ -415,12 +421,13 @@ fast_reflect_s:
     ora #>reflection_info
     sta @(++ s)
     lda #0
-    sta s       ; (low byte is in Y register)
+    sta s
 
-    ; Fetch reflection info from table.  Each byte is the
-    ; new direction and a number telling which sides or
-    ; corners of the current char have to be tested for
-    ; bricks.
+    ; Fetch from 'reflection info'.
+    ; Format: %dddbbb where 'ddd' is the new direction
+    ; in 'used_ball_directions' and 'bbb' is the index
+    ; intp 'test_offsets' which contain the address of
+    ; the brick relative to the top left brick.
     lda (s),y
     bmi +nothing_hit    ; Nothing to be done…
 
@@ -433,15 +440,18 @@ fast_reflect_s:
     lsr
     lsr
     sta scrx
-    dec scrx
 
     lda ball_y
     lsr
     lsr
     lsr
+    sta scry
     tay
     dey
 
+    ; TODO: Adjust scrx & scry so bonuses can be placed.
+
+    ; Do a 'jsr scraddr' but add X position.
     lda line_addresses_l,y
     clc
     adc scrx
@@ -460,6 +470,9 @@ fast_reflect_s:
     lda (scr),y
     and #foreground
     beq +n
+
+got_reflection:
+    ; Keep only direction in 'new_direction'.
     lsr new_direction
     lsr new_direction
     lsr new_direction
@@ -475,26 +488,29 @@ n:  txa
     and #1
     bne -nothing_hit   ; Not a corner…
 
-    ; Check if there is a brick left and right of the corner.
+lda #0
+sta scr_cl
+sta @(++ scr_cl)
+sta scr_cr
+sta @(++ scr_cr)
+    ; Check if there is a brick counter-clockwise from tested brick.
     ldy @(- test_offsets 1),x
     lda (scr),y
     and #foreground
     beq -nothing_hit
-    lda scr             ; Save for possible brick removal.
+    lda scr             ; Save its address for removal.
     sta scr_cl
     lda @(++ scr)
     sta @(++ scr_cl)
+
+    ; Check if there is a brick clockwise from tested brick.
     ldy @(+ test_offsets 1),x
     lda (scr),y
     and #foreground
     beq -nothing_hit
-    lda scr             ; Save for brick removal.
+    lda scr             ; Save its address for removal.
     sta scr_cr
     lda @(++ scr)
     sta @(++ scr_cr)
-    lsr new_direction
-    lsr new_direction
-    lsr new_direction
     inc has_hit_corner
-    sec
-    rts
+    bne got_reflection ; (jmp)
