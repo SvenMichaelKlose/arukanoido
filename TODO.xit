@@ -1,4 +1,3 @@
-[ ] !.. Test L key in debug version.
 [ ] !!! Do not treat wall as golden(?) brick in third row from bottm (PAL).
 [ ] !!! Do not crash when collecting bonus at rightmost position.
 [@] !!! Fast reflection tests using tables.
