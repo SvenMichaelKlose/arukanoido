@@ -27,7 +27,7 @@ l:  lda #<irq
 l:  lda $9004
     cmp #135
     bne -l
-    jmp +m
+    beq +m          ; (jmp)
 n:  ldx #<frame_timer_ntsc
     ldy #>frame_timer_ntsc
 m:  stx $9124
@@ -37,7 +37,6 @@ m:  stx $9124
     lda #%11000000  ; IRQ enable
     sta $912e
     cli
-
     rts
 
 done:
@@ -63,6 +62,7 @@ n:  lda is_firing
 n:  lda mode_break
     beq +n
 
+    ; Animate break mode gate.
     lda screen_gate
     sta d
     sta c
@@ -70,12 +70,14 @@ n:  lda mode_break
     sta @(++ d)
     ora #>colors
     sta @(++ c)
+    ; Switch char every two pixels.
     lda framecounter
     lsr
     and #1
     clc
     adc #bg_break
     tax
+    ; Redraw gate.
     ldy #0
     sta (d),y
     lda #white
@@ -95,11 +97,14 @@ n:  lda mode_break
     sta (d),y
     lda #white
     sta (c),y
-    
+
+    ; Play regular VIC sound.
 n:  lda currently_playing_digis
-    bne +n
+    bne +n      ; Digis are decrunched in game loop.
     jsr play_music
-n:  jsr set_vaus_color
+n:
+
+    jsr set_vaus_color
     lda is_running_game
     beq +done
 
@@ -123,13 +128,12 @@ n2: jsr rotate_bonuses
     jsr dyn_brick_fx
 
 done:
+    ; Update scores on screen.
     lda has_new_score
     beq +n
-
     lda #0
     sta has_new_score
     jsr display_score
-
 n:
 
 if @*show-cpu?*
