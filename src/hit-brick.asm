@@ -1,5 +1,5 @@
 hit_doh:
-    ldy scrx
+    ldy test_offset
     lda (scr),y
     and #%01100000 ; Check on last quarter of chars in frame.
     cmp #%01100000
@@ -15,7 +15,8 @@ n:  sec
 
 ; Check if a brick has been hit.
 ;
-; scr: Screen address of brick to hit.
+; scr:         Screen base of brick to hit.
+; test_offset: Screen offset of brick to hit.
 ;
 ; Returns:
 ; C=0: Regular or silver brick hit.
@@ -37,7 +38,7 @@ hit_brick:
     ora #>bricks
     sta @(++ tmp)
 
-    ldy scrx
+    ldy test_offset
     lda (tmp),y
     beq +no_brick_hit
 
@@ -56,7 +57,7 @@ n:  pla
     beq remove_silver
 
     ; Degrade silver brick.
-    ldy scrx
+    ldy test_offset
     lda (tmp),y
     sec
     sbc #1
@@ -76,7 +77,7 @@ remove_silver:
 remove_brick:
     inc removed_bricks
 
-    ldy scrx
+    ldy test_offset
     lda (tmp),y
     tay
     lda brick_scores_l,y
@@ -90,9 +91,10 @@ o:  jsr add_to_score
 
     lda scry
     sta removed_brick_y
+    lda scrx
+    sta removed_brick_x
     lda #0
-    ldy scrx
-    sty removed_brick_x
+    ldy test_offset
     sta (scr),y
     sta (tmp),y
     clc

@@ -307,11 +307,12 @@ vaus_sprite_index:      0
 pagedptr:       0 0
 new_direction:  0
 
-    0
 test_offsets:
     0 0 0
     0   0
     0 0 0
+
+test_offset:
     0
 
 lowmem:
