@@ -60,7 +60,9 @@ l:  tya
     jsr half_step_smooth
     lda position_has_changed
     beq +n
+inc $900f
     jsr ctrl_ball_subpixel
+dec $900f
 n:  lda sprites_i,x
     pla
     bmi +r              ; Ball sprite has been removed…
@@ -133,6 +135,7 @@ hit_obstacle:
     jmp adjust_ball_speed
 
 lose_ball:
+dec $900f
     pla
     pla
     pla

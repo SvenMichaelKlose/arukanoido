@@ -4,53 +4,52 @@ reflect:
     sta has_collision
 
 reflect_h:
+    lda ball_x
+    and #%111
+    beq +o
+    cmp #%111
+    bne reflect_v2
+
     ; Bounce back left.
-    lda sprites_d,x         ; Moving to the left?
+o:  lda sprites_d,x         ; Moving to the left?
     bpl +n                  ; No…
     ldy ball_x
     dey
     tya
     ldy ball_y
-    cmp #7                  ; Avoid over-stepping the walls.
-    bcc +m
     jsr get_soft_collision
     beq reflect_v
-    bne +j
+    bne +j              ; (jmp)
 
     ; Bounce back right.
 n:  ldy ball_x
     iny
     tya
     ldy ball_y
-    cmp #@(++ (* 8 14))     ; Avoid over-stepping the walls.
-    bcs +k
     jsr get_soft_collision
     beq reflect_v
 j:  lda #64
     bne +l              ; (jmp)
 
-m:  lda #7
-    sta sprites_x,x
-    bne -j              ; (jmp)
-
-k:  lda #@(* 8 14)
-    sta sprites_x,x
-    bne -j              ; (jmp)
-
 reflect_v:
+    lda ball_y
+    and #%111
+    beq +o
+    cmp #%111
+    bne +r
+
+reflect_v2:         ; ball_y must be on an edge.
     ; Bounce back top.
-    lda sprites_d,x         ; Are we flying upwards?
+o:  lda sprites_d,x         ; Are we flying upwards?
     clc
     adc #64
     bpl +n                  ; No…
     lda ball_x
     ldy ball_y
     dey
-    cpy arena_y_above       ; Avoid over-stepping the walls.
-    bcc +m
     jsr get_soft_collision
     beq +r
-    bne +j
+    bne +j              ; (jmp)
 
     ; Bounce back bottom.
 n:  lda ball_x
@@ -68,10 +67,6 @@ l:  clc
     bcs +r
     inc has_hit_brick
 r:  rts
-
-m:  lda arena_y
-    sta sprites_y,x
-    jmp -j
 
 apply_reflection:
     lda has_collision
