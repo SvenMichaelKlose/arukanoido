@@ -13,7 +13,7 @@ half_step_smooth:
     ; Move on X axis.
     lda sprites_d,x     ; Get direction.
     sec
-    sbc #$40
+    sbc #$40            ; Translate sine from Y axis.
     tay
     lda ball_directions_y,y
     asl                 ; Store sign in carry flag.
