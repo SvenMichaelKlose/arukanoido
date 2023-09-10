@@ -44,14 +44,14 @@ turn_counterclockwise:
     dey
     jmp -l
 
-
-l:  dec ball_release_timer
+loosen_caught_ball:
+    dec ball_release_timer
     bne +r
     jsr release_ball
 
 ctrl_ball:
     lda caught_ball
-    bpl -l
+    bpl loosen_caught_ball
 
     ; Call the ball controller ball_speed times.
     ldy ball_speed
@@ -70,7 +70,7 @@ n:  lda sprites_i,x
     bne -l
 r:  rts
 
-l:  jmp no_vaus_collision
+l:  jmp check_reflection
 
 hit_vaus:
     ; Ignore ball if it's not headed downwards.
@@ -171,7 +171,7 @@ ctrl_ball_subpixel:
     ; Check for hit sprite.
     lda #@(+ is_vaus is_obstacle)
     jsr find_point_hit
-    bcs no_vaus_collision
+    bcs check_reflection
 
     lda sprites_i,y
     and #is_vaus
@@ -182,30 +182,13 @@ n:  lda sprites_i,y
     and #is_obstacle
     bne hit_obstacle
 
-no_vaus_collision:
+check_reflection:
     jsr reflect
     lda has_collision
     bne +n2
     jsr reflect_edge
     lda has_collision
-    bne +m
-
-avoid_endless_flight:
-    lda sprites_d2,x
-    cmp #64
-    bcc +r
-    lda #0
-    sta sprites_d2,x
-    lda framecounter
-    lsr
-    bcc +n
-    lda sprites_d,x
-    jsr turn_clockwise
-    jmp +l
-n:  lda sprites_d,x
-    jsr turn_counterclockwise
-l:  sta sprites_d,x
-r:  rts
+    beq avoid_endless_flight
 
     ; Deal with reflect_edge.
 m:  lda #0
@@ -236,12 +219,11 @@ n:  lda has_hit_silver_brick
     bne +f
     lda #0
     sta sprites_d2,x
-    jmp +l
+    beq +l                  ; (jmp)
 
 f:  inc sprites_d2,x
 
 l:  jsr apply_reflection
-    jmp play_reflection_sound
 
 play_reflection_sound:
     lda has_hit_brick
@@ -258,6 +240,22 @@ n:  lda has_hit_golden_brick
     bne +l
 n:  lda #snd_reflection_high
 l:  jmp play_sound
+
+avoid_endless_flight:
+    lda sprites_d2,x
+    cmp #64
+    bcc +r
+    lda #0
+    sta sprites_d2,x
+    lda framecounter
+    lsr
+    bcc +n
+    lda sprites_d,x
+    jsr turn_clockwise
+    jmp +l
+n:  lda sprites_d,x
+    jsr turn_counterclockwise
+l:  sta sprites_d,x
 r:  rts
 
 make_ball:
