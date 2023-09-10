@@ -7,6 +7,11 @@ reflect_edge:
     lda sprites_d,x
     and #%11000000
     bne +n
+    lda ball_x
+    and ball_y
+    and #%111
+    cmp #%111
+    bne +r
     ldy ball_x
     iny
     tya
@@ -19,6 +24,14 @@ reflect_edge:
     ; Bounce back from top right.
 n:  asl
     bcs +n
+    lda ball_y
+    and #%111
+    bne +r
+    lda ball_x
+    and #%111
+    cmp #%111
+    bne +r
+    ldy ball_x
     ldy ball_x
     iny
     tya
@@ -31,6 +44,10 @@ n:  asl
     ; Bounce back from top left.
 n:  asl
     bcs +n
+    lda ball_y
+    ora ball_y
+    and #%111
+    bne +r
     ldy ball_x
     dey
     tya
@@ -41,7 +58,14 @@ n:  asl
     bne +j
 
     ; Bounce back from bottom left.
-n:  ldy ball_x
+n:  lda ball_x
+    and #%111
+    bne +r
+    lda ball_y
+    and #%111
+    cmp #%111
+    bne +r
+    ldy ball_x
     dey
     tya
     ldy ball_y

@@ -8,7 +8,7 @@ reflect_h:
     and #%111
     beq +o
     cmp #%111
-    bne reflect_v2
+    bne reflect_v
 
     ; Bounce back left.
 o:  lda sprites_d,x         ; Moving to the left?
@@ -38,7 +38,6 @@ reflect_v:
     cmp #%111
     bne +r
 
-reflect_v2:         ; ball_y must be on an edge.
     ; Bounce back top.
 o:  lda sprites_d,x         ; Are we flying upwards?
     clc

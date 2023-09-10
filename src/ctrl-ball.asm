@@ -60,9 +60,7 @@ l:  tya
     jsr half_step_smooth
     lda position_has_changed
     beq +n
-inc $900f
     jsr ctrl_ball_subpixel
-dec $900f
 n:  lda sprites_i,x
     pla
     bmi +r              ; Ball sprite has been removed…
@@ -135,7 +133,6 @@ hit_obstacle:
     jmp adjust_ball_speed
 
 lose_ball:
-dec $900f
     pla
     pla
     pla
@@ -186,20 +183,7 @@ n:  lda sprites_i,y
     bne hit_obstacle
 
 no_vaus_collision:
-    ; Quick check if foreground collision detection would
-    ; detect something at all.
-    lda ball_y
-    and #%111
-    beq +l
-    cmp #%111
-    beq +l
-    lda ball_x
-    and #%111
-    beq +l
-    cmp #%111
-    bne avoid_endless_flight
-
-l:  jsr reflect
+    jsr reflect
     lda has_collision
     bne +n2
     jsr reflect_edge
