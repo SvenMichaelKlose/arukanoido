@@ -104,7 +104,6 @@ n:  lda currently_playing_digis
     jsr play_music
 n:
 
-    jsr set_vaus_color
     lda is_running_game
     beq +done
 
