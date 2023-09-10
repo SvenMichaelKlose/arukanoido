@@ -2,6 +2,7 @@ prg_size = @(- prg_end prg)
 blk5_size = @(- blk5_end blk5)
 
 start:
+    ; Copy PRG where it should be.
     lda #<prg
     sta s
     lda #>prg
@@ -15,6 +16,7 @@ start:
     sta @(++ c)
     jsr copy_forwards
 
+    ; Copy data to BLK5.
     lda #<loaded_blk5
     sta s
     lda #>loaded_blk5
@@ -28,6 +30,7 @@ start:
     sta @(++ c)
     jsr copy_forwards
 
+    ; Start the PRG.
     jmp $120d
 
 copy_forwards:
