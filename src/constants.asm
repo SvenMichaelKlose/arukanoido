@@ -45,7 +45,7 @@ initial_ball_direction_skewed   = direction_rs
 default_num_lifes       = 3
 
 default_ball_speed      = 5
-min_ball_speed          = 2
+min_ball_speed          = 4
 max_ball_speed          = 15
 max_ball_speed_joystick = 6
 max_ball_speed_joystick_top = 6
