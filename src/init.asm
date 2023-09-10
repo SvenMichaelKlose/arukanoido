@@ -18,9 +18,9 @@ main:
     sta $911e       ; Disable restore key NMIs.
 
     ; Init VCPU.
-    lda #<exec_script
+    lda #<vcpu_exec
     sta $316
-    lda #>exec_script
+    lda #>vcpu_exec
     sta $317
 
     jsr blank_screen

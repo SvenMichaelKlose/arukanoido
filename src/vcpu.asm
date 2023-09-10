@@ -10,7 +10,7 @@ inc_bca:
     inc @(++ bca)
 n:  rts
 
-exec_script:
+vcpu_exec:
     pla ; Y
     sta sry
     pla ; X
