@@ -1,16 +1,19 @@
 # Arukanoido
 
-Arukanoido is a clone of the famous arcade game "Arkanoid" for the
-Commodore VIC–20 with at least 35K memory expansion.  It should be
-played best with paddles, which are detected automatically as soon
-as you move them at the beginning of a new game.  If you don't have
-paddles Arukanoido switches to a slower joystick mode.
+ARUKANOIDO is a clone of the famous arcade game "Arkanoid" for the
+Commodore VIC–20 with at least 35K memory expansion.
 
 This demo comes with the first eight of 33 levels.
 
+## WAV file for real tapes
+
 Don't play the WAV file without the volume turned down unless you
 want your ears zonked.  Instead, you can record it on a music
-cassette and slap that into a real VIC.
+cassette and slap that into a real VICs C2N drive.
+
+## Cartidge version
+
+Currently not working.
 
 The IMG files are the banks of the cartridge version.  You can
 fire them up with VICE like this:
@@ -19,32 +22,47 @@ fire them up with VICE like this:
 xvic -cart2 arukanoido.img.aa -cart4 arukanoido.img.ab -cart6 arukanoido.img.ac -cartA arukanoido.img.ad
 ```
 
-Arukanoido is being discussed and developed on the VIC–20 Denial forum:
-http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?t=3752
+# Controls
 
-Get the latest revision here:
-http://hugbox.org/pixel/software/vic-20/arukanoido/
+## Joystick or paddles
 
-If you wanna complain or are in for crazy small talk just mail to
-Sven Michael Klose <pixel@hugbox.org>.
+Hitting fire in the title screen will start a new game or skip the
+intro.
 
+ARUKANOIDO should be played with paddles.  They are detected
+automatically as soon as you move them at the beginning of a new game.
+If you don't have paddles ARUKANOIDO sticks with a slower mode to keep
+the game playable.
 
-# Title screen keys
+### Playing with emulator and mouse as replacement for paddles
 
-* H, J, K, L: Move screen around.
-* F: Switch between landscape (NTSC) and portrait (PAL) format.
-* M: Switch between beamrider's blasting VIC sounds or arcade digis.
-* B: Start BASIC.
+If you're playing this in an emulator with a mouse as a replacement
+for paddles, make sure to switch off your desktop's mouse
+acceleration or it'll drive you nuts!
 
+## Keyboard
 
-# In-game keys
+Keyboard controls need a rewrite and are kind of dysfunctional
+when playing.
 
 * S, J: Move Vaus left.
 * D. K: Move Vaus right.
-* SPACE: Fire – doesn't work in combination with other key tough. :(
-* P: Pause the game.
+* SPACE: Not there at the moment. Fire – doesn't work in combination with other key tough. :(
 
-## Keys for game testers
+### Title screen keys
+
+* SPACE: Start game.
+* H, J, K, L: Move screen around.
+* F: Switch between landscape (NTSC) and portrait (PAL) format.
+* M: Switch between beamrider's blasting VIC sounds or arcade digis.
+* B: Quit and start BASIC.
+
+### In-game keys
+
+* P: Pause the game.
+* SPACE: Display the current charset and halt the machine.
+
+# Keys for game testers (only in this demo).
 
 * N: Skip to next level.
 * 0: Drop random bonuses.
@@ -56,7 +74,7 @@ Sven Michael Klose <pixel@hugbox.org>.
 * 6: Drop bonus D only.
 * 7: Drop bonus P only.
 * C: Show character map (NTSC) and halt machine.
-
+* L: Set number of lives to ten.
 
 # Things missing
 
@@ -65,6 +83,14 @@ Sven Michael Klose <pixel@hugbox.org>.
 * intro/outro animations
 * hiscore table
 
+# More information
+
+Arukanoido is being discussed and developed on the VIC–20 Denial forum
+where you can also get the latest demo version:
+http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?t=3752
+
+If you wanna complain or are in for crazy small talk just mail to
+Sven Michael Klose <pixel@hugbox.org>.
 
 # Applications used
 
