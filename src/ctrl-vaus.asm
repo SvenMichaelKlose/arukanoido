@@ -260,7 +260,6 @@ make_vaus:
     lda vaus_y
     sta sprites_y,x
 
-set_vaus_color:
     lda mode
     cmp #mode_laser
     bne +r
