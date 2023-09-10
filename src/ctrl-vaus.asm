@@ -8,7 +8,7 @@ test_vaus_hit_right:
     cmp #@(* (- 15 4) 8)
     rts
 n:  cmp #@(* (- 15 3) 8)
-    rts
+r:  rts
 
 ctrl_vaus:
     lda mode_break
@@ -31,7 +31,7 @@ m:  lda #<score_100
     jsr add_to_score
     dec mode_break
     bne -r
-    lda #0
+    lda #0              ; Signal end of game to main loop.
     sta bricks_left
     jmp remove_sprite
 
@@ -42,18 +42,14 @@ n:  lda #is_obstacle
     jsr remove_obstacle
 n:
 
-    lda $9111
-    sta joystick_status
-
+    ; Check if paddle is being used.
     lda is_using_paddle
     bne handle_paddle
-
-    ; Check if paddle is being used.
     lda $9008
     sec
     sbc old_paddle_value
     jsr abs
-    and #%11111000
+    and #%11111100
     beq handle_joystick
 
     sta is_using_paddle
@@ -96,7 +92,7 @@ n:  sec
     jsr sprite_right
     ldx tmp
 
-n:  lda joystick_status
+n:  lda $9111
     and #joy_left
     beq do_fire
 
@@ -108,7 +104,7 @@ r:  rts
 
 handle_joystick:
     ; Joystick left.
-n:  lda joystick_status
+n:  lda $9111
     and #joy_left
     bne +n
     jsr move_vaus_left
@@ -124,7 +120,7 @@ n:  lda #0          ; Fetch rest of joystick status.
     jsr move_vaus_right
 
 handle_joystick_fire:
-    lda joystick_status
+    lda $9111
     and #joy_fire
     beq do_fire
 

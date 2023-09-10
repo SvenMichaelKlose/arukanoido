@@ -283,7 +283,6 @@ has_hit_golden_brick:   0
 num_hits:               0 ; Used to increase the ball speed.
 
 num_obstacles:          0
-joystick_status:        0
 
 ; Position of pre-shifted sprite data.
 preshifted_vaus:            0 0
