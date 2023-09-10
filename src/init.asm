@@ -17,6 +17,12 @@ main:
     sta $912d
     sta $911e       ; Disable restore key NMIs.
 
+    ; Init VCPU.
+    lda #<exec_script
+    sta $316
+    lda #>exec_script
+    sta $317
+
     jsr blank_screen
     ; A is 0.
     sta currently_playing_digis
@@ -91,12 +97,6 @@ end
 n:  stx is_ntsc
     stx is_landscape
     jsr set_format
-
-    ; Init VCPU.
-    lda #<exec_script
-    sta $316
-    lda #>exec_script
-    sta $317
 
 if @*shadowvic?*
     jmp start

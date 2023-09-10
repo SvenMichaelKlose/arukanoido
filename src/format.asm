@@ -1,51 +1,41 @@
+format_portrait:
+    15          ; screen_columns
+    32          ; screen_rows
+    @(* 29 8)   ; vaus_y
+    2           ; playfield_yc
+    10          ; txt_hiscore_x
+    0           ; txt_hiscore_y
+    12          ; hiscore_x
+    1           ; hiscore_y
+    0           ; score_x
+    1           ; score_y
+
+format_landscape:
+    20          ; screen_columns
+    28          ; screen_rows
+    @(* 27 8)   ; vaus_y
+    0           ; playfield_yc
+    30          ; txt_hiscore_x
+    2           ; txt_hiscore_y
+    33          ; hiscore_x
+    3           ; hiscore_y
+    33          ; score_x
+    1           ; score_y
+
 set_format:
     lda is_landscape
     bne set_format_landscape
 
 set_format_portrait:
-    lda #15
-    sta screen_columns
-    lda #32
-    sta screen_rows
-    lda #@(* 29 8)
-    sta vaus_y
-    lda #2
-    sta playfield_yc
-    lda #10
-    sta txt_hiscore_x
-    lda #0
-    sta txt_hiscore_y
-    lda #12
-    sta hiscore_x
-    lda #1
-    sta hiscore_y
-    lda #0
-    sta score_x
-    lda #1
-    sta score_y
-
+    0
+    movmw <format_portrait >format_portrait <screen_columns >screen_columns 10 0
+    0
     jmp set_format_common
 
 set_format_landscape:
-    lda #20
-    sta screen_columns
-    lda #28
-    sta screen_rows
-    lda #@(* 27 8)
-    sta vaus_y
-    lda #0
-    sta playfield_yc
-    lda #30
-    sta txt_hiscore_x
-    lda #2
-    sta txt_hiscore_y
-    lda #33
-    sta hiscore_x
-    sta score_x
-    lda #3
-    sta hiscore_y
-    lda #1
-    sta score_y
+    0
+    movmw <format_landscape >format_landscape <screen_columns >screen_columns 10 0
+    0
 
 set_format_common:
     lda screen_columns

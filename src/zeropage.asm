@@ -187,7 +187,6 @@ exm_needs_data:     0
 ; TV standard dependant constants
 format_params:
 screen_columns:     0
-double_screen_columns:  0
 screen_rows:        0
 vaus_y:             0
 playfield_yc:       0
@@ -197,6 +196,8 @@ hiscore_x:          0
 hiscore_y:          0
 score_x:            0
 score_y:            0
+
+double_screen_columns:  0
 y_max:              0
 screen_height:      0
 arena_y:            0
