@@ -12,8 +12,8 @@ r:  rts
 
 ctrl_vaus:
     lda mode_break
-    beq +n
-    bmi +n
+    beq +n      ; Not active.
+    bmi +n      ; Active but Vaus is not moving through the gate.
 
     ; Break mode: move Vaus out through the port.
     lda framecounter
@@ -59,12 +59,13 @@ n:
 handle_paddle:
     ldy $9008
     sty old_paddle_value
+    ; Take paddle value as centre of the Vaus.
     lda vaus_width
     lsr
     jsr neg
     clc
     adc paddle_xlat,y
-    bmi +n2
+    bmi +n2     ; Extended Vaus clipping over left wall.
     cmp #8
     bcs +n
 n2: lda #8
