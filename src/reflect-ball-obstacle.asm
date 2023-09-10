@@ -17,7 +17,7 @@ n:  lda sprites_x,x
     bcs reflect_ball_obstacle_v
 
 j:  lda #64
-    jmp +l
+    bne +l                  ; (jmp)
 
 reflect_ball_obstacle_v:
     ; Bounce back from top.
