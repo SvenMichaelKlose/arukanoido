@@ -17,6 +17,14 @@ i_stzb:
     sta 0,x
     rts
 
+; Copy byte to zero page.
+i_stzmb:
+    ldx a0
+    ldy #0
+    lda (a1),y
+    sta 0,x
+    rts
+
 ; Set zero page word.
 i_stzw:
     ldx a0
@@ -40,6 +48,15 @@ i_stmw:
     sta (a0),y
     iny
     lda a3
+    sta (a0),y
+    rts
+
+i_mvmw:
+    ldy #0
+    lda (a2),y
+    sta (a0),y
+    iny
+    lda (a2),y
     sta (a0),y
     rts
 
