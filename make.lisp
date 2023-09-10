@@ -220,7 +220,7 @@
   (format t "Round intro size: ~A~%" (- (get-label '__end_round_intro) (get-label '__end_hiscore)))
   (format t "~A zero page bytes free.~%" (- #x00fc (get-label 'zp_end)))
   (format t "~A bytes free before interrupt vectors.~%" (- #x314 (get-label 'before_int_vectors)))
-  (format t "~A low memory bytes free before $0400.~%" (- #x0400 (get-label 'lowmem)))
+  (format t "~A low memory bytes free before $03ce.~%" (- #x03ce (get-label 'lowmem)))
   (!= (- #x8000 (get-label 'the_end))
     (format t "~A bytes free before $8000.~%" !))
   (when *has-digis?*
@@ -244,11 +244,11 @@
 (fn make-rom ()
   (with-temporary *rom?* t
     (make-game "obj/arukanoido.img" "obj/arukanoido.img.lbl")
-;    (!= (- #x3ce (+ (get-label 'lowmem) (get-label 'lowmem_size)))
-;      (format t "~A bytes till $3ce.~%" !)
-;      (when (< ! 0)
-;        (error "Low memory overflow.")
-;        (quit)))
+    (!= (- #x3ce (+ (get-label 'lowmem) (get-label 'lowmem_size)))
+      (format t "~A bytes till $3ce.~%" !)
+      (when (< ! 0)
+        (error "Low memory overflow.")
+        (quit)))
     (!= (- #xc000 (get-label 'the_end))
       (format t "~A bytes till $c000.~%" !)))
   (sb-ext:run-program "/usr/bin/split"
