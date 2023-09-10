@@ -42,7 +42,6 @@ game_over:
 game:
     jsr clear_data
     jsr preshift_common_sprites
-    jsr make_reflection_tables
     jsr init_screen
     jsr init_foreground
 
