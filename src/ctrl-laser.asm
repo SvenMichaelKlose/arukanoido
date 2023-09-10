@@ -15,25 +15,17 @@ ctrl_laser:
     ; Check on collision on the left hand side.
     lda sprites_x,x
     ldy sprites_y,x
-    jsr get_soft_collision
-    beq +o              ; Nothing, try on the right…
-    jsr hit_brick
-    bcs +o              ; No brick hit.
-    inc laser_has_hit
+    jsr test_laser_hit
 
     ; Check on collision on the right hand side.
-o:  lda sprites_x,x
+    lda sprites_x,x
     clc
     adc #7
     ldy sprites_y,x
-    jsr get_soft_collision
-    beq +m
-    jsr hit_brick
-    bcs +m
-    inc laser_has_hit
+    jsr test_laser_hit
 
     ; Hit left or right?
-m:  lda laser_has_hit
+    lda laser_has_hit
     ora has_hit_golden_brick
     bne +n
 
@@ -46,3 +38,12 @@ m:  lda laser_has_hit
 n:  jsr remove_sprite
 r:  dec is_testing_laser_hit
     rts
+
+test_laser_hit:
+    jsr get_soft_collision
+    beq +o              ; Nothing hit…
+    jsr hit_brick
+    bcs +o              ; No brick hit…
+    inc laser_has_hit
+o:  rts
+
