@@ -4,6 +4,9 @@ show_charset:
     sta $912e
     sta $912d
 
+    lda #1
+    sta is_landscape
+    jsr set_format
     0
     clrmw <screen >screen @(low 512) @(high 512)
     setmw <colors >colors @(low 512) @(high 512) white
