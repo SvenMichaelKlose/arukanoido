@@ -47,7 +47,7 @@ when playing.
 
 * S, J: Move Vaus left.
 * D. K: Move Vaus right.
-* SPACE: Not there at the moment. Fire – doesn't work in combination with other key tough. :(
+* SPACE: Fire – doesn't work in combination with other key tough. :(
 
 ### Title screen keys
 
@@ -60,7 +60,7 @@ when playing.
 ### In-game keys
 
 * P: Pause the game.
-* SPACE: Display the current charset and halt the machine.
+* C: Display the current charset and halt the machine.
 
 # Keys for game testers (only in this demo).
 
