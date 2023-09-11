@@ -368,7 +368,7 @@
                     :pty cl:*standard-output*)
 (sb-ext:run-program "/usr/bin/zip" '("-r" "-9" "arukanoido.zip" "arukanoido")
                     :pty cl:*standard-output*)
-(unix-sh-mkdir "archive")
+(unix-sh-mkdir "archive" :parents t)
 (sb-ext:run-program "/bin/cp" `("arukanoido.zip"
                                 ,(+ "archive/arukanoido." (? *demo?* "demo." "") *revision* ".zip"))
                     :pty cl:*standard-output*)
