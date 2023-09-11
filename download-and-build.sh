@@ -1,7 +1,10 @@
 #!/bin/sh
 
 # Launch this file in an empty directory to download, build and
-# install tré, Bender and Arukanoido.  You must have sbcl instaled.
+# install tré, Bender and Arukanoido.
+#
+# You must have git, sbcl and sox installed.
+# Debian-based: sudo apt install git sbcl sox
 
 set -e
 
