@@ -5,12 +5,12 @@
 ;(const *versions* '(:prg :rom :tap :shadowvic))
 (const *versions* '(:prg))
 
-(const *demo?* t)    ; Limit to first eight levels.
-(const *debug?* t)
-(const *make-arcade-sounds?* nil) ; Lengthy process.
-(var *has-digis?* t)
-(var *add-charset-base?* t)
-(var *show-cpu?* nil)
+(const *demo?* t)               ; Limit to first eight levels.
+(const *debug?* t)              ; Include self-tests and features.
+(const *make-arcade-sounds?* t) ; Lengthy process.
+(var *has-digis?* t)            ; Play optional original arcade sounds.
+(var *add-charset-base?* t)     ; Should be hard-coded.
+(var *show-cpu?* nil)           ; Show time spent in game logic (NTSC!).
 
 
 ; DO NOT TOUCH FROM HERE ON!
@@ -366,9 +366,9 @@
 (sb-ext:run-program "/bin/cp"
                     '("media/arkanoid-roms-mame.zip" "arukanoido/")
                     :pty cl:*standard-output*)
-
 (sb-ext:run-program "/usr/bin/zip" '("-r" "-9" "arukanoido.zip" "arukanoido")
                     :pty cl:*standard-output*)
+(unix-sh-mkdir "archive")
 (sb-ext:run-program "/bin/cp" `("arukanoido.zip"
                                 ,(+ "archive/arukanoido." (? *demo?* "demo." "") *revision* ".zip"))
                     :pty cl:*standard-output*)
