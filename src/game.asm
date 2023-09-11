@@ -16,7 +16,7 @@ game_over:
 
     lda #1
     sta curchar
-    jsr make_score_screen_title
+    jsr print_hiscore_label
     jsr display_score
 
     lda #white

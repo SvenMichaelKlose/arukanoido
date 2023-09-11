@@ -15,7 +15,7 @@ round_intro:
     jsr make_stars
     lda #5
     sta curchar
-    jsr make_score_screen_title
+    jsr print_hiscore_label
     jsr display_score
 
     ; Draw ship.

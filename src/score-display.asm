@@ -2,7 +2,7 @@ make_score_screen:
     lda #foreground
     sta curchar
 
-make_score_screen_title:
+print_hiscore_label:
     ; Print "HIGH SCORE".
     lda #red
     sta curcol

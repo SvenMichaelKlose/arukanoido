@@ -120,7 +120,7 @@ toplevel:
 
     0
     stzb curchar 1
-    call <make_score_screen_title >make_score_screen_title
+    call <print_hiscore_label >print_hiscore_label
     call <display_score >display_score
 
     stzb curcol red
