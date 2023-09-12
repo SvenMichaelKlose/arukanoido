@@ -7,9 +7,8 @@
 
 (const *demo?* t)               ; Limit to first eight levels.
 (const *debug?* t)              ; Include self-tests and features.
-(const *make-arcade-sounds?* t) ; Lengthy process.
+(const *make-arcade-sounds?* nil) ; Lengthy process.
 (var *has-digis?* t)            ; Play optional original arcade sounds.
-(var *add-charset-base?* t)     ; Should be hard-coded.
 (var *show-cpu?* nil)           ; Show time spent in game logic (NTSC!).
 
 

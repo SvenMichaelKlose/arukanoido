@@ -75,13 +75,8 @@ n:
     lsr
     lsr
     lsr
-if @*add-charset-base?*
     clc
     adc #>charset
-end
-if @(not *add-charset-base?*)
-    ora #>charset
-end
     sta @(++ d)
     pha
 
@@ -158,13 +153,8 @@ q:  tya
     lsr
     lsr
     lsr
-if @*add-charset-base?*
     clc
     adc #>charset
-end
-if @(not *add-charset-base?*)
-    ora #>charset
-end
     sta @(++ s)
 
     ldy #0

@@ -28,13 +28,8 @@ get_char_addr:
     lsr
     lsr
     lsr
-if @*add-charset-base?*
     clc
     adc #>charset
-end
-if @(not *add-charset-base?*)
-    ora #>charset
-end
     sta @(++ d)
     rts
 
@@ -51,13 +46,8 @@ get_char_addr_s:
     lsr
     lsr
     lsr
-if @*add-charset-base?*
     clc
     adc #>charset
-end
-if @(not *add-charset-base?*)
-    ora #>charset
-end
     sta @(++ s)
     rts
 
