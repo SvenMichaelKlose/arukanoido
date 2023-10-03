@@ -1,3 +1,8 @@
+;;; Within the IRQ the game logic is enforced to 60 times per
+;;; second, so no matter how badly the sprites kick in, everything
+;;; keeps running at a constant speed.  That's not true for
+;;; original arcade sounds running via the NMI.
+
 frame_timer_pal  = @(- (/ (cpu-cycles :pal)  60) 18)
 frame_timer_ntsc = @(- (/ (cpu-cycles :ntsc) 60) 158)
 
@@ -38,7 +43,6 @@ m:  stx $9124
     sta $912e
     cli
     rts
-
 done:
     jmp +done
 
@@ -48,21 +52,25 @@ if @*show-cpu?*
     sta $900f
 end
 
+    ;; Handle pause.
     lda has_paused
     bne -done
 
+    ;; Increment word framecounter.
     inc framecounter
     bne +n
     inc @(++ framecounter)
 
+    ;; Handle laser interval.
 n:  lda is_firing
     beq +n
     dec is_firing
 
+    ;; Display break mode gate?
 n:  lda mode_break
     beq +n
 
-    ; Animate break mode gate.
+    ;; Animate gate.
     lda screen_gate
     sta d
     sta c
@@ -70,6 +78,7 @@ n:  lda mode_break
     sta @(++ d)
     ora #>colors
     sta @(++ c)
+
     ; Switch char every two pixels.
     lda framecounter
     lsr
@@ -77,6 +86,7 @@ n:  lda mode_break
     clc
     adc #bg_break
     tax
+
     ; Redraw gate.
     ldy #0
     sta (d),y
@@ -89,8 +99,7 @@ n:  lda mode_break
     sta (c),y
     lda is_landscape
     bne +n
-    ; Extra gate char in portrait format.
-    tya
+    tya         ; Extra gate char in portrait format.
     asl
     tay
     txa
@@ -98,16 +107,17 @@ n:  lda mode_break
     lda #white
     sta (c),y
 
-    ; Play regular VIC sound.
+    ;; Play classic VIC sound.
 n:  lda currently_playing_digis
     bne +n      ; Digis are decrunched in game loop.
     jsr play_music
 n:
 
+    ;; Run the sprite controllers.
     lda is_running_game
     beq +done
-
     jsr call_sprite_controllers
+    ; Done.  Tell main loop to redraw the sprites.
     lda #1
     sta has_moved_sprites
 
@@ -115,19 +125,21 @@ n:
     beq +n
     bpl +done
 
+    ;; DOH round special treatment.
 n:  lda level
     cmp #doh_level
     bne +n2
-    jsr flash_doh
+    jsr flash_doh       ; Flash DOH when hit.
     jsr add_missing_doh_obstacle
     jmp +done
 
+    ;; Regular round treatment.
 n2: jsr rotate_bonuses
     jsr add_missing_obstacle
     jsr dyn_brick_fx
 
 done:
-    ; Update scores on screen.
+    ;; Update scores on screen.
     lda has_new_score
     beq +n
     lda #0
@@ -141,7 +153,7 @@ if @*show-cpu?*
 end
 
 if @*shadowvic?*
-    rts
+    rts             ; ShadowVIC emulator doesn't require IRQs.
 end
     pla
     tay
