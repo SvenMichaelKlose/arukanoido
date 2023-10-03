@@ -1,7 +1,7 @@
 hit_doh:
     ldy scrx
     lda (scr),y
-    and #%01100000 ; Check on last quarter of chars in frame.
+    and #%01100000 ; Check if background char.
     cmp #%01100000
     bne +n
     lda #doh_flash_duration
@@ -13,49 +13,55 @@ hit_doh:
 n:  sec
     rts
 
-; Check if a brick has been hit.
-;
-; scr: Screen address of brick to hit.
-;
-; Returns:
-; C=0: Regular or silver brick hit.
-; C=1: No brick or golden brick hit.
+;;; Check if a brick has been hit.
+;;;
+;;; scr: Screen address of brick to hit.
+;;;
+;;; Returns:
+;;; C=0: Regular or silver brick hit.
+;;; C=1: No brick or golden brick hit.
 hit_brick:
+    ;; Reset flags other parts of the game want to know about.
     lda #0
     sta has_removed_brick
     sta has_hit_silver_brick
     sta has_hit_golden_brick
 
+    ;; Redirect to DOH handling.
     lda level
     cmp #doh_level
     beq -hit_doh
 
-    ; Get pointer into 'bricks'.
+    ;; Check if any type of brick has been hit.
+    ; Get pointer into brick map as we cannot tell from screen chars.
     lda scr
     sta tmp
     lda @(++ scr)
     ora #>bricks
     sta @(++ tmp)
 
+    ; Check.
     ldy scrx
     lda (tmp),y
     beq +no_brick_hit
 
+    ;; Adjust ball speed but not for laser hits.
     pha
     lda is_testing_laser_hit
     bne +n
     jsr adjust_ball_speed
 n:  pla
-    inc has_hit_brick
+    inc has_hit_brick           ; (Set flag.)
 
+    ;; Dispatch for regular, silver and golden bricks.
     cmp #b_golden
     beq +golden
     bcc remove_brick
-    inc has_hit_silver_brick
+    inc has_hit_silver_brick    ; (Set flag.)
     cmp #b_silver
     beq remove_silver
 
-    ; Degrade silver brick.
+    ;; Degrade silver brick.
     ldy scrx
     lda (tmp),y
     sec
@@ -65,17 +71,21 @@ n:  pla
     clc
     rts
 
-    ; Silver brick's score is 50 multiplied by round number.
+    ;; Remove fully degraded silver brick.
 remove_silver:
+    ; Silver brick's score is 50 multiplied by round number.
     lda #<score_silver
     sta s
     lda #>score_silver
     sta @(++ s)
     jmp +o
 
+    ;; Remove regular brick.
 remove_brick:
+    ; Keep track of removed bricks for so we know when
+    ; we have to create a bonus.
     inc removed_bricks
-
+    ; Determine score of brick.
     ldy scrx
     lda (tmp),y
     tay
@@ -83,11 +93,15 @@ remove_brick:
     sta s
     lda brick_scores_h,y
     sta @(++ s)
+
+    ;; Add score pointed to by 's'.
 o:  jsr add_to_score
 
+    ;; Keep track of removed bricks,
     dec bricks_left
-    inc has_removed_brick
+    inc has_removed_brick   ; (Set flag.)
 
+    ;; Vanish brick from screen and brick map.
     lda scry
     sta removed_brick_y
     lda #0
@@ -95,12 +109,14 @@ o:  jsr add_to_score
     sty removed_brick_x
     sta (scr),y
     sta (tmp),y
+
     clc
     rts
 
+    ;; Handle golden brick.
 golden:
     jsr add_brick_fx
-    inc has_hit_golden_brick
+    inc has_hit_golden_brick    ; (Set flag.)
 no_brick_hit:
     sec
     rts
