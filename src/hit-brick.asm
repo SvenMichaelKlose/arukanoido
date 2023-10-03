@@ -107,7 +107,7 @@ o:  jsr add_to_score
     sta (scr),y
     sta (tmp),y
 
-    inc has_hit_brick
+    inc has_hit_brick       ; (Set flag.)
     rts
 
     ;; Handle golden brick.
