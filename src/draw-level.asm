@@ -3,7 +3,7 @@ draw_level:
     ldy #>level_data
     jsr init_decruncher
 
-    ; Decompress until current level.
+    ;; Decompress until current level.
     ldx level
 l:  dex
     beq +n
@@ -14,16 +14,16 @@ m:  jsr get_decrunched_byte
     bne -m
     pla
     tax
-    bne -l      ; (jmp)
+    bne -l  ; (jmp)
 
 n:  stx bricks_left ; (X=0)
 
-    ; Clear brick map.
+    ;; Clear brick map.
     0
     clrmw <bricks >bricks $00 $02
     0
 
-    ; Get starting row.
+    ;; Get starting row.
     jsr get_decrunched_byte
     sec
     adc playfield_yc
@@ -35,13 +35,14 @@ l:  jsr scrcoladdr
 
     jsr scr2brick_in_d
 
-    ; Get brick.
+    ;; Get brick.
     jsr get_decrunched_byte
+    cmp #0
     beq +o              ; No brick.
     cmp #15
     beq +r              ; End of level data.
 
-    ; Plot brick.
+    ;; Plot brick.
     ldy scrx
     pha
     jsr brick_to_char
@@ -50,15 +51,14 @@ l:  jsr scrcoladdr
     sta (col),y
     pla
 
-    ; Count number of bricks.
+    ;; Count number of bricks.
     cmp #b_golden
     beq +n
     inc bricks_left
 
-    ; Store brick type in brick map.
+    ;; Store brick type in brick map.
 n:  cmp #b_silver
     bne +n
-
     ; (One more hit for silver bricks every 8th level.)
     lda level
     lsr
