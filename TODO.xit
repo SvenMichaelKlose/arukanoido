@@ -2,6 +2,7 @@
 [ ] !!! Do not treat wall as golden(?) brick in third row from bottm (PAL).
 [ ] !!! Do not crash when collecting bonus at rightmost position.
 [ ] !!! Fix keyboard controls.  Fetch directly from VIA.
+[ ] !!  Cut up original round intro sound and play first bit twice.
 [ ] ... D bonus: sometimes balls go the same direction.
         Probably going away with faster reflection tests.
 [ ] ... Update hiscore by copying regular score on screen
