@@ -7,11 +7,7 @@ hit_doh:
     lda #doh_flash_duration
     sta flashing_doh
     dec bricks_left
-    clc
-    rts
-
-n:  sec
-    rts
+n:  rts
 
 ;;; Check if a brick has been hit.
 ;;;
@@ -24,6 +20,7 @@ hit_brick:
     ;; Reset flags other parts of the game want to know about.
     lda #0
     sta has_removed_brick
+    sta has_hit_brick
     sta has_hit_silver_brick
     sta has_hit_golden_brick
 
@@ -68,7 +65,7 @@ n:  pla
     sbc #1
     sta (tmp),y
     jsr add_brick_fx
-    clc
+    inc has_hit_brick
     rts
 
     ;; Remove fully degraded silver brick.
@@ -110,7 +107,7 @@ o:  jsr add_to_score
     sta (scr),y
     sta (tmp),y
 
-    clc
+    inc has_hit_brick
     rts
 
     ;; Handle golden brick.
@@ -118,5 +115,4 @@ golden:
     jsr add_brick_fx
     inc has_hit_golden_brick    ; (Set flag.)
 no_brick_hit:
-    sec
     rts

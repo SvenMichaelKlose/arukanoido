@@ -74,8 +74,6 @@ n:  lda ball_x
     beq +r
 
 j:  inc has_collision
-    jsr hit_brick
-    bcs +r
-    inc has_hit_brick
+    jmp hit_brick
 
 r:  rts

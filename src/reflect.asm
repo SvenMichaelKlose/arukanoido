@@ -62,10 +62,7 @@ l:  clc
     adc side_degrees
     sta side_degrees
     inc has_collision
-    jsr hit_brick
-    bcs +r
-    inc has_hit_brick
-r:  rts
+    jmp hit_brick
 
 apply_reflection:
     lda has_collision
