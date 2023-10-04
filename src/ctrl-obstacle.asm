@@ -1,3 +1,11 @@
+;;; Indexes into tables
+
+cone        = 0
+pyramid     = 1
+spheres     = 2
+cube        = 3
+none        = 255
+
 used_obstacle_directions:
     @(byte (+ 128 direction_r))
     192
@@ -7,6 +15,49 @@ used_obstacle_directions:
     @(byte (+ 128 direction_l))
     0
 used_obstacle_directions_end:
+
+;;; Starts of animations
+gfx_obstacles_gl:
+    <gfx_obstacle_cone
+    <gfx_obstacle_pyramid
+    <gfx_obstacle_spheres
+    <gfx_obstacle_cube
+
+gfx_obstacles_gh:
+    >gfx_obstacle_cone
+    >gfx_obstacle_pyramid
+    >gfx_obstacle_spheres
+    >gfx_obstacle_cube
+
+;;; Ends of animations
+gfx_obstacles_gl_end:
+    <gfx_obstacle_cone_end
+    <gfx_obstacle_pyramid_end
+    <gfx_obstacle_spheres_end
+    <gfx_obstacle_cube_end
+
+gfx_obstacles_gh_end:
+    >gfx_obstacle_cone_end
+    >gfx_obstacle_pyramid_end
+    >gfx_obstacle_spheres_end
+    >gfx_obstacle_cube_end
+
+;;; Obstacle colours
+gfx_obstacles_c:
+    cyan
+    green
+    white
+    red
+
+;;; Obstacle types per level
+level_obstacle:
+    cone pyramid spheres cube cone
+    pyramid spheres cube cone none
+    spheres none cone pyramid spheres
+    cube cone pyramid spheres cube
+    cone pyramid spheres cube cone
+    pyramid spheres cube cone pyramid
+    spheres cube none
 
 get_used_obstacle_direction:
     ldy #0
@@ -32,57 +83,12 @@ turn_obstacle_counterclockwise:
     dey
     bpl -l
     ldy #@(- used_obstacle_directions_end used_obstacle_directions 1)
-    bne -l
-
-gfx_obstacles_gl:
-    <gfx_obstacle_cone
-    <gfx_obstacle_pyramid
-    <gfx_obstacle_spheres
-    <gfx_obstacle_cube
-
-gfx_obstacles_gh:
-    >gfx_obstacle_cone
-    >gfx_obstacle_pyramid
-    >gfx_obstacle_spheres
-    >gfx_obstacle_cube
-
-gfx_obstacles_gl_end:
-    <gfx_obstacle_cone_end
-    <gfx_obstacle_pyramid_end
-    <gfx_obstacle_spheres_end
-    <gfx_obstacle_cube_end
-
-gfx_obstacles_gh_end:
-    >gfx_obstacle_cone_end
-    >gfx_obstacle_pyramid_end
-    >gfx_obstacle_spheres_end
-    >gfx_obstacle_cube_end
-
-gfx_obstacles_c:
-    cyan
-    green
-    white
-    red
-
-cone        = 0
-pyramid     = 1
-spheres     = 2
-cube        = 3
-none        = 255
-
-level_obstacle:
-    cone pyramid spheres cube cone
-    pyramid spheres cube cone none
-    spheres none cone pyramid spheres
-    cube cone pyramid spheres cube
-    cone pyramid spheres cube cone
-    pyramid spheres cube cone pyramid
-    spheres cube none
+    bne -l  ; (jmp)
 
 add_missing_obstacle:
     ldy level
     lda @(-- level_obstacle),y
-    bmi +done               ; No obstacles in level.
+    bmi +done               ; No obstacles in level (none).
     lda num_obstacles
     cmp #3
     beq +done               ; Three are enough.
@@ -149,7 +155,7 @@ remove_obstacle:
     rts
 
 animate_obstacle:
-    ; Animate regular sprite.
+    ; Animate regular sprite every eigth frame.
     lda framecounter
     and #7
     bne +done

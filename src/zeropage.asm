@@ -271,8 +271,12 @@ ball_release_timer: 0
 vaus_width:         0
 vaus_last_x:        0
 ball_speed:         0
+
+;;; Laser
 is_firing:          0       ; Laser interval countdown.
 laser_delay_type:   0       ; 0: short, 1: long
+
+;;; Paddle detection
 old_paddle_value:   0       ; Used to detect paddles.
 is_using_paddle:    0       ; Tells if paddles have been detected.
 
@@ -296,9 +300,12 @@ preshifted_vaus_laser:      0 0
 preshifted_vaus_extended:   0 0
 preshifted_ball:            0 0
 preshifted_ball_caught:     0 0
+
+; Start and end of current obstacle graphics.
 gfx_obstacles:              0 0
 gfx_obstacles_end:          0 0
 
+; For 'add_sprite'.
 sprite_inits:           fill @sprite_inits_size
 
 doh_wait:               0
@@ -309,6 +316,7 @@ get_keypress_x:         0
 
 vaus_sprite_index:      0
 
+;;; TODO: Remove.
 pagedptr:       0 0
 new_direction:  0
 
