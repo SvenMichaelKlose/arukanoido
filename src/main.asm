@@ -130,10 +130,12 @@ toplevel:
     call <draw_bitmap >draw_bitmap
 
     stzb curcol white
+if @*demo?*
     stmb <scrx2 >scrx2 8
     stzb scry 23
     lday <txt_copyright >txt_copyright
     call <print_string_ay >print_string_ay
+end
 
     stmb <scrx2 >scrx2 6
     stzb scry 25
