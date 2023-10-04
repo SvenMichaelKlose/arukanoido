@@ -132,8 +132,11 @@ apply_bonus_c:
 
 ;;; Slow down ball
 apply_bonus_s:
+    ;; Reset reason for speeding up.
     lda #0
     sta num_hits
+
+    ;; Subtract speed by 2 (1 pixel per frame).
     ldy ball_speed
     dey
     dey
@@ -141,6 +144,8 @@ apply_bonus_s:
     bcc +n
     sty ball_speed
     rts
+
+    ; Mininum speed, never any slower.
 n:  lda #min_ball_speed
     sta ball_speed
     rts
