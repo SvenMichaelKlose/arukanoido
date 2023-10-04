@@ -3,6 +3,7 @@ init_score:
     clrmb <score >score num_score_digits
     clrmb <score_silver >score_silver num_score_digits
     0
+
     ldx #@(-- num_score_digits)
 l:  lda score_20000,x
     sta next_powerup_score,x
@@ -70,14 +71,16 @@ n:  lda #<score
 
     jsr apply_bonus_p
 
-    ; Set next extra life score.
+    ;; Set next extra life score.
     lda num_lifes_by_score
     bne +n
+    ; Had one at 20.000, now for 40.000.
     lda #<score_40000
     sta s
     lda #>score_40000
     sta @(++ s)
     jmp +l
+    ; Had one at 40.000, now after every 60.000.
 n:  lda #<score_60000
     sta s
     lda #>score_60000
