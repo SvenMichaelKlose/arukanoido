@@ -1,3 +1,6 @@
+ARUKANOIDO – Manual
+===================
+
 # Original arcade sounds
 
 ARUKANOIDO provides original arcade sound but this comes at the

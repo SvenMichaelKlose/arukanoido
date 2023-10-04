@@ -255,11 +255,14 @@ make_bonus:
     ;; Check if we should make a bonus at all,
     ;; based on the number of removed bricks.
     lda removed_bricks
+    beq -r
     cmp #1  ; Always for the first brick.
     beq +n
     cmp #4  ; Always for the fourth brick.
     beq +n
-    and #7  ; Then every eight bricks.
+    sec     ; Then every eight bricks.
+    sbc #4
+    and #7
     bne -r
 n:
 
