@@ -53,19 +53,22 @@ ctrl_ball:
     lda caught_ball
     bpl loosen_caught_ball
 
-    ; Call the ball controller ball_speed times.
+    ;; Call the ball controller ball_speed times.
     ldy ball_speed
 l:  tya
     pha
+    ; Move it.
     jsr half_step_smooth
+    ; Ball moves half a pixel maximum, so don't call the
+    ; controller for nothing.
     lda position_has_changed
     beq +n
     jsr ctrl_ball_subpixel
+    ; Check if ball has been remove.
 n:  lda sprites_i,x
     pla
-    bmi +r              ; Ball sprite has been removed…
+    bmi +r              ; Yes…
     tay
-
     dey
     bne -l
 r:  rts
@@ -73,42 +76,42 @@ r:  rts
 l:  jmp check_reflection
 
 hit_vaus:
-    ; Ignore ball if it's not headed downwards.
+    ;; Ignore ball if it's not headed downwards.
     lda sprites_d,x
     sec
     sbc #64
     bpl -l
 
-    ; Get relative X position on Vaus
-    ; which is our reflection table index.
+    ;; Get relative X position to Vaus
+    ;; which is our reflection table index.
     lda ball_x
     sec
     sbc sprites_x,y
     tay
 
-    ; Chose between normal and exended Vaus'
+    ;; Get direction to reflect from Vaus.
+    ; Choose between normal and exended Vaus'
     ; relection table.
-    lda #16
-    cmp vaus_width
-    bcc +n
+    lda mode
+    cmp #mode_extended
+    beq +n
     lda vaus_directions,y
     bne +m              ; (jmp)
 n:  lda vaus_directions_extended,y
-
     ; Save new ball direction.
 m:  sta sprites_d,x
     lda #0
     sta sprites_d2,x
 
-    ; Increase ball speed on occasion.
+    ;; Increase ball speed on occasion.
     jsr adjust_ball_speed
 
-    ; Check if ball has to be catched.
+    ;; Check if ball has to be catched.
     lda mode
     cmp #mode_catching
     bne +r
 
-    ; Catch ball.
+    ;; Catch ball.
     stx caught_ball
     lda preshifted_ball_caught   ; Trick to avoid colour clash.
     sta sprites_pgl,x
@@ -121,12 +124,13 @@ m:  sta sprites_d,x
     lda #snd_caught_ball
     jmp play_sound
 
+    ;; Play sound and finish.
 r:  lda #snd_reflection_low
     jmp play_sound
 
 hit_obstacle:
     lda #0
-    sta sprites_d2,x
+    sta sprites_d2,x    ; Reset number of hits with no effect.
     jsr reflect_ball_obstacle
     jsr apply_reflection_unconditionally
     jsr remove_obstacle
@@ -146,12 +150,12 @@ lose_ball:
 n:  lda balls
     cmp #1
     bne +n
-    lda #0              ; Reset disruption mode.
+    lda #0              ; Undo disruption mode.
     sta mode
 n:  jmp remove_sprite
 
 ctrl_ball_subpixel:
-    ; Deal with lost ball.
+    ;; Deal with lost ball.
     lda sprites_y,x
     cmp ball_max_y
     beq lose_ball
@@ -159,7 +163,7 @@ ctrl_ball_subpixel:
     lda #0
     sta has_hit_brick
 
-    ; Get centre position of ball.
+    ;; Get centre position of ball.
     ldy sprites_x,x
     iny
     sty ball_x
@@ -168,7 +172,7 @@ ctrl_ball_subpixel:
     iny
     sty ball_y
 
-    ; Check for hit sprite.
+    ;; Check for hit sprite.
     lda #@(+ is_vaus is_obstacle)
     jsr find_point_hit
     bcs check_reflection
@@ -190,7 +194,7 @@ check_reflection:
     lda has_collision
     beq avoid_endless_flight
 
-    ; Deal with reflect_edge.
+    ;; Deal with result of reflect_edge.
 m:  lda #0
     sta has_collision
     lda sprites_d,x
@@ -205,22 +209,24 @@ n2: jsr adjust_ball_speed_hitting_top
     cmp #33
     beq +n
 
-    ; Make bonus.
+    ;; Make bonus.
     lda mode
     cmp #mode_disruption    ; No bonuses in disruption mode.
     beq +l
     jsr make_bonus
     jmp +l
 
+    ;; Count hits with no effect.
 n:  lda has_hit_silver_brick
     ora has_hit_golden_brick
     bne +f
     lda has_hit_brick
     bne +f
+    ; Reset.
     lda #0
     sta sprites_d2,x
     beq +l                  ; (jmp)
-
+    ; Increment.
 f:  inc sprites_d2,x
 
 l:  jsr apply_reflection
@@ -232,21 +238,26 @@ play_reflection_sound:
     cmp #doh_level
     bne +n
     lda #snd_hit_doh
-    bne +l
+    bne +l  ; (jmp)
+    ; Special sound for gold or silver brick.
 n:  lda has_hit_golden_brick
     ora has_hit_silver_brick
     beq +n
     lda #snd_reflection_silver
-    bne +l
+    bne +l  ; (jmp)
+    ; Regular.
 n:  lda #snd_reflection_high
 l:  jmp play_sound
 
+;;; Divert ball if it got stuck.
 avoid_endless_flight:
     lda sprites_d2,x
     cmp #64
     bcc +r
+    ;; Divert ball as it had 64 hits with no effect.
     lda #0
     sta sprites_d2,x
+    ; Random pick if (counter) clock-wise.
     lda framecounter
     lsr
     bcc +n
@@ -258,10 +269,11 @@ n:  lda sprites_d,x
 l:  sta sprites_d,x
 r:  rts
 
+;;; Make first ball of a round.
 make_ball:
     ldy #@(- ball_init sprite_inits)
     jsr add_sprite
-    sta caught_ball
+    sta caught_ball ; (Just in case.)
     tax
     lda #59
     sta sprites_x,x
@@ -279,16 +291,8 @@ make_ball:
     sta ball_release_timer
     rts
 
-; From arcade ROM (check code at 0x1442 and this table at 0x1462).
-ball_speeds_when_top_hit:
-    7 7 8 0 7 7 7 0 7 5
-    7 7 8 6 7 5 7 7 7 0
-    7 0 0 0 0 7 8 7 0 7
-    0 0 0 0
-
-ball_accelerations:
-    $00 $19 $19 $23 $23 $2d $3c $50 $78 $8c $a0 $b4 $c8 $dc $f0
-
+;;; Adjust ball speed when it hits the top of the arena
+;;; depending on round number.
 adjust_ball_speed_hitting_top:
     lda sprites_y,x
     cmp ball_min_y
@@ -305,6 +309,14 @@ adjust_ball_speed_hitting_top:
 l:  sta ball_speed
     rts
 
+;;; From arcade ROM (check code at 0x1442 and this table at 0x1462).
+ball_speeds_when_top_hit:
+    7 7 8 0 7 7 7 0 7 5
+    7 7 8 6 7 5 7 7 7 0
+    7 0 0 0 0 7 8 7 0 7
+    0 0 0 0
+
+;;; Adjust ball speed depending on number of collisions.
 adjust_ball_speed:
     lda ball_speed
     cmp #$0f
@@ -316,7 +328,7 @@ adjust_ball_speed:
     cmp ball_accelerations,y
     bcc +n
 
-increase_ball_speed:
+    ;; Increase ball speed.
     lda #0
     sta num_hits
     lda ball_speed
@@ -328,18 +340,25 @@ increase_ball_speed:
 m:  cmp #max_ball_speed
     bcs +n                  ; Already at maximum speed. Do nothing…
 l:  inc ball_speed          ; Play the blues…
+
 n:  rts
 
+;;; From arcade ROM.
+ball_accelerations:
+    $00 $19 $19 $23 $23 $2d $3c $50 $78 $8c $a0 $b4 $c8 $dc $f0
+
+;;; Release caught ball.
 release_ball:
     ldy caught_ball
     lda ball_vaus_y_above
     sta sprites_y,y
+    ; Undo colour clash avoidance.
     lda preshifted_ball
     sta sprites_pgl,y
     lda @(++ preshifted_ball)
     sta sprites_pgh,y
 
-    ; Correct X position so the ball won't end up in the wall.
+    ; Correct X position so the ball won't end up within the wall.
     lda sprites_x,y
     cmp ball_max_x
     bcc +n
