@@ -253,7 +253,7 @@ n:  cmp #keycode_l
     sta lifes
     lda #snd_bonus_life
     jsr play_sound
-;    jsr draw_lives
+    inc needs_redrawing_lives
 end
 n:
 
@@ -269,6 +269,8 @@ end
 
     lda needs_redrawing_lives
     beq +n
+    lda #0
+    sta needs_redrawing_lives
     jsr draw_lives
 
 n:

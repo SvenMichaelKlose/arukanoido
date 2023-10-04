@@ -3,15 +3,13 @@ draw_lives:
     bne draw_lives_landscape
 
 draw_lives_portrait:
-    txa
-    pha
     ldx lifes
     dex
-    cpx #13
+    cpx #9
     bcs +n
     lda #0
     sta lifes_on_screen,x
-l:  cpx #14
+l:  cpx #9
     bcs +n
     cpx #0
     beq +done
@@ -22,13 +20,9 @@ l:  cpx #14
 n:  dex
     jmp -l
 done:
-    pla
-    tax
     rts
 
 draw_lives_landscape:
-    txa
-    pha
     lda #16
     sta scrx
     lda yc_max
@@ -47,8 +41,6 @@ done:
     lda #0
     sta curchar
     jsr plot_scr
-    pla
-    tax
     rts
 
 plot_life:
