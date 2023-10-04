@@ -158,9 +158,9 @@ n:  lda #0
     sta num_obstacles
     sta num_doh_obstacles
     sta num_hits
-    sta bonus_on_screen
+    sta bonus_is_dropping
     sta laser_delay_type
-    sta removed_bricks
+    sta removed_bricks_for_bonus
     sta has_missed_bonus
     sta needs_redrawing_lives
     lda #1

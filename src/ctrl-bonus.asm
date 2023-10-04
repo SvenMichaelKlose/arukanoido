@@ -29,7 +29,7 @@ ctrl_bonus:
     sta current_bonus
 
     lda #0
-    sta removed_bricks
+    sta removed_bricks_for_bonus
     sta has_missed_bonus
 
     ;; Score 1000pts.
@@ -75,7 +75,7 @@ n:  lda #0
     sta @(++ d)
     jsr +j
 r:  lda #0
-    sta bonus_on_screen
+    sta bonus_is_dropping
     jmp remove_sprite
     
 m:  lda #1
@@ -210,7 +210,7 @@ rotate_bonuses:
     and #%111
     bne -r
 
-    lda bonus_on_screen
+    lda bonus_is_dropping
     beq -r
 
     ;; Get char address of current bonus.
@@ -258,16 +258,17 @@ make_bonus_p:
 make_bonus:
     ;; No bonus if one is already on the screen
     ;; or if a silver brick has been removed.
-    lda bonus_on_screen
+    lda bonus_is_dropping
     ora has_hit_silver_brick
     bne -r
 
+    ;; Create right away if the last one was missed.
     lda has_missed_bonus
     bne +l
 
     ;; Check if we should make a bonus at all,
     ;; based on the number of removed bricks.
-    lda removed_bricks
+    lda removed_bricks_for_bonus
     cmp hits_before_bonus
     bne -r
     cmp #1
@@ -286,8 +287,7 @@ if @*debug?*
     bne +ok
 end
 
-    lda #1
-    sta has_missed_bonus
+    inc has_missed_bonus
 
     ;; Roll the dice.
 a:  jsr random
@@ -309,11 +309,12 @@ n:  cmp current_bonus
     bne -a              ; Got it already…
     lda #bonus_b
 
+    ;; Remember to avoid creating the same bonus twice.
 n:  sta last_bonus
 
     ;; Init sprite.
 ok: sta @(+ bonus_init sprite_init_data)
-    sta bonus_on_screen
+    sta bonus_is_dropping
     sec
     sbc #1
     tay

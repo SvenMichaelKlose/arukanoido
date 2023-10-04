@@ -184,7 +184,7 @@ last_random_value:  0
 exm_needs_data:     0
 
 ; Bonus creation
-removed_bricks:     0
+removed_bricks_for_bonus:     0
 hits_before_bonus:  0
 has_missed_bonus:   0
 
@@ -280,7 +280,7 @@ has_new_score:        0
 has_hiscore:          0
 
 has_removed_brick:      0
-bonus_on_screen:        0
+bonus_is_dropping:        0
 num_lifes_by_score:     0
 has_paused:             0
 has_hit_brick:          0

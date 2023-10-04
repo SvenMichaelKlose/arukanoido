@@ -81,11 +81,11 @@ remove_silver:
 remove_brick:
     ; Keep track of removed bricks for so we know when
     ; we have to create a bonus.
-    lda bonus_on_screen
+    lda bonus_is_dropping
     ora has_missed_bonus
     ora has_hit_silver_brick
     bne +n
-    inc removed_bricks
+    inc removed_bricks_for_bonus
 n:
     ; Determine score of brick.
     ldy scrx
