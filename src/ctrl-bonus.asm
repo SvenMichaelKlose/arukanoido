@@ -24,8 +24,13 @@ ctrl_bonus:
     lda #is_vaus
     jsr find_hit
     bcs +m              ; Nothing hit…
+
     lda sprites_d,x
     sta current_bonus
+
+    lda #0
+    sta removed_bricks
+    sta has_missed_bonus
 
     ;; Score 1000pts.
     lda #<score_1000
@@ -257,25 +262,32 @@ make_bonus:
     ora has_hit_silver_brick
     bne -r
 
+    lda has_missed_bonus
+    bne +l
+
     ;; Check if we should make a bonus at all,
     ;; based on the number of removed bricks.
     lda removed_bricks
-    beq -r
-    cmp #1  ; Always for the first brick.
-    beq +n
-    cmp #4  ; Always for the fourth brick.
-    beq +n
-    sec     ; Then every eight bricks.
-    sbc #4
-    and #7
+    cmp hits_before_bonus
     bne -r
-n:
+    cmp #1
+    bne +n
+    asl hits_before_bonus
+    asl hits_before_bonus
+    jmp +l  ; (jmp)
+n:  cmp #4
+    bne +l
+    asl hits_before_bonus
+l:
 
 if @*debug?*
     ;; Ensure selected bonus.
     lda next_bonus
     bne +ok
 end
+
+    lda #1
+    sta has_missed_bonus
 
     ;; Roll the dice.
 a:  jsr random

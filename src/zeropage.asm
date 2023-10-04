@@ -179,10 +179,14 @@ removed_brick_y:    0
 
 level:              0
 bricks_left:        0
-removed_bricks:     0
 scrx2:              0
 last_random_value:  0
 exm_needs_data:     0
+
+; Bonus creation
+removed_bricks:     0
+hits_before_bonus:  0
+has_missed_bonus:   0
 
 ; TV standard dependant constants
 format_params:

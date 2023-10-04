@@ -161,9 +161,11 @@ n:  lda #0
     sta bonus_on_screen
     sta laser_delay_type
     sta removed_bricks
+    sta has_missed_bonus
     sta needs_redrawing_lives
     lda #1
     sta balls
+    sta hits_before_bonus
     lda #default_ball_speed
     sta ball_speed
     lda #16
