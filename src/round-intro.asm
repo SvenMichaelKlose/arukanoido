@@ -115,7 +115,7 @@ l:  lda bg_stars,x
     lda #128
     sta make_stars_tmp
 
-    ; Get random position.
+    ; Make random position.
 l1: jsr random
     cmp #15
     bcs -l1
@@ -127,14 +127,14 @@ l:  jsr random
     bcs -l
     sta scry
 
-    ; Get random colour.
+    ; Make random colour.
     jsr random
     and #3
     tax
     lda star_colors,x
     sta curcol
 
-    ; Get random star.
+    ; Make random star.
     jsr random
     and #3
     clc
