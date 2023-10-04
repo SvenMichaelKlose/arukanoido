@@ -1,17 +1,26 @@
-[ ] !!! Do not treat wall as golden(?) brick in third row from bottm (PAL).
-[ ] !!! Do not crash when collecting bonus at rightmost position.
+Top-level
+[ ] !!! ARUKANOIDO logo.
+
+Game
+[ ] !!! Do not let ball escape through break mode gate.
 [ ] !!! Fix keyboard controls.  Fetch directly from VIA.
 [ ] !!  Cut up original round intro sound and play first bit twice.
-[ ] ... D bonus: sometimes balls go the same direction.
-        Probably going away with faster reflection tests.
-[ ] ... Update hiscore by copying regular score on screen
+[ ] !!! D bonus: sometimes one extra ball is not diverted.
+[ ] !.. Update hiscore by copying regular score on screen
         instead of printing it.
 [ ] ... Attraction mode
 
-Hiscore table
-[ ] Display
-[ ] Input
-[ ] KERNAL I/O
+In-game animations
+[ ] ... Gates at top opening and closing.
+[ ] ... Break mode gate opening and closing.
+[ ] ... DOH
 
+Hiscore table
+[ ] !!! Display
+[ ] !!! Input
+[ ] !!! KERNAL I/O
+
+Questionable tasks
+[?] !!! Do not treat wall as golden(?) brick in third row from bottm (PAL).
 [?] Shallow kick off to the left.
 [?] Extend VCPU for top-level off-game code to save space.

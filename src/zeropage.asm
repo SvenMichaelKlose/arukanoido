@@ -258,6 +258,7 @@ balls:              0
 
 is_running_game:    0
 has_moved_sprites:  0
+needs_redrawing_lives:  0
 
 current_bonus:      0
 last_bonus:         0

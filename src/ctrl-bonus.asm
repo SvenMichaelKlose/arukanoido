@@ -184,7 +184,8 @@ apply_bonus_p:
     lda #snd_bonus_life
     jsr play_sound
     inc lifes
-    jmp draw_lives
+    inc needs_redrawing_lives
+    rts
 
 rotate_bonuses:
     lda framecounter

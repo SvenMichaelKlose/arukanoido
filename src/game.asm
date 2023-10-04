@@ -49,6 +49,8 @@ game:
     sta lifes
     jsr init_score
 
+;lda #32
+;sta level
 next_level:
     lda #0
     sta is_running_game
@@ -159,6 +161,7 @@ n:  lda #0
     sta bonus_on_screen
     sta laser_delay_type
     sta removed_bricks
+    sta needs_redrawing_lives
     lda #1
     sta balls
     lda #default_ball_speed
@@ -264,6 +267,11 @@ end
     sta has_moved_sprites
     jsr draw_sprites
 
+    lda needs_redrawing_lives
+    beq +n
+    jsr draw_lives
+
+n:
     jmp mainloop
 
 level_end2:
