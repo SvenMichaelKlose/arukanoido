@@ -201,8 +201,9 @@ if @*shadowvic?*
     jsr irq
 end
     lda bricks_left
-    beq level_end2
-    lda is_running_game
+    bne +n
+    jmp level_end
+n:  lda is_running_game
     beq lose_life
 
     ; Toggle sprite frame.
@@ -275,9 +276,6 @@ end
 
 n:
     jmp mainloop
-
-level_end2:
-    jmp level_end
 
 lose_life:
     jsr wait_for_silence
