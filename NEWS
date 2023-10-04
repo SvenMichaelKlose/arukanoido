@@ -1,15 +1,18 @@
+Changes orelative to 1246:
+  * Fixed probability of bonuses occuring.
+
 Changes orelative to 1071:
-   * DOH with obstacles.
-   * Ending story.
-   * Bunch of bug fixes.
-   * Ball calculations almost twice as fast.
+  * DOH with obstacles.
+  * Ending story.
+  * Bunch of bug fixes.
+  * Ball calculations almost twice as fast.
 
 Changes orelative to 915:
-   * Many small bug fixes.
-   * Ball acceleration more like the original arcade coin-op.
-   * Dropped cart and cpumon version.
-   * Fixed sprite collision detection.
-   * Hitting silver bricks does not delay bonuses.
+  * Many small bug fixes.
+  * Ball acceleration more like the original arcade coin-op.
+  * Dropped cart and cpumon version.
+  * Fixed sprite collision detection.
+  * Hitting silver bricks does not delay bonuses.
 
 Changes of 915 relative to 908:
   * Fixes output quality of original arcade sounds.
