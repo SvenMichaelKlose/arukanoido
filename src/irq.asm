@@ -3,8 +3,9 @@
 ;;; keeps running at a constant speed.  That's not true for
 ;;; original arcade sounds running via the NMI.
 
-frame_timer_pal  = @(- (/ (cpu-cycles :pal)  60) 18)
-frame_timer_ntsc = @(- (/ (cpu-cycles :ntsc) 60) 158)
+frame_freq = 60
+frame_timer_pal  = @(- (/ (cpu-cycles :pal)  frame_freq) 18)
+frame_timer_ntsc = @(- (/ (cpu-cycles :ntsc) frame_freq) 158)
 
 start_irq:
     lda #0
