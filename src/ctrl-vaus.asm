@@ -256,16 +256,4 @@ make_vaus:
     sta vaus_last_x
     lda vaus_y
     sta sprites_y,x
-
-    lda mode
-    cmp #mode_laser
-    bne +r
-    ldy #<gfx_vaus
-    lda framecounter
-    lsr
-    bcs +n
-    ldy #<gfx_vaus_laser
-n:  tya
-    ldy vaus_sprite_index
-    sta sprites_gl,y
-r:  rts
+    rts
