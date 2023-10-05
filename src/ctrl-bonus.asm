@@ -1,10 +1,10 @@
-bonus_l = 1
-bonus_e = 2
-bonus_c = 3
-bonus_s = 4
-bonus_b = 5
-bonus_d = 6
-bonus_p = 7
+bonus_l = 1 ; Laser
+bonus_e = 2 ; Extended Vaus
+bonus_c = 3 ; Catch ball
+bonus_s = 4 ; Slow down
+bonus_b = 5 ; Break mode
+bonus_d = 6 ; Disruption mode
+bonus_p = 7 ; Power up
 
 bonus_colors:
     @(+ multicolor yellow)
