@@ -128,10 +128,10 @@ n:  sty sprites_x,x
     tay
     lda gfx_obstacles_c,y
     sta sprites_c,x
-    lda gfx_obstacles_gl,y
-    sta sprites_gl,x
-    lda gfx_obstacles_gh,y
-    sta sprites_gh,x
+;    lda gfx_obstacles_gl,y
+;    sta sprites_gl,x
+;    lda gfx_obstacles_gh,y
+;    sta sprites_gh,x
     lda gfx_obstacles
     sta sprites_pgl,x
     lda @(++ gfx_obstacles)
@@ -215,6 +215,7 @@ ctrl_obstacle_move_in:
     inc sprites_y,x
 r:  rts
 
+    ; Obstacle is out of its gate.
 n:  lda #<ctrl_obstacle_pacing
     ldy #>ctrl_obstacle_pacing
 
@@ -232,7 +233,7 @@ ctrl_obstacle_circling:
 
 decrement_counter:
     lda sprites_d2,x
-    and #31
+    and #%00011111
     tay
     dey
     bmi +l
@@ -246,7 +247,7 @@ decrement_counter:
     sta sprites_d2,x
     rts
 
-    ; Reset counter.
+    ; Wrap counter around.
 l:  lda sprites_d2,x
     and #%11000000
     ora #%00111111
@@ -279,12 +280,13 @@ r:  rts
 
 ctrl_obstacle_pacing:
     jsr animate_obstacle
-    jsr move_obstacle
+    jsr pace_obstacle
     jmp half_step_smooth
 
-move_obstacle_again:
+pace_obstacle_again:
     sty sprites_d,x
-move_obstacle:
+pace_obstacle:
+    ; Check if obstacle left the level zone.
     lda level_bottom_y
     asl
     asl
@@ -294,12 +296,13 @@ move_obstacle:
     sec
     sbc arena_y
     cmp tmp
-    bcc +n
+    bcc +n          ; It didn't…
 
-    ; Start circling.
+    ;; Start circling.
     lda sprites_x,x
     cmp #64
     bcs +m
+    ; Counter-clockwise.
     lda #%01111111
     sta sprites_d2,x
     lda #@(+ 128 direction_l)
@@ -307,7 +310,7 @@ move_obstacle:
 k:  lda #<ctrl_obstacle_circling
     ldy #>ctrl_obstacle_circling
     jmp set_obstacle_controller
-
+    ; Clockwise.
 m:  lda #%11111111
     sta sprites_d2,x
     lda #@(+ 128 direction_r)
@@ -333,7 +336,7 @@ n:  jsr get_sprite_screen_position
     asl
     bcc +n
     ldy #direction_right
-n:  jmp move_obstacle_again
+n:  jmp pace_obstacle_again
 
 move_up:
     ; Move up?
@@ -348,7 +351,7 @@ move_up:
     jsr test_gap_left
     bcc +l
     dec sprites_x,x
-m:  jmp move_obstacle_again
+m:  jmp pace_obstacle_again
 
 n:  jsr test_gap_right
     bcc +l
@@ -363,7 +366,7 @@ l:  jsr test_gap_top
     sta sprites_d2,x
 turn_downwards:
     ldy #direction_down
-    jmp move_obstacle_again
+    jmp pace_obstacle_again
 
 move_horizontally:
     ; Skip testing horizontaal collision if not on Y char boundary.
@@ -382,7 +385,7 @@ move_horizontally:
     ; Move left.
     jsr get_sprite_screen_position
     lda sprites_d,x
-    bpl +not_left
+    bpl +move_right
 
     dec scrx
 l:  jsr get_hard_collision
@@ -391,11 +394,10 @@ l:  jsr get_hard_collision
     jsr get_hard_collision
     beq +r
 f:  ldy #direction_up
-    jmp move_obstacle_again
+    jmp pace_obstacle_again
 r:  rts
 
-not_left:
-    ; Move right.
+move_right:
     inc scrx
     jmp -l
 
