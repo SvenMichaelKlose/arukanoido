@@ -232,6 +232,7 @@ ctrl_obstacle_circling:
     jmp half_step_smooth
 
 decrement_counter:
+    ; Do it;
     lda sprites_d2,x
     and #%00011111
     tay
@@ -286,8 +287,8 @@ ctrl_obstacle_pacing:
 pace_obstacle_again:
     sty sprites_d,x
 pace_obstacle:
-    ; Check if obstacle left the level zone.
-    lda level_bottom_y
+    ;; Check if obstacle left the level zone.
+    lda lowest_relative_level_row
     asl
     asl
     asl

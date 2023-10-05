@@ -80,7 +80,7 @@ o:  inc scrx
     ; Save lowest row index to guide obstacle movements.
 r:  ldy scry
     dey
-    sty level_bottom_y
+    sty lowest_relative_level_row
     rts
 
 brick_to_char:

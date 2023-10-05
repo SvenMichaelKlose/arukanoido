@@ -255,7 +255,7 @@ before_int_vectors:
     org $320
 
 line_addresses_h:   fill 33
-level_bottom_y:     0
+lowest_relative_level_row:     0
 
 lifes:              0
 balls:              0
