@@ -16,7 +16,7 @@ get_soft_collision:
 get_hard_collision:
     jsr scraddr
     lda (scr),y
-    cmp #bg_minivaus    ; Ignore miniature Vaus displaying # of lifes.
+    cmp #bg_minivaus    ; Ignore miniature Vaus displaying # of lives.
     beq +n
     and #foreground
 n:  rts

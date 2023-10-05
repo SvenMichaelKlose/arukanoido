@@ -72,7 +72,7 @@ n:  lda #<score
     jsr apply_bonus_p
 
     ;; Set next extra life score.
-    lda num_lifes_by_score
+    lda num_lives_by_score
     bne +n
     ; Had one at 20.000, now for 40.000.
     lda #<score_40000
@@ -91,7 +91,7 @@ l:  lda #<next_powerup_score
     sta @(++ d)
     ldy #@(-- num_score_digits)
     jsr bcd_add
-    inc num_lifes_by_score
+    inc num_lives_by_score
 
 r:  pla
     tax

@@ -199,7 +199,7 @@ r:  rts
 
 ;;; Extra life
 apply_bonus_p:
-    inc lifes
+    inc lives
     inc needs_redrawing_lives
     lda #snd_bonus_life
     jmp play_sound

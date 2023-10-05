@@ -1,60 +1,70 @@
     org 0
     data
 
+;;; Block pointers
 sl:
-s:                    0   ; Source pointer
-sh:                   0
+s:          0   ; Source pointer
+sh:         0
 
 dl:
-d:                    0   ; Destination pointer
-dh:                   0
+d:          0   ; Destination pointer
+dh:         0
 
 cl:
-c:                    0   ; Counter
-ch:                   0
+c:          0   ; Counter
+ch:         0
 
-scr:                  0 0 ; Screen pointer (line start)
-col:                  0 0 ; Colour RAM pointer
-scrx:                 8   ; Screen char X position
-scry:                 0   ; Screen char Y position
-curchar:              0   ; Last allocated character
-curcol:               0   ; Character colour
+scr:        0 0 ; Screen pointer (line start)
+col:        0 0 ; Colour RAM pointer
+scrx:       8   ; Screen char X position
+scry:       0   ; Screen char Y position
+curchar:    0   ; Last allocated character
+curcol:     0   ; Character colour
 
-; VCPU
-bcp:                  0 0
-bca:                  0 0
-num_args:             0
-sra:                  0
-srx:                  0
-sry:                  0
-a0:                   0
-a1:                   0
-a2:                   0
-a3:                   0
-a4:                   0
-a5:                   0
+;;; VCPU
+bcp:        0 0
+bca:        0 0
+num_args:   0
+sra:        0
+srx:        0
+sry:        0
+a0:         0
+a1:         0
+a2:         0
+a3:         0
+a4:         0
+a5:         0
 
-; Temporaries.
-tmp:                  0
-tmp2:                 0
-tmp3:                 0
-tmp4:                 0
-
-; Temporary stores for index registers.
-p_x:
-add_sprite_x:         0
-p_y:
-add_sprite_y:
-draw_sprite_x:        0
+;;; IRQ temporaries
+;;; Must not be used outside the IRQ.
+tmp:    0
+tmp2:   0
+tmp3:   0
+tmp4:   0
 call_controllers_x:   0
+add_sprite_x:   0
+add_sprite_y:   0
 
-next_sprite_char:     0   ; Next free character for sprites.
-sprite_shift_y:       0   ; Number of character line where sprite starts.
-sprite_data_top:      0   ; Start of sprite data in upper chars.
-sprite_data_bottom:   0   ; Start of sprite data in lower chars.
-sprite_height_top:    0   ; Number of sprite lines in upper chars.
-spriteframe:          0   ; Character offset into lower or upper half of charset.
-sprite_rr:            0   ; Round-robin sprite allocation index.
+;;; Sprite rendering
+draw_sprite_x:          0
+next_sprite_char:       0 ; Next free character for sprites.
+sprite_shift_y:         0 ; Character line where sprite starts.
+sprite_data_top:        0 ; Start of sprite data in upper chars.
+sprite_data_bottom:     0 ; Start of sprite data in lower chars.
+sprite_height_top:      0 ; Sprite lines in upper chars.
+spriteframe:            0 ; Character offset into lower or upper half of charset.
+sprite_rr:              0 ; Round-robin sprite allocation index.
+sprite_char:            0 ; First char.
+sprite_x:               0 ; X char position
+sprite_y:               0 ; Y char position
+sprite_cols:            0 ; Numer of columns.
+sprite_cols_on_screen:  0 ; Numer of columns (+1 on shift).
+sprite_rows:            0 ; Number of rows.
+sprite_rows_on_screen:  0 ; Number of rows (+1 with offset line).
+sprite_lines:           0 ; Number of lines.
+sprite_lines_on_screen: 0 ;
+
+;;; Game modes
 
 mode_laser      = 1
 mode_catching   = 2
@@ -63,33 +73,17 @@ mode_extended   = 4
 mode:                 0
 mode_break:           0
 
-side_degrees:         0
 
-exo_x:                0
-exo_y:                0
-exo_y2:               0
-exo_s:                0 0
-exm_play_dptr:        0 0
-
+;;; Game state
 framecounter:         0 0
 digisound_counter:    0 0
-
 has_collision:        0                                                               
 ball_x:               0
 ball_y:               0
 
 scorechar_start:      0
 
-; Currently processed sprite
-sprite_char:            0   ; First char.
-sprite_x:               0   ; X char position
-sprite_y:               0   ; Y char position
-sprite_cols:            0   ; Numer of columns.
-sprite_cols_on_screen:  0   ; Numer of columns (+1 on shift).
-sprite_rows:            0   ; Number of rows.
-sprite_rows_on_screen:  0   ; Number of rows (+1 with offset line).
-sprite_lines:           0
-sprite_lines_on_screen: 0
+side_degrees:         0
 
 sprites_i:          fill num_sprites  ; Flags.
 sprites_x:          fill num_sprites  ; X positions.
@@ -101,15 +95,14 @@ sprites_fl:         fill num_sprites  ; Function controlling the sprite (low).
 sprites_fh:         fill num_sprites  ; Function controlling the sprite (high).
 sprites_dimensions: fill num_sprites  ; %00rrrccc (r = num rows, c = num cols).
 sprites_d:          fill num_sprites  ; Whatever the controllers want.
-sprites_pgl:        fill num_sprites  ; Pre-shifted graphics
+sprites_pgl:        fill num_sprites  ; Pre-shifted graphics.
 sprites_pgh:        fill num_sprites
-
-sprites_dx:     fill num_sprites ; Ball subpixel position
-sprites_dy:     fill num_sprites
-sprites_iw:     fill num_sprites ; Dimensions in chars.
-sprites_ih:     fill num_sprites
-sprites_w:      fill num_sprites ; Total dimensions in chars (after shift).
-sprites_h:      fill num_sprites
+sprites_dx:         fill num_sprites  ; Ball subpixel position.
+sprites_dy:         fill num_sprites
+sprites_iw:         fill num_sprites  ; Dimensions in chars.
+sprites_ih:         fill num_sprites
+sprites_w:          fill num_sprites  ; Total dimensions in chars (after shift).
+sprites_h:          fill num_sprites
 
 score:      fill num_score_digits
 
@@ -125,13 +118,20 @@ zp_dest_hi:     0
 zp_dest_lo:     0
 zp_dest_bi:     0
 
-; Run-length audio decoder.
+;;; RLE player
 rle_val:        0
 rle_cnt:        0
 rle_bit:        0
 rle_singles:    0
 raw_play_ptr:
 rle_play_ptr:   0 0
+
+;;; EXM player
+exo_x:                0
+exo_y:                0
+exo_y2:               0
+exo_s:                0 0
+exm_play_dptr:        0 0
 
 ; No need to zero out the zero page from here on for a game restart.
 
@@ -166,6 +166,10 @@ sprites_sh:     fill @(* 2 num_sprites)
 laser_has_hit:        0   ; For the laser controller to remember if it hit one the left.
 is_testing_laser_hit: 0
 
+;;; Printing text
+p_x:    0
+p_y:    0
+
 brickfx_x:      fill num_brickfx
 brickfx_y:      fill num_brickfx
 brickfx_pos:    0
@@ -183,12 +187,12 @@ scrx2:              0
 last_random_value:  0
 exm_needs_data:     0
 
-; Bonus creation
+;;; Bonus creation
 removed_bricks_for_bonus:     0
 hits_before_bonus:  0
 has_missed_bonus:   0
 
-; TV standard dependant constants
+;;; TV standard dependant constants
 format_params:
 screen_columns:     0
 screen_rows:        0
@@ -257,7 +261,7 @@ before_int_vectors:
 line_addresses_h:   fill 33
 lowest_relative_level_row:     0
 
-lifes:              0
+lives:              0
 balls:              0
 
 is_running_game:    0
@@ -285,7 +289,7 @@ has_hiscore:          0
 
 has_removed_brick:      0
 bonus_is_dropping:        0
-num_lifes_by_score:     0
+num_lives_by_score:     0
 has_paused:             0
 has_hit_brick:          0
 has_hit_silver_brick:   0

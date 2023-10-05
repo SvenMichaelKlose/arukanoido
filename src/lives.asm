@@ -3,20 +3,20 @@ draw_lives:
     bne draw_lives_landscape
 
 draw_lives_portrait:
-    ldx lifes
+    ldx lives
     dex
     cpx #9
     bcs +n
     lda #0
-    sta lifes_on_screen,x
+    sta lives_on_screen,x
 l:  cpx #9
     bcs +n
     cpx #0
     beq +done
     lda #bg_minivaus
-    sta @(-- lifes_on_screen),x
+    sta @(-- lives_on_screen),x
     lda #@(+ multicolor white)
-    sta @(-- lifes_on_colors),x
+    sta @(-- lives_on_colors),x
 n:  dex
     jmp -l
 done:
@@ -31,7 +31,7 @@ draw_lives_landscape:
     sta curchar
     lda #@(+ multicolor white)
     sta curcol
-    ldx lifes
+    ldx lives
     dex
     beq +done
 l:  jsr plot_life

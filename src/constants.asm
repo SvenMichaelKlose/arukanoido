@@ -27,7 +27,7 @@ bg_start            = @(+ framechars foreground)
 
 ; Game settings
 
-default_num_lifes       = 3
+default_num_lives       = 3
 
 default_ball_speed      = 5
 min_ball_speed          = 4
@@ -60,5 +60,5 @@ doh_flash_duration  = 3
 
 ; PAL
 
-lifes_on_screen     = @(+ (* 31 15) 1 screen)
-lifes_on_colors     = @(+ (* 31 15) 1 colors)
+lives_on_screen     = @(+ (* 31 15) 1 screen)
+lives_on_colors     = @(+ (* 31 15) 1 colors)

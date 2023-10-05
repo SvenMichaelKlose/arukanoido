@@ -5,7 +5,7 @@
 ;(const *versions* '(:prg :rom :tap :shadowvic))
 (const *versions* '(:prg))
 
-(const *demo?* nil)               ; Limit to first eight levels.
+(const *demo?* t)               ; Limit to first eight levels.
 (const *debug?* t)              ; Include self-tests and features.
 (const *make-arcade-sounds?* nil) ; Lengthy process.
 (var *has-digis?* t)            ; Play optional original arcade sounds.
@@ -360,7 +360,7 @@
       (tap2wav i o 44100 (cpu-cycles :ntsc)))))
 
 (sb-ext:run-program "/bin/cp"
-                    '("README.md" "NEWS" "TODO.xit" "arukanoido/")
+                    '("README.md" "NEWS" "arukanoido/")
                     :pty cl:*standard-output*)
 (sb-ext:run-program "/bin/cp"
                     '("media/arkanoid-roms-mame.zip" "arukanoido/")
