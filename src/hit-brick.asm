@@ -85,6 +85,9 @@ remove_brick:
     ora has_missed_bonus
     ora has_hit_silver_brick
     bne +n
+    lda mode
+    cmp #mode_disruption
+    beq +n
     inc removed_bricks_for_bonus
 n:
     ; Determine score of brick.
