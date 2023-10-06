@@ -58,7 +58,7 @@ n:  lda #is_vaus
 
 l:  jmp remove_sprite
 
-    ; Animate regular sprite.
+    ; Animate.
 a:  lda framecounter
     and #7
     bne +r
@@ -72,15 +72,13 @@ a:  lda framecounter
     ; Repeat animation.
 l:  lda sprites_gl,x
     cmp #<gfx_obstacle_doh_end
-    bne +n
+    bne +r
     lda sprites_gh,x
     cmp #>gfx_obstacle_doh_end
-    bne +n
+    bne +r
     lda #<gfx_obstacle_doh
     sta sprites_gl,x
     lda #>gfx_obstacle_doh
     sta sprites_gh,x
-    jmp +r
-n:  dey
-    bpl -l
+
 r:  rts
