@@ -73,18 +73,19 @@ mode_extended   = 4
 mode:                 0
 mode_break:           0
 
-
 ;;; Game state
 framecounter:         0 0
 digisound_counter:    0 0
-has_collision:        0                                                               
+
+;;; Ball controller
 ball_x:               0
 ball_y:               0
+has_collision:        0                                                               
 
-scorechar_start:      0
-
+;;; Reflection
 side_degrees:         0
 
+;;; Sprite info
 sprites_i:          fill num_sprites  ; Flags.
 sprites_x:          fill num_sprites  ; X positions.
 sprites_y:          fill num_sprites  ; Y positions.
@@ -163,6 +164,7 @@ sprites_sy:     fill @(* 2 num_sprites)
 sprites_sw:     fill @(* 2 num_sprites)
 sprites_sh:     fill @(* 2 num_sprites)
 
+scorechar_start:      0
 laser_has_hit:        0   ; For the laser controller to remember if it hit one the left.
 is_testing_laser_hit: 0
 

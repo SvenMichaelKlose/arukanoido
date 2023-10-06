@@ -2,6 +2,7 @@ clear_data:
     lda #$60
     sta $911e
 
+    ;; Clean zero page (inluding VCPU area).
     lda #0
     tax
 l:  cpx #@(-- uncleaned_zp)
@@ -11,16 +12,17 @@ n:  dex
     bne -l
 
     0
-    clrmw $00 $02 $00 $01
-    clrmw $00 $03 $13 $00
+    clrmw $00 $02 $13 $01
 lowmem_ofs = @(- lowmem #x320)
     clrmw $20 $03 <lowmem_ofs >lowmem_ofs
+
 if @(not *debug?*)
     clrmw <charset >charset $08 $00
 end
 if @*debug?*
     clrmw <charset >charset $00 $08
 end
+
     movmw <loaded_sprite_inits >loaded_sprite_inits <sprite_inits >sprite_inits sprite_inits_size 0
     stmb <exm_needs_data >exm_needs_data $ff
     0
