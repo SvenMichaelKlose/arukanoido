@@ -200,25 +200,6 @@ n:  sty is_firing
     sta sprites_y,y
     jmp -done
 
-    ;; Break mode
-enter_break_mode:
-    lda mode_break
-    beq +n
-
-    lda #@(+ is_ball is_bonus is_obstacle is_laser)
-    jsr remove_sprites_by_type
-
-    lda #100
-    sta mode_break
-    lda #snd_round_break
-    jmp play_sound
-
-n:  lda #@(* 14 8)
-    sec
-    sbc vaus_width
-    sta sprites_x,x
-r:  rts
-
 move_vaus_left:
     txa
     pha
@@ -237,7 +218,7 @@ move_vaus_left:
     jsr sprite_left
 n:  pla
     tax
-    rts
+r:  rts
 
 move_vaus_right:
     txa
@@ -260,7 +241,25 @@ n:  pla
     rts
 
 e:  pla
-    jmp enter_break_mode
+
+    ;; Break mode
+enter_break_mode:
+    lda mode_break
+    beq +n
+
+    lda #@(+ is_ball is_bonus is_obstacle is_laser)
+    jsr remove_sprites_by_type
+
+    lda #100
+    sta mode_break
+    lda #snd_round_break
+    jmp play_sound
+
+n:  lda #@(* 14 8)
+    sec
+    sbc vaus_width
+    sta sprites_x,x
+    rts
 
 make_vaus:
     ldy #@(- vaus_init sprite_inits)
