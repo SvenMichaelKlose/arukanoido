@@ -1,6 +1,3 @@
-ctrl_dummy:
-    rts
-
 test_vaus_hit_right:
     ldy mode
     cpy #mode_extended
@@ -29,7 +26,7 @@ m:  lda #<score_100
     lda #>score_100
     sta @(++ s)
     jsr add_to_score
-    dec mode_break
+    dec mode_break      ; Start animation.
     bne -r
     lda #0              ; Signal end of game to main loop.
     sta bricks_left
@@ -149,9 +146,11 @@ n:  cmp #keycode_space
     bne -done
 
 do_fire:
+    ;; Catching mode
     ; Release caught ball. Shallow ball angle when moving to the right.
     ldy caught_ball
-    bmi +n
+    bmi +n      ; None caught…
+
     lda mode
     cmp #mode_catching
     beq +n
@@ -173,6 +172,7 @@ l:  lda paddle_move_distance
 done2:
     jmp -done
 
+    ;; Laser mode
 n:  lda mode
     cmp #mode_laser
     bne -done2
@@ -200,6 +200,7 @@ n:  sty is_firing
     sta sprites_y,y
     jmp -done
 
+    ;; Break mode
 enter_break_mode:
     lda mode_break
     beq +n
