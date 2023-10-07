@@ -69,6 +69,7 @@ n:  lda #0
     sta mode
 
     ldy sprites_d,x
+    jsr remove_sprite
     lda @(-- bonus_funs_l),y
     sta d
     lda @(-- bonus_funs_h),y
@@ -76,7 +77,7 @@ n:  lda #0
     jsr +j
 r:  lda #0
     sta bonus_is_dropping
-    jmp remove_sprite
+    rts
     
 m:  lda #1
     jmp sprite_down
