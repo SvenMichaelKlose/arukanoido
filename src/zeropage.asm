@@ -322,16 +322,7 @@ get_keypress_x:         0
 
 vaus_sprite_index:      0
 
-;;; TODO: Remove.
-pagedptr:       0 0
-new_direction:  0
-
-    0
-test_offsets:
-    0 0 0
-    0   0
-    0 0 0
-    0
+paddle_move_distance:   0
 
 lowmem:
     end

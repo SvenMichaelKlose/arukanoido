@@ -42,14 +42,18 @@ n:  lda #is_obstacle
     jsr remove_obstacle
 n:
 
-    ; Check if paddle is being used.
-    lda is_using_paddle
-    bne handle_paddle
+    ; Determine paddle move distance.
     lda $9008
     sec
     sbc old_paddle_value
     jsr abs
-    and #%11111100
+    and #%11111110
+    sta paddle_move_distance
+
+    ; Check if paddle is being used.
+    lda is_using_paddle
+    bne handle_paddle
+    lda paddle_move_distance
     beq handle_joystick
 
     sta is_using_paddle
@@ -148,12 +152,20 @@ do_fire:
     ; Release caught ball. Shallow ball angle when moving to the right.
     ldy caught_ball
     bmi +n
+
+    lda is_using_paddle
+    bne +l
+
     lda vaus_last_x
     cmp sprites_x,x
     beq +m
-    lda #initial_ball_direction_skewed
+o:  lda #initial_ball_direction_skewed
     sta sprites_d,y
 m:  jmp release_ball
+
+l:  lda paddle_move_distance
+    bne -o
+    beq -m  ; (jmp)
 
 done2:
     jmp -done
