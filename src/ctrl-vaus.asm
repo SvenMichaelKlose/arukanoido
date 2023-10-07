@@ -1,12 +1,3 @@
-test_vaus_hit_right:
-    ldy mode
-    cpy #mode_extended
-    bne +n
-    cmp #@(* (- 15 4) 8)
-    rts
-n:  cmp #@(* (- 15 3) 8)
-r:  rts
-
 ctrl_vaus:
     lda mode_break
     beq +n      ; Not active.
@@ -153,7 +144,7 @@ do_fire:
 
     lda mode
     cmp #mode_catching
-    beq +n
+    beq +m
 
     lda is_using_paddle
     bne +l
@@ -272,3 +263,12 @@ make_vaus:
     lda vaus_y
     sta sprites_y,x
     rts
+
+test_vaus_hit_right:
+    ldy mode
+    cpy #mode_extended
+    bne +n
+    cmp #@(* (- 15 4) 8)
+    rts
+n:  cmp #@(* (- 15 3) 8)
+r:  rts
