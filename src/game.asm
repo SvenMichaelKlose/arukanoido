@@ -129,9 +129,8 @@ end
     lda level
     cmp #doh_level
     bne +n
+
     jsr init_doh_charset
-    lda #16
-    sta bricks_left
     bne +m                  ; (jmp)
 
 n:  jsr draw_level
@@ -143,6 +142,9 @@ retry:
     lda level
     cmp #doh_level
     bne +n
+
+    lda #16
+    sta bricks_left
     jsr draw_doh
     lda #240
     sta doh_wait
