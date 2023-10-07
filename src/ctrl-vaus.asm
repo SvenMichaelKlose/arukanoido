@@ -232,6 +232,7 @@ n:  pla
     rts
 
 e:  pla
+    tax
 
     ;; Break mode
 enter_break_mode:
