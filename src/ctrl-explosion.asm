@@ -1,3 +1,4 @@
+;;; Turn obstacle into an explosion.
 make_explosion:
     lda #0
     sta sprites_i,x
@@ -18,6 +19,7 @@ make_explosion:
     sta sprites_fh,x
     rts
 
+;;; Play animation, then remove it.
 ctrl_explosion:
     lda framecounter
     and #3
