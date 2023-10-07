@@ -32,7 +32,6 @@ end
 preshift_common_sprites:
     0
     clrmw $00 $04 $d0 $05
-
     stmw <d >d $00 $04
     0
 
@@ -174,6 +173,12 @@ end
 
     jsr poll_keypress
     bcc -l
+
+    cmp #keycode_t
+    bne +n
+    jsr hiscore_table
+    jmp toplevel
+n:
 
     cmp #keycode_h
     bne +n
