@@ -152,6 +152,9 @@ do_fire:
     ; Release caught ball. Shallow ball angle when moving to the right.
     ldy caught_ball
     bmi +n
+    lda mode
+    cmp #mode_catching
+    beq +n
 
     lda is_using_paddle
     bne +l
