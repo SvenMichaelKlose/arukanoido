@@ -273,12 +273,12 @@ make_bonus:
     bne -r
     cmp #1
     bne +n
-    asl hits_before_bonus
-    asl hits_before_bonus
+    inc hits_before_bonus
+    ;asl hits_before_bonus
     jmp +l  ; (jmp)
-n:  cmp #4
-    bne +l
-    asl hits_before_bonus
+n:  ;cmp #4
+    ;bne +l
+    ;asl hits_before_bonus
 l:
 
 if @*debug?*

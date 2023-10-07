@@ -134,7 +134,7 @@ hit_obstacle:
     jsr reflect_ball_obstacle
     jsr apply_reflection_unconditionally
     jsr remove_obstacle
-    jmp adjust_ball_speed
+    jmp increase_ball_speed
 
 lose_ball:
     pla
@@ -331,6 +331,8 @@ adjust_ball_speed:
     ;; Increase ball speed.
     lda #0
     sta num_hits
+
+increase_ball_speed:
     lda ball_speed
     ldy is_using_paddle
     bne +m
