@@ -25,9 +25,6 @@ ctrl_bonus:
     jsr find_hit
     bcs +m              ; Nothing hit…
 
-    lda sprites_d,x
-    sta current_bonus
-
     lda #0
     sta removed_bricks_for_bonus
     sta has_missed_bonus
@@ -64,8 +61,8 @@ n:  ldy vaus_sprite_index
 
 n:  lda #0
     sta mode
-
     ldy sprites_d,x
+    sty active_bonus
     jsr remove_sprite
     lda @(-- bonus_funs_l),y
     sta d
@@ -167,7 +164,7 @@ l:  lda sprites_i,y
     bpl -l
 
     ;; Add two new balls with +/- 45° change in direction.
-f:  lda sprites_x,y                     ; Copy coordinates of current ball.
+f:  lda sprites_x,y                     ; Copy coordinates of ball.
     sta @(+ ball_init sprite_init_x)
     lda sprites_y,y
     sta @(+ ball_init sprite_init_y)
@@ -194,7 +191,7 @@ apply_bonus_p:
     lda #snd_bonus_life
     jmp play_sound
 
-;;; Rotate the current bonus graphics.  No fuzz.
+;;; Rotate graphics of active bonus.
 rotate_bonuses:
     lda bonus_is_dropping
     beq -r
@@ -204,8 +201,8 @@ rotate_bonuses:
     and #%111
     bne -r
 
-    ;; Get char address of current bonus.
-    lda current_bonus
+    ;; Get char address.
+    lda active_bonus
     asl
     asl
     asl
@@ -286,10 +283,10 @@ a:  jsr random
     lda #bonus_e        ; 0 is the extended mode bonus.
 
     ;; Avoid making an already caught bonus.
-n:  cmp current_bonus
+n:  cmp active_bonus
     beq -a              ; Already active…
     cmp last_bonus
-    beq -a              ; Just had that one…
+    beq -a              ; Just threw that one…
     ; Do extra check for break mode bonus as it's not
     ; denoted in 'mode' but 'mode_break'.
     cmp #bonus_b
@@ -297,11 +294,16 @@ n:  cmp current_bonus
     lda mode_break
     bne -a              ; Got it already…
     lda #bonus_b
+    bne +m  ; (jmp)
+    ; No slowing down if already at minimum ball speed.
+n:  cmp #bonus_s
+    bne +m
+    ldy ball_speed
+    cpy #min_ball_speed
+    beq -a
 
     ;; Remember to avoid creating the same bonus twice.
-n:  ldy current_bonus
-    sty last_bonus
-    sta current_bonus
+m:  sta last_bonus
 
     ;; Init sprite.
     ; Store bonus type.
