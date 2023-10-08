@@ -75,7 +75,7 @@ remove_silver:
     sta s
     lda #>score_silver
     sta @(++ s)
-    jmp +o
+    bne +o  ; (jmp)
 
     ;; Remove regular brick.
 remove_brick:
@@ -84,13 +84,14 @@ remove_brick:
     lda bonus_is_dropping
     ora has_missed_bonus
     ora has_hit_silver_brick
+    ora is_testing_laser_hit
     bne +n
     lda mode
     cmp #mode_disruption
     beq +n
     inc removed_bricks_for_bonus
 n:
-    ; Determine score of brick.
+    ; Add score of brick.
     ldy scrx
     lda (tmp),y
     tay
@@ -98,8 +99,6 @@ n:
     sta s
     lda brick_scores_h,y
     sta @(++ s)
-
-    ;; Add score pointed to by 's'.
 o:  jsr add_to_score
 
     ;; Keep track of removed bricks,
