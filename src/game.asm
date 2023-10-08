@@ -49,7 +49,11 @@ game:
     ldx #<txt_round_intro
     ldy #>txt_round_intro
     jsr round_intro
+    lda active_player
+    pha
     jsr clear_data
+    pla
+    sta active_player
     jsr preshift_common_sprites
     jsr init_screen
     jsr init_foreground
