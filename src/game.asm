@@ -240,6 +240,7 @@ n:  cmp #keycode_m
     lda is_playing_digis
     eor #1
     sta is_playing_digis
+    jsr wait_keyunpress
     jmp +l
 end
 
