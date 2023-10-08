@@ -3,24 +3,36 @@ format_portrait:
     32          ; screen_rows
     @(* 29 8)   ; vaus_y
     2           ; playfield_yc
-    10          ; txt_hiscore_x
-    0           ; txt_hiscore_y
-    12          ; hiscore_x
-    1           ; hiscore_y
-    0           ; score_x
-    1           ; score_y
+    4           ; txt_1up_x
+    0           ; txt_1up_y
+    1           ; score1_x
+    1           ; score1_y
+    10          ; txt_hiscore1_x
+    0           ; txt_hiscore1_y
+    12          ; hiscore1_x
+    1           ; hiscore1_y
+    23          ; txt_2up_x
+    0           ; txt_2up_y
+    20          ; score2_x
+    1           ; score2_y
 
 format_landscape:
     20          ; screen_columns
     28          ; screen_rows
     @(* 27 8)   ; vaus_y
     0           ; playfield_yc
-    30          ; txt_hiscore_x
-    2           ; txt_hiscore_y
-    33          ; hiscore_x
-    3           ; hiscore_y
-    33          ; score_x
-    1           ; score_y
+    36          ; txt_1up_x
+    0           ; txt_1up_y
+    33          ; score1_x
+    1           ; score1_y
+    30          ; txt_hiscore1_x
+    3           ; txt_hiscore1_y
+    33          ; hiscore1_x
+    4           ; hiscore1_y
+    36          ; txt_2up_x
+    6           ; txt_2up_y
+    33          ; score2_x
+    7           ; score2_y
 
 set_format:
     lda is_landscape
@@ -28,13 +40,13 @@ set_format:
 
 set_format_portrait:
     0
-    movmw <format_portrait >format_portrait <screen_columns >screen_columns 10 0
+    movmw <format_portrait >format_portrait <screen_columns >screen_columns 16 0
     0
     jmp set_format_common
 
 set_format_landscape:
     0
-    movmw <format_landscape >format_landscape <screen_columns >screen_columns 10 0
+    movmw <format_landscape >format_landscape <screen_columns >screen_columns 16 0
     0
 
 set_format_common:

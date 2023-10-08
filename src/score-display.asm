@@ -3,12 +3,25 @@ make_score_screen:
     sta curchar
 
 print_hiscore_label:
-    ; Print "HIGH SCORE".
     lda #red
     sta curcol
-    lda txt_hiscore_x
+
+    ; Print 1UP
+    lda txt_1up_x
     sta scrx2
-    lda txt_hiscore_y
+    lda txt_1up_y
+    sta scry
+    ldx #10
+    lda #<txt_1up
+    sta s
+    lda #>txt_1up
+    sta @(++ s)
+    jsr print_string
+
+    ; Print "HIGH SCORE".
+    lda txt_hiscore1_x
+    sta scrx2
+    lda txt_hiscore1_y
     sta scry
     ldx #10
     lda #<txt_hiscore
@@ -17,7 +30,18 @@ print_hiscore_label:
     sta @(++ s)
     jsr print_string
 
-    inc curchar
+    ; Print 2UP
+    lda txt_2up_x
+    sta scrx2
+    lda txt_2up_y
+    sta scry
+    ldx #10
+    lda #<txt_2up
+    sta s
+    lda #>txt_2up
+    sta @(++ s)
+    jsr print_string
+
     lda curchar
     sta scorechar_start
 
@@ -30,28 +54,39 @@ display_score:
     ; Print score.
     lda #white
     sta curcol
-    lda score_x
+    lda score1_x
     sta scrx2
-    lda score_y
+    lda score1_y
     sta scry
     lda #<score
     sta s
     lda #>score
     sta @(++ s)
     jsr print_score_string
+    inc curchar
 
     ; Print hiscore.
-    inc curchar
-    lda hiscore_x
+    lda hiscore1_x
     sta scrx2
-    lda hiscore_y
+    lda hiscore1_y
     sta scry
     lda #<hiscore
     sta s
     lda #>hiscore
     sta @(++ s)
     jsr print_score_string
+    inc curchar
 
+    ; Print score.
+    lda score2_x
+    sta scrx2
+    lda score2_y
+    sta scry
+    lda #<score
+    sta s
+    lda #>score
+    sta @(++ s)
+    jsr print_score_string
     inc curchar
 
     rts
@@ -89,3 +124,6 @@ m:  jsr print4x8_dynalloc
     dex
     bne -l
 r:  rts
+
+txt_1up:    @(string4x8 "1UP") 255
+txt_2up:    @(string4x8 "2UP") 255
