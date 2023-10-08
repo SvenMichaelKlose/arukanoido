@@ -40,6 +40,7 @@ rle_play_single:
     sta digisound_a
     sty digisound_y
     lda $9114
+rle_play_single_imm:
     ldy #0
     jsr rle_fetch_nibble
     ora #$b0            ; (auxiliary colour)
@@ -92,8 +93,8 @@ r:  ldy digisound_y
     rti
 
 done:
+    jsr digi_nmi_stop
     lda #0
     sta current_song
-    jsr digi_nmi_stop
     jsr stop_audio_boost
     bne -r              ; (jmp)
