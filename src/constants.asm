@@ -29,11 +29,10 @@ bg_start            = @(+ framechars foreground)
 
 default_num_lives       = 3
 
-default_ball_speed      = 5
+default_ball_speed      = 6
 min_ball_speed          = 4
 max_ball_speed          = 15
 max_ball_speed_joystick = 6
-max_ball_speed_joystick_top = 6
 
 ball_width              = 3
 ball_height             = 5

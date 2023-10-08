@@ -303,9 +303,9 @@ adjust_ball_speed_hitting_top:
     bcc adjust_ball_speed
     ldy is_using_paddle
     bne +l
-    cmp #max_ball_speed_joystick_top
+    cmp #max_ball_speed_joystick
     bcc +l
-    lda #max_ball_speed_joystick_top
+    lda #max_ball_speed_joystick
 l:  sta ball_speed
     rts
 
