@@ -74,13 +74,13 @@ n:  lda #0
     jsr +j
     rts
 
-r:  lda #0
-    sta bonus_is_dropping
-    jmp remove_sprite
-    
 m:  lda #1
     jmp sprite_down
 j:  jmp (d)
+
+r:  lda #0
+    sta bonus_is_dropping
+    jmp remove_sprite
 
 bonus_funs_l:
     <apply_bonus_l <apply_bonus_e <apply_bonus_c <apply_bonus_s
@@ -205,6 +205,7 @@ rotate_bonuses:
     bne -r
 
     ;; Get char address of current bonus.
+    lda current_bonus
     asl
     asl
     asl
@@ -298,7 +299,9 @@ n:  cmp current_bonus
     lda #bonus_b
 
     ;; Remember to avoid creating the same bonus twice.
-n:  sta last_bonus
+n:  ldy current_bonus
+    sty last_bonus
+    sta current_bonus
 
     ;; Init sprite.
     ; Store bonus type.
