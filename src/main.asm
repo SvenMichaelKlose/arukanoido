@@ -118,8 +118,6 @@ toplevel:
     jsr clear_data
     jsr init_screen
     jsr clear_screen
-    lda #0
-    sta has_two_players
 
     0
     stzb curchar 1
