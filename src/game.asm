@@ -303,7 +303,6 @@ if @*has-digis?*
     jsr exm_work
 end
 
-    sei
     lda needs_redrawing_lives
     beq +n
     jsr draw_lives
@@ -321,7 +320,6 @@ n:  lda #0
     sta needs_redrawing_score1
     sta needs_redrawing_hiscore
     sta needs_redrawing_score2
-    cli
     lda has_moved_sprites
     bne +n
     jmp -n2
@@ -359,7 +357,6 @@ end
 
 if @*demo?*
 end_of_demo:
-    sei
     lda #0
     sta mode_break
     jsr clear_screen
@@ -389,7 +386,6 @@ end_of_demo:
     sta scry
     ldx #255
     jsr print_string
-    cli
     jmp wait_fire
 end
 
