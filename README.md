@@ -61,6 +61,7 @@ when playing.
 
 * P: Pause the game.
 * C: Display the current charset and halt the machine.
+* M: Toggle VIC/original sounds.
 
 # Keys for game testers (only in this demo).
 

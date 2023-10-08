@@ -234,6 +234,15 @@ q:  jsr wait_keyunpress
 lose_life2:
     jmp lose_life
 
+if @*has-digis?*
+n:  cmp #keycode_m
+    bne +n
+    lda is_playing_digis
+    eor #1
+    sta is_playing_digis
+    jmp +l
+end
+
 if @*demo?*
 end_of_demo2:
     jmp end_of_demo
