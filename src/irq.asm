@@ -48,6 +48,19 @@ done:
     jmp +done
 
 irq:
+    lda s
+    pha
+    lda @(++ s)
+    pha
+    lda d
+    pha
+    lda @(++ d)
+    pha
+    lda c
+    pha
+    lda @(++ c)
+    pha
+
 if @*show-cpu?*
     lda #@(+ 8 3)
     sta $900f
@@ -57,7 +70,7 @@ end
     lda has_paused
     bne -done
 
-    ;; Increment word framecounter.
+    ;; Increment framecounter.
     inc framecounter
     bne +n
     inc @(++ framecounter)
@@ -114,8 +127,6 @@ n:  lda currently_playing_digis
     jsr play_music
 n:
 
-    lda lives
-    beq +l
     lda active_player
     beq +l
 
@@ -162,11 +173,23 @@ n2: jsr rotate_bonuses
     jsr dyn_brick_fx
 
 done:
-
 if @*show-cpu?*
     lda #@(+ 8 2)
     sta $900f
 end
+
+    pla
+    sta @(++ c)
+    pla
+    sta c
+    pla
+    sta @(++ d)
+    pla
+    sta d
+    pla
+    sta @(++ s)
+    pla
+    sta s
 
 if @*shadowvic?*
     rts             ; ShadowVIC emulator doesn't require IRQs.
