@@ -115,7 +115,7 @@ l:  ldx #0
 no_obstacle_preshifts:
 
 if @*demo?*
-    cmp #9
+    cmp #@(++ num_demo_levels)
     bne +n
     jmp end_of_demo
 n:

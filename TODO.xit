@@ -6,8 +6,6 @@ Game
 [ ] !!! Fix keyboard controls.  Fetch directly from VIA.
 [ ] !!  Cut up original round intro sound and play first bit twice.
 [ ] !!! D bonus: sometimes one extra ball is not diverted.
-[ ] !.. Update hiscore by copying regular score on screen
-        instead of printing it.
 [ ] ... Attraction mode
 
 In-game animations

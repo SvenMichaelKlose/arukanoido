@@ -3,7 +3,7 @@
 ARUKANOIDO is a clone of the famous arcade game "Arkanoid" for the
 Commodore VIC–20 with at least 35K memory expansion.
 
-This demo comes with the first eight of 33 levels.
+This demo comes with the first ten of 33 levels.
 
 ## WAV file for real tapes
 
