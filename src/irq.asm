@@ -60,6 +60,22 @@ irq:
     pha
     lda @(++ c)
     pha
+    lda tmp
+    pha
+    lda tmp2
+    pha
+    lda tmp3
+    pha
+    lda tmp4
+    pha
+    lda scr
+    pha
+    lda col
+    pha
+    lda scrx
+    pha
+    lda scry
+    pha
 
 if @*show-cpu?*
     lda #@(+ 8 3)
@@ -178,6 +194,22 @@ if @*show-cpu?*
     sta $900f
 end
 
+    pla
+    sta scry
+    pla
+    sta scrx
+    pla
+    sta col
+    pla
+    sta scr
+    pla
+    sta tmp4
+    pla
+    sta tmp3
+    pla
+    sta tmp2
+    pla
+    sta tmp
     pla
     sta @(++ c)
     pla
