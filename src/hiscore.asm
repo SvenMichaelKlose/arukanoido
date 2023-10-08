@@ -13,8 +13,6 @@ txt_fifth:      @(string4x8 "5TH") 255
 print_initial_char:
     ldy #0
     lda (s),y
-    sec
-    sbc #32
     jsr print4x8_dynalloc
 
 inc_s:
@@ -39,6 +37,39 @@ hiscore_table:
     lda #3
     sta scry
     jsr print_string
+    inc curchar
+
+    lda #yellow
+    sta curcol
+    lda #8
+    sta scry
+
+    lda #16
+    sta scrx2
+    lda #<txt_score
+    sta s
+    lda #>txt_score
+    sta @(++ s)
+    jsr print_string
+    inc curchar
+
+    lda #22
+    sta scrx2
+    lda #<txt_round
+    sta s
+    lda #>txt_round
+    sta @(++ s)
+    jsr print_string
+    inc curchar
+
+    lda #28
+    sta scrx2
+    lda #<txt_name
+    sta s
+    lda #>txt_name
+    sta @(++ s)
+    jsr print_string
+    inc curchar
 
     lda #white
     sta curcol
@@ -54,7 +85,7 @@ hiscore_table:
 l:  lda #10
     sta scrx2
     jsr print_string
-
+    inc curchar
     inc scry
     inc scry
 
@@ -65,7 +96,6 @@ m:  lda (s),y
     jmp -m
 
 n:  jsr inc_s
-
     dec c
     bne -l
 
@@ -81,12 +111,43 @@ n:  jsr inc_s
 l:  lda #14
     sta scrx2
     jsr print_score_string
+    inc curchar
 
     lda #num_score_digits
     jsr add_sb
-    lda #22
-    sta scrx2
+
+    ; Print round number.
+n:  ldy #25
+    sty scrx2
+    ldy #0
+    lda (s),y
+    jsr inc_s
+    ldx #0
+m:  sec
+    sbc #10
+    inx
+    beq -m
+    bcs -m
+    clc
+    adc #10
+    dex
+    beq +n
+    pha
+    txa
+    clc
+    adc #score_char0
+    jsr print4x8_dynalloc
+    pla
+n:  ldy #26
+    sty scrx2
+    clc
+    adc #score_char0
+    jsr print4x8_dynalloc
     inc curchar
+
+    ; Print name.
+    lda #29
+    sta scrx2
     jsr print_initial_char
     jsr print_initial_char
     jsr print_initial_char
@@ -101,10 +162,13 @@ w:  jsr poll_keypress
     bcc -w
     rts
 
+initial_chars:
+    @(string4x8 "ABCDEFGHIJKLMNOPQRSTUVWXYZ.! ")
+
 scores:
-    0 0 0 0 0 0 0 "AAA"
-    0 0 0 0 0 0 0 "AAA"
-    0 0 0 0 0 0 0 "AAA"
-    0 0 0 0 0 0 0 "AAA"
-    0 0 0 0 0 0 0 "AAA"
+    5 0 0 0 0 0 0 5 @(string4x8 "SSB")
+    4 5 0 0 0 0 0 4 @(string4x8 "SND")
+    4 0 0 0 0 0 0 3 @(string4x8 "TOR")
+    3 5 0 0 0 0 0 2 @(string4x8 "ONJ")
+    3 0 0 0 0 0 0 1 @(string4x8 "AKR")
 __end_hiscore:
