@@ -48,9 +48,15 @@ game:
     sta lives
     jsr init_score
 
-;lda #32
-;sta level
 next_level:
+if @*demo?*
+    lda level
+    cmp #num_demo_levels
+    bne +n
+    jmp end_of_demo
+n:
+end
+
     lda #0
     sta is_running_game
     sta mode_break
@@ -111,15 +117,7 @@ l:  ldx #0
     sta gfx_obstacles_end
     lda @(++ d)
     sta @(++ gfx_obstacles_end)
-
 no_obstacle_preshifts:
-
-if @*demo?*
-    cmp #@(++ num_demo_levels)
-    bne +n
-    jmp end_of_demo
-n:
-end
 
     jsr increase_silver_score
     jsr clear_screen
@@ -134,9 +132,7 @@ end
 
 n:  jsr draw_level
 m:  jsr draw_walls
-    lda #foreground
-    sta curchar
-    jsr print_scores_and_labels
+    jsr make_score_screen
 
 retry:
     lda level
@@ -195,16 +191,17 @@ n:  lda #0
     lda $9008
     sta old_paddle_value
 
-    ; Kick off game code in IRQ handler.
+    ; Initialise frame counter.
     ldy #0
     sty framecounter
     sty @(++ framecounter)
+
     iny
     sty is_running_game
 
 mainloop:
 if @*shadowvic?*
-    $22 $02
+    $22 $02     ; Wait for retrace.
     jsr irq
 end
     lda bricks_left
@@ -262,7 +259,7 @@ n:  cmp #keycode_n
     bne +n
     lda level
 if @*demo?*
-    cmp #8
+    cmp #num_demo_levels
     beq end_of_demo2
 end
     lda #0
@@ -344,6 +341,7 @@ end
 
 if @*demo?*
 end_of_demo:
+    sei
     lda #0
     sta mode_break
     jsr clear_screen
@@ -373,6 +371,7 @@ end_of_demo:
     sta scry
     ldx #255
     jsr print_string
+    cli
     jmp wait_fire
 end
 

@@ -130,7 +130,6 @@
 "   x x x x")
 
 ; Round 09
-,@(unless *demo?* `(
 (2
 " x x     x x "
 " xgx     xgx "
@@ -165,6 +164,7 @@
 " x           "
 " xxxxxxxxxxxx")
 
+,@(unless *demo?* `(
 ; Round 11
 (4
 " sssssssssss "
