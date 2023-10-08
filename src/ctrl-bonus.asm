@@ -31,6 +31,7 @@ ctrl_bonus:
     lda #0
     sta removed_bricks_for_bonus
     sta has_missed_bonus
+    sta bonus_is_dropping
 
     ;; Score 1000pts.
     lda #<score_1000
@@ -45,10 +46,6 @@ ctrl_bonus:
     jsr release_ball
     ; Restore default Vaus graphics.
 n:  ldy vaus_sprite_index
-    lda #<gfx_vaus
-    sta sprites_gl,y
-    lda #>gfx_vaus
-    sta sprites_gh,y
     lda preshifted_vaus
     sta sprites_pgl,y
     lda @(++ preshifted_vaus)
@@ -75,31 +72,23 @@ n:  lda #0
     lda @(-- bonus_funs_h),y
     sta @(++ d)
     jsr +j
+    rts
+
 r:  lda #0
     sta bonus_is_dropping
-    rts
+    jmp remove_sprite
     
 m:  lda #1
     jmp sprite_down
 j:  jmp (d)
 
 bonus_funs_l:
-    <apply_bonus_l
-    <apply_bonus_e
-    <apply_bonus_c
-    <apply_bonus_s
-    <apply_bonus_b
-    <apply_bonus_d
-    <apply_bonus_p
+    <apply_bonus_l <apply_bonus_e <apply_bonus_c <apply_bonus_s
+    <apply_bonus_b <apply_bonus_d <apply_bonus_p
 
 bonus_funs_h:
-    >apply_bonus_l
-    >apply_bonus_e
-    >apply_bonus_c
-    >apply_bonus_s
-    >apply_bonus_b
-    >apply_bonus_d
-    >apply_bonus_p
+    >apply_bonus_l >apply_bonus_e >apply_bonus_c >apply_bonus_s
+    >apply_bonus_b >apply_bonus_d >apply_bonus_p
 
 ;;; Laser mode
 apply_bonus_l:
@@ -114,6 +103,8 @@ apply_bonus_l:
 
 ;;; Extension mode
 apply_bonus_e:
+    lda #mode_extended
+    sta mode
     ldy vaus_sprite_index
     lda preshifted_vaus_extended
     sta sprites_pgl,y
@@ -121,8 +112,6 @@ apply_bonus_e:
     sta sprites_pgh,y
     lda #11
     sta sprites_dimensions,y
-    lda #mode_extended
-    sta mode
     lda #24
     sta vaus_width
     jsr move_vaus_left
@@ -138,6 +127,9 @@ apply_bonus_c:
 
 ;;; Slow down ball
 apply_bonus_s:
+    lda #min_ball_speed
+    sta ball_speed
+
     ;; Reset reason for speeding up.
     lda #0
     sta num_hits
@@ -147,13 +139,10 @@ apply_bonus_s:
     dey
     dey
     cpy #min_ball_speed
-    bcc +n
-    sty ball_speed
-    rts
-
-    ; Mininum speed, never any slower.
-n:  lda #min_ball_speed
-    sta ball_speed
+    bcs +n
+    beq +n
+    ldy #min_ball_speed
+n:  sty ball_speed
     rts
 
 apply_bonus_b:
@@ -207,12 +196,13 @@ apply_bonus_p:
 
 ;;; Rotate the current bonus graphics.  No fuzz.
 rotate_bonuses:
+    lda bonus_is_dropping
+    beq -r
+
+    ;; Rotate every 8th frame.
     lda framecounter
     and #%111
     bne -r
-
-    lda bonus_is_dropping
-    beq -r
 
     ;; Get char address of current bonus.
     asl
@@ -275,11 +265,11 @@ make_bonus:
     cmp #1
     bne +n
     asl hits_before_bonus
-    asl hits_before_bonus
-    bne +l  ; (jmp)
+    ;asl hits_before_bonus
+;    bne +l  ; (jmp)
 n:  cmp #4
-    bne +l
-    asl hits_before_bonus
+;    bne +l
+;    asl hits_before_bonus
 l:
 
 if @*debug?*
@@ -287,8 +277,6 @@ if @*debug?*
     lda next_bonus
     bne +ok
 end
-
-    inc has_missed_bonus
 
     ;; Roll the dice.
 a:  jsr random
@@ -301,9 +289,8 @@ n:  cmp current_bonus
     beq -a              ; Already active…
     cmp last_bonus
     beq -a              ; Just had that one…
-
-    ;; Do extra check for break mode bonus as it's not
-    ;; denoted in 'mode' but 'mode_break'.
+    ; Do extra check for break mode bonus as it's not
+    ; denoted in 'mode' but 'mode_break'.
     cmp #bonus_b
     bne +n
     lda mode_break
@@ -314,8 +301,10 @@ n:  cmp current_bonus
 n:  sta last_bonus
 
     ;; Init sprite.
+    ; Store bonus type.
 ok: sta @(+ bonus_init sprite_init_data)
-    sta bonus_is_dropping
+
+    ; Get its graphics.
     sec
     sbc #1
     tay
@@ -340,5 +329,8 @@ ok: sta @(+ bonus_init sprite_init_data)
     asl
     sta @(+ bonus_init sprite_init_y)
 
+    lda #1
+    sta bonus_is_dropping
+    sta has_missed_bonus
     ldy #@(- bonus_init sprite_inits)
     jmp add_sprite
