@@ -2,7 +2,7 @@ make_score_screen:
     lda #foreground
     sta curchar
 
-print_hiscore_label:
+print_scores_and_labels:
     lda #red
     sta curcol
 
@@ -43,15 +43,24 @@ print_hiscore_label:
     jsr print_string
 
     lda curchar
-    sta scorechar_start
+    sta score1_char_start
+    jsr print_score1
+    inc curchar
 
+    lda curchar
+    sta hiscore_char_start
+    jsr print_hiscore
+    inc curchar
+
+    lda curchar
+    sta score2_char_start
+    jsr print_score2
     rts
 
-display_score:
-    lda scorechar_start
+print_score1:
+    lda score1_char_start
     sta curchar
-
-    ; Print score.
+print_score1_raw:
     lda #white
     sta curcol
     lda score1_x
@@ -63,9 +72,14 @@ display_score:
     lda #>score
     sta @(++ s)
     jsr print_score_string
-    inc curchar
+    rts
 
-    ; Print hiscore.
+print_hiscore:
+    lda hiscore_char_start
+    sta curchar
+print_hiscore_raw:
+    lda #white
+    sta curcol
     lda hiscore1_x
     sta scrx2
     lda hiscore1_y
@@ -75,9 +89,14 @@ display_score:
     lda #>hiscore
     sta @(++ s)
     jsr print_score_string
-    inc curchar
+    rts
 
-    ; Print score.
+print_score2:
+    lda score2_char_start
+    sta curchar
+print_hiscore_raw:
+    lda #white
+    sta curcol
     lda score2_x
     sta scrx2
     lda score2_y
@@ -87,8 +106,6 @@ display_score:
     lda #>score
     sta @(++ s)
     jsr print_score_string
-    inc curchar
-
     rts
 
 ; scrx2/scry: Text position

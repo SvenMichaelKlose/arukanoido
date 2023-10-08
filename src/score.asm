@@ -25,7 +25,7 @@ add_to_score:
     txa
     pha
 
-    inc has_new_score
+    inc needs_redrawing_score1
 
     lda #<score
     sta d
@@ -46,6 +46,8 @@ add_to_score:
     ldx #@(-- num_score_digits)
     jsr bcd_cmp
     bcc +n
+
+    inc needs_redrawing_hiscore
 
     ; Copy score to highscore.
     lda #1

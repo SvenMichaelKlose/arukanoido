@@ -164,7 +164,10 @@ sprites_sy:     fill @(* 2 num_sprites)
 sprites_sw:     fill @(* 2 num_sprites)
 sprites_sh:     fill @(* 2 num_sprites)
 
-scorechar_start:      0
+score1_char_start:    0
+hiscore_char_start:   0
+score2_char_start:    0
+
 laser_has_hit:        0   ; For the laser controller to remember if it hit one the left.
 is_testing_laser_hit: 0
 
@@ -271,10 +274,13 @@ lowest_relative_level_row:     0
 
 lives:              0
 balls:              0
-
 is_running_game:    0
-has_moved_sprites:  0
-needs_redrawing_lives:  0
+
+has_moved_sprites:       0
+needs_redrawing_lives:   0
+needs_redrawing_score1:  0
+needs_redrawing_hiscore: 0
+needs_redrawing_score2:  0
 
 active_bonus:      0
 last_bonus:         0

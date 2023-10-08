@@ -121,8 +121,7 @@ toplevel:
 
     0
     stzb curchar 1
-    call <print_hiscore_label >print_hiscore_label
-    call <display_score >display_score
+    call <print_scores_and_labels >print_scores_and_labels
 
     stzb curcol red
     stzb scrx 5

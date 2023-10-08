@@ -140,13 +140,6 @@ n2: jsr rotate_bonuses
     jsr dyn_brick_fx
 
 done:
-    ;; Update scores on screen.
-    lda has_new_score
-    beq +n
-    lda #0
-    sta has_new_score
-    jsr display_score
-n:
 
 if @*show-cpu?*
     lda #@(+ 8 2)

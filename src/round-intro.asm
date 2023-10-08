@@ -15,8 +15,7 @@ round_intro:
     jsr make_stars
     lda #5
     sta curchar
-    jsr print_hiscore_label
-    jsr display_score
+    jsr print_scores_and_labels
 
     ; Draw ship.
     lda #@(+ multicolor blue)

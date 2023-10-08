@@ -16,8 +16,7 @@ game_over:
 
     lda #1
     sta curchar
-    jsr print_hiscore_label
-    jsr display_score
+    jsr print_scores_and_labels
 
     lda #white
     sta curcol
@@ -135,8 +134,9 @@ end
 
 n:  jsr draw_level
 m:  jsr draw_walls
-    jsr make_score_screen
-    jsr display_score
+    lda #foreground
+    sta curchar
+    jsr print_scores_and_labels
 
 retry:
     lda level
@@ -164,6 +164,9 @@ n:  lda #0
     sta removed_bricks_for_bonus
     sta bonus_is_dropping
     sta has_missed_bonus
+    sta needs_redrawing_score1
+    sta needs_redrawing_hiscore
+    sta needs_redrawing_score2
     sta needs_redrawing_lives
     lda #1
     sta balls
@@ -208,7 +211,7 @@ end
     bne +n
     jmp level_end
 n:  lda is_running_game
-    beq lose_life
+    beq lose_life2
 
     ; Toggle sprite frame.
     lda spriteframe
@@ -228,6 +231,14 @@ n2: jsr get_keypress
 q:  jsr wait_keyunpress
     jmp +l
 
+lose_life2:
+    jmp lose_life
+
+if @*demo?*
+end_of_demo2:
+    jmp end_of_demo
+end
+
 if @*debug?*
 n:  ldx #8
 m:  cmp bonus_keys,x
@@ -242,7 +253,7 @@ n:  cmp #keycode_n
     lda level
 if @*demo?*
     cmp #8
-    beq end_of_demo
+    beq end_of_demo2
 end
     lda #0
     sta bricks_left
@@ -266,19 +277,32 @@ l:
 if @*has-digis?*
     jsr exm_work
 end
-    lda has_moved_sprites
-    beq -n2
-    lda #0
-    sta has_moved_sprites
-    jsr draw_sprites
 
+    sei
     lda needs_redrawing_lives
     beq +n
-    lda #0
-    sta needs_redrawing_lives
     jsr draw_lives
-
-n:
+n:  lda needs_redrawing_score1
+    beq +n
+    jsr print_score1
+n:  lda needs_redrawing_hiscore
+    beq +n
+    jsr print_hiscore
+n:  lda needs_redrawing_score2
+    beq +n
+    jsr print_score2
+n:  lda #0
+    sta needs_redrawing_lives
+    sta needs_redrawing_score1
+    sta needs_redrawing_hiscore
+    sta needs_redrawing_score2
+    cli
+    lda has_moved_sprites
+    bne +n
+    jmp -n2
+n:  lda #0
+    sta has_moved_sprites
+    jsr draw_sprites
     jmp mainloop
 
 lose_life:
