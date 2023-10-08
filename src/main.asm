@@ -165,15 +165,41 @@ end
     lda #0
     sta attraction_mode
 
-l:  jsr test_fire
-    beq +f
+loop:
+    jsr test_fire
+    beq +start_one_player
 
 if @*has-digis?*
     jsr exm_work
 end
 
     jsr poll_keypress
-    bcc -l
+    bcc -loop
+
+    cmp #keycode_1
+    bne +n
+start_one_player:
+    lda #0
+    sta has_two_players
+    lda #1
+    sta active_player
+    jmp +f
+n:
+
+    cmp #keycode_2
+    bne +n
+    lda #1
+    sta has_two_players
+    lda #2
+    sta active_player
+    jmp +f
+n:
+
+    cmp #keycode_t
+    bne +n
+    jsr hiscore_table
+    jmp toplevel
+n:
 
     cmp #keycode_t
     bne +n
@@ -213,6 +239,8 @@ n:  cmp #keycode_f
     jsr set_format
     jmp toplevel
 
+l:  jmp -loop
+
 n:  cmp #keycode_b
     beq boot_basic
 
@@ -232,14 +260,7 @@ n:  lda #snd_bonus_life
     jmp -l
 end
 
-f:  ;lda #snd_coin
-    ;jsr play_sound
-    ;jsr wait_for_silence
-    lda #snd_theme
-    ldx #<txt_round_intro
-    ldy #>txt_round_intro
-    jsr round_intro
-    jsr game
+f:  jsr game
     jmp toplevel
 
 boot_basic:
@@ -263,9 +284,8 @@ if @(not *rom?*)
     jmp ($fffc)
 end
 
-;txt_copyright:  @(string4x8 "[\\ 2017 TAYTO CORP JAPAN") 255
 txt_copyright:  @(string4x8 " DEMO VERSION") 255
 txt_rights:     @(string4x8 (+ "    REV. #" *revision*)) 255
-txt_credit:     @(string4x8 " CREDIT  0") 255
+txt_credit:     @(string4x8 " CREDIT  2") 255
 
 __end_game:

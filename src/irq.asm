@@ -114,9 +114,31 @@ n:  lda currently_playing_digis
     jsr play_music
 n:
 
+    lda lives
+    beq +l
+    lda active_player
+    beq +l
+
+    ;; Blink score label of active player.
+    lda color_1up
+    sta d
+    lda @(++ color_1up)
+    sta @(++ d)
+    ldx #red
+    lda framecounter
+    and #%00100000
+    bne +n
+    ldx #black
+n:  txa
+    ldy #0
+    sta (d),y
+    iny
+    sta (d),y
+
     ;; Run the sprite controllers.
-    lda is_running_game
+l:  lda is_running_game
     beq +done
+
     jsr call_sprite_controllers
     ; Done.  Tell main loop to redraw the sprites.
     lda #1

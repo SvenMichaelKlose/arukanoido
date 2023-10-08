@@ -1,4 +1,4 @@
-game_done:
+game_won:
     lda #snd_doh_dissolving
     jsr play_sound
     jsr wait_for_silence
@@ -36,9 +36,19 @@ game_over:
     jsr play_sound
     jsr wait_for_silence
     ldx #100
+if @(not *demo?*)
     jmp wait
+end
+if @*demo?*
+    jsr wait
+    jmp end_of_demo
+end
 
 game:
+    lda #snd_theme
+    ldx #<txt_round_intro
+    ldy #>txt_round_intro
+    jsr round_intro
     jsr clear_data
     jsr preshift_common_sprites
     jsr init_screen
@@ -49,11 +59,15 @@ game:
     jsr init_score
 
 next_level:
+
 if @*demo?*
     lda level
     cmp #num_demo_levels
     bne +n
     jmp end_of_demo
+
+g:  jmp game_won
+
 n:
 end
 
@@ -64,7 +78,7 @@ end
     inc level
     lda level
     cmp #@(++ doh_level)
-    beq game_done
+    beq -g
 
     ;; Pre-shift obstacle animation.
     ; Clear destination area.

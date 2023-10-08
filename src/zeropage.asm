@@ -215,6 +215,8 @@ txt_2up_x:          0
 txt_2up_y:          0
 score2_x:           0
 score2_y:           0
+color_1up:          0 0
+color_2up:          0 0
 
 double_screen_columns:  0
 y_max:              0

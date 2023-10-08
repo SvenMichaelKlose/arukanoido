@@ -1,3 +1,6 @@
+portrait_color_1up  = @(+ colors 2)
+landscape_color_1up = @(+ colors 18)
+
 format_portrait:
     15          ; screen_columns
     32          ; screen_rows
@@ -15,6 +18,8 @@ format_portrait:
     0           ; txt_2up_y
     20          ; score2_x
     1           ; score2_y
+    <portrait_color_1up
+    >portrait_color_1up
 
 format_landscape:
     20          ; screen_columns
@@ -33,6 +38,8 @@ format_landscape:
     6           ; txt_2up_y
     33          ; score2_x
     7           ; score2_y
+    <landscape_color_1up
+    >landscape_color_1up
 
 set_format:
     lda is_landscape
@@ -40,13 +47,13 @@ set_format:
 
 set_format_portrait:
     0
-    movmw <format_portrait >format_portrait <screen_columns >screen_columns 16 0
+    movmw <format_portrait >format_portrait <screen_columns >screen_columns 18 0
     0
     jmp set_format_common
 
 set_format_landscape:
     0
-    movmw <format_landscape >format_landscape <screen_columns >screen_columns 16 0
+    movmw <format_landscape >format_landscape <screen_columns >screen_columns 18 0
     0
 
 set_format_common:
