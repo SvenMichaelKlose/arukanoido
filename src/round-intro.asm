@@ -30,6 +30,8 @@ round_intro:
     lda #<gfx_ship
     ldy #>gfx_ship
     jsr draw_bitmap
+
+    ; Avoid garbage lighting up on screen.
     jsr wait_retrace
     pla
     sta $9002
@@ -56,7 +58,7 @@ l5: ldx playfield_yc
 
 l:
 if @*shadowvic?*
-    $22 $02
+    $22 $02         ; Wait for retrace.
 end
     lda #0
     sta scrx2
@@ -76,15 +78,12 @@ n:  cmp #253
     lda level
     cmp #@(+ 1 doh_level)
     beq +n
-    jsr test_fire
-    beq +r2
+    jsr test_fire_and_release
+    bcs +r
 
 n:  ldx #2
     jsr wait
     jmp -l2
-
-r2: jsr wait_fire_released
-    rts
 
 r:  rts
 
@@ -97,7 +96,6 @@ m:  ldx #15
     jsr wait
 
 l3: jsr clear_intro_text
-
     jmp -l5
 
 make_stars:

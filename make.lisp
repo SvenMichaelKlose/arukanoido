@@ -120,12 +120,14 @@
                           "bcd.asm"
                           "clrram.asm"
                           "exomizer-stream-decrunsh.asm"
-                          "joystick.asm"
-                          "keyboard.asm"
                           "math.asm"
                           "random.asm"
                           "wait.asm"
                           "zeropage-utils.asm"
+
+                          ; Controls
+                          "fire-button.asm"
+                          "keyboard.asm"
 
                           ; Graphics library
                           "print.asm"

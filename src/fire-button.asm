@@ -27,3 +27,12 @@ l:  lda $9111
     and #joy_fire
     beq -l
     rts
+
+test_fire_and_release:
+    jsr test_fire
+    beq +n
+    clc
+    rts
+n:  jsr wait_fire_released
+    sec
+    rts
