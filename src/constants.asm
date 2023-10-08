@@ -56,8 +56,8 @@ playfield_columns   = 15
 vaus_x              = 52
 doh_level           = 33
 doh_flash_duration  = 3
-
 num_demo_levels     = 10
+
 ; PAL
 
 lives_on_screen     = @(+ (* 31 15) 1 screen)
