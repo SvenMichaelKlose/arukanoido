@@ -275,6 +275,8 @@ lowest_relative_level_row:     0
 lives:              0
 balls:              0
 is_running_game:    0
+has_two_players:    0
+active_player:      0
 
 has_moved_sprites:       0
 needs_redrawing_lives:   0

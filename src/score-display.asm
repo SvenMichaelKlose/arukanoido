@@ -30,6 +30,9 @@ print_scores_and_labels:
     sta @(++ s)
     jsr print_string
 
+    lda has_two_players
+    beq +n
+
     ; Print 2UP
     lda txt_2up_x
     sta scrx2
@@ -41,6 +44,7 @@ print_scores_and_labels:
     lda #>txt_2up
     sta @(++ s)
     jsr print_string
+n:
 
     lda curchar
     sta score1_char_start
@@ -52,10 +56,14 @@ print_scores_and_labels:
     jsr print_hiscore
     inc curchar
 
+    lda has_two_players
+    beq +n
+
     lda curchar
     sta score2_char_start
     jsr print_score2
-    rts
+
+n:  rts
 
 print_score1:
     lda score1_char_start
