@@ -62,7 +62,7 @@ next_level:
 
 if @*demo?*
     lda level
-    cmp #num_demo_levels
+    cmp #@(++ num_demo_levels)
     bne +n
     jmp end_of_demo
 
@@ -97,6 +97,7 @@ end
     lda @(-- level_obstacle),y
     cmp #none
     beq no_obstacle_preshifts
+
     tay
     lda gfx_obstacles_gl,y
     sta s
@@ -164,7 +165,6 @@ n:  lda #0
     sta is_firing
     sta mode
     sta mode_break
-    sta sprites_d2,x
     sta framecounter
     sta @(++ framecounter)
     sta num_obstacles
