@@ -149,7 +149,9 @@ no_obstacle_preshifts:
     jsr init_doh_charset
     bne +m                  ; (jmp)
 
-n:  jsr get_level
+n:  lda #>bricks1
+    sta bricks
+    jsr get_level
     jsr draw_level
 m:  jsr draw_walls
 

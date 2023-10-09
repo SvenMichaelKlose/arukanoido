@@ -20,7 +20,7 @@ n:  stx bricks_left ; (X=0)
 
     ;; Clear brick map.
     0
-    clrmw <bricks >bricks $00 $02
+    clrmw <bricks1 >bricks1 $00 $02
     0
 
     ;; Get starting row.
@@ -112,7 +112,7 @@ scr2brick_in_d:
     lda scr
     sta d
     lda @(++ scr)
-    ora #>bricks
+    ora bricks
     sta @(++ d)
     rts
 

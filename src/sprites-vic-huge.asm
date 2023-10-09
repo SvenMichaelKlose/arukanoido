@@ -129,7 +129,7 @@ l:  ; Get screen address.
     lda scr
     sta s
     lda @(++ scr)
-    ora #>bricks
+    ora bricks
     sta @(++ s)
 
     ; Usually a DOH char at this position?

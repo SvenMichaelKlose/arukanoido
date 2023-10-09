@@ -34,7 +34,7 @@ hit_brick:
     lda scr
     sta tmp
     lda @(++ scr)
-    ora #>bricks
+    ora bricks
     sta @(++ tmp)
 
     ; Check.

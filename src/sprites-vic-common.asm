@@ -104,7 +104,7 @@ l3: lda (scr),y
     lda scr
     sta d
     lda @(++ scr)
-    ora #>bricks
+    ora bricks
     sta @(++ d)
 
     ; Check if DOH char

@@ -122,6 +122,8 @@ score:          0 0
 
 uncleaned_zp:
 
+bricks:         0   ; Starting page of brick map.
+
 ;;; Format
 ;;; TODO: Move to lowmem where it isn't cleaned.
 user_screen_origin_x:   0
@@ -342,5 +344,6 @@ uncleaned_lowmem:
 has_two_players:    0
 active_player:      0
 
+scratch:    "                          "
 lowmem:
     end

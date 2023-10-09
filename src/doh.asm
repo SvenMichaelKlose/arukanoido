@@ -12,9 +12,14 @@ l:  lda @(-- gfx_doh_a),x
 
 draw_doh:
     ; Clear brick map.
-    0
-    clrmw <bricks >bricks 0 2
-    0
+    lda #0
+    sta dl
+    sta cl
+    lda bricks
+    sta dh
+    lda #2
+    sta ch
+    jsr clrram
 
     lda #@first_doh_char
     sta tmp
