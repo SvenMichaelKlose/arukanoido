@@ -86,7 +86,11 @@ end
     jsr increase_silver_score
 
     lda #>bricks1
-    sta bricks
+    ldy active_player
+    dey
+    beq +n
+    lda #>bricks2
+n:  sta bricks
     jsr get_level
 
 retry:
