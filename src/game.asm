@@ -53,11 +53,14 @@ game:
     jsr preshift_common_sprites
     jsr init_screen
     jsr init_foreground
-
-    lda #default_num_lives
-    sta lives1
-    sta lives2
     jsr init_score
+
+    lda #3
+    sta lives1
+    ldy has_two_players
+    beq +n
+    sta lives2
+n:
 
 next_level:
 
@@ -151,10 +154,12 @@ m:  jsr draw_walls
     jsr make_score_screen
 
 retry:
+    jsr switch_player_score
+
+    ;; DOH level init
     lda level
     cmp #doh_level
     bne +n
-
     lda #16
     sta bricks_left
     jsr draw_doh
@@ -219,14 +224,17 @@ if @*shadowvic?*
     $22 $02     ; Wait for retrace.
     jsr irq
 end
+
+    ; Handle level end.
     lda bricks_left
     bne +n
     jmp level_end
 n:  lda is_running_game
-    beq lose_life2
+    bne +n
+    jmp lose_life
 
     ; Toggle sprite frame.
-    lda spriteframe
+n:  lda spriteframe
     eor #framemask
     sta spriteframe
     ora #first_sprite_char
@@ -242,9 +250,6 @@ n2: jsr get_keypress
     jsr reset_volume
 q:  jsr wait_keyunpress
     jmp +l
-
-lose_life2:
-    jmp lose_life
 
 if @*has-digis?*
 n:  cmp #keycode_m
@@ -330,11 +335,25 @@ lose_life:
     jsr wait_for_silence
     jsr remove_sprites
     jsr clear_screen_of_sprites
+
+    ; Decrement lives.
     ldx active_player
     dec @(-- lives1),x
-    beq +l
+    lda lives1
+    ora lives2
+    bne +n
+    jmp game_over
+
+    ; Switch active player.
+n:  dec active_player
+    lda active_player
+    eor #1
+    sta active_player
+    ldx active_player
+    inc active_player
+    lda lives1,x
+    beq -n
     jmp retry
-l:  jmp game_over
 
 level_end:
     ldx #1

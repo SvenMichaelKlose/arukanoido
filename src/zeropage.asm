@@ -331,6 +331,8 @@ line_addresses_h:   fill 33
 ; For 'add_sprite'.
 sprite_inits:           fill @sprite_inits_size
 
+0 0 0 0 
+
 uncleaned_lowmem:
 
 ;;; Game configuration

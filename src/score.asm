@@ -10,11 +10,15 @@ l:  lda score_20000,x
     sta next_powerup_score,x
     dex
     bpl -l
+    rts
 
+switch_player_score:
+    lda has_two_players
+    beq +l
     ldy active_player
     dey
     bne +n
-    lda #<score1
+l:  lda #<score1
     sta score
     lda #>score1
     sta @(++ score)

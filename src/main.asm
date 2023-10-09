@@ -167,7 +167,7 @@ end
 
 loop:
     jsr test_fire
-    beq +start_one_player
+    beq start_one_player
 
 if @*has-digis?*
     jsr exm_work

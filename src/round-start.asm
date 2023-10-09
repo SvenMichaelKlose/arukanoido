@@ -45,6 +45,7 @@ n:  clc
     sta @(++ s)
     ldx #255
     jsr print_string
+    inc curchar
 
     lda #snd_round
     jsr play_sound
@@ -53,8 +54,11 @@ n:  clc
     jsr wait
 
     ; Print "PLAYER x".
-    ldy active_player
+    lda has_two_players
     beq +n
+    ldy active_player
+    dey
+    bne +m
     ldx #<txt_player1
     ldy #>txt_player1
     bne +o ; (jmp)
@@ -72,12 +76,12 @@ o:  stx s
     sta scry
     ldx #255
     jsr print_string
-
+n:
 
     ; Print "READY".
     inc curchar
     lda #12
-    ldy active_player
+    ldy has_two_players
     beq +n
     clc
     adc #5
