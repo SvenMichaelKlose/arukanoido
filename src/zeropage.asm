@@ -111,22 +111,19 @@ zp_dest_lo:     0
 zp_dest_bi:     0
 
 ;;; Digisound players
-digisound_counter:       0 0
 is_playing_digis:        0
 currently_playing_digis: 0
-;; RLE player
-rle_val:        0
-rle_cnt:        0
-rle_bit:        0
-rle_singles:    0
 raw_play_ptr:
-rle_play_ptr:   0 0
-;; EXM player
-exo_x:          0
-exo_y:          0
-exo_y2:         0
-exo_s:          0 0
+rle_play_ptr:
 exm_play_dptr:  0 0
+rle_val:
+exo_x:          0
+rle_cnt:
+exo_y:          0
+rle_bit:
+exo_y2:         0
+rle_singles:
+exo_s:          0 0
 
 uncleaned_zp:
 
