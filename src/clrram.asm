@@ -1,19 +1,17 @@
 clrram:
-    ldx c
+    ldx cl
     inx
-    inc @(++ c)
-    ldy d
+    inc ch
+    ldy dl
     lda #0
-    sta d
-    beq +n
-l:  sta (d),y
-    iny
+    sta dl
+l:  dex
     beq +m
-n:  dex
+    sta (d),y
+    iny
     bne -l
-    dec @(++ c)
+    inc dh
+    bne -l ; (jmp)
+m:  dec ch
     bne -l
     rts
-
-m:  inc @(++ d)
-    jmp -n
