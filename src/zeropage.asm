@@ -87,14 +87,13 @@ sprites_d:          fill num_sprites  ; Whatever the controllers want.
 ;; Computed.
 sprites_pgl:        fill num_sprites  ; Pre-shifted graphics.
 sprites_pgh:        fill num_sprites
+sprites_d2:         fill num_sprites  ; Whatever the controllers want.
 sprites_dx:         fill num_sprites  ; Ball subpixel position.
 sprites_dy:         fill num_sprites
 sprites_iw:         fill num_sprites  ; Dimensions in chars.
 sprites_ih:         fill num_sprites
 sprites_w:          fill num_sprites  ; Total dimensions in chars (after shift).
 sprites_h:          fill num_sprites
-
-score:      fill num_score_digits
 
 ;;; Decompression
 get_crunched_byte_tmp:  0
@@ -145,7 +144,6 @@ hiscore:    fill num_score_digits
 last_random_value:  0
 
 ;;; Sprites
-sprites_d2:     fill num_sprites ; Whatever the controllers want.
 ;; Screen position add dimensions in chars.  Even and odd positions
 ;; are the two different frames.
 sprites_sx:     fill @(* 2 num_sprites)
@@ -175,6 +173,7 @@ next_powerup_score: fill num_score_digits
 score_silver:       fill num_score_digits
 has_new_score:      0
 has_hiscore:        0
+score:              fill num_score_digits
 
 ;;; Drawing scores
 score1_char_start:    0
