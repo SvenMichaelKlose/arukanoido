@@ -127,7 +127,7 @@ sprite_right:
 ; Y: Sprite index of other sprite.
 find_hit:
     sta find_hit_types
-    stx find_hit_tmp
+    stx tmp
 
     lda sprites_dimensions,x
     and #%111
@@ -136,17 +136,17 @@ find_hit:
     asl
     clc
     adc sprites_x,x
-    sta find_hit_tmp2
+    sta tmp2
 
     lda sprites_dimensions,x
     and #%111000
     clc
     adc sprites_y,x
-    sta find_hit_tmp3
+    sta tmp3
  
     ldy #@(-- num_sprites)
 
-l:  cpy find_hit_tmp    ; Skip same sprite.
+l:  cpy tmp    ; Skip same sprite.
     beq +n
 
     lda sprites_i,y     ; Skip inactive sprite.
@@ -154,11 +154,11 @@ l:  cpy find_hit_tmp    ; Skip same sprite.
     beq +n
 
     lda sprites_y,y
-    cmp find_hit_tmp3
+    cmp tmp3
     bcs +n
 
     lda sprites_x,y
-    cmp find_hit_tmp2
+    cmp tmp2
     bcs +n
 
     lda sprites_dimensions,y
@@ -209,13 +209,13 @@ find_point_hit:
     asl
     clc
     adc sprites_x,x
-    sta find_hit_tmp2
+    sta tmp2
 
     lda sprites_dimensions,x
     and #%111000
     clc
     adc sprites_y,x
-    sta find_hit_tmp3
+    sta tmp3
 
     ldy #@(-- num_sprites)
 l:  lda sprites_i,y

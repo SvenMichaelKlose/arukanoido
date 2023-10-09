@@ -241,9 +241,6 @@ draw_bitmap_height:     0
 draw_bitmap_num_chars:  0
 draw_bitmap_y:          0
 print_score_tmp:        0
-find_hit_tmp:           0
-find_hit_tmp2:          0
-find_hit_tmp3:          0
 find_hit_types:         0
 draw_sprites_tmp:       0
 draw_sprites_tmp2:      0
