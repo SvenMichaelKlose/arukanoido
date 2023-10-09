@@ -14,6 +14,7 @@ cl:
 c:          0   ; Counter
 ch:         0
 
+;;; Screen access
 scr:        0 0 ; Screen pointer (line start)
 col:        0 0 ; Colour RAM pointer
 scrx:       8   ; Screen char X position
@@ -36,14 +37,16 @@ a4:         0
 a5:         0
 
 ;;; IRQ temporaries
-;;; Must not be used outside the IRQ.
 tmp:    0
 tmp2:   0
 tmp3:   0
 tmp4:   0
-call_controllers_x:   0
 add_sprite_x:   0
 add_sprite_y:   0
+call_controllers_x: 0
+
+;;; Global state
+framecounter:         0 0
 
 ;;; Sprite rendering
 draw_sprite_x:          0
@@ -64,8 +67,8 @@ sprite_rows_on_screen:  0 ; Number of rows (+1 with offset line).
 sprite_lines:           0 ; Number of lines.
 sprite_lines_on_screen: 0 ;
 
-;;; Game modes
-
+;;; Game state
+;; Mode
 mode_laser      = 1
 mode_catching   = 2
 mode_disruption = 3
@@ -73,11 +76,7 @@ mode_extended   = 4
 mode:                 0
 mode_break:           0
 
-;;; Game state
-framecounter:         0 0
-digisound_counter:    0 0
-
-;;; Ball controller
+;;; Ball
 ball_x:               0
 ball_y:               0
 has_collision:        0                                                               
@@ -107,7 +106,9 @@ sprites_h:          fill num_sprites
 
 score:      fill num_score_digits
 
-; De-exomizer.
+;;; Decompression
+get_crunched_byte_tmp:  0
+;; Exomizer
 zp_src_hi:      0
 zp_src_lo:      0
 zp_src_bi:      0
@@ -119,33 +120,34 @@ zp_dest_hi:     0
 zp_dest_lo:     0
 zp_dest_bi:     0
 
-;;; RLE player
+;;; Digisound players
+digisound_counter:       0 0
+is_playing_digis:        0
+currently_playing_digis: 0
+;; RLE player
 rle_val:        0
 rle_cnt:        0
 rle_bit:        0
 rle_singles:    0
 raw_play_ptr:
 rle_play_ptr:   0 0
-
-;;; EXM player
-exo_x:                0
-exo_y:                0
-exo_y2:               0
-exo_s:                0 0
-exm_play_dptr:        0 0
+;; EXM player
+exo_x:          0
+exo_y:          0
+exo_y2:         0
+exo_s:          0 0
+exm_play_dptr:  0 0
 
 ; No need to zero out the zero page from here on for a game restart.
 
 uncleaned_zp:
+
+;;; Format
+;;; TODO: Move to lowmem where it isn't cleaned.
 user_screen_origin_x:   0
 user_screen_origin_y:   0
-
-; These do not have to be on page zero.
-is_ntsc:                    0
-is_landscape:               0
-is_playing_digis:           0
-currently_playing_digis:    0
-has_ultimem:                0
+is_ntsc:                0
+is_landscape:           0
 
 zp_end:
     @(check-zeropage-size (- #x00fc num_score_digits))
@@ -164,60 +166,67 @@ sprites_sy:     fill @(* 2 num_sprites)
 sprites_sw:     fill @(* 2 num_sprites)
 sprites_sh:     fill @(* 2 num_sprites)
 
-score1_char_start:    0
-hiscore_char_start:   0
-score2_char_start:    0
-
-laser_has_hit:        0   ; For the laser controller to remember if it hit one the left.
-is_testing_laser_hit: 0
-
 ;;; Printing text
-p_x:    0
-p_y:    0
+scrx2:          0
+p_x:            0
+p_y:            0
+print4x8_char:  0
 
+;;; Brick FX
 brickfx_x:      fill num_brickfx
 brickfx_y:      fill num_brickfx
 brickfx_pos:    0
 brickfx_end:    0
 
+;;; Scores
 next_powerup_score:   fill num_score_digits
 score_silver:         fill num_score_digits
+has_new_score:        0
+has_hiscore:          0
 
-removed_brick_x:    0
-removed_brick_y:    0
+;;; Drawing scores
+score1_char_start:    0
+hiscore_char_start:   0
+score2_char_start:    0
 
-level:              0
-bricks_left:        0
-scrx2:              0
 last_random_value:  0
-exm_needs_data:     0
 
-;;; Bonus creation
-removed_bricks_for_bonus:     0
-hits_before_bonus:  0
-has_missed_bonus:   0
+;;; Music players
+exm_needs_data: 0
+digisound_a:    0
+digisound_x:    0
+digisound_y:    0
+
+;;; Bonus
+removed_bricks_for_bonus:   0
+hits_before_bonus:          0
+has_missed_bonus:           0
+active_bonus:               0
+last_bonus:                 0
+bonus_is_dropping:          0
 
 ;;; TV standard dependant constants
+;; static
 format_params:
-screen_columns:     0
-screen_rows:        0
-vaus_y:             0
-playfield_yc:       0
-txt_1up_x:          0
-txt_1up_y:          0
-score1_x:           0
-score1_y:           0
-txt_hiscore1_x:     0
-txt_hiscore1_y:     0
-hiscore1_x:         0
-hiscore1_y:         0
-txt_2up_x:          0
-txt_2up_y:          0
-score2_x:           0
-score2_y:           0
-color_1up:          0 0
-color_2up:          0 0
-
+screen_columns: 0
+screen_rows:    0
+vaus_y:         0
+playfield_yc:   0
+txt_1up_x:      0
+txt_1up_y:      0
+score1_x:       0
+score1_y:       0
+txt_hiscore1_x: 0
+txt_hiscore1_y: 0
+hiscore1_x:     0
+hiscore1_y:     0
+txt_2up_x:      0
+txt_2up_y:      0
+score2_x:       0
+score2_y:       0
+color_1up:      0 0
+color_2up:      0 0
+;; computed
 double_screen_columns:  0
 y_max:              0
 screen_height:      0
@@ -234,82 +243,89 @@ ball_max_y:         0
 ball_min_y:         0
 screen_gate:        0 0
 
-; Temporaries
-
+;;; Compressed bitmaps
 draw_bitmap_width:      0                                                                             
 draw_bitmap_height:     0
 draw_bitmap_num_chars:  0
 draw_bitmap_y:          0
-find_hit_types:         0
+
+;;; Sprite collisions
 draw_sprites_tmp:       0
 draw_sprites_tmp2:      0
 draw_sprites_tmp3:      0
-print4x8_char:          0
-music_tmp:              0
-digisound_a:            0
-digisound_x:            0
-digisound_y:            0
+find_hit_types:         0
 
-apply_tmp:              0 0
-vcpu_tmp:               0 0
-
-line_addresses_l:       fill 33
-
-get_crunched_byte_tmp:  0
-attraction_mode:        0
+;;; VCPU
+apply_tmp:  0 0
+vcpu_tmp:   0 0
 
 if @*debug?*
-next_bonus:             0
+next_bonus: 0
 end
 
 before_int_vectors:
 
     org $320
 
+line_addresses_l:   fill 33
 line_addresses_h:   fill 33
-lowest_relative_level_row:     0
 
+;;; Game state
 lives:              0
 balls:              0
 is_running_game:    0
 has_two_players:    0
 active_player:      0
+attraction_mode:    0
+;; Level
+lowest_relative_level_row:  0
+level:              0
+bricks_left:        0
+;; Ball
+caught_ball:        0
+ball_release_timer: 0
+ball_speed:         0
+;; Vaus
+vaus_width:         0
+vaus_last_x:        0
+vaus_sprite_index:  0
+;; Laser
+is_firing:          0       ; Laser interval countdown.
+laser_delay_type:   0       ; 0: short, 1: long
+;; Obstacles
+num_obstacles:      0
+; Start and end of current obstacle graphics.
+gfx_obstacles:      0 0
+gfx_obstacles_end:  0 0
+;; DOH
+doh_wait:           0
+num_doh_obstacles:  0
+flashing_doh:       0
 
+;;; Redrawing
 has_moved_sprites:       0
 needs_redrawing_lives:   0
 needs_redrawing_score1:  0
 needs_redrawing_hiscore: 0
 needs_redrawing_score2:  0
 
-active_bonus:      0
-last_bonus:         0
-caught_ball:        0
-ball_release_timer: 0
-vaus_width:         0
-vaus_last_x:        0
-ball_speed:         0
+;;; Paddles
+old_paddle_value:       0 ; Used to detect paddles.
+is_using_paddle:        0 ; Tells if paddles have been detected.
+paddle_move_distance:   0
 
-;;; Laser
-is_firing:          0       ; Laser interval countdown.
-laser_delay_type:   0       ; 0: short, 1: long
-
-;;; Paddle detection
-old_paddle_value:   0       ; Used to detect paddles.
-is_using_paddle:    0       ; Tells if paddles have been detected.
-
-has_new_score:        0
-has_hiscore:          0
-
+;;; Brick collisions
+laser_has_hit:          0 ; For the laser controller to remember if it hit one the left.
+is_testing_laser_hit:   0
 has_removed_brick:      0
-bonus_is_dropping:        0
 num_lives_by_score:     0
 has_paused:             0
 has_hit_brick:          0
 has_hit_silver_brick:   0
 has_hit_golden_brick:   0
 num_hits:               0 ; Used to increase the ball speed.
-
-num_obstacles:          0
+removed_brick_x:        0
+removed_brick_y:        0
 
 ; Position of pre-shifted sprite data.
 preshifted_vaus:            0 0
@@ -318,22 +334,11 @@ preshifted_vaus_extended:   0 0
 preshifted_ball:            0 0
 preshifted_ball_caught:     0 0
 
-; Start and end of current obstacle graphics.
-gfx_obstacles:              0 0
-gfx_obstacles_end:          0 0
-
 ; For 'add_sprite'.
 sprite_inits:           fill @sprite_inits_size
 
-doh_wait:               0
-num_doh_obstacles:      0
-flashing_doh:           0
-
-get_keypress_x:         0
-
-vaus_sprite_index:      0
-
-paddle_move_distance:   0
+has_ultimem:    0
+get_keypress_x: 0
 
 lowmem:
     end
