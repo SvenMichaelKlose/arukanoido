@@ -245,7 +245,6 @@ draw_sprites_tmp:       0
 draw_sprites_tmp2:      0
 draw_sprites_tmp3:      0
 print4x8_char:          0
-make_stars_tmp:         0
 music_tmp:              0
 digisound_a:            0
 digisound_x:            0

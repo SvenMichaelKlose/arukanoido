@@ -110,7 +110,7 @@ l:  lda bg_stars,x
     sta curcol
 
     lda #128
-    sta make_stars_tmp
+    sta tmp2
 
     ; Make random position.
 l1: jsr random
@@ -140,7 +140,7 @@ l:  jsr random
     lda scrx
     ldy scry
     jsr plot
-    dec make_stars_tmp
+    dec tmp2
     bne -l1
 
 clear_intro_text:
