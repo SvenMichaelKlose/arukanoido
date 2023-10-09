@@ -255,12 +255,10 @@ mode_extended   = 4
 mode:               0
 mode_break:         0
 ;; Level
-level_info:
-level_starting_row: 0
-level_ending_row:   0
-level:              0
+level_starting_row: 0 0
+level_ending_row:   0 0
+level:              0 0 0
 bricks_left:        0
-level_info_end:
 ;; Ball
 caught_ball:        0
 ball_release_timer: 0

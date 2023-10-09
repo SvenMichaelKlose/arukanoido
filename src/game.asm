@@ -83,7 +83,13 @@ end
     lda level
     cmp #@(++ doh_level)
     beq -g
+    jsr increase_silver_score
 
+    lda #>bricks1
+    sta bricks
+    jsr get_level
+
+retry:
     ;; Pre-shift obstacle animation.
     ; Clear destination area.
     lda gfx_obstacles
@@ -138,7 +144,6 @@ l:  ldx #0
     sta @(++ gfx_obstacles_end)
 no_obstacle_preshifts:
 
-    jsr increase_silver_score
     jsr clear_screen
 
     ;; Draw DOH instead of level.
@@ -149,13 +154,9 @@ no_obstacle_preshifts:
     jsr init_doh_charset
     bne +m                  ; (jmp)
 
-n:  lda #>bricks1
-    sta bricks
-    jsr get_level
+n:
     jsr draw_level
 m:  jsr draw_walls
-
-retry:
     jsr init_scores_and_labels
     jsr switch_player_score
 
