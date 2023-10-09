@@ -122,7 +122,7 @@ print_score_string:
     jsr print_clear_curchar
 
     lda #0
-    sta print_score_tmp
+    sta tmp3
     ldx #num_score_digits
     ldy #0
 l:  txa
@@ -130,11 +130,11 @@ l:  txa
     tya
     pha
     lda (s),y
-    ora print_score_tmp
-    sta print_score_tmp
+    ora tmp3
+    sta tmp3
     lda (s),y
     bne +n
-    ldx print_score_tmp
+    ldx tmp3
     bne +n
     cpy #@(- num_score_digits 2)
     bcc +m
