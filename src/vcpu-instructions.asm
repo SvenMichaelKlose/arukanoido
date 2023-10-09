@@ -92,18 +92,38 @@ l:  sta (d),y
 ; Clear memory area. Word length.
 i_clrmw:
     ldx cl
+    inc ch
+    ldy dl
+    lda #0
+    sta dl
+    beq +n
+l:  sta (d),y
+    iny
+    beq +m
+n:  dex
+    bne -l
+    dec ch
+    bne -l
+    rts
+m:  inc dh
+    jmp -n
+
+i_clrmw:
+    ldx cl
     inx
     inc ch
     ldy dl
     lda #0
     sta dl
-l:  sta (d),y
+    beq +n
+l:  dex
+    beq +m
+    sta (d),y
     iny
-    bne +n
-    inc dh
-n:  dex
     bne -l
-    dec ch
+    inc dh
+    bne -l ; (jmo)
+m:  dec ch
     bne -l
     rts
 
@@ -113,15 +133,16 @@ i_movmw:
     inx
     inc ch
     ldy #0
-l:  lda (s),y
+l:  dex
+    beq +m
+    lda (s),y
     sta (d),y
     iny
-    bne +n
+    bne -l
     inc sh
     inc dh
-n:  dex
-    bne -l
-    dec ch
+    bne -l ; (jmp)
+m:  dec ch
     bne -l
     rts
 
