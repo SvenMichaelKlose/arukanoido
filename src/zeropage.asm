@@ -14,6 +14,12 @@ cl:
 c:          0   ; Counter
 ch:         0
 
+;;; Temporaries
+tmp:            0
+tmp2:           0
+tmp3:           0
+tmp4:           0
+
 ;;; Screen access
 scr:        0 0 ; Screen pointer (line start)
 col:        0 0 ; Colour RAM pointer
@@ -35,15 +41,6 @@ a2:         0
 a3:         0
 a4:         0
 a5:         0
-
-;;; IRQ temporaries
-tmp:    0
-tmp2:   0
-tmp3:   0
-tmp4:   0
-add_sprite_x:   0
-add_sprite_y:   0
-call_controllers_x: 0
 
 ;;; Global state
 framecounter:         0 0
@@ -67,15 +64,6 @@ sprite_rows_on_screen:  0 ; Number of rows (+1 with offset line).
 sprite_lines:           0 ; Number of lines.
 sprite_lines_on_screen: 0 ;
 
-;;; Game state
-;; Mode
-mode_laser      = 1
-mode_catching   = 2
-mode_disruption = 3
-mode_extended   = 4
-mode:                 0
-mode_break:           0
-
 ;;; Ball
 ball_x:               0
 ball_y:               0
@@ -85,6 +73,7 @@ has_collision:        0
 side_degrees:         0
 
 ;;; Sprite info
+;; Statically initialised (keep order)
 sprites_i:          fill num_sprites  ; Flags.
 sprites_x:          fill num_sprites  ; X positions.
 sprites_y:          fill num_sprites  ; Y positions.
@@ -95,6 +84,7 @@ sprites_fl:         fill num_sprites  ; Function controlling the sprite (low).
 sprites_fh:         fill num_sprites  ; Function controlling the sprite (high).
 sprites_dimensions: fill num_sprites  ; %00rrrccc (r = num rows, c = num cols).
 sprites_d:          fill num_sprites  ; Whatever the controllers want.
+;; Computed.
 sprites_pgl:        fill num_sprites  ; Pre-shifted graphics.
 sprites_pgh:        fill num_sprites
 sprites_dx:         fill num_sprites  ; Ball subpixel position.
@@ -138,8 +128,6 @@ exo_y2:         0
 exo_s:          0 0
 exm_play_dptr:  0 0
 
-; No need to zero out the zero page from here on for a game restart.
-
 uncleaned_zp:
 
 ;;; Format
@@ -157,14 +145,20 @@ hiscore:    fill num_score_digits
 
     org $200
 
-sprites_d2:     fill num_sprites ; Whatever the controllers want.
+last_random_value:  0
 
-; Screen position add dimensions in chars.  Even and odd positions
-; are the two different frames.
+;;; Sprites
+sprites_d2:     fill num_sprites ; Whatever the controllers want.
+;; Screen position add dimensions in chars.  Even and odd positions
+;; are the two different frames.
 sprites_sx:     fill @(* 2 num_sprites)
 sprites_sy:     fill @(* 2 num_sprites)
 sprites_sw:     fill @(* 2 num_sprites)
 sprites_sh:     fill @(* 2 num_sprites)
+;; Temporaries
+add_sprite_x:   0
+add_sprite_y:   0
+call_controllers_x: 0
 
 ;;; Printing text
 scrx2:          0
@@ -188,8 +182,6 @@ has_hiscore:          0
 score1_char_start:    0
 hiscore_char_start:   0
 score2_char_start:    0
-
-last_random_value:  0
 
 ;;; Music players
 exm_needs_data: 0
@@ -271,12 +263,21 @@ line_addresses_l:   fill 33
 line_addresses_h:   fill 33
 
 ;;; Game state
+is_running_game:    0
 lives:              0
 balls:              0
-is_running_game:    0
+;; Players
 has_two_players:    0
 active_player:      0
+;;; Modes
 attraction_mode:    0
+;; Game mode
+mode_laser      = 1
+mode_catching   = 2
+mode_disruption = 3
+mode_extended   = 4
+mode:               0
+mode_break:         0
 ;; Level
 lowest_relative_level_row:  0
 level:              0
