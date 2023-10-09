@@ -151,9 +151,9 @@ no_obstacle_preshifts:
 
 n:  jsr draw_level
 m:  jsr draw_walls
-    jsr make_score_screen
 
 retry:
+    jsr init_scores_and_labels
     jsr switch_player_score
 
     ;; DOH level init

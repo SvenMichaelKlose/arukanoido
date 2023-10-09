@@ -33,5 +33,5 @@ doh_obstacle_init:
                 is_doh_obstacle 0 0 yellow     <gfx_obstacle_doh  >gfx_obstacle_doh <ctrl_doh_obstacle >ctrl_doh_obstacle 9 0 0 0
 sprite_inits_end:
 
-sprite_inits_size = @(- *pc* sprite_inits)
+sprite_inits_size = @(- sprite_inits_end sprite_inits)
     org @(+ loaded_sprite_inits sprite_inits_size)

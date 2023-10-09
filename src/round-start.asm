@@ -76,10 +76,10 @@ o:  stx s
     sta scry
     ldx #255
     jsr print_string
+    inc curchar
 n:
 
     ; Print "READY".
-    inc curchar
     lda #12
     ldy has_two_players
     beq +n
@@ -98,6 +98,7 @@ n:  sta scrx2
     sta @(++ s)
     ldx #255
     jsr print_string
+    inc curchar
 
     jsr wait_for_silence
 

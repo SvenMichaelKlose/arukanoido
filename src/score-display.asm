@@ -1,4 +1,4 @@
-make_score_screen:
+init_scores_and_labels:
     lda #foreground
     sta curchar
 
