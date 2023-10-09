@@ -207,7 +207,7 @@ rotate_bonuses:
     bne -r
 
     ;; Get char address.
-    lda active_bonus
+    lda last_bonus
     asl
     asl
     asl
