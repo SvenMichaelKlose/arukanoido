@@ -56,6 +56,7 @@ n:  clc
     ; Print "PLAYER x".
     lda has_two_players
     beq +n
+    jsr clear_curchar
     ldy active_player
     dey
     bne +m
@@ -129,6 +130,16 @@ l:  ldx #1
     dec tmp
     bne -l
 
+    rts
+
+clear_curchar:
+    lda curchar
+    jsr get_char_addr
+    ldy #8
+    lda #0
+l:  sta (d),y
+    dey
+    bpl -l
     rts
 
 txt_round_nn:   @(string4x8 " ROUND  XX") 255
