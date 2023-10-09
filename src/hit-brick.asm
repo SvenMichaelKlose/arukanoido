@@ -110,7 +110,7 @@ o:  jsr add_to_score
     txa
     pha
     ldx active_player
-    dec bricks_left,x
+    dec @(-- bricks_left),x
     pla
     tax
     inc has_removed_brick   ; (Set flag.)

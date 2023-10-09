@@ -51,6 +51,8 @@ when playing.
 
 ### Title screen keys
 
+* 1: Start one player game.
+* 2: Start twp player game. (experimental)
 * SPACE: Start game.
 * H, J, K, L: Move screen around.
 * F: Switch between landscape (NTSC) and portrait (PAL) format.
