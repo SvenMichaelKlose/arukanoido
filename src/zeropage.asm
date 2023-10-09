@@ -173,10 +173,11 @@ brickfx_pos:    0
 brickfx_end:    0
 
 ;;; Scores
-next_powerup_score:   fill num_score_digits
-score_silver:         fill num_score_digits
-has_new_score:        0
-has_hiscore:          0
+num_lives_by_score: 0
+next_powerup_score: fill num_score_digits
+score_silver:       fill num_score_digits
+has_new_score:      0
+has_hiscore:        0
 
 ;;; Drawing scores
 score1_char_start:    0
@@ -188,14 +189,6 @@ exm_needs_data: 0
 digisound_a:    0
 digisound_x:    0
 digisound_y:    0
-
-;;; Bonus
-removed_bricks_for_bonus:   0
-hits_before_bonus:          0
-has_missed_bonus:           0
-active_bonus:               0
-last_bonus:                 0
-bonus_is_dropping:          0
 
 ;;; TV standard dependant constants
 ;; static
@@ -251,19 +244,9 @@ find_hit_types:         0
 apply_tmp:  0 0
 vcpu_tmp:   0 0
 
-if @*debug?*
-next_bonus: 0
-end
-
-before_int_vectors:
-
-    org $320
-
-line_addresses_l:   fill 33
-line_addresses_h:   fill 33
-
 ;;; Game state
 is_running_game:    0
+has_paused:         0
 lives:              0
 balls:              0
 ;; Players
@@ -286,13 +269,25 @@ bricks_left:        0
 caught_ball:        0
 ball_release_timer: 0
 ball_speed:         0
+num_hits:           0
 ;; Vaus
 vaus_width:         0
 vaus_last_x:        0
 vaus_sprite_index:  0
+;; Bonus
+removed_bricks_for_bonus:   0
+hits_before_bonus:  0
+has_missed_bonus:   0
+active_bonus:       0
+last_bonus:         0
+bonus_is_dropping:  0
+if @*debug?*
+next_bonus:         0
+end
 ;; Laser
 is_firing:          0       ; Laser interval countdown.
 laser_delay_type:   0       ; 0: short, 1: long
+laser_has_hit:      0
 ;; Obstacles
 num_obstacles:      0
 ; Start and end of current obstacle graphics.
@@ -302,6 +297,22 @@ gfx_obstacles_end:  0 0
 doh_wait:           0
 num_doh_obstacles:  0
 flashing_doh:       0
+
+;;; Brick collisions
+is_testing_laser_hit:   0
+has_removed_brick:      0
+has_hit_brick:          0
+has_hit_silver_brick:   0
+has_hit_golden_brick:   0
+removed_brick_x:        0
+removed_brick_y:        0
+
+before_int_vectors:
+
+    org $320
+
+line_addresses_l:   fill 33
+line_addresses_h:   fill 33
 
 ;;; Redrawing
 has_moved_sprites:       0
@@ -314,19 +325,6 @@ needs_redrawing_score2:  0
 old_paddle_value:       0 ; Used to detect paddles.
 is_using_paddle:        0 ; Tells if paddles have been detected.
 paddle_move_distance:   0
-
-;;; Brick collisions
-laser_has_hit:          0 ; For the laser controller to remember if it hit one the left.
-is_testing_laser_hit:   0
-has_removed_brick:      0
-num_lives_by_score:     0
-has_paused:             0
-has_hit_brick:          0
-has_hit_silver_brick:   0
-has_hit_golden_brick:   0
-num_hits:               0 ; Used to increase the ball speed.
-removed_brick_x:        0
-removed_brick_y:        0
 
 ; Position of pre-shifted sprite data.
 preshifted_vaus:            0 0
