@@ -20,7 +20,8 @@ m:  lda #<score_100
     dec mode_break      ; Start animation.
     bne -r
     lda #0              ; Signal end of game to main loop.
-    sta bricks_left
+    ldy active_player
+    sta @(-- bricks_left),y
     jmp remove_sprite
 
     ; Check on collision with obstacle.

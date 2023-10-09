@@ -6,7 +6,12 @@ hit_doh:
     bne +n
     lda #doh_flash_duration
     sta flashing_doh
-    dec bricks_left
+    txa
+    pha
+    ldx active_player
+    dec @(-- bricks_left),x
+    pla
+    tax
 n:  rts
 
 ;;; Check if a brick has been hit.
@@ -102,7 +107,12 @@ n:
 o:  jsr add_to_score
 
     ;; Keep track of removed bricks,
-    dec bricks_left
+    txa
+    pha
+    ldx active_player
+    dec bricks_left,x
+    pla
+    tax
     inc has_removed_brick   ; (Set flag.)
 
     ;; Vanish brick from screen and brick map.
@@ -115,11 +125,11 @@ o:  jsr add_to_score
     sta (tmp),y
 
     inc has_hit_brick       ; (Set flag.)
+no_brick_hit:
     rts
 
     ;; Handle golden brick.
 golden:
     jsr add_brick_fx
     inc has_hit_golden_brick    ; (Set flag.)
-no_brick_hit:
     rts

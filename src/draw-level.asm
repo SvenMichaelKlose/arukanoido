@@ -16,16 +16,24 @@ m:  jsr get_decrunched_byte
     tax
     bne -l  ; (jmp)
 
-n:  stx bricks_left ; (X=0)
+n:  ldx active_player
+    lda #0
+    sta @(-- bricks_left),x
 
     ;; Clear brick map.
-    0
-    clrmw <bricks1 >bricks1 $00 $02
-    0
+    lda #0
+    sta dl
+    sta cl
+    lda #2
+    sta ch
+    lda bricks
+    sta dh
+    jsr clrram
 
     ;; Get starting row.
     jsr get_decrunched_byte
-    sta level_starting_row
+    ldy active_player
+    sta @(-- level_starting_row),y
     sec
     adc playfield_yc
     sta scry
@@ -46,7 +54,8 @@ l:  jsr scraddr
     ;; Count number of bricks.
     cmp #b_golden
     beq +n
-    inc bricks_left
+    ldx active_player
+    inc @(-- bricks_left),x
 
     ;; Store brick type in brick map.
 n:  cmp #b_silver
@@ -71,16 +80,19 @@ o:  inc scrx
     ; Save lowest row index to guide obstacle movements.
 r:  ldy scry
     dey
-    sty level_ending_row
+    tya
+    ldy active_player
+    sta @(-- level_ending_row),y
     rts
 
 draw_level:
-    lda level_ending_row
+    ldy active_player
+    lda @(-- level_ending_row),y
     sec
-    sbc level_starting_row
+    sbc @(-- level_starting_row),y
     sta tmp
 
-    lda level_starting_row
+    lda @(-- level_starting_row),y
     sec
     adc playfield_yc
     sta scry

@@ -44,6 +44,17 @@ if @*demo?*
     jmp end_of_demo
 end
 
+switch_to_player_bricks:
+    lda #>bricks1
+    ldy active_player
+    dey
+    beq +n
+    lda #>bricks2
+n:  sta bricks
+    rts
+
+g:  jmp game_won
+
 game:
     lda #snd_theme
     ldx #<txt_round_intro
@@ -60,37 +71,37 @@ game:
     ldy has_two_players
     beq +n
     sta lives2
+    inc active_player
+    lda #1
+    sta level
+    sta @(+ level 2)
+    jsr switch_to_player_bricks
+    jsr get_level
+    dec active_player
 n:
 
 next_level:
+    lda #0
+    sta is_running_game
+    sta mode_break
+
+    ldx active_player
+    inc level,x
+    lda level,x
+    sta level
+    cmp #@(++ doh_level)
+    beq -g
 
 if @*demo?*
     lda level
     cmp #@(++ num_demo_levels)
     bne +n
     jmp end_of_demo
-
-g:  jmp game_won
-
 n:
 end
 
-    lda #0
-    sta is_running_game
-    sta mode_break
-
-    inc level
-    lda level
-    cmp #@(++ doh_level)
-    beq -g
     jsr increase_silver_score
-
-    lda #>bricks1
-    ldy active_player
-    dey
-    beq +n
-    lda #>bricks2
-n:  sta bricks
+    jsr switch_to_player_bricks
     jsr get_level
 
 retry:
@@ -146,19 +157,20 @@ l:  ldx #0
     sta gfx_obstacles_end
     lda @(++ d)
     sta @(++ gfx_obstacles_end)
-no_obstacle_preshifts:
 
+no_obstacle_preshifts:
     jsr clear_screen
+    ldx active_player
+    lda level,x
+    sta level
 
     ;; Draw DOH instead of level.
-    lda level
     cmp #doh_level
     bne +n
-
     jsr init_doh_charset
     bne +m                  ; (jmp)
 
-n:
+n:  jsr switch_to_player_bricks
     jsr draw_level
 m:  jsr draw_walls
     jsr init_scores_and_labels
@@ -169,7 +181,8 @@ m:  jsr draw_walls
     cmp #doh_level
     bne +n
     lda #16
-    sta bricks_left
+    ldy active_player
+    sta @(-- bricks_left),y
     jsr draw_doh
     lda #240
     sta doh_wait
@@ -234,7 +247,8 @@ if @*shadowvic?*
 end
 
     ; Handle level end.
-    lda bricks_left
+    ldy active_player
+    lda @(-- bricks_left),y
     bne +n
     jmp level_end
 n:  lda is_running_game
@@ -291,7 +305,8 @@ if @*demo?*
     beq end_of_demo2
 end
     lda #0
-    sta bricks_left
+    ldy active_player
+    sta @(-- bricks_left),y
     jmp next_level
 
 n:  cmp #keycode_c
@@ -342,7 +357,6 @@ n:  lda #0
 lose_life:
     jsr wait_for_silence
     jsr remove_sprites
-    jsr clear_screen_of_sprites
 
     ; Decrement lives.
     ldx active_player
