@@ -186,7 +186,12 @@ r:  rts
 
 ;;; Extra life
 apply_bonus_p:
-    inc lives
+    txa
+    pha
+    ldx active_player
+    inc @(-- lives1),x
+    pla
+    tax
     inc needs_redrawing_lives
     lda #snd_bonus_life
     jmp play_sound

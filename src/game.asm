@@ -55,7 +55,8 @@ game:
     jsr init_foreground
 
     lda #default_num_lives
-    sta lives
+    sta lives1
+    sta lives2
     jsr init_score
 
 next_level:
@@ -287,7 +288,8 @@ n:  cmp #keycode_c
 n:  cmp #keycode_l
     bne +n
     lda #10
-    sta lives
+    ldy active_player
+    sta @(-- lives1),y
     lda #snd_bonus_life
     jsr play_sound
     inc needs_redrawing_lives
@@ -328,7 +330,8 @@ lose_life:
     jsr wait_for_silence
     jsr remove_sprites
     jsr clear_screen_of_sprites
-    dec lives
+    ldx active_player
+    dec @(-- lives1),x
     beq +l
     jmp retry
 l:  jmp game_over

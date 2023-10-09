@@ -3,7 +3,8 @@ draw_lives:
     bne draw_lives_landscape
 
 draw_lives_portrait:
-    ldx lives
+    ldy active_player
+    ldx @(-- lives1),y
     dex
     cpx #9
     bcs +n
@@ -31,7 +32,8 @@ draw_lives_landscape:
     sta curchar
     lda #@(+ multicolor white)
     sta curcol
-    ldx lives
+    ldy active_player
+    ldx @(-- lives1),y
     dex
     beq +done
 l:  jsr plot_life

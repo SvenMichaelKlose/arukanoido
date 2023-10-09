@@ -62,7 +62,7 @@ m:  ldx #<txt_player2
     ldy #>txt_player2
 o:  stx s
     sty @(++ s)
-    lda #6
+    lda #7
     sta scrx2
     lda playfield_yc
     clc

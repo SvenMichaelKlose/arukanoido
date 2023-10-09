@@ -240,7 +240,8 @@ vcpu_tmp:   0 0
 ;;; Game state
 is_running_game:    0
 has_paused:         0
-lives:              0
+lives1:             0
+lives2:             0
 balls:              0
 ;;; Modes
 attraction_mode:    0
