@@ -190,7 +190,7 @@ n:
     bne +n
     lda #1
     sta has_two_players
-    lda #2
+    lda #1
     sta active_player
     jmp +f
 n:

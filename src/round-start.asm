@@ -52,10 +52,36 @@ n:  clc
     ldx #60
     jsr wait
 
+    ; Print "PLAYER x".
+    ldy active_player
+    beq +n
+    ldx #<txt_player1
+    ldy #>txt_player1
+    bne +o ; (jmp)
+m:  ldx #<txt_player2
+    ldy #>txt_player2
+o:  stx s
+    sty @(++ s)
+    lda #6
+    sta scrx2
+    lda playfield_yc
+    clc
+    adc #20
+    clc
+    adc #2
+    sta scry
+    ldx #255
+    jsr print_string
+
+
     ; Print "READY".
     inc curchar
     lda #12
-    sta scrx2
+    ldy active_player
+    beq +n
+    clc
+    adc #5
+n:  sta scrx2
     lda playfield_yc
     clc
     adc #20
@@ -72,7 +98,7 @@ n:  clc
     jsr wait_for_silence
 
     ; Remove message.
-    lda #5
+    lda #1
     sta scrx
 l:  lda playfield_yc
     clc
@@ -102,4 +128,6 @@ l:  ldx #1
 
 txt_round_nn:   @(string4x8 " ROUND  XX") 255
 txt_ready:      @(string4x8 " READY") 255
+txt_player1:    @(string4x8 " PLAYER 1") 255
+txt_player2:    @(string4x8 " PLAYER 2") 255
 __end_round_start:
