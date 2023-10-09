@@ -13,7 +13,7 @@ n:  dex
 
     0
     clrmw $00 $02 $13 $01
-lowmem_ofs = @(- lowmem #x320)
+lowmem_ofs = @(- uncleaned_lowmem #x320)
     clrmw $20 $03 <lowmem_ofs >lowmem_ofs
 
 if @(not *debug?*)
@@ -119,6 +119,11 @@ toplevel:
     jsr init_screen
     jsr clear_screen
 
+    lda #0
+    sta attraction_mode
+    sta has_two_players
+    sta active_player
+
     0
     stzb curchar 1
     call <print_scores_and_labels >print_scores_and_labels
@@ -159,9 +164,6 @@ m:  stx scrx2
 if @*shadowvic?*
     $22 $02
 end
-
-    lda #0
-    sta attraction_mode
 
 loop:
     jsr test_fire

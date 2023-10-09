@@ -11,11 +11,18 @@ l:  lda score_20000,x
     dex
     bpl -l
 
+    ldy active_player
+    dey
+    bne +n
     lda #<score1
     sta score
     lda #>score1
     sta @(++ score)
-
+    rts
+n:  lda #<score2
+    sta score
+    lda #>score2
+    sta @(++ score)
     rts
 
 init_hiscore:
@@ -32,7 +39,9 @@ add_to_score:
     txa
     pha
 
-    inc needs_redrawing_score1
+    ldx active_player
+    dex
+    inc needs_redrawing_score1,x
 
     lda score
     sta d

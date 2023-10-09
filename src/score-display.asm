@@ -79,8 +79,7 @@ print_score1_raw:
     sta s
     lda #>score1
     sta @(++ s)
-    jsr print_score_string
-    rts
+    jmp print_score_string
 
 print_hiscore:
     lda hiscore_char_start
@@ -96,8 +95,7 @@ print_hiscore_raw:
     sta s
     lda #>hiscore
     sta @(++ s)
-    jsr print_score_string
-    rts
+    jmp print_score_string
 
 print_score2:
     lda score2_char_start
@@ -113,8 +111,7 @@ print_hiscore_raw:
     sta s
     lda #>score2
     sta @(++ s)
-    jsr print_score_string
-    rts
+    jmp print_score_string
 
 ; scrx2/scry: Text position
 ; curchar: Character to print into.

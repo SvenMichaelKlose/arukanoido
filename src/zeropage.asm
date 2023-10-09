@@ -242,9 +242,6 @@ is_running_game:    0
 has_paused:         0
 lives:              0
 balls:              0
-;; Players
-has_two_players:    0
-active_player:      0
 ;;; Modes
 attraction_mode:    0
 ;; Game mode
@@ -304,8 +301,8 @@ removed_brick_y:        0
 has_moved_sprites:       0
 needs_redrawing_lives:   0
 needs_redrawing_score1:  0
-needs_redrawing_hiscore: 0
 needs_redrawing_score2:  0
+needs_redrawing_hiscore: 0
 
 ;;; Paddles
 old_paddle_value:       0 ; Used to detect paddles.
@@ -332,5 +329,13 @@ line_addresses_h:   fill 33
 
 ; For 'add_sprite'.
 sprite_inits:           fill @sprite_inits_size
+
+uncleaned_lowmem:
+
+;;; Game configuration
+;; Players
+has_two_players:    0
+active_player:      0
+
 lowmem:
     end
