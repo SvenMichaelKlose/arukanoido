@@ -1,6 +1,7 @@
 init_score:
     0
-    clrmb <score >score num_score_digits
+    clrmb <score1 >score1 num_score_digits
+    clrmb <score2 >score2 num_score_digits
     clrmb <score_silver >score_silver num_score_digits
     0
 
@@ -9,6 +10,12 @@ l:  lda score_20000,x
     sta next_powerup_score,x
     dex
     bpl -l
+
+    lda #<score1
+    sta score
+    lda #>score1
+    sta @(++ score)
+
     rts
 
 init_hiscore:
@@ -27,17 +34,17 @@ add_to_score:
 
     inc needs_redrawing_score1
 
-    lda #<score
+    lda score
     sta d
-    lda #>score
+    lda @(++ score)
     sta @(++ d)
     ldy #@(-- num_score_digits)
     jsr bcd_add
 
     ; Compare score with hiscore.
-    lda #<score
+    lda score
     sta s
-    lda #>score
+    lda @(++ score)
     sta @(++ s)
     lda #<hiscore
     sta d
@@ -53,15 +60,15 @@ add_to_score:
     lda #1
     sta has_hiscore
     ldy #@(-- num_score_digits)
-l:  lda score,y
+l:  lda (score),y
     sta hiscore,y
     dey
     bpl -l
 
     ; Compare score with next powerup score.
-n:  lda #<score
+n:  lda score
     sta s
-    lda #>score
+    lda @(++ score)
     sta @(++ s)
     lda #<next_powerup_score
     sta d

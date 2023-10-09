@@ -75,9 +75,9 @@ print_score1_raw:
     sta scrx2
     lda score1_y
     sta scry
-    lda #<score
+    lda #<score1
     sta s
-    lda #>score
+    lda #>score1
     sta @(++ s)
     jsr print_score_string
     rts
@@ -109,9 +109,9 @@ print_hiscore_raw:
     sta scrx2
     lda score2_y
     sta scry
-    lda #<score
+    lda #<score2
     sta s
-    lda #>score
+    lda #>score2
     sta @(++ s)
     jsr print_score_string
     rts

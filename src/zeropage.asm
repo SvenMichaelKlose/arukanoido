@@ -118,6 +118,8 @@ exo_y2:         0
 rle_singles:
 exo_s:          0 0
 
+score:          0 0
+
 uncleaned_zp:
 
 ;;; Format
@@ -167,7 +169,8 @@ next_powerup_score: fill num_score_digits
 score_silver:       fill num_score_digits
 has_new_score:      0
 has_hiscore:        0
-score:              fill num_score_digits
+score1:             fill num_score_digits
+score2:             fill num_score_digits
 
 ;;; Drawing scores
 score1_char_start:    0
