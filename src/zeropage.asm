@@ -45,13 +45,9 @@ a5:         0
 ;;; Global state
 framecounter:         0 0
 
-;;; Sprite rendering
+;;; Sprites
 draw_sprite_x:          0
 next_sprite_char:       0 ; Next free character for sprites.
-sprite_shift_y:         0 ; Character line where sprite starts.
-sprite_data_top:        0 ; Start of sprite data in upper chars.
-sprite_data_bottom:     0 ; Start of sprite data in lower chars.
-sprite_height_top:      0 ; Sprite lines in upper chars.
 spriteframe:            0 ; Character offset into lower or upper half of charset.
 sprite_rr:              0 ; Round-robin sprite allocation index.
 sprite_char:            0 ; First char.
@@ -63,16 +59,6 @@ sprite_rows:            0 ; Number of rows.
 sprite_rows_on_screen:  0 ; Number of rows (+1 with offset line).
 sprite_lines:           0 ; Number of lines.
 sprite_lines_on_screen: 0 ;
-
-;;; Ball
-ball_x:               0
-ball_y:               0
-has_collision:        0                                                               
-
-;;; Reflection
-side_degrees:         0
-
-;;; Sprite info
 ;; Statically initialised (keep order)
 sprites_i:          fill num_sprites  ; Flags.
 sprites_x:          fill num_sprites  ; X positions.
@@ -94,6 +80,14 @@ sprites_iw:         fill num_sprites  ; Dimensions in chars.
 sprites_ih:         fill num_sprites
 sprites_w:          fill num_sprites  ; Total dimensions in chars (after shift).
 sprites_h:          fill num_sprites
+
+;;; Ball
+ball_x:               0
+ball_y:               0
+has_collision:        0
+
+;;; Reflection
+side_degrees:         0
 
 ;;; Decompression
 get_crunched_byte_tmp:  0
@@ -303,13 +297,6 @@ has_hit_golden_brick:   0
 removed_brick_x:        0
 removed_brick_y:        0
 
-before_int_vectors:
-
-    org $320
-
-line_addresses_l:   fill 33
-line_addresses_h:   fill 33
-
 ;;; Redrawing
 has_moved_sprites:       0
 needs_redrawing_lives:   0
@@ -329,11 +316,18 @@ preshifted_vaus_extended:   0 0
 preshifted_ball:            0 0
 preshifted_ball_caught:     0 0
 
-; For 'add_sprite'.
-sprite_inits:           fill @sprite_inits_size
-
 has_ultimem:    0
 get_keypress_x: 0
 
+
+before_int_vectors:
+
+    org $320
+
+line_addresses_l:   fill 33
+line_addresses_h:   fill 33
+
+; For 'add_sprite'.
+sprite_inits:           fill @sprite_inits_size
 lowmem:
     end
