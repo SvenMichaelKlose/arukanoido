@@ -288,7 +288,7 @@ pace_obstacle_again:
     sty sprites_d,x
 pace_obstacle:
     ;; Check if obstacle left the level zone.
-    lda lowest_relative_level_row
+    lda level_ending_row
     asl
     asl
     asl

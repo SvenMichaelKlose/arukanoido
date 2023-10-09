@@ -1,4 +1,4 @@
-draw_level:
+get_level:
     lda #<level_data
     ldy #>level_data
     jsr init_decruncher
@@ -25,13 +25,14 @@ n:  stx bricks_left ; (X=0)
 
     ;; Get starting row.
     jsr get_decrunched_byte
+    sta level_starting_row
     sec
     adc playfield_yc
     sta scry
 
 m:  lda #1
     sta scrx
-l:  jsr scrcoladdr
+l:  jsr scraddr
 
     jsr scr2brick_in_d
 
@@ -42,15 +43,6 @@ l:  jsr scrcoladdr
     cmp #15
     beq +r              ; End of level data.
 
-    ;; Plot brick.
-    ldy scrx
-    pha
-    jsr brick_to_char
-    sta (scr),y
-    lda curcol
-    sta (col),y
-    pla
-
     ;; Count number of bricks.
     cmp #b_golden
     beq +n
@@ -59,14 +51,13 @@ l:  jsr scrcoladdr
     ;; Store brick type in brick map.
 n:  cmp #b_silver
     bne +n
-    ; (One more hit for silver bricks every 8th level.)
+    ; One more hit for silver bricks every 8th level.
     lda level
     lsr
     lsr
     lsr
     clc
     adc #@(++ b_silver)
-
 n:  sta (d),y
 
     ; Step to next position.
@@ -80,11 +71,56 @@ o:  inc scrx
     ; Save lowest row index to guide obstacle movements.
 r:  ldy scry
     dey
-    sty lowest_relative_level_row
+    sty level_ending_row
+    rts
+
+draw_level:
+    lda level_ending_row
+    sec
+    sbc level_starting_row
+    sta tmp
+
+    lda level_starting_row
+    sec
+    adc playfield_yc
+    sta scry
+
+m:  lda #1
+    sta scrx
+l:  jsr scrcoladdr
+    jsr scr2brick_in_d
+
+    ;; Plot brick.
+    lda (d),y
+    jsr brick_to_char
+    sta (scr),y
+    lda curcol
+    sta (col),y
+
+    ; Step to next position.
+    inc scrx
+    lda scrx
+    cmp #14
+    bne -l
+    inc scry
+    dec tmp
+    bne -m      ; (jmp)
+    rts
+
+scr2brick_in_d:
+    ; Make pointer into brick map.
+    lda scr
+    sta d
+    lda @(++ scr)
+    ora #>bricks
+    sta @(++ d)
     rts
 
 brick_to_char:
-    tax
+    cmp #b_silver
+    bcc +n
+    lda #b_silver
+n:  tax
     lda @(-- brick_colors),x
     sta curcol
     txa
@@ -181,13 +217,4 @@ done:
     pla
     pla
     tax
-    rts
-
-scr2brick_in_d:
-    ; Make pointer into brick map.
-    lda scr
-    sta d
-    lda @(++ scr)
-    ora #>bricks
-    sta @(++ d)
     rts

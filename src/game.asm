@@ -149,7 +149,8 @@ no_obstacle_preshifts:
     jsr init_doh_charset
     bne +m                  ; (jmp)
 
-n:  jsr draw_level
+n:  jsr get_level
+    jsr draw_level
 m:  jsr draw_walls
 
 retry:
