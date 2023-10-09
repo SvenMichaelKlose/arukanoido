@@ -147,11 +147,19 @@ n:
     beq +l
 
     ;; Blink score label of active player.
+    ldy active_player
+    dey
+    bne +m
     lda color_1up
     sta d
     lda @(++ color_1up)
     sta @(++ d)
-    ldx #red
+    bne +o ; (jmp)
+m:  lda color_2up
+    sta d
+    lda @(++ color_2up)
+    sta @(++ d)
+o:  ldx #red
     lda framecounter
     and #%00100000
     bne +n
