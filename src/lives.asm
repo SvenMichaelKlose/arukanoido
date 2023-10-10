@@ -42,8 +42,7 @@ l:  jsr plot_life
 done:
     lda #0
     sta curchar
-    jsr plot_scr
-    rts
+    jmp plot_scr
 
 plot_life:
     jsr plot_scr
