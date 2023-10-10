@@ -105,6 +105,11 @@ end
     jsr get_level
 
 retry:
+    jsr clear_screen
+    ldx active_player
+    lda level,x
+    sta level
+
     ;; Pre-shift obstacle animation.
     ; Clear destination area.
     lda gfx_obstacles
@@ -159,10 +164,6 @@ l:  ldx #0
     sta @(++ gfx_obstacles_end)
 
 no_obstacle_preshifts:
-    jsr clear_screen
-    ldx active_player
-    lda level,x
-    sta level
 
     ;; Draw DOH instead of level.
     cmp #doh_level
