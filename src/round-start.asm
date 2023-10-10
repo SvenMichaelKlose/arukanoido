@@ -53,7 +53,7 @@ n:  clc
     ldx #60
     jsr wait
 
-    ; Print "PLAYER x".
+    ; Print "PLAYER X".
     lda has_two_players
     beq +n
     jsr clear_curchar
@@ -76,6 +76,8 @@ o:  stx s
     adc #2
     sta scry
     ldx #255
+    inc curchar
+    jsr clear_curchar
     jsr print_string
     inc curchar
 n:
