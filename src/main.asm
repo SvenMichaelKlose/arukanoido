@@ -35,77 +35,77 @@ preshift_common_sprites:
     stmw <d >d $00 $04
     0
 
-    lda d
+    lda dl
     sta preshifted_vaus
-    lda @(++ d)
+    lda dh
     sta @(++ preshifted_vaus)
     lda #<gfx_vaus
-    sta s
+    sta sl
     lda #>gfx_vaus
-    sta @(++ s)
+    sta sh
     ldx #1
     ldy #10
     jsr preshift_huge_sprite
 
-    lda d
+    lda dl
     sta preshifted_vaus_laser
-    lda @(++ d)
+    lda dh
     sta @(++ preshifted_vaus_laser)
     lda #<gfx_vaus_laser
-    sta s
+    sta sl
     lda #>gfx_vaus_laser
-    sta @(++ s)
+    sta sh
     ldy #10
     jsr preshift_huge_sprite
 
-    lda d
+    lda dl
     sta preshifted_vaus_extended
-    lda @(++ d)
+    lda dh
     sta @(++ preshifted_vaus_extended)
     lda #<gfx_vaus_extended
-    sta s
+    sta sl
     lda #>gfx_vaus_extended
-    sta @(++ s)
+    sta sh
     ldy #11
     jsr preshift_huge_sprite
 
-    lda d
+    lda dl
     sta preshifted_ball
-    lda @(++ d)
+    lda dh
     sta @(++ preshifted_ball)
     lda #<gfx_ball
-    sta s
+    sta sl
     lda #>gfx_ball
-    sta @(++ s)
+    sta sh
     dex
     ldy #9
     jsr preshift_huge_sprite
 
-    lda d
+    lda dl
     sta preshifted_ball_caught
-    lda @(++ d)
+    lda dh
     sta @(++ preshifted_ball_caught)
     lda #<gfx_ball_caught
-    sta s
+    sta sl
     lda #>gfx_ball_caught
-    sta @(++ s)
+    sta sh
     ldy #9
     jsr preshift_huge_sprite
 
-    lda d
+    lda dl
     sta @(+ laser_init sprite_init_pgl)
-    lda @(++ d)
+    lda dh
     sta @(+ laser_init sprite_init_pgh)
     lda #<gfx_laser
-    sta s
+    sta sl
     lda #>gfx_laser
-    sta @(++ s)
+    sta sh
     ldy #9
     jsr preshift_huge_sprite
 
-    lda d
+    lda dl
     sta gfx_obstacles
-    lda @(++ d)
+    lda dh
     sta @(++ gfx_obstacles)
     rts
 

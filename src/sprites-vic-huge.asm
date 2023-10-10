@@ -67,7 +67,7 @@ n:
     asl
     asl
     asl
-    sta d
+    sta dl
     pha
     lda sprite_char
     lsr
@@ -77,7 +77,7 @@ n:
     lsr
     clc
     adc #>charset
-    sta @(++ d)
+    sta dh
     pha
 
     ;; Allocate chars.
@@ -127,10 +127,10 @@ l:  ; Get screen address.
 
     ; Not in our frame. Get pointer into brick map.
     lda scr
-    sta s
+    sta sl
     lda @(++ scr)
     ora bricks
-    sta @(++ s)
+    sta sh
 
     ; Usually a DOH char at this position?
     ldy scrx
@@ -146,7 +146,7 @@ q:  tya
     asl
     asl
     asl
-    sta s
+    sta sl
     tya
     lsr
     lsr
@@ -155,7 +155,7 @@ q:  tya
     lsr
     clc
     adc #>charset
-    sta @(++ s)
+    sta sh
 
     ldy #0
     lda (s),y
@@ -202,12 +202,12 @@ m:  lda #0
     sta (d),y
 
 n:  inc scry
-    lda d
+    lda dl
     clc
     adc #8
-    sta d
+    sta dl
     bcc +n
-    inc @(++ d)
+    inc dh
 n:  dec draw_sprites_tmp2
     bne +l3
 
@@ -217,18 +217,18 @@ n:  dec draw_sprites_tmp2
 
     ;; Get destination address in charset.
     pla
-    sta @(++ d)
+    sta dh
     pla
-    sta d
+    sta dl
 
     ;; Add Y char offset.
     lda sprites_y,x
     and #%111
     clc
-    adc d
-    sta d
+    adc dl
+    sta dl
     bcc +n
-    inc @(++ d)
+    inc dh
 n:
 
     lda sprite_cols
@@ -244,9 +244,9 @@ l2b:jmp -l2
 
     ;; Draw pre-shifted graphics.
     ; Get sprite graphics.
-l:  sta @(++ s)
+l:  sta sh
     lda sprites_pgl,x
-    sta s
+    sta sl
 
     ; Make number of chars number of bytes.
     ldy sprites_dimensions,x
@@ -268,20 +268,20 @@ l:  sta @(++ s)
 n:  tay
 
     ; Subtract column bytes from total.
-    lda s
+    lda sl
     sec
     sbc sprite_lines
     bcs +l4
-    dec @(++ s)
+    dec sh
 
     ; Multiply bytes by shifts.
 l4: clc
     adc draw_sprites_tmp3
     bcc +n3
-    inc @(++ s)
+    inc sh
 n3: dey
     bne -l4
-    sta s
+    sta sl
 
     lda sprite_cols_on_screen
     sta draw_sprites_tmp2
@@ -329,21 +329,21 @@ l:  lda (s),y
     beq plot_chars
 
     ;; Step to next screen column.
-    lda d
+    lda dl
     clc
     adc sprite_lines_on_screen
-    sta d
+    sta dl
     bcc +n
-    inc @(++ d)
+    inc dh
 n:
 
     ;; Step to next sprite column.
-    lda s
+    lda sl
     clc
     adc sprite_lines
-    sta s
+    sta sl
     bcc +n
-    inc @(++ s)
+    inc sh
 n:  jmp -l2
 
 slow_shift:
@@ -357,9 +357,9 @@ slow_shift:
 
     ;; Get sprite graphics.
     lda sprites_gl,x
-    sta s
+    sta sl
     lda sprites_gh,x
-    sta @(++ s)
+    sta sh
 
     ;; Draw left half of sprite column.
 l:  ldy sprite_lines
@@ -367,12 +367,12 @@ l:  ldy sprite_lines
     jsr _blit_right_loop
 
     ;; Step to next screen column.
-    lda d
+    lda dl
     clc
     adc sprite_lines_on_screen
-    sta d
+    sta dl
     bcc +n
-    inc @(++ d)
+    inc dh
 n:
 
     ;; Draw right half of sprite column.
@@ -389,12 +389,12 @@ n:
     beq +plot_chars
 
     ;; Step to next sprite graphics column.
-    lda s
+    lda sl
     clc
     adc sprite_lines
-    sta s
+    sta sl
     bcc -l
-    inc @(++ s)
+    inc sh
     jmp -l
 
     ;;; Plot the filled chars to screen.

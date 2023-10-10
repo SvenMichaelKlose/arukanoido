@@ -77,9 +77,9 @@ n:  pla
 remove_silver:
     ; Silver brick's score is 50 multiplied by round number.
     lda #<score_silver
-    sta s
+    sta sl
     lda #>score_silver
-    sta @(++ s)
+    sta sh
     bne +o  ; (jmp)
 
     ;; Remove regular brick.
@@ -101,9 +101,9 @@ n:
     lda (tmp),y
     tay
     lda brick_scores_l,y
-    sta s
+    sta sl
     lda brick_scores_h,y
-    sta @(++ s)
+    sta sh
 o:  jsr add_to_score
 
     ;; Keep track of removed bricks,

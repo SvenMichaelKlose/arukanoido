@@ -102,10 +102,10 @@ l3: lda (scr),y
 
     ; Make pointer into brick map.
     lda scr
-    sta d
+    sta dl
     lda @(++ scr)
     ora bricks
-    sta @(++ d)
+    sta dh
 
     ; Check if DOH char
     lda (d),y

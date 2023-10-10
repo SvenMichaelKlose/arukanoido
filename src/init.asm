@@ -55,17 +55,17 @@ end
 
 if @*rom?*
     lda #<loaded_lowmem
-    sta s
+    sta sl
     lda #>loaded_lowmem
-    sta @(++ s)
+    sta sh
     lda #<lowmem
-    sta d
+    sta dl
     lda #>lowmem
-    sta @(++ d)
+    sta dh
     lda #<lowmem_size
-    sta c
+    sta cl
     lda #>lowmem_size
-    sta @(++ c)
+    sta ch
     lda #0
     jsr moveram
 

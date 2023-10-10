@@ -13,9 +13,9 @@ ctrl_vaus:
     lda #2              ; (1 multi-color pixel)
     jsr sprite_right
 m:  lda #<score_100
-    sta s
+    sta sl
     lda #>score_100
-    sta @(++ s)
+    sta sh
     jsr add_to_score
     dec mode_break      ; Start animation.
     bne -r

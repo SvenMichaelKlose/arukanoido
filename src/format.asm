@@ -70,20 +70,20 @@ set_format_common:
 
     ; Make line addresses.
     lda #<screen
-    sta s
+    sta sl
     lda #>screen
-    sta @(++ s)
+    sta sh
     ldx #0
-l:  lda s
+l:  lda sl
     sta line_addresses_l,x
-    lda @(++ s)
+    lda sh
     sta line_addresses_h,x
-    lda s
+    lda sl
     clc
     adc screen_columns
-    sta s
+    sta sl
     bcc +n
-    inc @(++ s)
+    inc sh
 n:  inx
     cpx screen_rows
     bcc -l

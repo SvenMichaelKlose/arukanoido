@@ -46,29 +46,29 @@ replace_sprite:
     tya
     clc
     adc #<sprite_inits
-    sta s
+    sta sl
     lda #>sprite_inits
     adc #0
-    sta @(++ s)
+    sta sh
 
     ; Make pointer into 'sprites_i'.
 n:  txa
     clc
     adc #sprites_i
-    sta d
+    sta dl
     ldy #0
-    sty @(++ d)
+    sty dh
 
     ; Copy values.
 l:  lda (s),y
     sta (d),y
-    inc s
+    inc sl
     bne +n
-    inc @(++ s)
-n:  lda d
+    inc sh
+n:  lda dl
     clc
     adc #num_sprites
-    sta d
+    sta dl
     cmp #@(+ sprites_pgh num_sprites)
     bcs sprite_added
     bcc -l      ; (jmp)
@@ -263,9 +263,9 @@ call_sprite_controllers:
 l1: lda sprites_i,x
     bmi +n1
     lda sprites_fl,x
-    sta d
+    sta dl
     lda sprites_fh,x
-    sta @(++ d)
+    sta dh
     stx call_controllers_x
 m1: jsr +j
     ldx call_controllers_x

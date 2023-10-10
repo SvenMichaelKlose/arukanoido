@@ -16,9 +16,9 @@ print_initial_char:
     jsr print4x8_dynalloc
 
 inc_s:
-    inc s
+    inc sl
     bne +r
-    inc @(++ s)
+    inc sh
 r:  rts
 
 hiscore_table:
@@ -29,9 +29,9 @@ hiscore_table:
     lda #red
     sta curcol
     lda #<txt_enter
-    sta s
+    sta sl
     lda #>txt_enter
-    sta @(++ s)
+    sta sh
     lda #10
     sta scrx2
     lda #3
@@ -47,27 +47,27 @@ hiscore_table:
     lda #16
     sta scrx2
     lda #<txt_score
-    sta s
+    sta sl
     lda #>txt_score
-    sta @(++ s)
+    sta sh
     jsr print_string
     inc curchar
 
     lda #22
     sta scrx2
     lda #<txt_round
-    sta s
+    sta sl
     lda #>txt_round
-    sta @(++ s)
+    sta sh
     jsr print_string
     inc curchar
 
     lda #28
     sta scrx2
     lda #<txt_name
-    sta s
+    sta sl
     lda #>txt_name
-    sta @(++ s)
+    sta sh
     jsr print_string
     inc curchar
 
@@ -78,9 +78,9 @@ hiscore_table:
     lda #5
     sta c
     lda #<txt_first
-    sta s
+    sta sl
     lda #>txt_first
-    sta @(++ s)
+    sta sh
 
 l:  lda #10
     sta scrx2
@@ -101,9 +101,9 @@ n:  jsr inc_s
 
     ;; Print scores and initials.
     lda #<scores
-    sta s
+    sta sl
     lda #>scores
-    sta @(++ s)
+    sta sh
     lda #10
     sta scry
     lda #5

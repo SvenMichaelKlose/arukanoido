@@ -122,10 +122,10 @@ l:  jsr scrcoladdr
 scr2brick_in_d:
     ; Make pointer into brick map.
     lda scr
-    sta d
+    sta dl
     lda @(++ scr)
     ora bricks
-    sta @(++ d)
+    sta dh
     rts
 
 brick_to_char:

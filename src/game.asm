@@ -125,19 +125,19 @@ retry:
 
     tay
     lda gfx_obstacles_gl,y
-    sta s
+    sta sl
     lda gfx_obstacles_gh,y
-    sta @(++ s)
+    sta sh
     lda gfx_obstacles_gl_end,y
-    sta c
+    sta cl
     lda gfx_obstacles_gh_end,y
-    sta @(++ c)
+    sta ch
 
     ; Pre-shift animation.
     lda gfx_obstacles
     sta d
     lda @(++ gfx_obstacles)
-    sta @(++ d)
+    sta dh
 
 l:  ldx #0
     ldy #17
@@ -148,14 +148,14 @@ l:  ldx #0
     lda s
     cmp c
     bne -l
-    lda @(++ s)
-    cmp @(++ c)
+    lda sh
+    cmp ch
     bne -l
 
     ; Save end of animation.
-    lda d
+    lda dl
     sta gfx_obstacles_end
-    lda @(++ d)
+    lda dh
     sta @(++ gfx_obstacles_end)
 
 no_obstacle_preshifts:
@@ -411,9 +411,9 @@ end_of_demo:
     lda #white
     sta curcol
     lda #<txt_preview
-    sta s
+    sta sl
     lda #>txt_preview
-    sta @(++ s)
+    sta sh
     lda #0
     sta scrx2
     lda #21
@@ -421,9 +421,9 @@ end_of_demo:
     ldx #255
     jsr print_string
     lda #<txt_preview2
-    sta s
+    sta sl
     lda #>txt_preview2
-    sta @(++ s)
+    sta sh
     lda #0
     sta scrx2
     lda #23

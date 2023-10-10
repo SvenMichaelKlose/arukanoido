@@ -62,27 +62,22 @@ r:  ldx p_x
 
 get_curchar_address:
     lda curchar
-    sta d
+    sta dl
     lda #0
-    asl d
+    asl dl
     rol
-    asl d
+    asl dl
     rol
-    asl d
+    asl dl
     rol
     clc
     adc #>charset
-    sta @(++ d)
+    sta dh
     rts
 
 print_clear_curchar:
     jsr get_curchar_address
-    ldy #7
-    lda #0
-l:  sta (d),y
-    dey
-    bpl -l
-    rts
+    jmp blit_clear_char
 
 print4x8_dynalloc:
     pha
@@ -118,20 +113,20 @@ n:
     lsr
     bcc +r
     inc curchar
-    lda d
+    lda dl
     clc
     adc #8
-    sta d
-    lda @(++ d)
+    sta dl
+    lda dh
     adc #0
-    sta @(++ d)
+    sta dh
 
 r:  inc scrx2
     rts
 
 print_string_ay:
-    sta s
-    sty @(++ s)
+    sta sl
+    sty sh
 
 ; X: Number of chars
 ; scrx2/scry: Text position
@@ -157,7 +152,7 @@ print_char:
     bmi +n
     jsr print4x8_dynalloc
     lda #0
-n:  inc s
+n:  inc sl
     bne +n
-    inc @(++ s)
+    inc sh
 n:  rts

@@ -40,9 +40,9 @@ n:  clc
     adc #20
     sta scry
     lda #<scratch
-    sta s
+    sta sl
     lda #>scratch
-    sta @(++ s)
+    sta sh
     ldx #255
     jsr print_string
     inc curchar
@@ -65,8 +65,8 @@ n:  clc
     bne +o ; (jmp)
 m:  ldx #<txt_player2
     ldy #>txt_player2
-o:  stx s
-    sty @(++ s)
+o:  stx sl
+    sty sh
     lda #7
     sta scrx2
     lda playfield_yc
@@ -96,9 +96,9 @@ n:  sta scrx2
     adc #2
     sta scry
     lda #<txt_ready
-    sta s
+    sta sl
     lda #>txt_ready
-    sta @(++ s)
+    sta sh
     ldx #255
     jsr print_string
     inc curchar
@@ -137,12 +137,7 @@ l:  ldx #1
 clear_curchar:
     lda curchar
     jsr get_char_addr
-    ldy #8
-    lda #0
-l:  sta (d),y
-    dey
-    bpl -l
-    rts
+    jmp blit_clear_char
 
 txt_round_nn:   @(string4x8 " ROUND  XX") 255
 txt_ready:      @(string4x8 " READY") 255

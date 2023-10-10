@@ -32,9 +32,9 @@ ctrl_bonus:
 
     ;; Score 1000pts.
     lda #<score_1000
-    sta s
+    sta sl
     lda #>score_1000
-    sta @(++ s)
+    sta sh
     jsr add_to_score
 
     ;; Release caught ball.
@@ -65,9 +65,9 @@ n:  lda #0
     sty active_bonus
     jsr remove_sprite
     lda @(-- bonus_funs_l),y
-    sta d
+    sta dl
     lda @(-- bonus_funs_h),y
-    sta @(++ d)
+    sta dh
     jsr +j
     rts
 
@@ -214,10 +214,10 @@ rotate_bonuses:
 bonus_base = @(- gfx_bonus_l 8)
     clc
     adc #<bonus_base
-    sta s
+    sta sl
     lda #>bonus_base
     adc #0
-    sta @(++ s)
+    sta sh
 
     ;; Rotate.
     ldy #6

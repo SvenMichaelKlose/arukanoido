@@ -48,21 +48,21 @@ add_to_score:
     inc needs_redrawing_score1,x
 
     lda score
-    sta d
+    sta dl
     lda @(++ score)
-    sta @(++ d)
+    sta dh
     ldy #@(-- num_score_digits)
     jsr bcd_add
 
     ; Compare score with hiscore.
     lda score
-    sta s
+    sta sl
     lda @(++ score)
-    sta @(++ s)
+    sta sh
     lda #<hiscore
-    sta d
+    sta dl
     lda #>hiscore
-    sta @(++ d)
+    sta dh
     ldx #@(-- num_score_digits)
     jsr bcd_cmp
     bcc +n
@@ -80,13 +80,13 @@ l:  lda (score),y
 
     ; Compare score with next powerup score.
 n:  lda score
-    sta s
+    sta sl
     lda @(++ score)
-    sta @(++ s)
+    sta sh
     lda #<next_powerup_score
-    sta d
+    sta dl
     lda #>next_powerup_score
-    sta @(++ d)
+    sta dh
     ldx #@(-- num_score_digits)
     jsr bcd_cmp
     bcc +r
@@ -98,19 +98,19 @@ n:  lda score
     bne +n
     ; Had one at 20.000, now for 40.000.
     lda #<score_40000
-    sta s
+    sta sl
     lda #>score_40000
-    sta @(++ s)
-    jmp +l
+    sta sh
+    bne +l ; (jmp)
     ; Had one at 40.000, now after every 60.000.
 n:  lda #<score_60000
-    sta s
+    sta sl
     lda #>score_60000
-    sta @(++ s)
+    sta sh
 l:  lda #<next_powerup_score
-    sta d
+    sta dl
     lda #>next_powerup_score
-    sta @(++ d)
+    sta dh
     ldy #@(-- num_score_digits)
     jsr bcd_add
     inc num_lives_by_score
@@ -121,12 +121,12 @@ r:  pla
 
 increase_silver_score:
     lda #<score_50
-    sta s
+    sta sl
     lda #>score_50
-    sta @(++ s)
+    sta sh
     lda #<score_silver
-    sta d
+    sta dl
     lda #>score_silver
-    sta @(++ d)
+    sta dh
     ldy #@(-- num_score_digits)
     jmp bcd_add

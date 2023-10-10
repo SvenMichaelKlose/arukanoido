@@ -67,16 +67,16 @@ step_to_next_shifted_column:
 preshift_huge_sprite:
     sty draw_sprites_tmp
 
-    lda s
+    lda sl
     sta tmp
-    lda @(++ s)
+    lda sh
     sta tmp2
 
     ldy #0
 l:  lda tmp
-    sta s
+    sta sl
     lda tmp2
-    sta @(++ s)
+    sta sh
     sty tmp3
     tya
     jsr preshift_huge_sprite_one_offset

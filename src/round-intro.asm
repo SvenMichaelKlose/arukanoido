@@ -43,9 +43,9 @@ round_intro:
     jsr play_sound
 
     pla
-    sta s
+    sta sl
     pla
-    sta @(++ s)
+    sta sh
 
 l5: ldx playfield_yc
     inx
