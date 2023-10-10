@@ -251,6 +251,8 @@ end
     lda @(-- bricks_left),y
     bne +n
     jmp level_end
+
+    ; Handle lost life.
 n:  lda is_running_game
     bne +n
     jmp lose_life
@@ -355,25 +357,27 @@ n:  lda #0
     jmp mainloop
 
 lose_life:
-    jsr wait_for_silence
-    jsr remove_sprites
-
-    ; Decrement lives.
+    ; Decrement number of lives.
     ldx active_player
     dec @(-- lives1),x
+    jsr draw_lives
+
+    jsr wait_for_silence
+
+    ; Handle game over.
     lda lives1
     ora lives2
     bne +n
     jmp game_over
 
-    ; Switch active player.
+    ; Switch to player with lives left.
 n:  dec active_player
     lda active_player
     eor #1
     sta active_player
-    ldx active_player
     inc active_player
-    lda lives1,x
+    ldx active_player
+    lda @(-- lives1),x
     beq -n
     jmp retry
 
