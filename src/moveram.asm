@@ -1,6 +1,7 @@
 moveram:
     ldy #0
     ldx c
+    inc ch
     cmp #0
     bne copy_backwards
 

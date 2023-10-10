@@ -3,6 +3,7 @@ clrram:
     ldy dl
     lda #0
     sta dl
+    inc ch
 l:  sta (d),y
     iny
     beq +n
