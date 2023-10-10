@@ -110,6 +110,8 @@ preshift_common_sprites:
     rts
 
 start:
+    lda #0
+    sta is_playing_digis
     jsr init_hiscore
     jsr start_irq
     jsr init_score
