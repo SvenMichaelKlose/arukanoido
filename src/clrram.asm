@@ -1,17 +1,15 @@
 clrram:
     ldx cl
-    inx
-    inc ch
     ldy dl
     lda #0
     sta dl
-l:  dex
-    beq +m
-    sta (d),y
+l:  sta (d),y
     iny
+    beq +n
+m:  dex
     bne -l
-    inc dh
-    bne -l ; (jmp)
-m:  dec ch
+    dec ch
     bne -l
     rts
+n:  inc dh
+    bne -m ; (jmp)

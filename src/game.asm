@@ -360,7 +360,6 @@ lose_life:
     ; Decrement number of lives.
     ldx active_player
     dec @(-- lives1),x
-    jsr draw_lives
 
     jsr wait_for_silence
 

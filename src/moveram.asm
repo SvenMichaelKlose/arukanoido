@@ -1,36 +1,34 @@
 moveram:
     ldy #0
     ldx c
-    inx
-    inc ch
     cmp #0
     bne copy_backwards
 
 copy_forwards:
-l:  dex
-    beq +q
-    lda (s),y
+l:  lda (s),y
     sta (d),y
     iny
+    beq +m
+n:  dex
     bne -l
-    inc sh
-    inc dh
-    bne -l ; (jmp)
-q:  dec ch
+    dec ch
     bne -l
     rts
+m:  inc sh
+    inc dh
+    bne -n ; (jmp)
 
 copy_backwards:
-l2: dex
-    beq +q2
-    lda (s),y
+l:  lda (s),y
     sta (d),y
     dey
     cpy #$ff
-    bne -l2
-    dec sh
-    dec dh
-    jmp -l2
-q2: dec ch
-    bne -l2
+    beq +m
+n:  dex
+    bne -l
+    dec ch
+    bne -l
     rts
+m:  dec sh
+    dec dh
+    jmp -n
