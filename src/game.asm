@@ -165,7 +165,9 @@ l:  ldx #0
 
 no_obstacle_preshifts:
 
+redraw_game:
     ;; Draw DOH instead of level.
+    lda level
     cmp #doh_level
     bne +n
     jsr init_doh_charset
@@ -283,7 +285,7 @@ n:  cmp #keycode_m
     eor #1
     sta is_playing_digis
     jsr wait_keyunpress
-    jmp +l
+l:  jmp +l
 end
 
 if @*demo?*
@@ -314,7 +316,16 @@ end
 
 n:  cmp #keycode_c
     bne +n
-    jmp show_charset
+    inc has_paused
+    jsr wait_keyunpress
+    jsr show_charset
+    jsr clear_screen
+    jsr draw_walls
+    jsr draw_lives
+    jsr draw_level
+    jsr draw_lives
+    jsr print_scores_and_labels
+    dec has_paused
 
 n:  cmp #keycode_l
     bne +n
