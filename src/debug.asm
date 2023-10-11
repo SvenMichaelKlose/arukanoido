@@ -1,14 +1,6 @@
 show_charset:
-    sei
-    lda #$7f
-    sta $912e
-    sta $912d
-
-    lda #1
-    sta is_landscape
-    jsr set_format
+    jsr clear_screen
     0
-    clrmw <screen >screen @(low 512) @(high 512)
     setmw <colors >colors @(low 512) @(high 512) white
     0
 
@@ -29,4 +21,4 @@ l:  jsr scraddr
     lda scry
     cmp #16
     bne -l2
-w:  jmp -w
+    jmp wait_keypress
