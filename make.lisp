@@ -99,7 +99,7 @@
                           "gfx-obstacle-spheres.asm"
                           "gfx-obstacle-doh.asm"
                           "gfx-sprites.asm"
-                          "gfx-taito.asm"
+                          ;"gfx-taito.asm"
                           "gfx-ship.asm"
 
                           ; Mixed data
