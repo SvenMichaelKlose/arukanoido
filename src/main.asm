@@ -130,13 +130,18 @@ toplevel:
     stzb curchar 1
     call <print_scores_and_labels >print_scores_and_labels
 
-    stzb curcol red
-    stzb scrx 5
-    stzb scry 20
-    lday <gfx_taito >gfx_taito
-    call <draw_bitmap >draw_bitmap
+;    stzb scrx 5
+;    stzb scry 20
+;    lday <gfx_taito >gfx_taito
+;    call <draw_bitmap >draw_bitmap
 
     stzb curcol white
+
+    stmb <scrx2 >scrx2 9
+    stzb scry 8
+    lday <txt_arukanoido >txt_arukanoido
+    call <print_string_ay >print_string_ay
+
 if @*demo?*
     stmb <scrx2 >scrx2 8
     stzb scry 23
@@ -286,6 +291,7 @@ if @(not *rom?*)
     jmp ($fffc)
 end
 
+txt_arukanoido: @(string4x8 " ARUKANOIDO") 255
 txt_copyright:  @(string4x8 " DEMO VERSION") 255
 txt_rights:     @(string4x8 (+ "    REV. #" *revision*)) 255
 txt_credit:     @(string4x8 " CREDIT  2") 255
