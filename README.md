@@ -65,9 +65,9 @@ when playing.
 * C: Display the current charset and halt the machine.
 * M: Toggle VIC/original sounds.
 
-# Keys for game testers (only in this demo).
+# Keys for game testers
 
-* N: Skip to next level.
+* N: Warop to next level.
 * 0: Drop random bonuses.
 * 1: Drop bonus L only.
 * 2: Drop bonus E only.
@@ -76,7 +76,7 @@ when playing.
 * 5: Drop bonus B only.
 * 6: Drop bonus D only.
 * 7: Drop bonus P only.
-* C: Show character map (NTSC) and halt machine.
+* C: Pause game nad how character map.
 * L: Set number of lives to ten.
 
 # Things missing
