@@ -50,8 +50,14 @@ n:
     sta old_paddle_value
 
 handle_paddle:
-    ldy $9008
+    txa
+    pha
+    ldx active_player
+    ldy $9007,x
     sty old_paddle_value
+    pla
+    tax
+
     ; Take paddle value as centre of the Vaus.
     lda vaus_width
     lsr
