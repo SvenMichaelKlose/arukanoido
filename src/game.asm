@@ -373,16 +373,50 @@ lose_life:
     ldx active_player
     dec @(-- lives1),x
 
-    jsr wait_for_silence
-
     ; Handle game over.
     lda lives1
     ora lives2
     bne +n
     jmp game_over
 
+    ; Print "PLAYER X".
+n:  lda @(-- lives1),x
+    bne +n
+    lda #<txt_player1
+    ldy #>txt_player1
+    cpx #1
+    beq +l
+    lda #<txt_player2
+    ldy #>txt_player2
+l:  sta sl
+    sty sh
+    lda #white
+    sta curcol
+    lda #16
+    sta curchar
+    lda #5
+    sta scrx2
+    lda playfield_yc
+    clc
+    adc #20
+    sta scry
+    inc curchar
+    jsr clear_curchar
+    jsr print_string
+    inc curchar
+    lda #<txt_game_over2
+    sta sl
+    lda #>txt_game_over2
+    sta sh
+    lda #16
+    sta scrx2
+    jsr print_string
+    inc curchar
+
+n:  jsr wait_for_silence
+
     ; Switch to player with lives left.
-n:  dec active_player
+    dec active_player
     lda active_player
     eor #1
     sta active_player
@@ -456,7 +490,8 @@ bonus_keys:
     keycode_7
 end
 
-txt_game_over: @(string4x8 "GAME  OVER") 255
+txt_game_over:  @(string4x8 "GAME  OVER") 255
+txt_game_over2: @(string4x8 "GAME OVER") 255
 
 if @*demo?*
 txt_preview:  @(string4x8 "   SOON TO BE AVAILABLE ON") 255
