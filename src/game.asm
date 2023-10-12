@@ -100,7 +100,7 @@ if @*demo?*
 n:
 end
 
-    jsr increase_silver_score
+    jsr init_silver_score
     jsr switch_to_player_bricks
     jsr get_level
 

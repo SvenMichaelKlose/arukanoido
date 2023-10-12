@@ -119,8 +119,12 @@ r:  pla
     tax
     rts
 
-increase_silver_score:
-    lda #<score_50
+init_silver_score:
+    0
+    clrmb <score_silver >score_silver num_score_digits
+    0
+    ldx level
+l:  lda #<score_50
     sta sl
     lda #>score_50
     sta sh
@@ -129,4 +133,11 @@ increase_silver_score:
     lda #>score_silver
     sta dh
     ldy #@(-- num_score_digits)
-    jmp bcd_add
+    txa
+    pha
+    jsr bcd_add
+    pla
+    tax
+    dex
+    bne -l
+    rts
