@@ -30,6 +30,7 @@ print_scores_and_labels:
     beq +n
 
     ; Print 2UP
+    jsr clear_curchar
     lda txt_2up_x
     sta scrx2
     lda txt_2up_y

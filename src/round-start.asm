@@ -79,6 +79,7 @@ o:  stx sl
 n:
 
     ; Print "READY".
+    jsr clear_curchar
     lda #12
     ldy has_two_players
     beq +n
