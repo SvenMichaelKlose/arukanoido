@@ -84,23 +84,7 @@ n:  jmp (a0)
 i_clrmw = clrram
 
 ; Move memory area upwards.
-i_movmw:
-    ldx cl
-    inx
-    inc ch
-    ldy #0
-l:  dex
-    beq +m
-    lda (s),y
-    sta (d),y
-    iny
-    bne -l
-    inc sh
-    inc dh
-    bne -l ; (jmp)
-m:  dec ch
-    bne -l
-    rts
+i_movmw = moveram
 
 ; Fill memory area. Byte length.
 i_setmb:
