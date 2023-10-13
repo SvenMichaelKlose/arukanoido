@@ -62,6 +62,7 @@ n:
     lda curchar
     sta score2_char_start
     jsr print_score2
+    inc curchar
 
 n:  rts
 
