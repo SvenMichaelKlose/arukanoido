@@ -108,25 +108,6 @@ n:  dex
 m:  inc dh
     jmp -n
 
-i_clrmw:
-    ldx cl
-    inx
-    inc ch
-    ldy dl
-    lda #0
-    sta dl
-    beq +n
-l:  dex
-    beq +m
-    sta (d),y
-    iny
-    bne -l
-    inc dh
-    bne -l ; (jmo)
-m:  dec ch
-    bne -l
-    rts
-
 ; Move memory area upwards.
 i_movmw:
     ldx cl

@@ -119,6 +119,7 @@
                           ; Library
                           "bcd.asm"
                           "clrram.asm"
+                          "moveram.asm"
                           "exomizer-stream-decrunsh.asm"
                           "math.asm"
                           "random.asm"
