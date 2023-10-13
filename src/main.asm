@@ -142,7 +142,7 @@ loop:
 
     ; Switch to hiscore table.
     lda @(++ framecounter)
-    cmp #5
+    cmp #3
     bne +l
     inc current_toplevel_view
     lda current_toplevel_view
