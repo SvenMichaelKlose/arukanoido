@@ -1,11 +1,4 @@
-round_intro:
-    sta tmp
-    tya
-    pha
-    txa
-    pha
-    lda tmp
-    pha
+draw_round_intro_background:
     lda $9002
     pha
 
@@ -30,10 +23,20 @@ round_intro:
     ldy #>gfx_ship
     jsr draw_bitmap
 
-    ; Avoid garbage lighting up on screen.
-    jsr wait_retrace
+    jsr wait_retrace    ; Avoid garbage lighting up on screen.
     pla
     sta $9002
+    rts
+
+round_intro:
+    sta tmp
+    tya
+    pha
+    txa
+    pha
+    lda tmp
+    pha
+    jsr draw_round_intro_background
 
     ; Save free char position before printing text page.
     lda curchar
