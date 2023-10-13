@@ -1,3 +1,8 @@
+hiscore_yc = 16
+
+txt_hiscore_h1: @(string4x8 "THE FOLLOWING ARE") 255
+txt_hiscore_h2: @(string4x8 "THE RECORDS OF THE BRAVEST") 255
+txt_hiscore_h3: @(string4x8 "FIGHTERS OF ARUKANOIDO") 255
 txt_enter:      @(string4x8 "ENTER YOUR INITIALS !") 255
 txt_hiscore:    @(string4x8 "HIGH ")
 txt_score:      @(string4x8 "SCORE") 255
@@ -58,30 +63,80 @@ hiscore_table:
     sta curchar
     jsr print_scores_and_labels
 
+    lda #yellow
+    sta curcol
+    lda #<txt_hiscore_h1
+    sta sl
+    lda #>txt_hiscore_h1
+    sta sh
+    lda #7
+    sta scrx2
+    lda playfield_yc
+    clc
+    adc #6
+    sta scry
+    jsr print_string
+    inc curchar
+
+    lda #<txt_hiscore_h2
+    sta sl
+    lda #>txt_hiscore_h2
+    sta sh
+    inc scry
+    inc scry
+    lda #2
+    sta scrx2
+    jsr print_string
+    inc curchar
+
+    lda #<txt_hiscore_h3
+    sta sl
+    lda #>txt_hiscore_h3
+    sta sh
+    inc scry
+    inc scry
+    lda #4
+    sta scrx2
+    jsr print_string
+    inc curchar
+
+    jmp +n
     lda #red
     sta curcol
     lda #<txt_enter
     sta sl
     lda #>txt_enter
     sta sh
-    lda #10
+    lda #5
     sta scrx2
-    lda #3
+    lda playfield_yc
+    clc
+    adc #3
     sta scry
     jsr print_string
     inc curchar
+n:
+
+    lda #4
+    sta tmp4
 
     lda #yellow
     sta curcol
-    lda #8
+    lda playfield_yc
+    clc
+    adc #16
     sta scry
-    lda #16
+    lda tmp4
+    clc
+    adc #6
     sta scrx2
     jsr print_score_heading
 
     lda #white
     sta curcol
-    lda #10
+    lda playfield_yc
+    clc
+    adc #18
     sta scry
     lda #5
     sta c
@@ -90,7 +145,7 @@ hiscore_table:
     lda #>txt_first
     sta sh
 
-l:  lda #10
+l:  lda tmp4
     sta scrx2
     jsr print_string
     inc curchar
@@ -112,11 +167,15 @@ n:  jsr inc_s
     sta sl
     lda #>scores
     sta sh
-    lda #10
+    lda playfield_yc
+    clc
+    adc #18
     sta scry
     lda #5
     sta c
-l:  lda #14
+l:  lda tmp4
+    clc
+    adc #4
     sta scrx2
     jsr print_score_string
     inc curchar
@@ -125,8 +184,10 @@ l:  lda #14
     jsr add_sb
 
     ; Print round number.
-n:  ldy #25
-    sty scrx2
+n:  lda tmp4
+    clc
+    adc #15
+    sta scrx2
     ldy #0
     lda (s),y
     jsr inc_s
@@ -146,15 +207,21 @@ m:  sec
     adc #score_char0
     jsr print4x8_dynalloc
     pla
-n:  ldy #26
-    sty scrx2
+n:  pha
+    lda tmp4
+    clc
+    adc #16
+    sta scrx2
+    pla
     clc
     adc #score_char0
     jsr print4x8_dynalloc
     inc curchar
 
-    ; Print name.
-    lda #29
+    ; Print initials.
+    lda tmp4
+    clc
+    adc #19
     sta scrx2
     jsr print_initial_char
     jsr print_initial_char
@@ -174,9 +241,9 @@ initial_chars:
     @(string4x8 "ABCDEFGHIJKLMNOPQRSTUVWXYZ.! ")
 
 scores:
-    5 0 0 0 0 0 0 5 @(string4x8 "SSB")
-    4 5 0 0 0 0 0 4 @(string4x8 "SND")
-    4 0 0 0 0 0 0 3 @(string4x8 "TOR")
-    3 5 0 0 0 0 0 2 @(string4x8 "ONJ")
-    3 0 0 0 0 0 0 1 @(string4x8 "AKR")
+    0 0 5 0 0 0 0 5 @(string4x8 "SSB")
+    0 0 4 5 0 0 0 4 @(string4x8 "SND")
+    0 0 4 0 0 0 0 3 @(string4x8 "TOR")
+    0 0 3 5 0 0 0 2 @(string4x8 "ONJ")
+    0 0 3 0 0 0 0 1 @(string4x8 "AKR")
 __end_hiscore:
