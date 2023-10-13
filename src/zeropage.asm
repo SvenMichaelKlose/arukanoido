@@ -343,6 +343,8 @@ is_playing_digis:   0
 has_two_players:    0
 active_player:      0
 
+tmp4:   0
+
 scratch:    "                          "
 lowmem:
     end
