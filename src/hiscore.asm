@@ -21,10 +21,42 @@ inc_s:
     inc sh
 r:  rts
 
+print_score_heading:
+    lda #<txt_score
+    sta sl
+    lda #>txt_score
+    sta sh
+    jsr print_string
+    inc curchar
+
+    lda scrx2
+    clc
+    adc #1
+    sta scrx2
+    lda #<txt_round
+    sta sl
+    lda #>txt_round
+    sta sh
+    jsr print_string
+    inc curchar
+
+    lda scrx2
+    clc
+    adc #1
+    sta scrx2
+    lda #<txt_name
+    sta sl
+    lda #>txt_name
+    sta sh
+    jsr print_string
+    inc curchar
+    rts
+
 hiscore_table:
     jsr clear_screen
     lda #1
     sta curchar
+    jsr print_scores_and_labels
 
     lda #red
     sta curcol
@@ -43,33 +75,9 @@ hiscore_table:
     sta curcol
     lda #8
     sta scry
-
     lda #16
     sta scrx2
-    lda #<txt_score
-    sta sl
-    lda #>txt_score
-    sta sh
-    jsr print_string
-    inc curchar
-
-    lda #22
-    sta scrx2
-    lda #<txt_round
-    sta sl
-    lda #>txt_round
-    sta sh
-    jsr print_string
-    inc curchar
-
-    lda #28
-    sta scrx2
-    lda #<txt_name
-    sta sl
-    lda #>txt_name
-    sta sh
-    jsr print_string
-    inc curchar
+    jsr print_score_heading
 
     lda #white
     sta curcol
