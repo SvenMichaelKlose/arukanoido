@@ -340,13 +340,16 @@ draw_credits:
     inc scry
 
     0
+    stzb curcol yellow
     stmb <scrx2 >scrx2 4
     lday <txt_c1 >txt_c1
     call <print_string_ay >print_string_ay
     0
     inc scry
+    inc scry
 
     0
+    stzb curcol white
     stmb <scrx2 >scrx2 9
     lday <txt_c2 >txt_c2
     call <print_string_ay >print_string_ay
@@ -357,15 +360,18 @@ draw_credits:
     jsr clear_curchar
 
     0
+    stzb curcol yellow
     stmb <scrx2 >scrx2 4
     lday <txt_c3 >txt_c3
     call <print_string_ay >print_string_ay
     0
     inc scry
+    inc scry
     inc curchar
     jsr clear_curchar
 
     0
+    stzb curcol white
     stmb <scrx2 >scrx2 17
     lday <txt_c4 >txt_c4
     call <print_string_ay >print_string_ay
