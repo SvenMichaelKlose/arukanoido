@@ -162,18 +162,30 @@ n:  jsr inc_s
     dec c
     bne -l
 
-    ;; Print scores and initials.
-    lda #<scores
-    sta sl
-    lda #>scores
-    sta sh
     lda playfield_yc
     clc
     adc #18
     sta scry
+    lda #<scores
+    sta sl
+    lda #>scores
+    sta sh
     lda #5
     sta c
-l:  lda tmp4
+l:  jsr print_score_round_name
+    inc scry
+    inc scry
+    dec c
+    bne -l
+
+w:  jsr poll_keypress
+    bcc -w
+    rts
+
+
+;;; Print scores and initials.
+print_score_round_name:
+    lda tmp4
     clc
     adc #4
     sta scrx2
@@ -227,14 +239,6 @@ n:  pha
     jsr print_initial_char
     jsr print_initial_char
     inc curchar
-
-    inc scry
-    inc scry
-    dec c
-    bne -l
-
-w:  jsr poll_keypress
-    bcc -w
     rts
 
 initial_chars:
