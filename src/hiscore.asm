@@ -97,6 +97,9 @@ r:  rts
 enter_hiscore:
     jsr find_score_item
     bcc -r
+
+    jsr wait_for_silence
+
     lda dl
     pha
     lda dh
@@ -238,9 +241,28 @@ l:  lda dl
     pla
     sta curchar
 
-;    lda is_using_paddle
-;    beq +w
-    ldy active_player
+    lda is_using_paddle
+    bne +l2
+
+    ;; Handle joystick input.
+    ; Fire
+l3: lda $9111
+    and #joy_fire
+    bne +n4
+l5: lda $9111
+    and #joy_fire
+    beq -l5
+    jmp +n3
+n4: jsr get_joystick
+    beq -l3
+    clc
+    adc tmp6
+    sta tmp6
+l6: jsr get_joystick
+    bne -l6
+    jmp +l4
+
+l2: ldy active_player
     lda $9007,y
     sta old_paddle_value
     ; Test on fire.
@@ -248,7 +270,7 @@ m:  jsr test_fire
     bne +o
 n2: jsr test_fire
     beq -n2
-    inc tmp5
+n3: inc tmp5
     lda tmp5
     cmp #3
     beq +r
@@ -259,11 +281,13 @@ o:  lda $9007,y
     jsr neg
     lsr
     lsr
+    sta tmp6
+l4: lda tmp6
     cmp #num_initial_chars
     bcc +n
     lda #@(-- num_initial_chars)
-n:  sta tmp6
-    jmp -l
+    sta tmp6
+n:  jmp -l
 
 r:  jsr hiscore_table
     lda #60
@@ -356,7 +380,6 @@ l:  jsr print_score_round_name
 
     rts
 
-
 ;;; Print scores and initials.
 print_score_round_name:
     lda tmp4
@@ -423,11 +446,11 @@ initial_chars_end:
 num_initial_chars = @(- initial_chars_end initial_chars)
 
 scores:
-    0 0 0 0 5 0 0 5 @(string4x8 "SSB")
-    0 0 0 0 4 5 0 4 @(string4x8 "SND")
-    0 0 0 0 4 0 0 3 @(string4x8 "TOR")
-    0 0 0 0 3 5 0 2 @(string4x8 "ONJ")
-    0 0 0 0 3 0 0 1 @(string4x8 "AKR")
+    0 0 5 0 0 0 0 5 @(string4x8 "SSB")
+    0 0 4 5 0 0 0 4 @(string4x8 "SND")
+    0 0 4 0 0 0 0 3 @(string4x8 "TOR")
+    0 0 3 5 0 0 0 2 @(string4x8 "ONJ")
+    0 0 3 0 0 0 0 1 @(string4x8 "AKR")
 scores_end:
 
 __end_hiscore:

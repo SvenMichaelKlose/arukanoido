@@ -129,6 +129,7 @@
                           ; Controls
                           "fire-button.asm"
                           "keyboard.asm"
+                          "joystick.asm"
 
                           ; Graphics library
                           "print.asm"

@@ -14,11 +14,8 @@ In-game animations
 [ ] ... DOH
 
 Hiscore table
-[ ] !!! Display
-[ ] !!! Input
-[ ] !!! KERNAL I/O
+[ ] !.. KERNAL I/O
 
 Questionable tasks
 [?] !!! Do not treat wall as golden(?) brick in third row from bottm (PAL).
-[?] Shallow kick off to the left.
 [?] Extend VCPU for top-level off-game code to save space.
