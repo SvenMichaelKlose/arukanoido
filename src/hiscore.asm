@@ -27,6 +27,8 @@ inc_s:
 r:  rts
 
 print_score_heading:
+    lda #yellow
+    sta curcol
     lda #<txt_score
     ldy #>txt_score
     jsr print_string_ay
@@ -95,13 +97,15 @@ enter_hiscore:
     jsr clear_screen
     lda #1
     sta curchar
+    jsr print_scores_and_labels
+
     lda #red
     sta curcol
     lda #5
     sta scrx2
     lda playfield_yc
     clc
-    adc #3
+    adc #7
     sta scry
     lda #<txt_enter
     ldy #>txt_enter
@@ -111,14 +115,34 @@ n:
     jsr print_hiscores
 
     ;; Emter
+    lda #7
+    sta tmp4
+
+    lda playfield_yc
+    clc
+    adc #10
+    sta scry
+    lda tmp4
+    sta scrx2
+    jsr print_score_heading
+
+    inc scry
+    inc scry
+    lda #1
+    sta tmp4
+    lda #<scores
+    sta sl
+    lda #>scores
+    sta sh
+    jsr print_score_round_name
+
+w:  jmp -w
     rts
 
 print_hiscores:
     lda #4
     sta tmp4
 
-    lda #yellow
-    sta curcol
     lda playfield_yc
     clc
     adc #16
