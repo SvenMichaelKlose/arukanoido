@@ -28,10 +28,8 @@ r:  rts
 
 print_score_heading:
     lda #<txt_score
-    sta sl
-    lda #>txt_score
-    sta sh
-    jsr print_string
+    ldy #>txt_score
+    jsr print_string_ay
     inc curchar
 
     lda scrx2
@@ -39,10 +37,8 @@ print_score_heading:
     adc #1
     sta scrx2
     lda #<txt_round
-    sta sl
-    lda #>txt_round
-    sta sh
-    jsr print_string
+    ldy #>txt_round
+    jsr print_string_ay
     inc curchar
 
     lda scrx2
@@ -50,10 +46,8 @@ print_score_heading:
     adc #1
     sta scrx2
     lda #<txt_name
-    sta sl
-    lda #>txt_name
-    sta sh
-    jsr print_string
+    ldy #>txt_name
+    jsr print_string_ay
     inc curchar
     rts
 
@@ -66,55 +60,47 @@ hiscore_table:
     jsr clear_curchar
     lda #yellow
     sta curcol
-    lda #<txt_hiscore_h1
-    sta sl
-    lda #>txt_hiscore_h1
-    sta sh
     lda #7
     sta scrx2
     lda playfield_yc
     clc
     adc #6
     sta scry
-    jsr print_string
+    lda #<txt_hiscore_h1
+    ldy #>txt_hiscore_h1
+    jsr print_string_ay
     inc curchar
 
-    lda #<txt_hiscore_h2
-    sta sl
-    lda #>txt_hiscore_h2
-    sta sh
     inc scry
     inc scry
     lda #2
     sta scrx2
-    jsr print_string
+    lda #<txt_hiscore_h2
+    ldy #>txt_hiscore_h2
+    jsr print_string_ay
     inc curchar
 
-    lda #<txt_hiscore_h3
-    sta sl
-    lda #>txt_hiscore_h3
-    sta sh
     inc scry
     inc scry
     lda #4
     sta scrx2
-    jsr print_string
+    lda #<txt_hiscore_h3
+    ldy #>txt_hiscore_h3
+    jsr print_string_ay
     inc curchar
 
     jmp +n
     lda #red
     sta curcol
-    lda #<txt_enter
-    sta sl
-    lda #>txt_enter
-    sta sh
     lda #5
     sta scrx2
     lda playfield_yc
     clc
     adc #3
     sta scry
-    jsr print_string
+    lda #<txt_enter
+    ldy #>txt_enter
+    jsr print_string_ay
     inc curchar
 n:
 

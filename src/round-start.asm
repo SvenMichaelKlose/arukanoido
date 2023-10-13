@@ -40,11 +40,8 @@ n:  clc
     adc #20
     sta scry
     lda #<scratch
-    sta sl
-    lda #>scratch
-    sta sh
-    ldx #255
-    jsr print_string
+    ldy #>scratch
+    jsr print_string_ay
     inc curchar
 
     lda #snd_round
@@ -75,7 +72,6 @@ o:  stx sl
     clc
     adc #2
     sta scry
-    ldx #255
     inc curchar
     jsr clear_curchar
     jsr print_string
@@ -96,11 +92,8 @@ n:  sta scrx2
     adc #2
     sta scry
     lda #<txt_ready
-    sta sl
-    lda #>txt_ready
-    sta sh
-    ldx #255
-    jsr print_string
+    ldy #>txt_ready
+    jsr print_string_ay
     inc curchar
 
     jsr wait_for_silence

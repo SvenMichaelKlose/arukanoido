@@ -404,13 +404,11 @@ l:  sta sl
     jsr clear_curchar
     jsr print_string
     inc curchar
-    lda #<txt_game_over2
-    sta sl
-    lda #>txt_game_over2
-    sta sh
     lda #16
     sta scrx2
-    jsr print_string
+    lda #<txt_game_over2
+    ldy #>txt_game_over2
+    jsr print_string_ay
     inc curchar
 
 n:  jsr wait_for_silence
@@ -455,26 +453,20 @@ end_of_demo:
     jsr draw_doh
     lda #white
     sta curcol
-    lda #<txt_preview
-    sta sl
-    lda #>txt_preview
-    sta sh
     lda #0
     sta scrx2
     lda #21
     sta scry
-    ldx #255
-    jsr print_string
-    lda #<txt_preview2
-    sta sl
-    lda #>txt_preview2
-    sta sh
+    lda #<txt_preview
+    ldy #>txt_preview
+    jsr print_string_ay
     lda #0
     sta scrx2
     lda #23
     sta scry
-    ldx #255
-    jsr print_string
+    lda #<txt_preview2
+    ldy #>txt_preview2
+    jsr print_string_ay
     jmp wait_fire
 end
 

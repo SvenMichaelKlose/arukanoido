@@ -13,10 +13,8 @@ print_scores_and_labels:
     sta scry
     ldx #10
     lda #<txt_1up
-    sta s
-    lda #>txt_1up
-    sta @(++ s)
-    jsr print_string
+    ldy #>txt_1up
+    jsr print_string_ay
 
     ; Print "HIGH SCORE".
     lda txt_hiscore1_x
@@ -25,10 +23,8 @@ print_scores_and_labels:
     sta scry
     ldx #10
     lda #<txt_hiscore
-    sta s
-    lda #>txt_hiscore
-    sta @(++ s)
-    jsr print_string
+    ldy #>txt_hiscore
+    jsr print_string_ay
 
     lda has_two_players
     beq +n
@@ -40,10 +36,8 @@ print_scores_and_labels:
     sta scry
     ldx #10
     lda #<txt_2up
-    sta s
-    lda #>txt_2up
-    sta @(++ s)
-    jsr print_string
+    ldy #>txt_2up
+    jsr print_string_ay
 n:
 
     lda curchar
