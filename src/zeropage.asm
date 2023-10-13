@@ -334,6 +334,8 @@ line_addresses_h:   fill 33
 ; For 'add_sprite'.
 sprite_inits:           fill @sprite_inits_size
 
+current_toplevel_view:  0
+
 uncleaned_lowmem:
 
 is_playing_digis:   0

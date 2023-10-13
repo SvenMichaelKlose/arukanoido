@@ -119,54 +119,17 @@ start:
 toplevel:
     jsr clear_data
     jsr init_screen
-    jsr clear_screen
 
     lda #0
     sta attraction_mode
     sta has_two_players
     sta active_player
 
-    0
-    stzb curchar 1
-    call <print_scores_and_labels >print_scores_and_labels
-
-;    stzb scrx 5
-;    stzb scry 20
-;    lday <gfx_taito >gfx_taito
-;    call <draw_bitmap >draw_bitmap
-
-    stzb curcol white
-
-    stmb <scrx2 >scrx2 9
-    stzb scry 8
-    lday <txt_arukanoido >txt_arukanoido
-    call <print_string_ay >print_string_ay
-
-if @*demo?*
-    stmb <scrx2 >scrx2 8
-    stzb scry 23
-    lday <txt_copyright >txt_copyright
-    call <print_string_ay >print_string_ay
-end
-
-    stmb <scrx2 >scrx2 6
-    stzb scry 25
-    lday <txt_rights >txt_rights
-    call <print_string_ay >print_string_ay
-    0
-
-    lda is_landscape
-    bne +n
-    ldx #20
-    ldy #31
-    jmp +m
-n:  ldx #30
-    ldy #27
-m:  stx scrx2
-    sty scry
-    lda #<txt_credit
-    ldy #>txt_credit
-    jsr print_string_ay
+restart_toplevel_views:
+    jsr reset_framecounter
+    lda #0
+    sta current_toplevel_view
+    jsr draw_title_screen
 
 if @*shadowvic?*
     $22 $02
@@ -180,9 +143,20 @@ loop:
     lda @(++ framecounter)
     cmp #5
     bne +l
+    inc current_toplevel_view
+    lda current_toplevel_view
+    cmp #1
+    bne +n
+    jsr draw_round_intro_background
+    jsr reset_framecounter
+    jmp +l
+n:  cmp #2
+    bne +n
     jsr hiscore_table
-    bcs process_keypress
-    jmp toplevel
+    jsr reset_framecounter
+    jmp +l
+n:  cmp #3
+    beq restart_toplevel_views
 l:
 
 if @*has-digis?*
@@ -192,7 +166,6 @@ end
     jsr poll_keypress
     bcc -loop
 
-process_keypress:
     cmp #keycode_1
     bne +n
 start_one_player:
@@ -280,6 +253,50 @@ end
 f:  jsr game
     jmp toplevel
 
+draw_title_screen:
+    jsr clear_screen
+    0
+    stzb curchar 1
+    call <print_scores_and_labels >print_scores_and_labels
+
+;    stzb scrx 5
+;    stzb scry 20
+;    lday <gfx_taito >gfx_taito
+;    call <draw_bitmap >draw_bitmap
+
+    stzb curcol white
+
+    stmb <scrx2 >scrx2 9
+    stzb scry 8
+    lday <txt_arukanoido >txt_arukanoido
+    call <print_string_ay >print_string_ay
+
+if @*demo?*
+    stmb <scrx2 >scrx2 8
+    stzb scry 23
+    lday <txt_copyright >txt_copyright
+    call <print_string_ay >print_string_ay
+end
+
+    stmb <scrx2 >scrx2 6
+    stzb scry 25
+    lday <txt_rights >txt_rights
+    call <print_string_ay >print_string_ay
+    0
+
+    lda is_landscape
+    bne +n
+    ldx #20
+    ldy #31
+    jmp +m
+n:  ldx #30
+    ldy #27
+m:  stx scrx2
+    sty scry
+    lda #<txt_credit
+    ldy #>txt_credit
+    jmp print_string_ay
+
 boot_basic:
     lda #0
     sta $9002
@@ -300,6 +317,12 @@ end
 if @(not *rom?*)
     jmp ($fffc)
 end
+
+reset_framecounter:
+    lda #0
+    sta framecounter
+    sta @(++ framecounter)
+    rts
 
 txt_arukanoido: @(string4x8 " ARUKANOIDO") 255
 txt_copyright:  @(string4x8 " DEMO VERSION") 255
