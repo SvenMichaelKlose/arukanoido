@@ -147,7 +147,7 @@ loop:
     lda current_toplevel_view
     cmp #1
     bne +n
-    jsr draw_round_intro_background
+    jsr draw_credits
     jsr reset_framecounter
     jmp +l
 n:  cmp #2
@@ -265,7 +265,6 @@ draw_title_screen:
 ;    call <draw_bitmap >draw_bitmap
 
     stzb curcol white
-
     stmb <scrx2 >scrx2 9
     stzb scry 8
     lday <txt_arukanoido >txt_arukanoido
@@ -317,6 +316,66 @@ end
 if @(not *rom?*)
     jmp ($fffc)
 end
+
+draw_credits:
+    jsr draw_round_intro_background
+
+    lda playfield_yc
+    clc
+    adc #3
+    sta scry
+
+    0
+    stzb curcol white
+    stmb <scrx2 >scrx2 7
+    lday <txt_press >txt_press
+    call <print_string_ay >print_string_ay
+    0
+
+    inc scry
+    inc scry
+    inc scry
+    inc scry
+
+    0
+    stmb <scrx2 >scrx2 5
+    lday <txt_c1 >txt_c1
+    call <print_string_ay >print_string_ay
+    0
+    inc scry
+
+    0
+    stmb <scrx2 >scrx2 9
+    lday <txt_c2 >txt_c2
+    call <print_string_ay >print_string_ay
+    0
+    inc scry
+    inc scry
+    inc curchar
+    jsr clear_curchar
+
+    0
+    stmb <scrx2 >scrx2 5
+    lday <txt_c3 >txt_c3
+    call <print_string_ay >print_string_ay
+    0
+    inc scry
+    inc curchar
+    jsr clear_curchar
+
+    0
+    stmb <scrx2 >scrx2 17
+    lday <txt_c4 >txt_c4
+    call <print_string_ay >print_string_ay
+    0
+
+    rts
+
+txt_press:  @(string4x8 "PRESS FIRE, 1 OR 2") 255
+txt_c1:     @(string4x8 "CODE & GRAPHICS:") 255
+txt_c2:     @(string4x8 "SVEN MICHAEL KLOSE") 255
+txt_c3:     @(string4x8 "CHIP SOUNDS:") 255
+txt_c4:     @(string4x8 "ADRIAN FOX") 255
 
 reset_framecounter:
     lda #0

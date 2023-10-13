@@ -13,7 +13,7 @@ draw_round_intro_background:
     ; Draw ship.
     lda #@(+ multicolor blue)
     sta curcol
-    lda #0
+    lda #1
     sta scrx
     lda playfield_yc
     clc
