@@ -44,7 +44,6 @@
 (define-bytecode mvmw a0 a1 a2 a3)
 (define-bytecode lday sra sry)
 (define-bytecode ldsd sl sh dl dh)
-(define-bytecode clrmb dl dh cl)
 (define-bytecode clrmw dl dh cl ch)
 (define-bytecode movmw sl sh dl dh cl ch)
 (define-bytecode setmb dl dh cl a3)

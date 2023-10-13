@@ -80,15 +80,6 @@ i_call:
 
 n:  jmp (a0)
 
-; Clear memory area. Byte length.
-i_clrmb:
-    ldy cl
-    lda #0
-l:  sta (d),y
-    dey
-    bne -l
-    rts
-
 ; Clear memory area. Word length.
 i_clrmw:
     ldx cl

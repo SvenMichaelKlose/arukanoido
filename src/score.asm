@@ -1,8 +1,8 @@
 init_score:
     0
-    clrmb <score1 >score1 num_score_digits
-    clrmb <score2 >score2 num_score_digits
-    clrmb <score_silver >score_silver num_score_digits
+    clrmw <score1 >score1 num_score_digits 0
+    clrmw <score2 >score2 num_score_digits 0
+    clrmw <score_silver >score_silver num_score_digits 0
     0
 
     ldx #@(-- num_score_digits)
@@ -121,7 +121,7 @@ r:  pla
 
 init_silver_score:
     0
-    clrmb <score_silver >score_silver num_score_digits
+    clrmw <score_silver >score_silver num_score_digits 0
     0
     ldx level
 l:  lda #<score_50
