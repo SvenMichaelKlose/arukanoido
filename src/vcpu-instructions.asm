@@ -81,23 +81,7 @@ i_call:
 n:  jmp (a0)
 
 ; Clear memory area. Word length.
-i_clrmw:
-    ldx cl
-    inc ch
-    ldy dl
-    lda #0
-    sta dl
-    beq +n
-l:  sta (d),y
-    iny
-    beq +m
-n:  dex
-    bne -l
-    dec ch
-    bne -l
-    rts
-m:  inc dh
-    jmp -n
+i_clrmw = clrram
 
 ; Move memory area upwards.
 i_movmw:
