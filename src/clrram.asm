@@ -2,12 +2,14 @@ clrram:
     lda #0
 setram:
     ldx cl
+    inx
     inc ch
     ldy dl
     pha
     lda #0
     sta dl
     pla
+    jmp +m
 l:  sta (d),y
     iny
     beq +n

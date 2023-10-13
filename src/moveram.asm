@@ -1,7 +1,9 @@
 moveram:
     ldy #0
     ldx c
+    inx
     inc ch
+    bne +n
 l:  lda (s),y
     sta (d),y
     iny

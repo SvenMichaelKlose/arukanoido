@@ -25,6 +25,7 @@ end
 
     movmw <loaded_sprite_inits >loaded_sprite_inits <sprite_inits >sprite_inits sprite_inits_size 0
     stmb <exm_needs_data >exm_needs_data $ff
+    setmw <exm_buffers >exm_buffers $00 $02 light_cyan
     0
 
     jmp set_format
