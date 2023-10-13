@@ -93,7 +93,15 @@ hiscore_table:
 
     jmp print_hiscores
 
+r:  rts
 enter_hiscore:
+    jsr find_score_item
+    bcc -r
+    lda dl
+    pha
+    lda dh
+    pha
+
     jsr clear_screen
     lda #1
     sta curchar
@@ -158,11 +166,10 @@ l:  clc
 n:  lda #1
     sta tmp4
 
-    jsr find_score_item
-    lda dl
-    pha
-    lda dh
-    pha
+    pla
+    sta dh
+    pla
+    sta dl
 
     ; Set round.
     ldy active_player
@@ -180,16 +187,19 @@ n:  lda #1
     sta (d),y
 
     ; Copy score.
-    lda #<hiscore
+    lda score
     sta sl
-    lda #>hiscore
+    lda @(++ score)
     sta sh
     lda #num_score_digits
     sta cl
     lda #0
     sta ch
+    lda dl
+    pha
+    lda dh
+    pha
     jsr moveram
-
     pla
     sta dh
     pla
@@ -255,7 +265,8 @@ o:  lda $9007,y
 n:  sta tmp6
     jmp -l
 
-r:  lda #60
+r:  jsr hiscore_table
+    lda #60
     jsr wait
     rts
 
@@ -266,11 +277,12 @@ find_score_item:
     sta dl
     lda #>scores
     sta dh
-    lda #<hiscore
+    lda score
     sta sl
-    lda #<hiscore
+    lda @(++ score)
     sta sh
-l:  jsr bcd_cmp
+l:  ldx #@(-- num_score_digits)
+    jsr bcd_cmp
     bcs +found
     lda #11
     jsr add_db
@@ -411,11 +423,11 @@ initial_chars_end:
 num_initial_chars = @(- initial_chars_end initial_chars)
 
 scores:
-    0 0 5 0 0 0 0 5 @(string4x8 "SSB")
-    0 0 4 5 0 0 0 4 @(string4x8 "SND")
-    0 0 4 0 0 0 0 3 @(string4x8 "TOR")
-    0 0 3 5 0 0 0 2 @(string4x8 "ONJ")
-    0 0 3 0 0 0 0 1 @(string4x8 "AKR")
+    0 0 0 0 5 0 0 5 @(string4x8 "SSB")
+    0 0 0 0 4 5 0 4 @(string4x8 "SND")
+    0 0 0 0 4 0 0 3 @(string4x8 "TOR")
+    0 0 0 0 3 5 0 2 @(string4x8 "ONJ")
+    0 0 0 0 3 0 0 1 @(string4x8 "AKR")
 scores_end:
 
 __end_hiscore:

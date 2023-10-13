@@ -13,6 +13,7 @@ game_over:
     sta mode_break
 
     jsr wait_for_silence
+    jsr enter_hiscore
     jsr clear_screen
 
     lda #1
@@ -411,10 +412,11 @@ l:  sta sl
     ldy #>txt_game_over2
     jsr print_string_ay
     inc curchar
+    jsr enter_hiscore
 
 n:  jsr wait_for_silence
 
-    ; Switch to player with lives left.
+    ;; Switch to player with lives left.
     dec active_player
     lda active_player
     eor #1

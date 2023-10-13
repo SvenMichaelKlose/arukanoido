@@ -334,6 +334,7 @@ line_addresses_h:   fill 33
 sprite_inits:           fill @sprite_inits_size
 
 current_toplevel_view:  0
+hiscore_player:     0
 
 uncleaned_lowmem:
 
