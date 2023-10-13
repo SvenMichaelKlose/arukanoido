@@ -89,7 +89,12 @@ hiscore_table:
     jsr print_string_ay
     inc curchar
 
-    jmp +n
+    jmp print_hiscores
+
+enter_hiscore:
+    jsr clear_screen
+    lda #1
+    sta curchar
     lda #red
     sta curcol
     lda #5
@@ -103,7 +108,12 @@ hiscore_table:
     jsr print_string_ay
     inc curchar
 n:
+    jsr print_hiscores
 
+    ;; Emter
+    rts
+
+print_hiscores:
     lda #4
     sta tmp4
 
