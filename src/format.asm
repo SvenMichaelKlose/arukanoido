@@ -1,5 +1,5 @@
 portrait_color_1up  = @(+ colors 2)
-portrait_color_2up  = @(+ colors 12)
+portrait_color_2up  = @(+ colors 11)
 
 format_portrait:
     15          ; screen_columns
