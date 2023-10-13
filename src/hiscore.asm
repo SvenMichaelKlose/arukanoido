@@ -233,6 +233,7 @@ n:  pha
     clc
     adc #19
     sta scrx2
+    jsr clear_curchar
     jsr print_initial_char
     jsr print_initial_char
     jsr print_initial_char

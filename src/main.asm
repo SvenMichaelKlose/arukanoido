@@ -267,6 +267,7 @@ draw_title_screen:
     stzb curcol white
     stmb <scrx2 >scrx2 9
     stzb scry 8
+    call <clear_curchar >clear_curchar
     lday <txt_arukanoido >txt_arukanoido
     call <print_string_ay >print_string_ay
 
