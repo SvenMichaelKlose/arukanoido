@@ -176,6 +176,15 @@ loop:
     jsr test_fire
     beq start_one_player
 
+    ; Switch to hiscore table.
+    lda @(++ framecounter)
+    cmp #5
+    bne +l
+    jsr hiscore_table
+    bcs process_keypress
+    jmp toplevel
+l:
+
 if @*has-digis?*
     jsr exm_work
 end
@@ -183,6 +192,7 @@ end
     jsr poll_keypress
     bcc -loop
 
+process_keypress:
     cmp #keycode_1
     bne +n
 start_one_player:

@@ -178,8 +178,24 @@ l:  jsr print_score_round_name
     dec c
     bne -l
 
-w:  jsr poll_keypress
-    bcc -w
+    lda #0
+    sta framecounter
+    sta @(++ framecounter)
+l:  jsr test_fire
+    beq +f2
+    jsr poll_keypress
+    bcc +n
+    cmp #keycode_1
+    beq +f
+    cmp #keycode_2
+    beq +f
+n:  lda @(++ framecounter)
+    cmp #5
+    bne -l
+    clc
+    rts
+f2: lda #keycode_1
+f:  sec
     rts
 
 
