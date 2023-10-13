@@ -128,15 +128,158 @@ n:
 
     inc scry
     inc scry
-    lda #1
-    sta tmp4
-    lda #<scores
-    sta sl
-    lda #>scores
-    sta sh
-    jsr print_score_round_name
 
-w:  jmp -w
+    ;; Find and free entry.
+    jsr find_score_item
+
+    ; Get number of bytes to copy.
+    dec tmp
+    beq +n
+    lda #0
+    sta ch
+l:  clc
+    adc #11
+    dec tmp
+    bne -l
+    sta cl
+
+    ; Move items down.
+    lda #@(low (- scores_end 22))
+    sta sl
+    lda #@(high (- scores_end 22))
+    sta sh
+    lda #@(low (- scores_end 11))
+    sta dl
+    lda #@(high (- scores_end 11))
+    sta dh
+    jsr moveram_backwards
+
+    ;; Fill in new score.
+n:  lda #1
+    sta tmp4
+
+    jsr find_score_item
+    lda dl
+    pha
+    lda dh
+    pha
+
+    ; Set round.
+    ldy active_player
+    lda level,y
+    ldy #7
+    sta (d),y
+
+    ; Clear initials.
+    lda #0
+    iny
+    sta (d),y
+    iny
+    sta (d),y
+    iny
+    sta (d),y
+
+    ; Copy score.
+    lda #<hiscore
+    sta sl
+    lda #>hiscore
+    sta sh
+    lda #num_score_digits
+    sta cl
+    lda #0
+    sta ch
+    jsr moveram
+
+    pla
+    sta dh
+    pla
+    sta dl
+
+    lda #0
+    sta tmp5
+    lda #0
+    sta tmp6
+
+    ;; Print input line.
+l:  lda dl
+    sta sl
+    lda dh
+    sta sh
+    lda curchar
+    pha
+    ; Get index into initial.
+    lda tmp5
+    clc
+    adc #8
+    tay
+    ; Get char.
+    ldx tmp6
+    lda initial_chars,x
+    sta (d),y
+    lda dl
+    pha
+    lda dh
+    pha
+    jsr print_score_round_name
+    pla
+    sta dh
+    pla
+    sta dl
+    pla
+    sta curchar
+
+;    lda is_using_paddle
+;    beq +w
+    ldy active_player
+    lda $9007,y
+    sta old_paddle_value
+    ; Test on fire.
+m:  jsr test_fire
+    bne +o
+n2: jsr test_fire
+    beq -n2
+    inc tmp5
+    lda tmp5
+    cmp #3
+    beq +r
+    bne -l
+o:  lda $9007,y
+    cmp old_paddle_value
+    beq -m
+    jsr neg
+    lsr
+    lsr
+    cmp #num_initial_chars
+    bcc +n
+    lda #@(-- num_initial_chars)
+n:  sta tmp6
+    jmp -l
+
+r:  lda #60
+    jsr wait
+    rts
+
+find_score_item:
+    lda #5
+    sta tmp
+    lda #<scores
+    sta dl
+    lda #>scores
+    sta dh
+    lda #<hiscore
+    sta sl
+    lda #<hiscore
+    sta sh
+l:  jsr bcd_cmp
+    bcs +found
+    lda #11
+    jsr add_db
+    dec tmp
+    bne -l
+    clc
+    rts
+found:
+    sec
     rts
 
 print_hiscores:
@@ -215,7 +358,8 @@ print_score_round_name:
     jsr add_sb
 
     ; Print round number.
-n:  lda tmp4
+n:  jsr clear_curchar
+    lda tmp4
     clc
     adc #15
     sta scrx2
@@ -263,6 +407,8 @@ n:  pha
 
 initial_chars:
     @(string4x8 "ABCDEFGHIJKLMNOPQRSTUVWXYZ.! ")
+initial_chars_end:
+num_initial_chars = @(- initial_chars_end initial_chars)
 
 scores:
     0 0 5 0 0 0 0 5 @(string4x8 "SSB")
@@ -270,4 +416,6 @@ scores:
     0 0 4 0 0 0 0 3 @(string4x8 "TOR")
     0 0 3 5 0 0 0 2 @(string4x8 "ONJ")
     0 0 3 0 0 0 0 1 @(string4x8 "AKR")
+scores_end:
+
 __end_hiscore:

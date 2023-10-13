@@ -30,6 +30,7 @@ n:  lda #<score2
     rts
 
 init_hiscore:
+; TODO: Use VCPU.
     ldx #@(-- num_score_digits)
 l:  lda score_50000,x
     sta hiscore,x

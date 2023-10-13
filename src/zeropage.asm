@@ -345,6 +345,8 @@ has_two_players:    0
 active_player:      0
 
 tmp4:   0
+tmp5:   0
+tmp6:   0
 
 scratch:    "                          "
 lowmem:
