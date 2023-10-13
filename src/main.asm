@@ -340,7 +340,7 @@ draw_credits:
     inc scry
 
     0
-    stmb <scrx2 >scrx2 5
+    stmb <scrx2 >scrx2 4
     lday <txt_c1 >txt_c1
     call <print_string_ay >print_string_ay
     0
@@ -357,7 +357,7 @@ draw_credits:
     jsr clear_curchar
 
     0
-    stmb <scrx2 >scrx2 5
+    stmb <scrx2 >scrx2 4
     lday <txt_c3 >txt_c3
     call <print_string_ay >print_string_ay
     0
@@ -373,7 +373,7 @@ draw_credits:
 
     rts
 
-txt_press:  @(string4x8 "PRESS FIRE, 1, 2 OR M!") 255
+txt_press:  @(string4x8 "PRESS FIRE, 1, 2 OR M") 255
 txt_c1:     @(string4x8 "CODE & GRAPHICS:") 255
 txt_c2:     @(string4x8 "SVEN MICHAEL KLOSE") 255
 txt_c3:     @(string4x8 "CHIP SOUNDS:") 255
