@@ -12,6 +12,7 @@ game_over:
     sta is_running_game
     sta mode_break
 
+    jsr wait_for_silence
     jsr clear_screen
 
     lda #1
