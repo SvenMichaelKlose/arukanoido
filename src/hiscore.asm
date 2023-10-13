@@ -63,6 +63,7 @@ hiscore_table:
     sta curchar
     jsr print_scores_and_labels
 
+    jsr clear_curchar
     lda #yellow
     sta curcol
     lda #<txt_hiscore_h1
