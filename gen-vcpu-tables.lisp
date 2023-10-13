@@ -46,7 +46,6 @@
 (define-bytecode ldsd sl sh dl dh)
 (define-bytecode clrmw dl dh cl ch)
 (define-bytecode movmw sl sh dl dh cl ch)
-(define-bytecode setmb dl dh cl a3)
 (define-bytecode setmw dl dh cl ch a4)
 (define-bytecode apply) ; Argument is destination address.
 (define-bytecode call a0 a1)

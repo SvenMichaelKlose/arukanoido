@@ -86,29 +86,7 @@ i_clrmw = clrram
 ; Move memory area upwards.
 i_movmw = moveram
 
-; Fill memory area. Byte length.
-i_setmb:
-    ldy cl
-    lda a3
-l:  sta (d),y
-    dey
-    bne -l
-    rts
-
 ; Fill memory area. Word length.
 i_setmw:
-    ldx cl
-    inx
-    inc ch
-    ldy dl
     lda a4
-    sta dl
-l:  sta (d),y
-    iny
-    bne +n
-    inc dh
-n:  dex
-    bne -l
-    dec ch
-    bne -l
-    rts
+    jmp setram
