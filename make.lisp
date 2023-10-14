@@ -240,8 +240,8 @@
     (when (< ! 0)
       (error "BLK3 overflow!~%")))
   (when *has-digis?*
-    (!= (- #xc000 (get-label 'blk5_end))
-      (format t "~A bytes free before $c000.~%" !)
+    (!= (- #xbe00 (get-label 'blk5_end))
+      (format t "~A bytes free before $be00.~%" !)
       (when (< ! 0)
         (error "BLK5 overflow!~%")))))
 
