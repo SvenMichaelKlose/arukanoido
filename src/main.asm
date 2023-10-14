@@ -102,7 +102,7 @@ loop:
     ; Switch every 786 frames.
     lda @(++ framecounter)
     cmp #3
-    bne -loop
+    bne +get_toplevel_key
     inc current_toplevel_view
     ldx current_toplevel_view
     dex
@@ -120,6 +120,7 @@ if @*has-digis?*
     jsr exm_work
 end
 
+get_toplevel_key:
     jsr poll_keypress
     bcc -loop
 
