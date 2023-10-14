@@ -321,6 +321,9 @@ preshifted_ball_caught:     0 0
 
 get_keypress_x: 0
 
+current_toplevel_view:  0
+hiscore_player:     0
+
 before_int_vectors:
 
     org $320
@@ -330,9 +333,6 @@ line_addresses_h:   fill 33
 
 ; For 'add_sprite'.
 sprite_inits:           fill @sprite_inits_size
-
-current_toplevel_view:  0
-hiscore_player:     0
 
 uncleaned_lowmem:
 
