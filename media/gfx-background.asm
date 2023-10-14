@@ -1,7 +1,7 @@
 bg_start = 192 ;@(+ framechars foreground)
 
-@(unless (== *pass* 0) (low (- gfx_background_end gfx_background)))
-@(unless (== *pass* 0) (high (- gfx_background_end gfx_background)))
+@(unless (== *pass* 0) (++ (low (- gfx_background_end gfx_background))))
+@(unless (== *pass* 0) (++ (high (- gfx_background_end gfx_background))))
 
 gfx_background:
 

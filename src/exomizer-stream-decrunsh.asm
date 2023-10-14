@@ -38,9 +38,7 @@ decrunch_block:
     sta c
     jsr get_decrunched_byte
     sta @(++ c)
-    inc c
-    inc @(++ c)
-    bne +n
+    jmp +n
 l:  jsr get_decrunched_byte
     ldy #0
     sta (d),y
