@@ -74,12 +74,12 @@ i_lday:
 i_ldsd:
     rts
 
-i_inczb:
+i_inczbi:
     ldx a0
     inc 0,x
     rts
 
-i_addzb:
+i_addzbi:
     ldx a0
     lda a1
     clc
