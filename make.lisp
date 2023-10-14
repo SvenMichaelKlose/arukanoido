@@ -194,6 +194,8 @@
                           "irq.asm"
                           "game.asm"
                           "main.asm"
+
+                          "preshift-common-sprites.asm"
                           "round-start.asm"
                           "hiscore.asm"
                           "round-intro.asm"
