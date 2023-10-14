@@ -42,11 +42,12 @@ n:  sta scrx2
     ldy #>txt_wait
     jsr print_string_ay
 
-    ; Scan for patch somewhere in memory.
+    ;; Scan for patch all across the address space.
+    ; Start at $0000.
     lda #0
     sta tmp3
     sta tmp4
-
+    ; Compare pointer to ID string.
 l:  ldx #@(-- (- id_patch_end id_patch))
     ldy #0
 l2: lda (tmp3),y
@@ -55,6 +56,7 @@ l2: lda (tmp3),y
     iny
     dex
     bpl -l2
+    ; Call patch.
     ldy #@(++ (- id_patch_end id_patch))
     lda (tmp3),y
     pha
@@ -62,12 +64,14 @@ l2: lda (tmp3),y
     lda (tmp3),y
     pha
     rts
-
+    ; Step to next byte.
 n:  inc tmp3
     bne -l
     inc @(++ tmp3)
+    ; Re-print counter on each new page.
     bne print_counter
 
+    ; No patch found.  Do regular start.
     jmp start
 
 print_counter:
@@ -106,6 +110,7 @@ n:  sta scrx2
     ldy #>txt_tmp
     jsr print_string_ay
 
+    ; Start game on user break.
     jsr test_fire
     beq +r
     jsr poll_keypress
