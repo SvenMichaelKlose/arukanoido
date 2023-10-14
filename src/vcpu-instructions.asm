@@ -51,9 +51,14 @@ i_stmw:
     sta (a0),y
     rts
 
+i_mvmzw:
+    ldy #0
+    sty a3
+    beq +n ; (jmp)
+
 i_mvmw:
     ldy #0
-    lda (a2),y
+n:  lda (a2),y
     sta (a0),y
     iny
     lda (a2),y
@@ -63,8 +68,23 @@ i_mvmw:
 ; Set zero page locations which are defined
 ; as instruction arguments, sp there is nothing
 ; left to do.
+i_ldyi:
+i_ldxy:
 i_lday:
 i_ldsd:
+    rts
+
+i_inczb:
+    ldx a0
+    inc 0,x
+    rts
+
+i_addzb:
+    ldx a0
+    lda a1
+    clc
+    adc 0,x
+    sta 0,x
     rts
 
 ; Call regular subroutine.

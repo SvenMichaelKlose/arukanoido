@@ -34,80 +34,39 @@ preshift_common_sprites:
     0
     clrmw $00 $04 $d0 $05
     stmw <d >d $00 $04
+
+    mvmzw <preshifted_vaus >preshifted_vaus d
+    stzw s <gfx_vaus >gfx_vaus
+    ldxy 1 10
+    call <preshift_huge_sprite >preshift_huge_sprite
+
+    mvmzw <preshifted_vaus_laser >preshifted_vaus_laser d
+    stzw s <gfx_vaus_laser >gfx_vaus_laser
+    ldyi 10
+    call <preshift_huge_sprite >preshift_huge_sprite
+
+    mvmzw <preshifted_vaus_extended >preshifted_vaus_extended d
+    stzw s <gfx_vaus_extended >gfx_vaus_extended
+    ldyi 11
+    call <preshift_huge_sprite >preshift_huge_sprite
+
+    mvmzw <preshifted_ball >preshifted_ball d
+    stzw s <gfx_ball >gfx_ball
+    ldxy 0 9
+    call <preshift_huge_sprite >preshift_huge_sprite
+
+    mvmzw <preshifted_ball_caught >preshifted_ball_caught d
+    stzw s <gfx_ball_caught >gfx_ball_caught
+    ldxy 0 9
+    call <preshift_huge_sprite >preshift_huge_sprite
+
+    mvmzw @(low (+ laser_init sprite_init_pgl)) @(high (+ laser_init sprite_init_pgl)) d
+    stzw s <gfx_laser >gfx_laser
+    ldxy 0 9
+    call <preshift_huge_sprite >preshift_huge_sprite
+
+    mvmzw <gfx_obstacles >gfx_obstacles d
     0
-
-    lda dl
-    sta preshifted_vaus
-    lda dh
-    sta @(++ preshifted_vaus)
-    lda #<gfx_vaus
-    sta sl
-    lda #>gfx_vaus
-    sta sh
-    ldx #1
-    ldy #10
-    jsr preshift_huge_sprite
-
-    lda dl
-    sta preshifted_vaus_laser
-    lda dh
-    sta @(++ preshifted_vaus_laser)
-    lda #<gfx_vaus_laser
-    sta sl
-    lda #>gfx_vaus_laser
-    sta sh
-    ldy #10
-    jsr preshift_huge_sprite
-
-    lda dl
-    sta preshifted_vaus_extended
-    lda dh
-    sta @(++ preshifted_vaus_extended)
-    lda #<gfx_vaus_extended
-    sta sl
-    lda #>gfx_vaus_extended
-    sta sh
-    ldy #11
-    jsr preshift_huge_sprite
-
-    lda dl
-    sta preshifted_ball
-    lda dh
-    sta @(++ preshifted_ball)
-    lda #<gfx_ball
-    sta sl
-    lda #>gfx_ball
-    sta sh
-    dex
-    ldy #9
-    jsr preshift_huge_sprite
-
-    lda dl
-    sta preshifted_ball_caught
-    lda dh
-    sta @(++ preshifted_ball_caught)
-    lda #<gfx_ball_caught
-    sta sl
-    lda #>gfx_ball_caught
-    sta sh
-    ldy #9
-    jsr preshift_huge_sprite
-
-    lda dl
-    sta @(+ laser_init sprite_init_pgl)
-    lda dh
-    sta @(+ laser_init sprite_init_pgh)
-    lda #<gfx_laser
-    sta sl
-    lda #>gfx_laser
-    sta sh
-    ldy #9
-    jsr preshift_huge_sprite
-
-    lda dl
-    sta gfx_obstacles
-    lda dh
-    sta @(++ gfx_obstacles)
     rts
 
 start:
