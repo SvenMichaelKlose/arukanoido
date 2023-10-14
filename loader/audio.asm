@@ -106,7 +106,8 @@ n:  txa
     jmp next_digi
 
 check_memory_expansion:
-    lda $9f55       ; Unhide registers.
+    ; Get UltiMem signature.
+    lda $9f55
     lda $9faa
     lda $9f01
     lda $9ff3
@@ -114,10 +115,10 @@ check_memory_expansion:
     beq +f
     cmp #$12
     beq +f
-    clc
+    clc     ; No UltiMem.
     rts
 
-f:  sec
+f:  sec     ; Got UltiMem.
     rts
 
 init_memory_expansion:
