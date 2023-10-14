@@ -147,18 +147,6 @@
                           "sprites-vic-huge.asm"
                           "sprites-vic-huge-preshifted.asm"
 
-                          ; Digital audio
-                          ,@(when *has-digis?*
-                              `(,@(unless *rom?*
-                                    '("exm-nmi.asm"))
-                                "audio-boost.asm"
-                                "digi-nmi.asm"
-                                "exm-player.asm"
-                                ,@(when *ultimem?*
-                                    '("raw-player.asm"))
-                                "rle-player.asm"
-                                "music-arcade.asm"))
-
                           ; Level display
                           "brick-fx.asm"
                           "draw-level.asm"
@@ -199,6 +187,18 @@
                           "round-start.asm"
                           "hiscore.asm"
                           "round-intro.asm"
+
+                          ; Digital audio
+                          ,@(when *has-digis?*
+                              `(,@(unless *rom?*
+                                    '("exm-nmi.asm"))
+                                "audio-boost.asm"
+                                "digi-nmi.asm"
+                                "exm-player.asm"
+                                ,@(when *ultimem?*
+                                    '("raw-player.asm"))
+                                "rle-player.asm"
+                                "music-arcade.asm"))
 
                           ,@(when *rom?*
                               `("init.asm"
