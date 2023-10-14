@@ -39,12 +39,12 @@ copy_forwards:
 l:  lda (s),y
     sta (d),y
     iny
-    bne +n
+    beq +m
 n:  dex
     bne -l
     dec @(++ c)
     bne -l
     rts
-    inc @(++ s)
+m:  inc @(++ s)
     inc @(++ d)
     bne -n ; (jmp)
