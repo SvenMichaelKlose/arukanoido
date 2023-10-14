@@ -128,10 +128,6 @@ n:  sty sprites_x,x
     tay
     lda gfx_obstacles_c,y
     sta sprites_c,x
-;    lda gfx_obstacles_gl,y
-;    sta sprites_gl,x
-;    lda gfx_obstacles_gh,y
-;    sta sprites_gh,x
     lda gfx_obstacles
     sta sprites_pgl,x
     lda @(++ gfx_obstacles)
