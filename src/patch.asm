@@ -1,10 +1,22 @@
 if @(not *rom?*)
-    fill @(- #x1c00 *pc*)
+    fill @(- #x1b00 *pc*)
 end
 
 patch:
     jsr init_screen
     jsr clear_screen
+
+    ; Detect BLK5.
+    ldx #0
+    stx has_digis
+    ldy $a000
+l:  stx $a000
+    cpx $a000
+    bne +n
+    dex
+    bne -l
+    inc has_digis
+n:  sty $a000
 
     ldx #0
 l:  lda txt_counter,x

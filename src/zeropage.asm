@@ -319,9 +319,7 @@ preshifted_vaus_extended:   0 0
 preshifted_ball:            0 0
 preshifted_ball_caught:     0 0
 
-has_ultimem:    0
 get_keypress_x: 0
-
 
 before_int_vectors:
 
@@ -338,6 +336,8 @@ hiscore_player:     0
 
 uncleaned_lowmem:
 
+has_ultimem:        0
+has_digis:          0
 is_playing_digis:   0
 
 ;;; Game configuration

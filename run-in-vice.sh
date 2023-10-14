@@ -5,4 +5,4 @@ echo
 echo ".model -pal"
 echo ".model -ntsc"
 
-xvic $@ -memory all -moncommands obj/arukanoido-disk.prg.lbl arukanoido/arukanoido.prg
+xvic -memory all -moncommands obj/arukanoido-disk.prg.lbl $@ arukanoido/arukanoido.prg

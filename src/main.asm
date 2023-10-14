@@ -196,6 +196,8 @@ if @(not *has-digis?*)
     bne -l
 end
 if @*has-digis?*
+    ldy has_digis
+    beq -l
     cmp #keycode_m
     bne -l
     lda is_playing_digis
@@ -287,7 +289,7 @@ draw_credits:
 
     0
     stzb curcol white
-    stmb <scrx2 >scrx2 5
+    stmb <scrx2 >scrx2 6
     lday <txt_press >txt_press
     call <print_string_ay >print_string_ay
 
@@ -326,7 +328,7 @@ draw_credits:
 
     rts
 
-txt_press:  @(string4x8 "PRESS FIRE, 1, 2 OR M") 255
+txt_press:  @(string4x8 "PRESS FIRE, 1 OR 2") 255
 txt_c1:     @(string4x8 "CODE & GRAPHICS:") 255
 txt_c2:     @(string4x8 "SVEN MICHAEL KLOSE") 255
 txt_c3:     @(string4x8 "CHIP SOUNDS:") 255
