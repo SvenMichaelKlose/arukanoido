@@ -7,10 +7,8 @@ hit_doh:
     lda #doh_flash_duration
     sta flashing_doh
     txa
-    pha
     ldx active_player
     dec @(-- bricks_left),x
-    pla
     tax
 n:  rts
 
@@ -69,9 +67,8 @@ n:  pla
     sec
     sbc #1
     sta (tmp),y
-    jsr add_brick_fx
     inc has_hit_brick
-    rts
+    jmp add_brick_fx
 
     ;; Remove fully degraded silver brick.
 remove_silver:
@@ -130,6 +127,5 @@ no_brick_hit:
 
     ;; Handle golden brick.
 golden:
-    jsr add_brick_fx
     inc has_hit_golden_brick    ; (Set flag.)
-    rts
+    jmp add_brick_fx
