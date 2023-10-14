@@ -2,7 +2,7 @@ clear_data:
     lda #$60
     sta $911e
 
-    ;; Clean zero page (inluding VCPU area).
+    ;; Clean zero page (inluding VCPU area so that cannot be used yet.).
     lda #0
     tax
 l:  cpx #@(-- uncleaned_zp)
@@ -122,7 +122,6 @@ toplevel:
     jsr init_screen
 
     lda #0
-    sta attraction_mode
     sta has_two_players
     sta active_player
 
@@ -140,25 +139,23 @@ loop:
     jsr test_fire
     beq start_one_player
 
-    ; Switch to hiscore table.
+    ;; Rotate views.
+    ; Switch every 786 frames.
     lda @(++ framecounter)
     cmp #3
-    bne +l
+    bne -loop
     inc current_toplevel_view
-    lda current_toplevel_view
-    cmp #1
+    ldx current_toplevel_view
+    dex
     bne +n
     jsr draw_credits
     jsr reset_framecounter
-    jmp +l
-n:  cmp #2
-    bne +n
+    beq -loop ; (jmp)
+n:  dex
+    bne restart_toplevel_views
     jsr hiscore_table
     jsr reset_framecounter
-    jmp +l
-n:  cmp #3
-    beq restart_toplevel_views
-l:
+    beq -loop ; (jmp)
 
 if @*has-digis?*
     jsr exm_work
@@ -202,25 +199,25 @@ n:
     bne +n
     dec $9000
     dec user_screen_origin_x
-    jmp -l
+    bne -loop ; (jmp)
 
 n:  cmp #keycode_l
     bne +n
     inc $9000
     inc user_screen_origin_x
-    jmp -l
+    bne -loop ; (jmp)
 
 n:  cmp #keycode_k
     bne +n
     dec $9001
     dec user_screen_origin_y
-    jmp -l
+    bne +l
 
 n:  cmp #keycode_j
     bne +n
     inc $9001
     inc user_screen_origin_y
-    jmp -l
+    bne +l
 
 n:  cmp #keycode_f
     bne +n
@@ -285,18 +282,19 @@ end
     call <print_string_ay >print_string_ay
     0
 
-    lda is_landscape
-    bne +n
-    ldx #20
-    ldy #31
-    jmp +m
-n:  ldx #30
-    ldy #27
-m:  stx scrx2
-    sty scry
-    lda #<txt_credit
-    ldy #>txt_credit
-    jmp print_string_ay
+;    lda is_landscape
+;    bne +n
+;    ldx #20
+;    ldy #31
+;    jmp +m
+;n:  ldx #30
+;    ldy #27
+;m:  stx scrx2
+;    sty scry
+;    lda #<txt_credit
+;    ldy #>txt_credit
+;    jmp print_string_ay
+    rts
 
 boot_basic:
     lda #0
@@ -394,6 +392,6 @@ reset_framecounter:
 txt_arukanoido: @(string4x8 " ARUKANOIDO") 255
 txt_copyright:  @(string4x8 " DEMO VERSION") 255
 txt_rights:     @(string4x8 (+ "    REV. #" *revision*)) 255
-txt_credit:     @(string4x8 " CREDIT  2") 255
+;txt_credit:     @(string4x8 " CREDIT  2") 255
 
 __end_game:
