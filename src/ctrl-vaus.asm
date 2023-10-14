@@ -270,6 +270,10 @@ make_vaus:
     sta vaus_last_x
     lda vaus_y
     sta sprites_y,x
+    lda preshifted_vaus
+    sta sprites_pgl,x
+    lda @(++ preshifted_vaus)
+    sta sprites_pgh,x
     rts
 
 test_vaus_hit_right:
