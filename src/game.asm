@@ -114,15 +114,11 @@ retry:
 
     ;; Pre-shift obstacle animation.
     ; Clear destination area.
-    lda gfx_obstacles
-    sta d
-    lda @(++ gfx_obstacles)
-    sta @(++ d)
-    lda #$00
-    sta c
-    lda #$09
-    sta @(++ c)
-    jsr clrram
+    0
+    stzmw d <gfx_obstacles >gfx_obstacles
+    stzw c $00 $09
+    call <clrram >clrram
+    0
 
     ; Get graphics for current level.
     ldy level
