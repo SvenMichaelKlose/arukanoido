@@ -43,6 +43,10 @@ ctrl_bonus:
     jsr release_ball
     ; Restore default Vaus graphics.
 n:  ldy vaus_sprite_index
+    lda #<gfx_vaus
+    sta sprites_gl,y
+    lda #>gfx_vaus
+    sta sprites_gh,y
     lda preshifted_vaus
     sta sprites_pgl,y
     lda @(++ preshifted_vaus)
@@ -92,6 +96,10 @@ apply_bonus_l:
     lda #mode_laser
     sta mode
     ldy vaus_sprite_index
+    lda #<gfx_vaus_laser
+    sta sprites_gl,y
+    lda #>gfx_vaus_laser
+    sta sprites_gh,y
     lda preshifted_vaus_laser
     sta sprites_pgl,y
     lda @(++ preshifted_vaus_laser)
@@ -103,6 +111,10 @@ apply_bonus_e:
     lda #mode_extended
     sta mode
     ldy vaus_sprite_index
+    lda #<gfx_vaus_extended
+    sta sprites_gl,y
+    lda #>gfx_vaus_extended
+    sta sprites_gh,y
     lda preshifted_vaus_extended
     sta sprites_pgl,y
     lda @(++ preshifted_vaus_extended)

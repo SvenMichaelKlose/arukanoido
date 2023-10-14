@@ -113,10 +113,7 @@ m:  sta sprites_d,x
 
     ;; Catch ball.
     stx caught_ball
-    lda preshifted_ball_caught   ; Trick to avoid colour clash.
-    sta sprites_pgl,x
-    lda @(++ preshifted_ball_caught)
-    sta sprites_pgh,x
+    jsr set_caught_ball_gfx
     lda ball_vaus_y_caught
     sta sprites_y,x
     lda #delay_until_ball_is_released
@@ -279,10 +276,7 @@ make_ball:
     sta sprites_x,x
     lda ball_vaus_y_caught
     sta sprites_y,x
-    lda preshifted_ball_caught
-    sta sprites_pgl,x
-    lda @(++ preshifted_ball_caught)
-    sta sprites_pgh,x
+    jsr set_caught_ball_gfx
     lda #initial_ball_direction
     sta sprites_d,x
     lda #0
@@ -355,6 +349,10 @@ release_ball:
     lda ball_vaus_y_above
     sta sprites_y,y
     ; Undo colour clash avoidance.
+    lda #<gfx_ball
+    sta sprites_gl,y
+    lda #>gfx_ball
+    sta sprites_gh,y
     lda preshifted_ball
     sta sprites_pgl,y
     lda @(++ preshifted_ball)
@@ -375,3 +373,14 @@ n:  lda #255
     sta caught_ball
     lda #snd_reflection_low
     jmp play_sound
+
+set_caught_ball_gfx:
+    lda #<gfx_ball_caught
+    sta sprites_gl,x
+    lda #>gfx_ball_caught
+    sta sprites_gh,x
+    lda preshifted_ball_caught   ; Trick to avoid colour clash.
+    sta sprites_pgl,x
+    lda @(++ preshifted_ball_caught)
+    sta sprites_pgh,x
+    rts

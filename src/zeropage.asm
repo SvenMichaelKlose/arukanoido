@@ -337,6 +337,7 @@ hiscore_player:     0
 uncleaned_lowmem:
 
 has_ultimem:        0
+has_3k:             0
 has_digis:          0
 is_playing_digis:   0
 

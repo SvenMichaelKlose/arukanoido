@@ -6,9 +6,23 @@ patch:
     jsr init_screen
     jsr clear_screen
 
+    ; Detect RAM123.
+    ldx #0
+    stx has_3k
+    ldx #2
+    ldy $0400
+l:  stx $0400
+    cpx $0400
+    bne +n
+    dex
+    bne -l
+    inc has_3k
+n:  sty $0400
+
     ; Detect BLK5.
     ldx #0
     stx has_digis
+    ldx #2
     ldy $a000
 l:  stx $a000
     cpx $a000

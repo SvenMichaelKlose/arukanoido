@@ -31,6 +31,9 @@ end
     jmp set_format
 
 preshift_common_sprites:
+    lda has_3k
+    beq +r
+
     0
     clrmw $00 $04 $d0 $05
     stmw <d >d $00 $04
@@ -67,7 +70,8 @@ preshift_common_sprites:
 
     mvmzw <gfx_obstacles >gfx_obstacles d
     0
-    rts
+
+r:  rts
 
 start:
     lda #0

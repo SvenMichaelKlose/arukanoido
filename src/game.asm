@@ -114,11 +114,14 @@ retry:
 
     ;; Pre-shift obstacle animation.
     ; Clear destination area.
+    lda has_3k
+    beq +n
     0
     stzmw d <gfx_obstacles >gfx_obstacles
     stzw c $00 $09
     call <clrram >clrram
     0
+n:
 
     ; Get graphics for current level.
     ldy level
@@ -128,13 +131,18 @@ retry:
 
     tay
     lda gfx_obstacles_gl,y
+    sta @(+ obstacle_init sprite_init_gfx_l)
     sta sl
     lda gfx_obstacles_gh,y
+    sta @(+ obstacle_init sprite_init_gfx_h)
     sta sh
     lda gfx_obstacles_gl_end,y
     sta cl
     lda gfx_obstacles_gh_end,y
     sta ch
+
+    lda has_3k
+    beq no_obstacle_preshifts
 
     ; Pre-shift animation.
     lda gfx_obstacles
@@ -277,7 +285,9 @@ q:  jsr wait_keyunpress
     jmp +l
 
 if @*has-digis?*
-n:  cmp #keycode_m
+n:  ldy has_digis
+    beq +l
+    cmp #keycode_m
     bne +n
     lda is_playing_digis
     eor #1
