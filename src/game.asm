@@ -303,10 +303,12 @@ n:  dex
 n:  cmp #keycode_n
     bne +n
     lda level
+end
 if @*demo?*
     cmp #num_demo_levels
     beq end_of_demo2
 end
+if @*debug?*
     lda #0
     ldy active_player
     sta @(-- bricks_left),y
