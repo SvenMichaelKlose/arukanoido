@@ -2,7 +2,7 @@ prg_size = @(- prg_end prg)
 blk5_size = @(- blk5_end blk5)
 
 start:
-    ; Copy PRG where it should be.
+    ; Copy PRG to where it should be.
     lda #<prg
     sta s
     lda #>prg
@@ -11,7 +11,7 @@ start:
     sta d
     lda #$11
     sta @(++ d)
-    ldx #@(low prg_size)
+    ldx #@(++ (low prg_size))
     lda #@(++ (high prg_size))
     sta @(++ c)
     jsr copy_forwards
@@ -25,7 +25,7 @@ start:
     sta d
     lda #>blk5
     sta @(++ d)
-    ldx #@(low blk5_size)
+    ldx #@(++ (low blk5_size))
     lda #@(++ (high blk5_size))
     sta @(++ c)
     jsr copy_forwards
@@ -35,14 +35,16 @@ start:
 
 copy_forwards:
     ldy #0
+    beq +n ; (jmp)
 l:  lda (s),y
     sta (d),y
     iny
     bne +n
-    inc @(++ s)
-    inc @(++ d)
 n:  dex
     bne -l
     dec @(++ c)
     bne -l
     rts
+    inc @(++ s)
+    inc @(++ d)
+    bne -n ; (jmp)
