@@ -8,7 +8,7 @@ patch:
 
     ldx #0
     stx has_3k
-    sta has_24k
+    stx has_24k
     stx has_digis
     lda #$5e
     sta bricks2
