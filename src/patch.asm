@@ -6,9 +6,12 @@ patch:
     jsr init_screen
     jsr clear_screen
 
-    ; Detect RAM123.
     ldx #0
     stx has_3k
+    sta has_24k
+    stx has_digis
+
+    ; Detect RAM123.
     ldx #2
     ldy $0400
 l:  stx $0400
@@ -19,9 +22,19 @@ l:  stx $0400
     inc has_3k
 n:  sty $0400
 
+    ; Detect BLK3.
+    ldx #2
+    ldy $6000
+l:  stx $6000
+    cpx $6000
+    bne +n
+    dex
+    bne -l
+    inc has_24k
+    bne +m ; (jmp)
+n:  sty $a000
+
     ; Detect BLK5.
-    ldx #0
-    stx has_digis
     ldx #2
     ldy $a000
 l:  stx $a000
@@ -31,16 +44,15 @@ l:  stx $a000
     bne -l
     inc has_digis
 n:  sty $a000
+m:
 
-    ldx #0
+    ldx #2
 l:  lda txt_counter,x
     sta txt_tmp,x
-    cmp #255
-    beq +n
-    inx
-    jmp -l
-n:
+    dex
+    bpl -l
 
+    ;; Print counter headers.
     lda #1
     sta curchar
     lda #white
@@ -119,6 +131,7 @@ print_counter:
     adc #@(- (char-code #\0) 32)
     sta @(++ txt_tmp)
 
+    ; Wait for retrace.
 m:  lda $9004
     lsr
     bne -m
