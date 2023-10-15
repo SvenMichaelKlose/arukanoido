@@ -2,7 +2,6 @@ Top-level
 [ ] !!! ARUKANOIDO logo.
 
 Game
-[ ] !!! Do not let ball escape through break mode gate.
 [ ] !!! Fix keyboard controls.  Fetch directly from VIA.
 [ ] !!  Cut up original round intro sound and play first bit twice.
 [ ] !!! D bonus: sometimes one extra ball is not diverted.
@@ -15,7 +14,3 @@ In-game animations
 
 Hiscore table
 [ ] !.. KERNAL I/O
-
-Questionable tasks
-[?] !!! Do not treat wall as golden(?) brick in third row from bottm (PAL).
-[?] Extend VCPU for top-level off-game code to save space.
