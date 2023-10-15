@@ -61,6 +61,9 @@ loop:
     beq start_one_player
 
     ;; Rotate views.
+    ; Not for +16K.
+    lda has_24k
+    beq +get_toplevel_key
     ; Switch every 786 frames.
     lda @(++ framecounter)
     cmp #3

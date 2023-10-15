@@ -100,7 +100,6 @@
                           "gfx-obstacle-doh.asm"
                           "gfx-sprites.asm"
                           ;"gfx-taito.asm"
-                          "gfx-ship.asm"
 
                           ; Mixed data
                           "bits.asm"
@@ -180,11 +179,12 @@
                           ,@(when *debug?*
                               '("debug.asm"))
                           "irq.asm"
+                          "round-start.asm"
                           "game.asm"
                           "main.asm"
 
                           "preshift-common-sprites.asm"
-                          "round-start.asm"
+                          "gfx-ship.asm"
                           "hiscore.asm"
                           "round-intro.asm"
 

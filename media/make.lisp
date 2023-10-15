@@ -8,4 +8,6 @@
   (apply #'assemble-files "obj/gfx-background.bin" '("media/gfx-background.asm"))
   (exomize-stream "obj/gfx-background.bin" "obj/gfx-background.bin.exo")
   (apply #'assemble-files "obj/round-intro-text.bin" '("media/round-intro-text.asm"))
-  (exomize-stream "obj/round-intro-text.bin" "obj/round-intro-text.bin.exo"))
+  (exomize-stream "obj/round-intro-text.bin" "obj/round-intro-text.bin.exo")
+  (apply #'assemble-files "obj/gfx-doh.bin" '("src/gfx-doh.asm"))
+  (exomize-stream "obj/gfx-doh.bin" "obj/gfx-doh.bin.exo"))

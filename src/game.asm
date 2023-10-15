@@ -2,10 +2,13 @@ game_won:
     lda #snd_doh_dissolving
     jsr play_sound
     jsr wait_for_silence
+    lda has_24k
+    beq +n
     lda #snd_hiscore
     ldx #<txt_game_won
     ldy #>txt_game_won
     jsr round_intro
+n:
 
 game_over:
     lda #0
@@ -13,8 +16,10 @@ game_over:
     sta mode_break
 
     jsr wait_for_silence
+    lda has_24k
+    beq +n
     jsr enter_hiscore
-    jsr clear_screen
+n:  jsr clear_screen
 
     lda #1
     sta curchar
@@ -58,11 +63,13 @@ n:  sta bricks
 g:  jmp game_won
 
 game:
+    lda has_24k
+    beq +n
     lda #snd_theme
     ldx #<txt_round_intro
     ldy #>txt_round_intro
     jsr round_intro
-    jsr clear_data
+n:  jsr clear_data
     jsr preshift_common_sprites
     jsr init_screen
     jsr init_foreground
@@ -420,6 +427,8 @@ l:  sta sl
     ldy #>txt_game_over2
     jsr print_string_ay
     inc curchar
+    lda has_24k
+    beq +n
     jsr enter_hiscore
 
 n:  jsr wait_for_silence
