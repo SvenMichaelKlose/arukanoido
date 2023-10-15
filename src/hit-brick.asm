@@ -3,16 +3,17 @@ hit_doh:
     lda (scr),y
     and #%01100000 ; Check if background char.
     cmp #%01100000
-    bne +n
+    bne +r
     lda #doh_flash_duration
     sta flashing_doh
     txa
     ldx active_player
     dec @(-- bricks_left),x
     tax
-n:  rts
+r:  rts
 
 ;;; Check if a brick has been hit.
+;;; Ball MUST have been reflected by something.
 ;;;
 ;;; scr: Screen address of brick to hit.
 ;;;
@@ -26,6 +27,13 @@ hit_brick:
     sta has_hit_brick
     sta has_hit_silver_brick
     sta has_hit_golden_brick
+
+    ;; Check if off brick map.
+    lda scry
+    sec
+    sbc playfield_yc
+    cmp #24
+    bcs -r
 
     ;; Redirect to DOH handling.
     lda level
@@ -46,12 +54,10 @@ hit_brick:
     beq +no_brick_hit
 
     ;; Adjust ball speed but not for laser hits.
-    pha
-    lda is_testing_laser_hit
+    ldy is_testing_laser_hit
     bne +n
     jsr adjust_ball_speed
-n:  pla
-    inc has_hit_brick           ; (Set flag.)
+n:  inc has_hit_brick           ; (Set flag.)
 
     ;; Dispatch for regular, silver and golden bricks.
     cmp #b_golden
