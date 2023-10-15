@@ -99,6 +99,9 @@ start_one_player:
     jmp +f
 n:
 
+    ; No two player mode for 16K.
+    ldy has_24k
+    beq +n
     cmp #keycode_2
     bne +n
     lda #1
@@ -130,7 +133,7 @@ n:  cmp #keycode_l
     bne +n
     inc $9000
     inc user_screen_origin_x
-    bne -loop ; (jmp)
+    bne +l ; (jmp)
 
 n:  cmp #keycode_k
     bne +n
