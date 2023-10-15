@@ -59,6 +59,9 @@ hit_brick:
     jsr adjust_ball_speed
 n:  inc has_hit_brick           ; (Set flag.)
 
+    ldy scrx
+    lda (tmp),y
+
     ;; Dispatch for regular, silver and golden bricks.
     cmp #b_golden
     beq +golden
@@ -68,8 +71,6 @@ n:  inc has_hit_brick           ; (Set flag.)
     beq remove_silver
 
     ;; Degrade silver brick.
-    ldy scrx
-    lda (tmp),y
     sec
     sbc #1
     sta (tmp),y
@@ -100,7 +101,6 @@ remove_brick:
     inc removed_bricks_for_bonus
 n:
     ; Add score of brick.
-    ldy scrx
     lda (tmp),y
     tay
     lda brick_scores_l,y
