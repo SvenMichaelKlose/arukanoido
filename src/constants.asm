@@ -6,7 +6,6 @@ buffer_start_hi = $13
 buffer_len_hi   = $01
 charset         = $1400
 bricks1         = $1c00     ; Map of brick types
-bricks2         = $be00     ; Map of brick types
 txt_tmp         = bricks
 exm_buffers     = $1e00     ; 2x256 bytes
 colors          = $9400

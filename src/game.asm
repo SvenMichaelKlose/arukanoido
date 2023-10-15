@@ -56,7 +56,7 @@ switch_to_player_bricks:
     ldy active_player
     dey
     beq +n
-    lda #>bricks2
+    lda bricks2
 n:  sta bricks
     rts
 

@@ -10,6 +10,8 @@ patch:
     stx has_3k
     sta has_24k
     stx has_digis
+    lda #$5e
+    sta bricks2
 
     ; Detect RAM123.
     ldx #2
@@ -43,6 +45,8 @@ l:  stx $a000
     dex
     bne -l
     inc has_digis
+    lda #$be
+    sta bricks2
 n:  sty $a000
 m:
 

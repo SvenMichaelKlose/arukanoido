@@ -328,7 +328,7 @@ before_int_vectors:
 
     org $320
 
-line_addresses_l:   fill 33
+line_addresses_l = $100 ;:   fill 33
 line_addresses_h:   fill 33
 
 ; For 'add_sprite'.
@@ -341,6 +341,7 @@ has_3k:             0
 has_24k:            0
 has_digis:          0
 is_playing_digis:   0
+bricks2:            0
 
 ;;; Game configuration
 ;; Players
