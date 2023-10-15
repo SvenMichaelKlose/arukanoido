@@ -21,6 +21,7 @@ if @(not *debug?*)
 end
 if @*debug?*
     clrmw <charset >charset $00 $08
+    clrmw $00 $01 $f0 $00
 end
 
     movmw <loaded_sprite_inits >loaded_sprite_inits <sprite_inits >sprite_inits sprite_inits_size 0
