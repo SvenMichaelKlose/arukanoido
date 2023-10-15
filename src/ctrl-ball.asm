@@ -169,10 +169,10 @@ ctrl_ball_subpixel:
     iny
     sty ball_y
 
-    ;; Check for hit sprite.
+    ;; Check for hit Vaus or obstable.
     lda #@(+ is_vaus is_obstacle)
     jsr find_point_hit
-    bcs check_reflection
+    bcs check_reflection    ; No sprite hit…
 
     lda sprites_i,y
     and #is_vaus
@@ -183,13 +183,16 @@ n:  lda sprites_i,y
     and #is_obstacle
     bne hit_obstacle
 
+    ;; Check on collision with char.
 check_reflection:
+    ; Side hit?
     jsr reflect
     lda has_collision
-    bne +n2
+    bne +n2                     ; Ball hit something…
+    ; Edge hit?
     jsr reflect_edge
     lda has_collision
-    beq avoid_endless_flight
+    beq avoid_endless_flight    ; Nothing hit…
 
     ;; Deal with result of reflect_edge.
 m:  lda #0
@@ -202,9 +205,9 @@ n2: jsr adjust_ball_speed_hitting_top
     lda has_removed_brick
     beq +n
 
-    lda level
-    cmp #33
-    beq +n
+;    lda level
+;    cmp #33
+;    beq +n
 
     ;; Make bonus.
     lda mode
@@ -213,7 +216,7 @@ n2: jsr adjust_ball_speed_hitting_top
     jsr make_bonus
     jmp +l
 
-    ;; Count hits with no effect.
+    ;; Count hit with no effect to avoid endless flight.
 n:  lda has_hit_silver_brick
     ora has_hit_golden_brick
     bne +f
