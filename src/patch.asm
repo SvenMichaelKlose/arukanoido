@@ -33,7 +33,8 @@ l:  stx $6000
     dex
     bne -l
     inc has_24k
-    bne +m ; (jmp)
+    lda #$1e
+    sta bricks2
 n:  sty $a000
 
     ; Detect BLK5.
