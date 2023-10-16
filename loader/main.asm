@@ -51,10 +51,11 @@ end
     sta d
     lda #>loader
     sta @(++ d)
-    ldx #@(low loader_size)
+    ldx #@(++ (low loader_size))
     lda #@(++ (high loader_size))
     sta @(++ c)
     ldy #0
+    beq +n ; (jmp)
 l:  lda (s),y
     sta (d),y
     iny

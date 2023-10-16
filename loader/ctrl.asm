@@ -18,11 +18,6 @@ l:  lda title_cfg,x
     dex
     bpl -l
 
-    jsr c2nwarp_reset
-    lda #<tape_leader1
-    sta $314
-    lda #>tape_leader1
-    sta $315
     jsr c2nwarp_start
 l:  jmp -l
 
@@ -69,10 +64,6 @@ l:  lda bin_cfg,x
     sta tape_ptr,x
     dex
     bpl -l
-    lda #<tape_leader1
-    sta $314
-    lda #>tape_leader1
-    sta $315
     jsr c2nwarp_start
 
     lda #<core_size
@@ -112,7 +103,7 @@ l3: lda (tmp),y
     dey
     bpl -l3
 
-    bmi show_countdown
+    bmi show_countdown ; (jmp)
 
 load_blk5:
     ldx #5
@@ -121,11 +112,6 @@ l:  lda blk5_cfg,x
     dex
     bpl -l
 
-    ; Set IRQ vector.
-    lda #<tape_leader1
-    sta $314
-    lda #>tape_leader1
-    sta $315
     jsr c2nwarp_start
     jmp show_countdown
 
@@ -160,6 +146,7 @@ copy_forwards:
     lda #@(++ (high binary_size))
     sta @(++ c)
     ldy #0
+    bne +n ; (jmp)
 l:  lda (s),y
     sta (d),y
     iny

@@ -55,9 +55,9 @@ next_digi:
     sta tape_ptr
     lda #>tape_buffer
     sta @(++ tape_ptr)
-    lda #<tape_leader2
+    lda #<tape_leader1
     sta $314
-    lda #>tape_leader2
+    lda #>tape_leader1
     sta $315
     jsr c2nwarp_start
 

@@ -2,7 +2,7 @@
 
 ; CONFIGURE HERE!
 
-;(const *versions* '(:prg :rom :tap :shadowvic))
+;(const *versions* '(:prg :rom :tap :wav :shadowvic))
 (const *versions* '(:prg))
 
 (const *demo?* t)               ; Limit to first eight levels.
@@ -37,7 +37,7 @@
 (load "build/level-data.lisp")
 (load "media/make.lisp")
 (load "prg-launcher/make.lisp")
-(load "c2nwarp/make.lisp")
+(load "loader/make.lisp")
 
 (fn exomize-stream (from to)
   (sb-ext:run-program "/usr/local/bin/exomizer-2.0.10" (list "raw" "-B" "-m" "256" "-M" "256" "-o" to from)
@@ -286,14 +286,12 @@
            "loader/loader.asm"
            "loader/ctrl.asm"))
   (make-vice-commands "obj/tape-loader.prg.lbl" "break .stop")
-  (format t "Short pulse: ~A~%" *pulse-short*)
-  (format t "Long pulse: ~A~%" *pulse-long*)
-  (format t "Pulse interval: ~A~%" *pulse-interval*)
-  (format t "Pulse subinterval: ~A~%" (/ *pulse-interval* 4))
-  (format t "Pulse rate PAL: ~A~%" (integer (/ (cpu-cycles :pal) *tape-pulse*)))
-  (format t "C2NWARP rate PAL: ~A~%" (integer (* 2 (/ (cpu-cycles :pal) *tape-pulse*))))
-  (format t "Pulse rate NTSC: ~A~%" (integer (/ (cpu-cycles :ntsc) *tape-pulse*)))
-  (format t "C2NWARP rate NTSC: ~A~%" (integer (* 2 (/ (cpu-cycles :ntsc) *tape-pulse*))))
+  (format t "Short pulse width:  ~A (~A cycles)~%" *pulse-short* (* 8 *pulse-short*))
+  (format t "Medium pulse width: ~A (~A cycles)~%" *pulse-medium* (* 8 *pulse-medium*))
+  (format t "Long pulse width:   ~A (~A cycles)~%" *pulse-long* (* 8 *pulse-long*))
+  (!= (integer (/ (cpu-cycles :pal) (+ *pulse-long* (* 4  *pulse-medium*)) 8))
+    (format t "Average bit rate:   ~A~%" (* ! 8))
+    (format t "Average byte rate:  ~A~%" !))
   (with-output-file o "arukanoido/arukanoido.tap"
     (write-tap o
                (+ (bin2cbmtap (cddr (string-list (fetch-file "obj/tape-loader.prg")))

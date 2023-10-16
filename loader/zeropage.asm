@@ -53,17 +53,14 @@ mg_c:           0 0
 tmp:            0 0
 tmp2:           0
 
-audio_ptr:      0
+audio_ptr:          0
 is_loading_audio:   0
-digis_left:     0
-bank_ptr:       0 0
-raw_size:       0 0 0
-bank:           0
-get_byte:       0 0
+digis_left:         0
+bank_ptr:           0 0
+raw_size:           0 0 0
+bank:               0
+get_byte:           0 0
 
 total_counter:  0 0
 
-pulses:         0 0 0 0 0 0 0 0
-                0 0 0 0 0 0 0 0
-pulsesm:        0 0 0 0 0 0 0 0
     end
