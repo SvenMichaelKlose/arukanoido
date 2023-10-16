@@ -35,7 +35,7 @@ l:  stx $6000
     inc has_24k
     lda #$1e
     sta bricks2
-n:  sty $a000
+n:  sty $6000
 
     ; Detect BLK5.
     ldx #2
