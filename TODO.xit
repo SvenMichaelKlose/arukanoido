@@ -1,5 +1,7 @@
 Top-level
 [ ] !!! ARUKANOIDO logo.
+[ ] !!! Do not crash when playing digis and drawing credits background.
+[ ] !!! Do not write score anywhen when shooting lasers.
 
 Game
 [ ] !!! Fix keyboard controls.  Fetch directly from VIA.
