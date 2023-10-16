@@ -103,19 +103,21 @@ zp_dest_lo:     0
 zp_dest_bi:     0
 
 ;;; Digisound players
+if @*has-digis?*
 currently_playing_digis: 0
 raw_play_ptr:
 rle_play_ptr:
 exm_play_ptr:   0 0 0
 exm_play_dptr:  0 0
-rle_val:
-exo_x:          0
+end
 rle_cnt:
 exo_y:          0
-rle_bit:
-exo_y2:         0
+rle_val:
+exo_x:          0
 rle_singles:
 exo_s:          0 0
+rle_bit:
+exo_y2:         0
 
 score:          0 0
 

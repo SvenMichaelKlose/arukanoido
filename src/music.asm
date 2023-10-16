@@ -157,6 +157,7 @@ end
 
     ; Play VIC tune.
 play_native:
+if @*has-digis?*
     lda #0
     sta currently_playing_digis
     lda #$7e                ; Turn off audio boost.
@@ -164,6 +165,7 @@ play_native:
     sta $900c
     lda #$ff                ; Disable EXM player.
     sta exm_needs_data
+end
     lda tmp
     sta requested_song
 

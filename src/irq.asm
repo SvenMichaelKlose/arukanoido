@@ -136,10 +136,13 @@ n:  lda mode_break
     sta (d),y
     lda #white
     sta (c),y
+n:
 
     ;; Play classic VIC sound.
-n:  lda currently_playing_digis
+if @*has-digis?*
+    lda currently_playing_digis
     bne +n      ; Digis are decrunched in game loop.
+end
     jsr play_music
 n:
 
