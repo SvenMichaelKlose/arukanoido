@@ -1,4 +1,5 @@
 hiscore_yc = 16
+score_item_size = @(+ num_score_digits 1 3)
 
 txt_hiscore_h1: @(string4x8 "THE FOLLOWING ARE") 255
 txt_hiscore_h2: @(string4x8 "THE RECORDS OF THE BRAVEST") 255
@@ -125,7 +126,7 @@ enter_hiscore:
 n:
     jsr print_hiscores
 
-    ;; Emter
+    ;; Enter
     lda #7
     sta tmp4
 
@@ -135,6 +136,7 @@ n:
     sta scry
     lda tmp4
     sta scrx2
+    jsr curchar
     jsr print_score_heading
 
     inc scry
@@ -149,19 +151,19 @@ n:
     lda #0
     sta ch
 l:  clc
-    adc #11
+    adc #score_item_size
     dec tmp
     bne -l
     sta cl
 
     ; Move items down.
-    lda #@(low (- scores_end 22))
+    lda #@(low (- scores_end (* 2 score_item_size)))
     sta sl
-    lda #@(high (- scores_end 22))
+    lda #@(high (- scores_end (* 2 score_item_size)))
     sta sh
-    lda #@(low (- scores_end 11))
+    lda #@(low (- scores_end score_item_size))
     sta dl
-    lda #@(high (- scores_end 11))
+    lda #@(high (- scores_end score_item_size))
     sta dh
     jsr moveram_backwards
 
@@ -177,7 +179,7 @@ n:  lda #1
     ; Set round.
     ldy active_player
     lda level,y
-    ldy #7
+    ldy #num_score_digits
     sta (d),y
 
     ; Clear initials.
@@ -223,7 +225,7 @@ l:  lda dl
     ; Get index into initial.
     lda tmp5
     clc
-    adc #8
+    adc #@(++ num_score_digits)
     tay
     ; Get char.
     ldx tmp6
@@ -308,7 +310,7 @@ find_score_item:
 l:  ldx #@(-- num_score_digits)
     jsr bcd_cmp
     bcs +found
-    lda #11
+    lda #10
     jsr add_db
     dec tmp
     bne -l
@@ -446,11 +448,11 @@ initial_chars_end:
 num_initial_chars = @(- initial_chars_end initial_chars)
 
 scores:
-    0 0 5 0 0 0 0 5 @(string4x8 "SSB")
-    0 0 4 5 0 0 0 4 @(string4x8 "SND")
-    0 0 4 0 0 0 0 3 @(string4x8 "TOR")
-    0 0 3 5 0 0 0 2 @(string4x8 "ONJ")
-    0 0 3 0 0 0 0 1 @(string4x8 "AKR")
+    0 0 5 0 0 0 5 @(string4x8 "SSB")
+    0 0 4 5 0 0 4 @(string4x8 "SND")
+    0 0 4 0 0 0 3 @(string4x8 "TOR")
+    0 0 3 5 0 0 2 @(string4x8 "ONJ")
+    0 0 3 0 0 0 1 @(string4x8 "AKR")
 scores_end:
 
 __end_hiscore:

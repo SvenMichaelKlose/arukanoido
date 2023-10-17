@@ -45,7 +45,7 @@ delay_until_ball_is_released = $80
 
 ; Score settings
 
-num_score_digits    = 7
+num_score_digits    = 6
 score_char0         = 16    ; Digit '0' in 4x8 charset.
 
 ; Miscellaneous

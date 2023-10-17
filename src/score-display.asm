@@ -129,7 +129,7 @@ l:  txa
     bne +n
     ldx tmp3
     bne +n
-    cpy #@(- num_score_digits 2)
+    cpy #@(-- num_score_digits)
     bcc +m
 n:  clc
     adc #score_char0
@@ -141,7 +141,8 @@ m:  jsr print4x8_dynalloc
     iny
     dex
     bne -l
-r:  rts
+    lda #score_char0
+    jmp print4x8_dynalloc
 
 txt_1up:    @(string4x8 "1UP") 255
 txt_2up:    @(string4x8 "2UP") 255
