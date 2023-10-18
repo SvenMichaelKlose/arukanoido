@@ -228,8 +228,7 @@ n:  dec tmp2
     sta dh
     lda tmp4
     sta dl
-
-    ;; Add Y char offset.
+    ; Add Y char offset.
     lda sprites_y,x
     and #%111
     clc
