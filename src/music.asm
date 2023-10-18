@@ -46,26 +46,29 @@ sound_priorities:
     1 ; 16  laser
     2 ; 17  warp
 
+mt_exm = 0
+mt_rle = 1
+mt_vic = 2
 if @*has-digis?*
 digi_types:
     0 ; no sound
-    0 ; 1   theme
-    0 ; 2   round
-    1 ; 3   bonus life
-    0 ; 4   game over
-    2 ; 5   DOH round
-    0 ; 6   hiscore
-    2 ; 7   reflection low
-    2 ; 8   reflection high
-    2 ; 9   reflection silver
-    2 ; 10  caught ball
-    0 ; 11  miss
-    1 ; 12  hit DOH
-    0 ; 13  DOH dissolving
-    1 ; 14  growing vaus
-    1 ; 15  explosion
-    1 ; 16  laser
-    0 ; 17  warp
+    mt_exm ; 1   theme
+    mt_exm ; 2   round
+    mt_rle ; 3   bonus life
+    mt_exm ; 4   game over
+    mt_vic ; 5   DOH round
+    mt_vic ; 6   hiscore
+    mt_vic ; 7   reflection low
+    mt_vic ; 8   reflection high
+    mt_vic ; 9   reflection silver
+    mt_vic ; 10  caught ball
+    mt_exm ; 11  miss
+    mt_rle ; 12  hit DOH
+    mt_exm ; 13  DOH dissolving
+    mt_rle ; 14  growing vaus
+    mt_rle ; 15  explosion
+    mt_rle ; 16  laser
+    mt_exm ; 17  warp
 
 digi_rates:
     0 ; no sound
@@ -155,7 +158,7 @@ r:  lda tmp
     bne +done               ; (jmp)
 end
 
-    ; Play VIC tune.
+    ; Play VIC tune. (type 2)
 play_native:
 if @*has-digis?*
     lda #0
