@@ -14,8 +14,7 @@ n:
     lda spriteframe
     beq +n
     iny
-n:
-    lda sprites_x,x
+n:  lda sprites_x,x
     lsr
     lsr
     lsr
@@ -77,7 +76,7 @@ n:
     asl
     asl
     sta dl
-    pha
+    sta tmp4
     lda sprite_char
     lsr
     lsr
@@ -87,7 +86,7 @@ n:
     clc
     adc #>charset
     sta dh
-    pha
+    sta tmp5
 
     ;; Allocate chars.
     lda sprite_rows_on_screen
@@ -225,9 +224,9 @@ n:  dec tmp2
     bne +l2b
 
     ;; Get destination address in charset.
-    pla
+    lda tmp5
     sta dh
-    pla
+    lda tmp4
     sta dl
 
     ;; Add Y char offset.
