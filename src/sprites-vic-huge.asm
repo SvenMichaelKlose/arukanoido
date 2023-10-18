@@ -8,16 +8,25 @@ draw_huge_sprite:
     nop
 n:
     ;; Get screen position.
+    txa
+    asl
+    tay
+    lda spriteframe
+    beq +n
+    iny
+n:
     lda sprites_x,x
     lsr
     lsr
     lsr
     sta sprite_x
+    sta sprites_sx,y
     lda sprites_y,x
     lsr
     lsr
     lsr
     sta sprite_y
+    sta sprites_sy,y
 
     ;; Determine width.
     lda sprites_dimensions,x
@@ -57,9 +66,9 @@ n:
 
     ;; Save dimensions for cleanup.
     lda sprite_cols_on_screen
-    sta sprites_w,x
+    sta sprites_sw,y
     lda sprite_rows_on_screen
-    sta sprites_h,x
+    sta sprites_sh,y
 
     ;; Get char adress.
     lda next_sprite_char

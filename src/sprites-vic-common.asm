@@ -10,31 +10,6 @@ l:  lda sprites_i,x
 
     sei
     jsr draw_huge_sprite
-
-    ; Save position of drawn sprite.
-    txa
-    asl
-    tay
-    lda spriteframe
-    beq +n
-    iny
-n:  lda sprites_x,x
-    lsr
-    lsr
-    lsr
-    sta sprites_sx,y
-    lda sprites_y,x
-    lsr
-    lsr
-    lsr
-    sta sprites_sy,y
-    lda sprites_w,x
-    sec
-    sbc #1
-    sta sprites_sw,y
-    lda sprites_h,x
-    sta sprites_sh,y
-
     cli
 ;if @*has-digis?*
 ;    jsr exm_work

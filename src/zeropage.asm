@@ -77,8 +77,6 @@ sprites_dx:         fill num_sprites  ; Ball subpixel position.
 sprites_dy:         fill num_sprites
 sprites_iw:         fill num_sprites  ; Dimensions in chars.
 sprites_ih:         fill num_sprites
-sprites_w:          fill num_sprites  ; Total dimensions in chars (after shift).
-sprites_h:          fill num_sprites
 
 ;;; Ball
 ball_x:               0
