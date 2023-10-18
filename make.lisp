@@ -3,7 +3,7 @@
 ; CONFIGURE HERE!
 
 ;(const *versions* '(:prg :rom :tap :wav :shadowvic))
-(const *versions* '(:tap))
+(const *versions* '(:prg :tap :wav))
 
 (const *demo?* t)               ; Limit to first eight levels.
 (const *debug?* t)              ; Include self-tests and features.
@@ -377,7 +377,7 @@
       (tap2wav i o 44100 (cpu-cycles :ntsc)))))
 
 (sb-ext:run-program "/bin/cp"
-                    '("README.md" "NEWS" "obj/arukanoido-disk.prg.lbl" "arukanoido/")
+                    '("README.md" "obj/arukanoido-disk.prg.lbl" "arukanoido/")
                     :pty cl:*standard-output*)
 (sb-ext:run-program "/bin/cp"
                     '("media/arkanoid-roms-mame.zip" "arukanoido/")
