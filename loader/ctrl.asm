@@ -2,8 +2,8 @@ title_size      = @(length (fetch-file "obj/title.bin.exo"))
 title_size_raw  = @(length (fetch-file "obj/title.bin"))
 binary_size     = @(length (fetch-file "obj/arukanoido-tape.exo.prg"))
 blk5_size       = @(length (fetch-file "obj/music-arcade-blk5.bin"))
-core_size       = binary_size ;@(+ binary_size blk5_size)
-cdec            = @(/ core_size 72)                                                                                        
+total_size      = @(+ binary_size blk5_size)
+cdec            = @(/ total_size 72)
 number_0        = @(-- (+ #x8000 (* #x30 8)))
 
 load_title:
@@ -66,9 +66,9 @@ l:  lda bin_cfg,x
     bpl -l
     jsr c2nwarp_start
 
-    lda #<core_size
+    lda #<total_size
     sta total_counter
-    lda #>core_size
+    lda #>total_size
     sta @(++ total_counter)
 
 show_countdown:
