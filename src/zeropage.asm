@@ -229,9 +229,6 @@ draw_bitmap_num_chars:  0
 draw_bitmap_y:          0
 
 ;;; Sprite collisions
-draw_sprites_tmp:       0
-draw_sprites_tmp2:      0
-draw_sprites_tmp3:      0
 find_hit_types:         0
 
 ;;; VCPU

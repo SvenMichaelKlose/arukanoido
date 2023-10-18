@@ -6,17 +6,11 @@ end
 
     ldx #@(-- num_sprites)
 l:  lda sprites_i,x
-    bmi +next
-
+    bmi +n  ; Slot unused…
     sei
     jsr draw_huge_sprite
     cli
-;if @*has-digis?*
-;    jsr exm_work
-;end
-
-next:
-    dex
+n:  dex
     bpl -l
 
 if @*show-cpu?*

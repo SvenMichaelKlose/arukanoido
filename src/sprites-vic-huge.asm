@@ -103,12 +103,12 @@ n:
 
     ;; Copy existing graphics into allocated chars.
     lda sprite_cols_on_screen
-    sta draw_sprites_tmp3
+    sta tmp3
     lda sprite_x
     sta scrx
 
 l2: lda sprite_rows_on_screen
-    sta draw_sprites_tmp2
+    sta tmp2
     lda sprite_y
     sta scry
 
@@ -217,11 +217,11 @@ n:  inc scry
     sta dl
     bcc +n
     inc dh
-n:  dec draw_sprites_tmp2
+n:  dec tmp2
     bne +l3
 
     inc scrx
-    dec draw_sprites_tmp3
+    dec tmp3
     bne +l2b
 
     ;; Get destination address in charset.
@@ -241,7 +241,7 @@ n:  dec draw_sprites_tmp2
 n:
 
     lda sprite_cols
-    sta draw_sprites_tmp2
+    sta tmp2
 
     ;; Draw pre-shifted?
     lda sprites_pgh,x
@@ -265,7 +265,7 @@ l:  sta sh
     asl
     clc                 ; Add that extra column.
     adc sprite_lines
-    sta draw_sprites_tmp3
+    sta tmp3
 
     ; Get number of times to shift.
     lda sprites_x,x
@@ -285,7 +285,7 @@ n:  tay
 
     ; Multiply bytes by shifts.
 l4: clc
-    adc draw_sprites_tmp3
+    adc tmp3
     bcc +n3
     inc sh
 n3: dey
@@ -293,11 +293,11 @@ n3: dey
     sta sl
 
     lda sprite_cols_on_screen
-    sta draw_sprites_tmp2
+    sta tmp2
 
     ;; Draw sprite column.
 l2: lda sprite_rows
-    sta draw_sprites_tmp3
+    sta tmp3
     ldy #0
 l:  lda (s),y
     ora (d),y
@@ -331,10 +331,10 @@ l:  lda (s),y
     ora (d),y
     sta (d),y
     iny
-    dec draw_sprites_tmp3
+    dec tmp3
     bne -l
 
-    dec draw_sprites_tmp2
+    dec tmp2
     beq plot_chars
 
     ;; Step to next screen column.
@@ -394,7 +394,7 @@ n:
 n:
 
     ;; Break here when all columns are done.
-    dec draw_sprites_tmp2
+    dec tmp2
     beq +plot_chars
 
     ;; Step to next sprite graphics column.
@@ -410,7 +410,7 @@ n:
 plot_chars:
     ;; Get initial sprite char and screen position.
     lda sprite_char
-    sta draw_sprites_tmp
+    sta tmp
     lda sprite_x
     sta scrx
 
@@ -418,7 +418,7 @@ plot_chars:
 l2: lda sprite_y
     sta scry
     lda sprite_rows_on_screen
-    sta draw_sprites_tmp2
+    sta tmp2
 
 l:  ;; Check if position is plottable.
     lda scry
@@ -453,15 +453,15 @@ l:  ;; Check if position is plottable.
     bne +n                  ; Do not plot over background.
 
     ; Plot.
-l3: lda draw_sprites_tmp
+l3: lda tmp
     sta (scr),y
     lda sprites_c,x
     sta (col),y
 
     ;;
-n:  inc draw_sprites_tmp    ; To next sprite char.
+n:  inc tmp    ; To next sprite char.
     inc scry                ; To next row.
-    dec draw_sprites_tmp2
+    dec tmp2
     bne -l                  ; Next row…
 
     inc scrx
