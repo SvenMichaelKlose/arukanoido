@@ -126,7 +126,7 @@ sprite_right:
 ; C: Clear when a hit was found.
 ; Y: Sprite index of other sprite.
 find_hit:
-    sta find_hit_types
+    sta tmp4
     stx tmp
 
     lda sprites_dimensions,x
@@ -150,7 +150,7 @@ l:  cpy tmp    ; Skip same sprite.
     beq +n
 
     lda sprites_i,y     ; Skip inactive sprite.
-    and find_hit_types
+    and tmp4
     beq +n
 
     lda sprites_y,y
@@ -199,7 +199,7 @@ n:  dey
 ; C: Clear when a hit was found.
 ; Y: Sprite index of sprite hit.
 find_point_hit:
-    sta find_hit_types
+    sta tmp4
 
     ; Get opposite corner's coordinates of sprite.
     lda sprites_dimensions,x
@@ -219,7 +219,7 @@ find_point_hit:
 
     ldy #@(-- num_sprites)
 l:  lda sprites_i,y
-    and find_hit_types
+    and tmp4
     beq +n
 
     lda ball_x

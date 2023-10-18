@@ -15,10 +15,12 @@ c:          0   ; Counter
 ch:         0
 
 ;;; Temporaries
-tmp:            0
-tmp2:           0
-tmp3:           0
-tmp4:           0
+tmp:        0
+tmp2:       0
+tmp3:       0
+tmp4:       0
+tmp5:       0
+tmp6:       0
 
 ;;; Screen access
 scr:        0 0 ; Screen pointer (line start)
@@ -78,6 +80,8 @@ sprites_dy:         fill num_sprites
 sprites_iw:         fill num_sprites  ; Dimensions in chars.
 sprites_ih:         fill num_sprites
 
+sprites_sw:         fill @(* 2 num_sprites)
+
 ;;; Ball
 ball_x:               0
 ball_y:               0
@@ -103,6 +107,10 @@ zp_dest_bi:     0
 ;;; Digisound players
 if @*has-digis?*
 currently_playing_digis: 0
+exm_needs_data: 0
+digisound_a:    0
+digisound_x:    0
+digisound_y:    0
 raw_play_ptr:
 rle_play_ptr:
 exm_play_ptr:   0 0 0
@@ -145,7 +153,6 @@ last_random_value:  0
 ;; are the two different frames.
 sprites_sx:     fill @(* 2 num_sprites)
 sprites_sy:     fill @(* 2 num_sprites)
-sprites_sw:     fill @(* 2 num_sprites)
 sprites_sh:     fill @(* 2 num_sprites)
 ;; Temporaries
 add_sprite_x:   0
@@ -177,12 +184,6 @@ score2:             fill num_score_digits
 score1_char_start:    0
 hiscore_char_start:   0
 score2_char_start:    0
-
-;;; Music players
-exm_needs_data: 0
-digisound_a:    0
-digisound_x:    0
-digisound_y:    0
 
 ;;; TV standard dependant constants
 ;; static
@@ -227,9 +228,6 @@ draw_bitmap_width:      0
 draw_bitmap_height:     0
 draw_bitmap_num_chars:  0
 draw_bitmap_y:          0
-
-;;; Sprite collisions
-find_hit_types:         0
 
 ;;; VCPU
 apply_tmp:  0 0
@@ -316,10 +314,10 @@ preshifted_vaus_extended:   0 0
 preshifted_ball:            0 0
 preshifted_ball_caught:     0 0
 
-get_keypress_x: 0
+get_keypress_x:         0
 
 current_toplevel_view:  0
-hiscore_player:     0
+hiscore_player:         0
 
 before_int_vectors:
 
@@ -344,10 +342,6 @@ bricks2:            0
 ;; Players
 has_two_players:    0
 active_player:      0
-
-tmp4:   0
-tmp5:   0
-tmp6:   0
 
 scratch:    "                          "
 lowmem:
