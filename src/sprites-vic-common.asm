@@ -82,11 +82,7 @@ n:  sty tmp
     adc #0
     sta @(++ scr)
 
-l2: lda scr
-    pha
-    lda @(++ scr)
-    pha
-    ldy tmp
+l2: ldy tmp
     lda sprites_sw,y
     tay
 
@@ -98,7 +94,7 @@ l3: lda (scr),y
     lda (scr),y
     and #framemask
     cmp spriteframe
-    beq +n
+    beq +n      ; Char belongs to sprite in current frame…
 
     ; Make pointer into brick map.
     lda scr
@@ -122,9 +118,7 @@ n:  dey
     bpl -l3
 
     ; Step to next screen line.
-    pla
-    sta @(++ scr)
-    pla
+    lda scr
     clc
     adc screen_columns
     sta scr
