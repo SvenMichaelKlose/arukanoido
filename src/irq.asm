@@ -11,13 +11,9 @@ start_irq:
     lda #0
     sta is_running_game
 
-    ldx #0
-    ldy #init_music_data_size
-l:  lda init_music_data,x
-    sta $3ce,x
-    inx
-    dey
-    bne -l
+    0
+    movmw $ce $03 <init_music_data >init_music_data <init_music_data_size >init_music_data_size
+    0
     jsr init_music
 
 l:  lda #<irq
