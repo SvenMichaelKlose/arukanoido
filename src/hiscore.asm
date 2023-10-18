@@ -123,7 +123,6 @@ enter_hiscore:
     ldy #>txt_enter
     jsr print_string_ay
     inc curchar
-n:
     jsr print_hiscores
 
     ;; Enter
@@ -136,7 +135,7 @@ n:
     sta scry
     lda tmp4
     sta scrx2
-    jsr curchar
+    jsr clear_curchar
     jsr print_score_heading
 
     inc scry
@@ -214,6 +213,9 @@ n:  lda #1
     sta tmp5
     lda #0
     sta tmp6
+
+    lda #snd_hiscore
+    jsr play_sound
 
     ;; Print input line.
 l:  lda dl
