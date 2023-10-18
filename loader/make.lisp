@@ -9,7 +9,7 @@
 
 (fn c2n-leader (o)
   (adotimes ((* 8 *tape-leader-length*) nil)
-    (write-byte *pulse-long* o))
+    (write-byte *pulse-medium* o))
   (write-byte *pulse-short* o)) ; Signalling end of leader.
 
 (fn c2nbit (o x)
