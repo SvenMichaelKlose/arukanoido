@@ -184,7 +184,7 @@ redraw_game:
     cmp #doh_level
     bne +n
     jsr init_doh_charset
-    bne +m                  ; (jmp)
+    jmp +m
 
 n:  jsr switch_to_player_bricks
     jsr draw_level
@@ -234,7 +234,6 @@ n:  lda #0
     jsr draw_walls      ; Freshen up after mode_break.
     jsr draw_lives
     jsr roundstart
-
     jsr make_vaus
     jsr make_ball
 
@@ -262,11 +261,11 @@ if @*shadowvic?*
     jsr irq
 end
 
-    ; Handle level end.
+    ; Handle completed level.
     ldy active_player
     lda @(-- bricks_left),y
     bne +n
-    jmp level_end
+    jmp level_complete
 
     ; Handle lost life.
 n:  lda is_running_game
@@ -360,6 +359,7 @@ if @*has-digis?*
     jsr exm_work
 end
 
+    ;; Redraw graphics that have changed.
     lda needs_redrawing_lives
     beq +n
     jsr draw_lives
@@ -444,7 +444,7 @@ n:  jsr wait_for_silence
     beq -n
     jmp retry
 
-level_end:
+level_complete:
     ldx #1
     jsr wait
     jsr draw_sprites
