@@ -2,8 +2,8 @@
 
 ; CONFIGURE HERE!
 
-;(const *versions* '(:prg :rom :tap :wav :shadowvic))
-(const *versions* '(:prg :tap :wav))
+(const *versions* '(:prg :tap :wav :shadowvic))
+;(const *versions* '(:prg))
 
 (const *demo?* t)               ; Limit to first eight levels.
 (const *debug?* t)              ; Include self-tests and features.
