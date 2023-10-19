@@ -155,8 +155,6 @@ sprites_sx:     fill @(* 2 num_sprites)
 sprites_sy:     fill @(* 2 num_sprites)
 sprites_sh:     fill @(* 2 num_sprites)
 ;; Temporaries
-add_sprite_x:   0
-add_sprite_y:   0
 call_controllers_x: 0
 
 ;;; Printing text

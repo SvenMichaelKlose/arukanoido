@@ -3,8 +3,8 @@
 ; Y: descriptor of new sprite in sprite_inits
 ; Returns: A: Index of new sprite or 255 if slots are full.
 add_sprite:
-    stx add_sprite_x
-    sty add_sprite_y
+    stx tmp
+    sty tmp2
 
     ldy #@(-- num_sprites)
 l:  dec sprite_rr
@@ -20,13 +20,13 @@ l:  dec sprite_rr
 
 sprite_added:
     txa
-r:  ldx add_sprite_x
-    ldy add_sprite_y
+r:  ldx tmp
+    ldy tmp2
     rts
 
 replace_sprite2:
     txa
-    ldy add_sprite_y
+    ldy tmp2
     jmp replace_sprite
 
 ; Replace sprite by dummy.
