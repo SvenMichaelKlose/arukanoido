@@ -268,6 +268,9 @@ l6: jsr get_joystick
 
 l2: ldy active_player
     lda $9007,y
+    clc
+    adc old_paddle_value
+    ror
     sta old_paddle_value
     ; Test on fire.
 m:  jsr test_fire
