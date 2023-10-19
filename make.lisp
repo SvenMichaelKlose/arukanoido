@@ -289,7 +289,7 @@
   (format t "Short pulse width:  ~A (~X cycles)~%" *pulse-short* (* 8 *pulse-short*))
   (format t "Medium pulse width: ~A (~X cycles)~%" *pulse-medium* (* 8 *pulse-medium*))
   (format t "Long pulse width:   ~A (~X cycles)~%" *pulse-long* (* 8 *pulse-long*))
-  (!= (integer (/ (cpu-cycles :pal) (+ *pulse-long* (* 4  *pulse-medium*)) 8))
+  (!= (integer (/ (cpu-cycles :pal) (* 4 *pulse-long*) 8))
     (format t "Average bit rate:   ~A~%" (* ! 8))
     (format t "Average byte rate:  ~A~%" !))
   (with-output-file o "arukanoido/arukanoido.tap"
