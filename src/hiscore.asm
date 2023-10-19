@@ -218,7 +218,8 @@ n:  lda #1
     jsr play_sound
 
     ;; Print input line.
-l:  lda dl
+l:  jsr wait_retrace
+    lda dl
     sta sl
     lda dh
     sta sh
