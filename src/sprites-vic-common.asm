@@ -4,14 +4,15 @@ if @*show-cpu?*
     sta $900f
 end
 
-    ldx #@(-- num_sprites)
+    ldx #0
 l:  lda sprites_i,x
     bmi +n  ; Slot unused…
     sei
     jsr draw_huge_sprite
     cli
-n:  dex
-    bpl -l
+n:  inx
+    cpx #num_sprites
+    bne -l
 
 if @*show-cpu?*
     lda #@(+ 8 1)
