@@ -15,8 +15,14 @@ game_over:
     sta is_running_game
     sta mode_break
 
-    jsr wait_for_silence
-    lda has_24k
+    lda level
+    cmp #@(++ doh_level)
+    bne +n
+    lda #100
+    jsr wait
+    jmp +l
+n:  jsr wait_for_silence
+l:  lda has_24k
     beq +n
     jsr enter_hiscore
 n:  jsr clear_screen

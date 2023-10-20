@@ -99,9 +99,12 @@ enter_hiscore:
     jsr find_score_item
     bcc -r
 
+    lda level
+    cmp #@(++ doh_level)
+    beq +n
     jsr wait_for_silence
 
-    lda dl
+n:  lda dl
     pha
     lda dh
     pha
@@ -214,6 +217,9 @@ n:  lda #1
     lda #0
     sta tmp6
 
+    lda level
+    cmp #@(++ doh_level)
+    beq +l
     lda #snd_hiscore
     jsr play_sound
 
