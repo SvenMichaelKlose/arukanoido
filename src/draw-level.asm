@@ -1,4 +1,18 @@
 get_level:
+    ;; Clear brick map.
+    lda #0
+    sta dl
+    sta cl
+    lda #2
+    sta ch
+    lda bricks
+    sta dh
+    jsr clrram
+
+    lda level
+    cmp #doh_level
+    beq +r2
+
     lda #<level_data
     ldy #>level_data
     jsr init_decruncher
@@ -19,16 +33,6 @@ m:  jsr get_decrunched_byte
 n:  ldx active_player
     lda #0
     sta @(-- bricks_left),x
-
-    ;; Clear brick map.
-    lda #0
-    sta dl
-    sta cl
-    lda #2
-    sta ch
-    lda bricks
-    sta dh
-    jsr clrram
 
     ;; Get starting row.
     jsr get_decrunched_byte
@@ -77,13 +81,13 @@ o:  inc scrx
     inc scry
     bne -m      ; (jmp)
 
-    ; Save lowest row index to guide obstacle movements.
+    ; Save lowest row index where obstacles start circling.
 r:  ldy scry
     dey
     tya
     ldy active_player
     sta @(-- level_ending_row),y
-    rts
+r2: rts
 
 draw_level:
     ldy active_player
@@ -91,6 +95,7 @@ draw_level:
     sec
     sbc @(-- level_starting_row),y
     sta tmp
+    inc tmp
 
     lda @(-- level_starting_row),y
     sec
