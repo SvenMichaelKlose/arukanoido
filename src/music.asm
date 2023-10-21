@@ -54,7 +54,7 @@ digi_types:
     0 ; no sound
     mt_exm ; 1   theme
     mt_exm ; 2   round
-    mt_rle ; 3   bonus life
+    mt_vic ; 3   bonus life
     mt_exm ; 4   game over
     mt_vic ; 5   DOH round
     mt_vic ; 6   hiscore
@@ -63,11 +63,11 @@ digi_types:
     mt_vic ; 9   reflection silver
     mt_vic ; 10  caught ball
     mt_exm ; 11  miss
-    mt_rle ; 12  hit DOH
+    mt_vic ; 12  hit DOH
     mt_exm ; 13  DOH dissolving
-    mt_rle ; 14  growing vaus
-    mt_rle ; 15  explosion
-    mt_rle ; 16  laser
+    mt_vic ; 14  growing vaus
+    mt_vic ; 15  explosion
+    mt_vic ; 16  laser
     mt_exm ; 17  warp
 
 digi_rates:

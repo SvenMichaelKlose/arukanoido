@@ -1,7 +1,7 @@
 sample_addrs_l:
     <exm_round_intro
     <exm_round_start
-    <exm_extra_life
+    0
     <exm_game_over
     0 ;<exm_doh_intro
     0
@@ -12,15 +12,15 @@ sample_addrs_l:
     <exm_lost_ball
     0
     0
-    <exm_extension
-    <exm_explosion
-    <exm_laser
+    0
+    0
+    0
     <exm_break_out
 
 sample_addrs_h:
     >exm_round_intro
     >exm_round_start
-    >exm_extra_life
+    0
     >exm_game_over
     0 ;>exm_doh_intro
     0
@@ -31,18 +31,18 @@ sample_addrs_h:
     >exm_lost_ball
     0
     0
-    >exm_extension
-    >exm_explosion
-    >exm_laser
+    0
+    0
+    0
     >exm_break_out
 
 sample_addrs_b:
     fill num_tunes
 
 exm_break_out:          @(fetch-file "obj-audio/break-out.3.4000.exm")
-exm_explosion:          @(fetch-file "obj-audio/explosion.3.4000.rle")
-exm_extension:          @(fetch-file "obj-audio/extension.3.4000.rle")
-exm_extra_life:         @(fetch-file "obj-audio/extra-life.3.4000.rle")
+;exm_explosion:          @(fetch-file "obj-audio/explosion.3.4000.rle")
+;exm_extension:          @(fetch-file "obj-audio/extension.3.4000.rle")
+;exm_extra_life:         @(fetch-file "obj-audio/extra-life.3.4000.rle")
 ;exm_laser:              @(fetch-file "obj-audio/laser.3.4000.rle")
 ;exm_lost_ball:          @(fetch-file "obj-audio/lost-ball.3.4000.exm")
 ;exm_reflection_doh:     @(fetch-file "obj-audio/reflection-doh.2.4000.exm")

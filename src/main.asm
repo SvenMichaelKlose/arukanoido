@@ -175,7 +175,7 @@ if @*has-digis?*
     sta is_playing_digis
     beq +n
     jsr audio_boost
-n:  lda #snd_bonus_life
+n:  lda #snd_round_break
     jsr play_sound
     jmp -l
 end
