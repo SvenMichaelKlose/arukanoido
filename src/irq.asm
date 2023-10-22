@@ -16,12 +16,14 @@ start_irq:
     0
     jsr init_music
 
-l:  lda #<irq
+    lda #<irq
     sta $314
     lda #>irq
     sta $315
 
-    jsr wait_retrace
+l:  lda $9004
+    cmp #50
+    bne -l
 
     ; Initialise VIA2 Timer 1.
     lda is_ntsc
