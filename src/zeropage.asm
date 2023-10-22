@@ -52,8 +52,10 @@ next_sprite_char:       0 ; Next free character for sprites.
 spriteframe:            0 ; Character offset into lower or upper half of charset.
 sprite_rr:              0 ; Round-robin sprite allocation index.
 sprite_char:            0 ; First char.
-sprite_x:               0 ; X char position
-sprite_y:               0 ; Y char position
+sprite_x:               0 ; X position
+sprite_y:               0 ; Y position
+sprite_cx:              0 ; X char position
+sprite_cy:              0 ; Y char position
 sprite_cols:            0 ; Numer of columns.
 sprite_cols_on_screen:  0 ; Numer of columns (+1 on shift).
 sprite_rows:            0 ; Number of rows.

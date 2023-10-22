@@ -2,11 +2,9 @@ sprites_nchars:    @(gen-sprite-nchars)
 
 ; Draw sprite, masking out the background
 draw_huge_sprite:
-    lda sprites_i,x
-    cmp #is_vaus
-    bne +n
-    nop
-n:
+    lda sprites_c,x
+    sta curcol
+
     ;; Get screen position.
     txa
     asl
@@ -15,16 +13,18 @@ n:
     beq +n
     iny
 n:  lda sprites_x,x
-    lsr
-    lsr
-    lsr
     sta sprite_x
+    lsr
+    lsr
+    lsr
+    sta sprite_cx
     sta sprites_sx,y
     lda sprites_y,x
-    lsr
-    lsr
-    lsr
     sta sprite_y
+    lsr
+    lsr
+    lsr
+    sta sprite_cy
     sta sprites_sy,y
 
     ;; Determine width.
@@ -33,7 +33,7 @@ n:  lda sprites_x,x
     sta sprite_cols
 
     sta sprite_cols_on_screen
-    lda sprites_x,x
+    lda sprite_x
     and #%111
     beq +n
     inc sprite_cols_on_screen     ; One more due to shift.
@@ -53,7 +53,7 @@ n:
     sta sprite_lines
     sta sprite_lines_on_screen
 
-    lda sprites_y,x
+    lda sprite_y
     and #%111
     beq +n
     inc sprite_rows_on_screen     ; One more due to shift.
@@ -103,12 +103,12 @@ n:
     ;; Copy existing graphics into allocated chars.
     lda sprite_cols_on_screen
     sta tmp3
-    lda sprite_x
+    lda sprite_cx
     sta scrx
 
 l2: lda sprite_rows_on_screen
     sta tmp2
-    lda sprite_y
+    lda sprite_cy
     sta scry
 
 l:  ; Get screen address.
@@ -229,7 +229,7 @@ n:  dec tmp2
     lda tmp4
     sta dl
     ; Add Y char offset.
-    lda sprites_y,x
+    lda sprite_y
     and #%111
     clc
     adc dl
@@ -266,10 +266,10 @@ l:  sta sh
     sta tmp3
 
     ; Get number of times to shift.
-    lda sprites_x,x
+    lda sprite_x
     and #%111
     beq +l2             ; No shift. Ready to draw…
-    ldy sprites_c,x
+    ldy curcol
     bpl +n
     lsr                 ; Half X resolution for multicolor.
 n:  tay
@@ -353,7 +353,7 @@ n:  jmp -l2
 
 slow_shift:
     ;; Configure the blitter.
-    lda sprites_x,x
+    lda sprite_x
     and #%111
     sta @(++ blit_left_addr)
     tay
@@ -381,7 +381,7 @@ l:  ldy sprite_lines
 n:
 
     ;; Draw right half of sprite column.
-    lda sprites_x,x
+    lda sprite_x
     and #%111
     beq +n      ; We might as well not if not shifted.
     ldy sprite_lines
@@ -407,11 +407,11 @@ plot_chars:
     ;; Get initial sprite char and screen position.
     lda sprite_char
     sta tmp
-    lda sprite_x
+    lda sprite_cx
     sta scrx
 
     ;; Do a column.
-l2: lda sprite_y
+l2: lda sprite_cy
     sta scry
     lda sprite_rows_on_screen
     sta tmp2
@@ -451,7 +451,7 @@ l:  ;; Check if position is plottable.
     ; Plot.
 l3: lda tmp
     sta (scr),y
-    lda sprites_c,x
+    lda curcol
     sta (col),y
 
     ;;
