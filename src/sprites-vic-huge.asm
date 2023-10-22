@@ -2,11 +2,11 @@ sprites_nchars:    @(gen-sprite-nchars)
 
 ; Draw sprite, masking out the background
 draw_huge_sprite:
+    lda sprites_c,x
+    sta curcol
     lda sprites_i,x
-    cmp #is_vaus
-    bne +n
-    nop
-n:
+    sta sprite_flags
+
     ;; Get screen position.
     txa
     asl
@@ -19,13 +19,13 @@ n:  lda sprites_x,x
     lsr
     lsr
     sta sprite_x
-    sta sprites_sx,y
+    sta sprites_sx,y    ; Save for clean-up in next frame.
     lda sprites_y,x
     lsr
     lsr
     lsr
     sta sprite_y
-    sta sprites_sy,y
+    sta sprites_sy,y    ; Save for clean-up in next frame.
 
     ;; Determine width.
     lda sprites_dimensions,x
@@ -63,13 +63,14 @@ n:
     sta sprite_lines_on_screen
 n:
 
-    ;; Save dimensions for cleanup.
+    ;; Save dimensions for clean-up in next frame.
     lda sprite_cols_on_screen
     sta sprites_sw,y
     lda sprite_rows_on_screen
     sta sprites_sh,y
 
-    ;; Get char adress.
+    ;; Get first char adress and save it into tmp4/tmp5
+    ;; for drawing into them.
     lda next_sprite_char
     sta sprite_char
     asl
@@ -88,7 +89,7 @@ n:
     sta dh
     sta tmp5
 
-    ;; Allocate chars.
+    ;; Allocate chars (set first char for next sprite).
     lda sprite_rows_on_screen
     asl
     asl
@@ -102,12 +103,12 @@ n:
 
     ;; Copy existing graphics into allocated chars.
     lda sprite_cols_on_screen
-    sta tmp3
+    sta tmp3        ; (Init loop.)
     lda sprite_x
     sta scrx
 
 l2: lda sprite_rows_on_screen
-    sta tmp2
+    sta tmp2        ; (Init loop.)
     lda sprite_y
     sta scry
 
@@ -118,6 +119,7 @@ l:  ; Get screen address.
     lda line_addresses_h,y
     sta @(++ scr)
 
+    ; Fetch char.
     ldy scrx
     lda (scr),y
     tay
@@ -140,7 +142,7 @@ l:  ; Get screen address.
     ora bricks
     sta sh
 
-    ; Usually a DOH char at this position?
+    ; DOH char at this position?
     ldy scrx
     lda (s),y
     and #%01100000
@@ -156,7 +158,7 @@ q:  tya
     asl
     sta sl
     tya
-    lsr
+    lsr         ; TODO: Look-up table.
     lsr
     lsr
     lsr
@@ -165,6 +167,7 @@ q:  tya
     adc #>charset
     sta sh
 
+    ; Copy existing char into sprite char.
     ldy #0
     lda (s),y
     sta (d),y
@@ -189,8 +192,9 @@ q:  tya
     iny
     lda (s),y
     sta (d),y
-    jmp +n
+    bcc +n
 
+    ; Clear sprite char.
 m:  lda #0
     tay
     sta (d),y
@@ -209,6 +213,7 @@ m:  lda #0
     iny
     sta (d),y
 
+    ; Step down to next char position and address.
 n:  inc scry
     lda dl
     clc
@@ -241,10 +246,14 @@ n:
     lda sprite_cols
     sta tmp2
 
+if @*show-cpu?*
+    inc $900f
+end
+
     ;; Draw pre-shifted?
     lda sprites_pgh,x
     bne +l
-    jmp slow_shift          ; No…
+    jmp slow_shift
 
 l3: jmp -l
 l2b:jmp -l2
@@ -261,27 +270,27 @@ l:  sta sh
     asl
     asl
     asl
-    clc                 ; Add that extra column.
+    clc                 ; Add that extra column when shifted.
     adc sprite_lines
     sta tmp3
 
-    ; Get number of times to shift.
+    ; Get number of times to shift in Y.
     lda sprites_x,x
     and #%111
     beq +l2             ; No shift. Ready to draw…
-    ldy sprites_c,x
+    ldy curcol
     bpl +n
     lsr                 ; Half X resolution for multicolor.
 n:  tay
 
-    ; Subtract column bytes from total.
+    ; Step back a column to correct for first sprite that is not shifted.
     lda sl
     sec
     sbc sprite_lines
     bcs +l4
     dec sh
 
-    ; Multiply bytes by shifts.
+    ; Multiply bytes by Y shifts.
 l4: clc
     adc tmp3
     bcc +n3
@@ -294,48 +303,46 @@ n3: dey
     sta tmp2
 
     ;; Draw sprite column.
-l2: lda sprite_rows
-    sta tmp3
-    ldy #0
+l2: ldy sprite_lines
+    dey
 l:  lda (s),y
     ora (d),y
     sta (d),y
-    iny
+    dey
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
+    dey
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
+    dey
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
+    dey
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
+    dey
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
+    dey
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
+    dey
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
-    dec tmp3
-    bne -l
+    dey
+    bpl -l
 
     dec tmp2
     beq plot_chars
 
-    ;; Step to next screen column.
+    ;; Step to next column in chars.
     lda dl
     clc
     adc sprite_lines_on_screen
@@ -344,14 +351,14 @@ l:  lda (s),y
     inc dh
 n:
 
-    ;; Step to next sprite column.
+    ;; Step to next column in sprite graphics.
     lda sl
     clc
     adc sprite_lines
     sta sl
-    bcc +n
+    bcc -l2
     inc sh
-n:  jmp -l2
+    bcs -l2     ; (jmp)
 
 slow_shift:
     ;; Configure the blitter.
@@ -373,7 +380,7 @@ l:  ldy sprite_lines
     dey
     jsr _blit_right_loop
 
-    ;; Step to next screen column.
+    ;; Step to next char column.
     lda dl
     clc
     adc sprite_lines_on_screen
@@ -402,10 +409,13 @@ n:
     sta sl
     bcc -l
     inc sh
-    jmp -l
+    bcs -l  ; (jmp)
 
     ;;; Plot the filled chars to screen.
 plot_chars:
+if @*show-cpu?*
+    inc $900f
+end
     ;; Get initial sprite char and screen position.
     lda sprite_char
     sta tmp
@@ -418,12 +428,12 @@ l2: lda sprite_y
     lda sprite_rows_on_screen
     sta tmp2
 
-l:  ;; Check if position is plottable.
-    lda scry
+    ;; Check if position is plottable.
+l:  lda scry
     cmp playfield_yc
     bcc +n                  ; Don't plot into score area…
     cmp screen_rows
-    bcs +n                  ; Don't plot over the bottom…
+    bcs +r                  ; Don't plot over the bottom…
     lda scrx
     cmp #playfield_columns
     bcs +n                  ; Don't plot over the right…
@@ -441,7 +451,7 @@ l:  ;; Check if position is plottable.
     ldy scrx
 
     ; Plot over background if DOH projectile.
-    lda sprites_i,x
+    lda sprite_flags
     and #is_doh_obstacle
     bne +l3
 
@@ -453,11 +463,11 @@ l:  ;; Check if position is plottable.
     ; Plot.
 l3: lda tmp
     sta (scr),y
-    lda sprites_c,x
+    lda curcol
     sta (col),y
 
-    ;;
-n:  inc tmp    ; To next sprite char.
+    ;; Advance down.
+n:  inc tmp                 ; To next sprite char.
     inc scry                ; To next row.
     dec tmp2
     bne -l                  ; Next row…
@@ -466,4 +476,9 @@ n:  inc tmp    ; To next sprite char.
     dec sprite_cols_on_screen
     bne -l2                 ; Next column.
 
+r:
+if @*show-cpu?*
+    dec $900f
+    dec $900f
+end
     rts
