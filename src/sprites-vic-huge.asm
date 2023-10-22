@@ -101,6 +101,10 @@ n:
     adc next_sprite_char
     sta next_sprite_char
 
+if @*show-cpu?*
+    inc $900f
+end
+
     ;; Copy existing graphics into allocated chars.
     lda sprite_cols_on_screen
     sta tmp3
@@ -239,7 +243,11 @@ n:  dec tmp2
     inc dh
 n:
 
-    lda sprite_cols
+if @*show-cpu?*
+    inc $900f
+end
+
+    lda sprite_cols         ; (Loop init.)
     sta tmp2
 
     ;; Draw pre-shifted?
@@ -402,6 +410,9 @@ n:
 
     ;;; Plot the filled chars to screen.
 plot_chars:
+if @*show-cpu?*
+    inc $900f
+end
     ;; Get initial sprite char and screen position.
     lda sprite_char
     sta tmp
@@ -462,4 +473,9 @@ n:  inc tmp    ; To next sprite char.
     dec sprite_cols_on_screen
     bne -l2                 ; Next column.
 
+if @*show-cpu?*
+    dec $900f
+    dec $900f
+    dec $900f
+end
     rts
