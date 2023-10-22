@@ -51,6 +51,7 @@ n:
     asl
     asl
     sta sprite_lines
+    dec sprite_lines
     sta sprite_lines_on_screen
 
     lda sprite_y
@@ -261,7 +262,7 @@ l:  sta sh
     asl
     asl
     asl
-    clc                 ; Add that extra column.
+    sec                 ; Add that extra column.
     adc sprite_lines
     sta tmp3
 
@@ -276,7 +277,7 @@ n:  tay
 
     ; Subtract column bytes from total.
     lda sl
-    sec
+    clc
     sbc sprite_lines
     bcs +l4
     dec sh
@@ -295,7 +296,6 @@ n3: dey
 
     ;; Draw sprite column.
 l2: ldy sprite_lines
-    dey
 l:  lda (s),y
     ora (d),y
     sta (d),y
@@ -344,7 +344,7 @@ n:
 
     ;; Step to next sprite column.
     lda sl
-    clc
+    sec
     adc sprite_lines
     sta sl
     bcc +n
@@ -368,7 +368,6 @@ slow_shift:
 
     ;; Draw left half of sprite column.
 l:  ldy sprite_lines
-    dey
     jsr _blit_right_loop
 
     ;; Step to next screen column.
@@ -385,7 +384,6 @@ n:
     and #%111
     beq +n      ; We might as well not if not shifted.
     ldy sprite_lines
-    dey
     jsr _blit_left_loop
 n:
 
@@ -395,7 +393,7 @@ n:
 
     ;; Step to next sprite graphics column.
     lda sl
-    clc
+    sec
     adc sprite_lines
     sta sl
     bcc -l
