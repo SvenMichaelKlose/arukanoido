@@ -294,43 +294,41 @@ n3: dey
     sta tmp2
 
     ;; Draw sprite column.
-l2: lda sprite_rows
-    sta tmp3
-    ldy #0
+l2: ldy sprite_lines
+    dey
 l:  lda (s),y
     ora (d),y
     sta (d),y
-    iny
+    dey
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
+    dey
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
+    dey
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
+    dey
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
+    dey
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
+    dey
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
+    dey
     lda (s),y
     ora (d),y
     sta (d),y
-    iny
-    dec tmp3
-    bne -l
+    dey
+    bpl -l
 
     dec tmp2
     beq plot_chars
