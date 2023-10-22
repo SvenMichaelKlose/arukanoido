@@ -21,6 +21,8 @@ l:  lda #<irq
     lda #>irq
     sta $315
 
+    jsr wait_retrace
+
     ; Initialise VIA2 Timer 1.
     lda is_ntsc
     bne +n
