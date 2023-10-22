@@ -22,7 +22,7 @@ start_irq:
     sta $315
 
 l:  lda $9004
-    cmp #50
+    cmp #25
     bne -l
 
     ; Initialise VIA2 Timer 1.
