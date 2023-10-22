@@ -17,37 +17,19 @@ reuse_char:
 
 ; Get address of character in charset.
 get_char_addr:
-    sta tmp
-    asl
-    asl
-    asl
+    tay
+    lda charset_addrs_l,y
     sta d
-    lda tmp
-    lsr
-    lsr
-    lsr
-    lsr
-    lsr
-    clc
-    adc #>charset
+    lda charset_addrs_h,y
     sta @(++ d)
     rts
 
 ; Get address of character in charset.
 get_char_addr_s:
-    sta tmp
-    asl
-    asl
-    asl
+    tay
+    lda charset_addrs_l,y
     sta s
-    lda tmp
-    lsr
-    lsr
-    lsr
-    lsr
-    lsr
-    clc
-    adc #>charset
+    lda charset_addrs_h,y
     sta @(++ s)
     rts
 

@@ -71,22 +71,13 @@ n:
     sta sprites_sh,y
 
     ;; Get char adress.
-    lda next_sprite_char
-    sta sprite_char
-    asl
-    asl
-    asl
-    sta dl
+    ldy next_sprite_char
+    sty sprite_char
+    lda charset_addrs_l,y
+    sta d
     sta tmp4
-    lda sprite_char
-    lsr
-    lsr
-    lsr
-    lsr
-    lsr
-    clc
-    adc #>charset
-    sta dh
+    lda charset_addrs_h,y
+    sta @(++ d)
     sta tmp5
 
     ;; Allocate chars.
@@ -134,6 +125,7 @@ l:  ; Get screen address.
 
     ; Char of current frame?
     tya
+    beq +m
     and #framemask
     cmp spriteframe
     beq +q      ; Yes, Copy…
@@ -155,19 +147,9 @@ l:  ; Get screen address.
     tay
 
     ; Get char address to copy from.
-q:  tya
-    asl
-    asl
-    asl
+q:  lda charset_addrs_l,y
     sta sl
-    tya
-    lsr
-    lsr
-    lsr
-    lsr
-    lsr
-    clc
-    adc #>charset
+    lda charset_addrs_h,y
     sta sh
 
     ldy #0

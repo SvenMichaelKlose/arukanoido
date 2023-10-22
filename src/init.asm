@@ -23,6 +23,24 @@ main:
     lda #>vcpu_exec
     sta $317
 
+    ; Make char address table.
+    lda #0
+    sta s
+    tax
+    lda #>charset
+    sta @(++ s)
+l:  lda s
+    sta charset_addrs_l,x
+    clc
+    adc #8
+    sta s
+    lda @(++ s)
+    sta charset_addrs_h,x
+    adc #0
+    sta @(++ s)
+    inx
+    bne -l
+
     jsr blank_screen
     ; A is 0.
 if @*has-digis?*

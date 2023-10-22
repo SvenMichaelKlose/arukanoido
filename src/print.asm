@@ -62,18 +62,7 @@ r:  ldx p_x
 
 get_curchar_address:
     lda curchar
-    sta dl
-    lda #0
-    asl dl
-    rol
-    asl dl
-    rol
-    asl dl
-    rol
-    clc
-    adc #>charset
-    sta dh
-    rts
+    jmp get_char_addr
 
 print_clear_curchar:
     jsr get_curchar_address
