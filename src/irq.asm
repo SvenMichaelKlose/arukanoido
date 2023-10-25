@@ -100,8 +100,18 @@ n:  lda is_firing
 n:  lda mode_break
     beq +n
 
-    ;; Animate gate.
-    lda screen_gate
+    ; Open gate.
+    lda gate_opening
+    beq +m
+    lda framecounter
+    and #%11
+    bne +n
+    jsr open_gate
+    dec gate_opening
+    jmp +n
+
+    ; Animate gate.
+m:  lda screen_gate
     sta d
     sta c
     lda @(++ screen_gate)

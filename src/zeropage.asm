@@ -248,6 +248,7 @@ mode_disruption = 3
 mode_extended   = 4
 mode:               0
 mode_break:         0
+gate_opening:       0
 ;; Level
 level_starting_row: 0 0
 level_ending_row:   0 0

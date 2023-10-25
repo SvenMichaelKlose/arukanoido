@@ -1,11 +1,18 @@
 init_foreground:
     lda #@(low (+ charset (* bg_start 8)))
-    sta d
+    sta dl
     lda #@(high (+ charset (* bg_start 8)))
-    sta @(++ d)
+    sta dh
     lda #<gfx_background
     ldy #>gfx_background
-    jmp decrunch_block
+    jsr decrunch_block
+
+    0
+    movmw @(low (+ charset (* bg_side 8))) @(high (+ charset (* bg_side 8)))
+          @(low (+ charset (* bg_gate1 8))) @(high (+ charset (* bg_gate1 8)))
+          @(* 5 8) 0
+    0
+    rts
 
 ; Reuse char already allocated by another sprite.
 reuse_char:

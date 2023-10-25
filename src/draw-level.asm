@@ -222,6 +222,65 @@ l:  pha
     beq -a      ; (jmp)
 done:
     pla
+
+    ; Draw gate.
+    lda #14
+    sta scrx
+    lda playfield_yc
+    clc
+    adc #25
+    sta scry
+    lda #bg_gate5
+    jsr plot_char
+    inc scry
+    lda #bg_gate1
+    jsr plot_char
+    inc scry
+    lda #bg_gate2
+    jsr plot_char
+    inc scry
+    lda #bg_gate3
+    jsr plot_char
+    inc scry
+    lda #bg_gate4
+    jsr plot_char
+
     pla
     tax
+    rts
+
+addr_gate1 = @(+ charset (* bg_gate1 8))
+addr_gate2 = @(+ charset (* bg_gate2 8))
+addr_gate5 = @(+ charset (* bg_gate5 8))
+
+open_gate:
+    ;; Move up upper part.
+    ldy #0
+    ldx #7
+l:  lda @(++ addr_gate5),y
+    sta addr_gate5,y
+    iny
+    dex
+    bne -l
+
+    lda addr_gate1
+    sta @(+ addr_gate5 7)
+
+    ldy #0
+    ldx #11
+l:  lda @(++ addr_gate1),y
+    sta addr_gate1,y
+    iny
+    dex
+    bne -l
+
+    ; Move down lower part.
+    ldy #19
+l:  lda @(+ addr_gate2 4),y
+    sta @(+ addr_gate2 5),y
+    dey
+    bpl -l
+
+    stx @(+ addr_gate2 3)
+    stx @(+ addr_gate2 4)
     rts

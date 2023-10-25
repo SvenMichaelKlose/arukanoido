@@ -1,13 +1,14 @@
 brick_fx:
     cmp #@bg_brick_fx
     bcc +n
+    cmp #@(-- bg_brick_fx_end)
+    beq +l
     cmp #bg_brick_fx_end
-    bcs +n
+    bcs +r
     clc 
     adc #1
     rts
-n:  bne +r
-    lda #bg_brick_special
+l:  lda #bg_brick_special
 r:  rts
 
 start_brick_fx:

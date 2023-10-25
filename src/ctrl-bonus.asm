@@ -155,6 +155,8 @@ n:  sty ball_speed
     rts
 
 apply_bonus_b:
+    lda #11
+    sta gate_opening
     dec mode_break
     rts
 

@@ -227,6 +227,7 @@ n:  lda #0
     sta needs_redrawing_hiscore
     sta needs_redrawing_score2
     sta needs_redrawing_lives
+    sta gate_opening
     lda #1
     sta balls
     sta hits_before_bonus
