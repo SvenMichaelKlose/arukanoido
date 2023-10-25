@@ -290,7 +290,7 @@ l:
 if @*debug?*
     ;; Ensure selected bonus.
     lda next_bonus
-    bne +ok
+    bne +m
 end
 
     ;; Roll the dice.
