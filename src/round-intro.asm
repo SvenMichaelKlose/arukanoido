@@ -4,7 +4,6 @@ draw_round_intro_background:
 
     jsr blank_screen
     jsr clear_screen
-    jsr init_foreground
     jsr make_stars
     lda #5
     sta curchar

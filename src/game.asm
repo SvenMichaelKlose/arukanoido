@@ -78,7 +78,6 @@ game:
 n:  jsr clear_data
     jsr preshift_common_sprites
     jsr init_screen
-    jsr init_foreground
     jsr init_score
 
     lda #3
@@ -120,6 +119,7 @@ end
     jsr get_level
 
 retry:
+    jsr init_foreground
     jsr clear_screen
     ldx active_player
     lda level,x
