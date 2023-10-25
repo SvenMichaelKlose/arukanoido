@@ -83,6 +83,7 @@ wait_retrace:
     bne wait_retrace
     rts
 
+; A has to be 0 on return.
 blank_screen:
     jsr wait_retrace
     lda #0
