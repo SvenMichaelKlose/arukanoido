@@ -173,9 +173,7 @@ if @*has-digis?*
     lda is_playing_digis
     eor #1
     sta is_playing_digis
-    beq +n
-    jsr audio_boost
-n:  lda #snd_round_break
+    lda #snd_round_break
     jsr play_sound
     jmp -l
 end
@@ -312,7 +310,6 @@ draw_credits:
     stmb <scrx2 >scrx2 12
     lday <txt_c6 >txt_c6
     call <print_string_ay >print_string_ay
-
     0
 
     rts
