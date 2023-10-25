@@ -15,6 +15,7 @@ digi_nmi_start:
     lda @(-- sample_addrs_h),x
     sta @(++ rle_play_ptr)
 
+if @*ultimem?*
     lda has_ultimem
     beq +m
     ldx #<digisound_timer_8000_pal
@@ -24,6 +25,7 @@ digi_nmi_start:
     ldx #<digisound_timer_8000_ntsc
     ldy #>digisound_timer_8000_ntsc
     jmp +n
+end
 
 m:  lda @(-- digi_rates),x
     bne +m
