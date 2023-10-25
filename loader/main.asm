@@ -7,6 +7,8 @@ main:
     sta $912e
 
 if @*ultimem?*
+    lda #0
+    sta $1100       ; No Ultimem…
     lda $9f55       ; Unhide registers.
     lda $9faa
     lda $9f01
@@ -17,6 +19,7 @@ if @*ultimem?*
     bne +n
 
     ; Activate all Ultimem RAM.
+    inc $1100
 f:  lda #%00111111
     sta $9ff1
     lda #%11111111
