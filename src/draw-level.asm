@@ -175,19 +175,14 @@ l:  lda #bg_top_1
     sta scrx
     lda #bg_top_2
     jsr plot_char
+    inc scrx
+    lda #bg_top_3
+    jsr plot_char
     lda #10
     sta scrx
     lda #bg_top_2
     jsr plot_char
-
-    lda playfield_yc
-    sta scry
-    lda #4
-    sta scrx
-    lda #bg_top_3
-    jsr plot_char
-    lda #11
-    sta scrx
+    inc scrx
     lda #bg_top_3
     jsr plot_char
 
@@ -219,11 +214,6 @@ l:  pha
     sta (scr),y
     ldy #14
     sta (scr),y
-    pha
-    lda #@(+ multicolor white)
-    ldy #14
-    sta (col),y
-    pla
     clc
     adc #1
     inc scry
