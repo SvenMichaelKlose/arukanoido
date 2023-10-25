@@ -52,12 +52,7 @@ end
     ldx #$ff
     txs
 
-if @(not *tape?*)
-    lda #0
-    sta has_ultimem
-end
-
-if @(& *tape?* *has-digis?* *ultimem?*)
+if @(& *has-digis?* *ultimem?*)
     lda $1100
     sta has_ultimem
     beq +n
