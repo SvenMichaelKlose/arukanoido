@@ -146,18 +146,16 @@ n:  lda dl
 
     ;; Find and free entry.
     jsr find_score_item
-
-    ; Get number of bytes to copy.
+    ; Get number of bytes to copy.  (tmp * 10)
     lda tmp
-    beq +n
+    asl
+    sta cl
+    asl
+    asl
+    adc cl
+    sta cl
     lda #0
     sta ch
-l:  clc
-    adc #score_item_size
-    dec tmp
-    bne -l
-    sta cl
-
     ; Move items down.
     lda #@(low (- scores_end (* 2 score_item_size)))
     sta sl
