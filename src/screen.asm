@@ -44,19 +44,13 @@ plot_char:
 
 clear_screen:
     0
+    clrmw <charset >charset 8 0
     clrmw <screen >screen @(low 588) @(high 588)
     setmw <colors >colors @(low 588) @(high 588) @(+ multicolor white)
     0
     rts
 
 init_screen:
-    ; Clear character 0.
-    ldx #7
-    lda #0
-l:  sta charset,x
-    dex
-    bpl -l
-
     lda user_screen_origin_x
     sta $9000
     lda user_screen_origin_y
