@@ -1,14 +1,12 @@
 init_foreground:
-    ; TODO: VCPU code
     lda #@(low (+ charset (* bg_start 8)))
     sta dl
     lda #@(high (+ charset (* bg_start 8)))
     sta dh
-    lda #<gfx_background
-    ldy #>gfx_background
-    jsr decrunch_block
-
     0
+    lday <gfx_background >gfx_background
+    call <decrunch_block >decrunch_block
+
     movmw @(low (+ charset (* bg_side 8))) @(high (+ charset (* bg_side 8)))
           @(low (+ charset (* bg_gate2 8))) @(high (+ charset (* bg_gate2 8)))
           @(* 5 8) 0
