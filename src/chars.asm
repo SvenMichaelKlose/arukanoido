@@ -1,23 +1,3 @@
-init_foreground:
-    ; TODO: VCPU code
-    lda #@(low (+ charset (* bg_start 8)))
-    sta dl
-    lda #@(high (+ charset (* bg_start 8)))
-    sta dh
-    lda #<gfx_background
-    ldy #>gfx_background
-    jsr decrunch_block
-
-    0
-    movmw @(low (+ charset (* bg_side 8))) @(high (+ charset (* bg_side 8)))
-          @(low (+ charset (* bg_gate2 8))) @(high (+ charset (* bg_gate2 8)))
-          @(* 5 8) 0
-    movmw @(low (+ charset (* bg_side3 8))) @(high (+ charset (* bg_side3 8)))
-          @(low (+ charset (* bg_gate0 8))) @(high (+ charset (* bg_gate0 8)))
-          16 0
-    0
-    rts
-
 ; Reuse char already allocated by another sprite.
 reuse_char:
     lda curcol
