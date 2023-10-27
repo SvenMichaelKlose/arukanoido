@@ -176,6 +176,7 @@ f:  jsr game
 
 draw_title_screen:
     jsr clear_screen
+    jsr clear_charset
     0
     stzb curchar 1
     call <print_scores_and_labels >print_scores_and_labels
@@ -188,7 +189,6 @@ draw_title_screen:
     stzb curcol white
     stmb <scrx2 >scrx2 9
     stzb scry 8
-    call <clear_curchar >clear_curchar
     lday <txt_arukanoido >txt_arukanoido
     call <print_string_ay >print_string_ay
 
@@ -270,7 +270,6 @@ draw_credits:
 
     addzbi scry 2
     inczbi curchar
-    call <clear_curchar >clear_curchar
 
     stzb curcol yellow
     stmb <scrx2 >scrx2 4
@@ -279,7 +278,6 @@ draw_credits:
 
     addzbi scry 2
     inczbi curchar
-    call <clear_curchar >clear_curchar
 
     stzb curcol white
     stmb <scrx2 >scrx2 17
@@ -288,7 +286,6 @@ draw_credits:
 
     addzbi scry 2
     inczbi curchar
-    call <clear_curchar >clear_curchar
 
     stzb curcol yellow
     stmb <scrx2 >scrx2 4
@@ -297,7 +294,6 @@ draw_credits:
 
     addzbi scry 2
     inczbi curchar
-    call <clear_curchar >clear_curchar
 
     stzb curcol white
     stmb <scrx2 >scrx2 12
