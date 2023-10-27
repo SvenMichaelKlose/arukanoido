@@ -67,7 +67,6 @@ l2: ldy #0
     lda (s),y
     bmi +n
     jsr print4x8_dynalloc
-    lda #0
 n:  inc sl
     bne +n
     inc sh
