@@ -81,13 +81,6 @@ when playing.
 * C: Pause game nad how character map.
 * L: Set number of lives to ten.
 
-# Things missing
-
-* Original movement of obstacles.
-* DOH animation
-* intro/outro animations
-* hiscore table
-
 # More information
 
 Arukanoido is being discussed and developed on the VIC–20 Denial forum
