@@ -63,8 +63,15 @@ if @*shadowvic?*
 end
     lda #0
     sta scrx2
-l2: jsr print_char
-    cmp #254
+l2: ldy #0
+    lda (s),y
+    bmi +n
+    jsr print4x8_dynalloc
+    lda #0
+n:  inc sl
+    bne +n
+    inc sh
+n:  cmp #254
     bne +n
 
     inc scry

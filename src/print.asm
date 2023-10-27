@@ -134,14 +134,3 @@ l:  tya
 r:  pla
     inc curchar
     rts
-
-print_char:
-    ldy #0
-    lda (s),y
-    bmi +n
-    jsr print4x8_dynalloc
-    lda #0
-n:  inc sl
-    bne +n
-    inc sh
-n:  rts
