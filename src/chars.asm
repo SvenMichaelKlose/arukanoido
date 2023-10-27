@@ -11,6 +11,9 @@ init_foreground:
     movmw @(low (+ charset (* bg_side 8))) @(high (+ charset (* bg_side 8)))
           @(low (+ charset (* bg_gate1 8))) @(high (+ charset (* bg_gate1 8)))
           @(* 5 8) 0
+    movmw @(low (+ charset (* bg_gate4 8))) @(high (+ charset (* bg_gate4 8)))
+          @(low (+ charset (* bg_gate0 8))) @(high (+ charset (* bg_gate0 8)))
+          8 0
     0
     rts
 
@@ -125,3 +128,9 @@ clear_char:
     lda #0
     sta (scr),y
 l:  rts
+
+clear_charset:
+    0
+    clrmw <charset >charset $00 $08
+    0
+    rts

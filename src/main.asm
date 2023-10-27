@@ -16,14 +16,6 @@ n:  dex
 lowmem_ofs = @(- uncleaned_lowmem #x320)
     clrmw $20 $03 <lowmem_ofs >lowmem_ofs
 
-if @(not *debug?*)
-    clrmw <charset >charset $08 $00
-end
-if @*debug?*
-    clrmw <charset >charset $00 $08
-    clrmw $00 $01 $f0 $00
-end
-
     movmw <loaded_sprite_inits >loaded_sprite_inits <sprite_inits >sprite_inits sprite_inits_size 0
 if @*has-digis?*
     stmb <exm_needs_data >exm_needs_data $ff
@@ -31,6 +23,7 @@ if @*has-digis?*
 end
     0
 
+    jsr clear_charset
     jmp set_format
 
 start:
