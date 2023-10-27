@@ -104,7 +104,7 @@ n:  lda mode_break
     lda gate_opening
     beq +m
     lda framecounter
-    and #%11
+    and #%1
     bne +n
     jsr open_gate
     dec gate_opening
