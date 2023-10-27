@@ -1,4 +1,5 @@
 init_foreground:
+    ; TODO: VCPU code
     lda #@(low (+ charset (* bg_start 8)))
     sta dl
     lda #@(high (+ charset (* bg_start 8)))
@@ -9,11 +10,11 @@ init_foreground:
 
     0
     movmw @(low (+ charset (* bg_side 8))) @(high (+ charset (* bg_side 8)))
-          @(low (+ charset (* bg_gate1 8))) @(high (+ charset (* bg_gate1 8)))
+          @(low (+ charset (* bg_gate2 8))) @(high (+ charset (* bg_gate2 8)))
           @(* 5 8) 0
-    movmw @(low (+ charset (* bg_gate4 8))) @(high (+ charset (* bg_gate4 8)))
+    movmw @(low (+ charset (* bg_side3 8))) @(high (+ charset (* bg_side3 8)))
           @(low (+ charset (* bg_gate0 8))) @(high (+ charset (* bg_gate0 8)))
-          8 0
+          16 0
     0
     rts
 

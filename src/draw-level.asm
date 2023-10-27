@@ -228,9 +228,9 @@ done:
     sta scrx
     lda playfield_yc
     clc
-    adc #25
+    adc #24
     sta scry
-    lda #bg_gate5
+    lda #bg_gate0
     jsr plot_char
     inc scry
     lda #bg_gate1
@@ -244,43 +244,35 @@ done:
     inc scry
     lda #bg_gate4
     jsr plot_char
+    inc scry
+    lda #bg_gate5
+    jsr plot_char
 
     pla
     tax
     rts
 
-addr_gate1 = @(+ charset (* bg_gate1 8))
-addr_gate2 = @(+ charset (* bg_gate2 8))
-addr_gate5 = @(+ charset (* bg_gate5 8))
+addr_gate0 = @(+ charset (* bg_gate0 8))
+addr_gate3 = @(+ charset (* bg_gate3 8))
 
 open_gate:
     ;; Move up upper part.
     ldy #0
-    ldx #7
-l:  lda @(++ addr_gate5),y
-    sta addr_gate5,y
-    iny
-    dex
-    bne -l
-
-    lda addr_gate1
-    sta @(+ addr_gate5 7)
-
-    ldy #0
-    ldx #11
-l:  lda @(++ addr_gate1),y
-    sta addr_gate1,y
+    ldx #23
+l:  lda @(+ addr_gate0 5),y
+    sta @(+ addr_gate0 4),y
     iny
     dex
     bne -l
 
     ; Move down lower part.
     ldy #19
-l:  lda @(+ addr_gate2 4),y
-    sta @(+ addr_gate2 5),y
+l:  lda @(+ addr_gate3 4),y
+    sta @(+ addr_gate3 5),y
     dey
     bpl -l
 
-    stx @(+ addr_gate2 3)
-    stx @(+ addr_gate2 4)
+    ; Clear middle ends.
+    stx @(+ addr_gate3 3)
+    stx @(+ addr_gate3 4)
     rts
