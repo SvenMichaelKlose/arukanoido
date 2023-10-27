@@ -119,8 +119,8 @@ end
     jsr get_level
 
 retry:
-    jsr init_foreground
     jsr clear_screen
+    jsr init_foreground
     ldx active_player
     lda level,x
     sta level
