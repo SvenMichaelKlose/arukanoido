@@ -1,5 +1,5 @@
 Top-level
-[ ] !!! ARUKANOIDO logo.
+[@] !!! ARUKANOIDO logo.
 
 Game
 [ ] !!! D bonus: sometimes one extra ball is not diverted.
@@ -8,10 +8,13 @@ Game
 [?] !.. Score for DOH.
 [?] !.. Fix keyboard controls.  Fetch directly from VIA.
 
+Hiscore table
+[ ] !!! Move last item out.
+
 In-game animations
+[ ] ... Gates at top opening and closing.
+[@] ... Break mode gate opening and closing.
+[ ] ... Spitting DOH.
 [?] !!! Number of bricks isn't counted properly.  Sometimes a round
         clears although one is left.  Could have something to do with
         golden bricks being around.
-[ ] ... Gates at top opening and closing.
-[ ] ... Break mode gate opening and closing.
-[ ] ... Spitting DOH.
