@@ -13,8 +13,8 @@
 
 (fn syscall-vectors (label prefix)
   (+ label ": "
-     (apply #'+ (pad (mapcar [format nil "~A~A" prefix (syscall-name _)]
-                             *bytecodes*)
+     (apply #'+ (pad (@ [format nil "~A~A" prefix (syscall-name _)]
+                        *bytecodes*)
                      " "))
      (format nil "~%")))
 
@@ -24,12 +24,12 @@
 (fn syscall-args-h () (syscall-vectors "syscall_args_h" ">args_"))
 
 (fn syscall-args ()
-  (apply #'+ (mapcar [+ (format nil "args_~A: " (syscall-name _))
-                        (apply #'+ (pad (+ (list (princ (length ._) nil))
-									       (mapcar [downcase (symbol-name _)] ._))
-										" "))
+  (apply #'+ (@ [+ (format nil "args_~A: " (syscall-name _))
+                   (apply #'+ (pad (+ `(,(princ (length ._) nil))
+						              (@ [downcase (symbol-name _)] ._))
+								   " "))
 						(format nil "~%")]
-                     *bytecodes*)))
+                *bytecodes*)))
 
 (defmacro define-bytecode (name &rest args)
   (| (assoc name *bytecodes*)
