@@ -56,11 +56,11 @@ print_score_heading:
 
 hiscore_table:
     jsr clear_screen
+    jsr clear_charset
     lda #1
     sta curchar
     jsr print_scores_and_labels
 
-    jsr clear_curchar
     lda #yellow
     sta curcol
     lda #7
@@ -110,6 +110,7 @@ n:  lda dl
     pha
 
     jsr clear_screen
+    jsr clear_charset
     lda #1
     sta curchar
     jsr print_scores_and_labels
@@ -138,7 +139,6 @@ n:  lda dl
     sta scry
     lda tmp4
     sta scrx2
-    jsr clear_curchar
     jsr print_score_heading
 
     inc scry
@@ -148,7 +148,7 @@ n:  lda dl
     jsr find_score_item
 
     ; Get number of bytes to copy.
-    dec tmp
+    lda tmp
     beq +n
     lda #0
     sta ch
@@ -407,8 +407,7 @@ print_score_round_name:
     jsr add_sb
 
     ; Print round number.
-n:  jsr clear_curchar
-    lda tmp4
+n:  lda tmp4
     clc
     adc #15
     sta scrx2
@@ -447,7 +446,6 @@ n:  pha
     clc
     adc #19
     sta scrx2
-    jsr clear_curchar
     jsr print_initial_char
     jsr print_initial_char
     jsr print_initial_char
