@@ -338,7 +338,7 @@ if @*debug?*
     sta @(-- bricks_left),y
     jmp next_level
 
-n:  lda is_ntsc
+n:  ldx is_ntsc
     beq +n
     cmp #keycode_c
     bne +n
