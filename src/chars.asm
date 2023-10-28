@@ -99,19 +99,6 @@ cant_use_position:
     sta curchar
     rts
 
-clear_char:
-    lda (scr),y
-    beq +l              ; Nothing to clear…
-    and #foreground
-    bne +l              ; Don't remove foreground chars…
-    lda (scr),y
-    and #framemask
-    cmp spriteframe
-    beq +l              ; Current frame…
-    lda #0
-    sta (scr),y
-l:  rts
-
 clear_charset:
     0
     clrmw <charset >charset $00 $08
