@@ -286,7 +286,7 @@ l:  lda @(+ addr_gate0 5),y
     bne -l
 
     ; Move down lower part.
-    ldy #19
+    ldy #18
 l:  lda @(+ addr_gate3 4),y
     sta @(+ addr_gate3 5),y
     dey
