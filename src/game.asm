@@ -167,6 +167,7 @@ l:  ldx #0
     ldy #17
     jsr preshift_huge_sprite
 
+    ; Test if end of animation has been reached.
     lda #16
     jsr add_sb
     lda s
@@ -176,7 +177,7 @@ l:  ldx #0
     cmp ch
     bne -l
 
-    ; Save end of animation.
+    ; Save end of animation for shifting the next animation.
     lda dl
     sta gfx_obstacles_end
     lda dh
@@ -337,16 +338,22 @@ if @*debug?*
     sta @(-- bricks_left),y
     jmp next_level
 
-n:  cmp #keycode_c
+n:  lda is_ntsc
+    beq +n
+    cmp #keycode_c
     bne +n
     inc has_paused
     jsr wait_keyunpress
     jsr show_charset
     jsr clear_screen
+    jsr clear_charset
+    jsr init_foreground
     jsr draw_walls
     jsr draw_lives
     jsr draw_level
     jsr draw_lives
+    lda #foreground
+    sta curchar
     jsr print_scores_and_labels
     dec has_paused
 

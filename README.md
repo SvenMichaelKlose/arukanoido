@@ -64,7 +64,7 @@ when playing.
 ### In-game keys
 
 * P: Pause the game.
-* C: Display the current charset and halt the machine.
+* C: Display the current charset (NTSC only).
 * M: Toggle VIC/original sounds.
 
 # Keys for game testers
