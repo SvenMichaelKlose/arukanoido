@@ -11,7 +11,7 @@ init_foreground:
     ; Init break mode gate.
     movmw @(low (+ charset (* bg_side 8))) @(high (+ charset (* bg_side 8)))
           @(low (+ charset (* bg_gate2 8))) @(high (+ charset (* bg_gate2 8)))
-          @(* 5 8) 0
+          @(* 4 8) 0
     movmw @(low (+ charset (* bg_side3 8))) @(high (+ charset (* bg_side3 8)))
           @(low (+ charset (* bg_gate0 8))) @(high (+ charset (* bg_gate0 8)))
           16 0
