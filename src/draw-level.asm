@@ -1,4 +1,5 @@
 init_foreground:
+    ; Decrunch graphics to charset.
     lda #@(low (+ charset (* bg_start 8)))
     sta dl
     lda #@(high (+ charset (* bg_start 8)))
@@ -7,6 +8,7 @@ init_foreground:
     lday <gfx_background >gfx_background
     call <decrunch_block >decrunch_block
 
+    ; Init break mode gate.
     movmw @(low (+ charset (* bg_side 8))) @(high (+ charset (* bg_side 8)))
           @(low (+ charset (* bg_gate2 8))) @(high (+ charset (* bg_gate2 8)))
           @(* 5 8) 0
