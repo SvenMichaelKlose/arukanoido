@@ -1,4 +1,4 @@
-; Fixed addresses
+;;; Fixed addresses
 
 screen          = $1000
 decrunch_table  = $1250     ; 156 bytes
@@ -12,22 +12,21 @@ txt_tmp         = bricks
 exm_buffers     = $1e00     ; 2x256 bytes
 colors          = $9400
 
-; Charset settings
+;;; Charset settings
 
 num_chars           = 256
 charsetsize         = @(* num_chars 8)
 
-; Sprite/frame settings
+;;; Sprite/frame settings
 
 num_sprites         = 8
-charsetmask         = @(-- num_chars)
 framemask           = @(half num_chars)
 framechars          = @(half num_chars)
 first_sprite_char   = 1
 foreground          = @(half framechars)
 bg_start            = @(+ framechars foreground)
 
-; Game settings
+;;; Game settings
 
 default_num_lives       = 3
 
@@ -38,19 +37,18 @@ max_ball_speed_joystick = 6
 
 ball_width              = 3
 ball_height             = 5
-vaus_edge_distraction   = 16
 laser_delay_short       = 9
 laser_delay_long        = 20
 
 delay_until_forced_release = $a0
 delay_until_ball_is_released = $80
 
-; Score settings
+;;; Score settings
 
 num_score_digits    = 6
 score_char0         = 16    ; Digit '0' in 4x8 charset.
 
-; Miscellaneous
+;;; Miscellaneous
 
 num_brickfx         = 16    ; List of hit silver/golden bricks that
                             ; are being animated.
@@ -60,7 +58,7 @@ doh_level           = 33
 doh_flash_duration  = 3
 num_demo_levels     = 10
 
-; PAL
+;;; PAL
 
 lives_on_screen     = @(+ (* 31 15) 1 screen)
 lives_on_colors     = @(+ (* 31 15) 1 colors)
