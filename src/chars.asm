@@ -38,7 +38,6 @@ alloc_char:
     inc next_sprite_char
 
 fetch_char:
-    and #charsetmask
     pha
     jsr get_char_addr
     jsr blit_clear_char
@@ -46,14 +45,17 @@ fetch_char:
     iny
     rts
 
+; Out:
+;   CC: ok, Y: X position
+;   CS: illegal position
 test_position:
     lda scry
     cmp screen_rows
     bcs +l
     lda scrx
     cmp screen_columns
-l:  tay
-    rts
+    tay
+l:  rts
 
 scraddr_get_char:
     jsr scrcoladdr
