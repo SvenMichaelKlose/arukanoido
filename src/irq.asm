@@ -173,30 +173,7 @@ n:
 
     lda active_player
     beq +l
-
-    ;; Blink score label of active player.
-    ldy active_player
-    dey
-    bne +m
-    lda color_1up
-    sta d
-    lda @(++ color_1up)
-    sta @(++ d)
-    bne +o ; (jmp)
-m:  lda color_2up
-    sta d
-    lda @(++ color_2up)
-    sta @(++ d)
-o:  ldx #red
-    lda framecounter
-    and #%00100000
-    bne +n
-    ldx #black
-n:  txa
-    ldy #0
-    sta (d),y
-    iny
-    sta (d),y
+    jsr blink_score_label
 
     ;; Run the sprite controllers.
 l:  lda is_running_game

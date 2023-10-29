@@ -109,8 +109,8 @@ print_hiscore_raw:
     sta @(++ s)
     jmp print_score_string
 
-; scrx2/scry: Text position
-; curchar: Character to print into.
+;;; scrx2/scry: Text position
+;;; curchar: Character to print into.
 print_score_string:
     jsr print_clear_curchar
 
@@ -143,6 +143,32 @@ m:  jsr print4x8_dynalloc
     bne -l
     lda #score_char0
     jmp print4x8_dynalloc
+
+;;; Blink score label of active player.
+blink_score_label:
+    ldy active_player
+    dey
+    bne +m
+    lda color_1up
+    sta d
+    lda @(++ color_1up)
+    sta @(++ d)
+    bne +o ; (jmp)
+m:  lda color_2up
+    sta d
+    lda @(++ color_2up)
+    sta @(++ d)
+o:  ldx #red
+    lda framecounter
+    and #%00100000
+    bne +n
+    ldx #black
+n:  txa
+    ldy #0
+    sta (d),y
+    iny
+    sta (d),y
+    rts
 
 txt_1up:    @(string4x8 "1UP") 255
 txt_2up:    @(string4x8 "2UP") 255

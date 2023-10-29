@@ -125,6 +125,7 @@ end
     jsr play_music
 n:
 
+    jsr blink_score_label
     jmp $eabf
 
 
@@ -248,4 +249,5 @@ end
     sta pal_raster_correction
 n:
 
+    jsr blink_score_label
     jmp $eabf
