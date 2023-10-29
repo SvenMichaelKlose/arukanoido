@@ -265,8 +265,7 @@ open_obstacle_gate:
     sta do_animate_obstacle_gate
     jsr remove_obstacle_gate
     jmp make_obstacle
-n:  sta cl
-    jsr draw_obstacle_gate
+n:  jsr draw_obstacle_gate
     lda obstacle_gate_frame
     cmp #4
     bne +r
@@ -283,8 +282,7 @@ n:  cmp #4
     lda #0
     sta do_animate_obstacle_gate
     beq plot_obstacle_gates ; (jmp)
-n:  sta cl
-    jsr draw_obstacle_gate
+n:  jsr draw_obstacle_gate
     lda obstacle_gate_frame
     cmp #1
     bne +r
@@ -325,7 +323,6 @@ plot_obstacle_gate:
     jsr plot_char
     inc scrx
     lda #bg_animated_gate1
-    lda #bg_top2
     jmp plot_char
 
 remove_obstacle_gate:
@@ -349,8 +346,6 @@ addr_animated_gate1 = @(+ charset (* bg_animated_gate1 8))
 ; cl: index into. 0-4 (open-closed)
 draw_obstacle_gate:
     sta cl
-    cmp #0  ; (Just to be safe.)
-    beq remove_obstacle_gate
     lda #<addr_top1
     sta sl
     lda #>addr_top1
@@ -371,38 +366,40 @@ draw_obstacle_gate:
     ;; Clear chars.
     ldy #15
     lda #0
-l:  sta (s),y
+l:  sta (d),y
+    sta (tmp3),y
     dey
     bpl -l
 
     ;; Draw top halves.
-    ; Get number of lines to copy in X.
     lda #4
     sec
     sbc cl
-    tax
-    pha
-    ; Starting line in Y.
-    ldy cl
-l:  lda (s),y
-    sta (d),y
-    lda (tmp),y
-    sta (tmp3),y
-    iny
-    dex
-    bne -l
+    sta tmp5
+    lda #0
+    sta tmp6
+    ldx cl
+    jsr +l
 
     ;; Draw bottom halves.
-    ; Get number of lines to copy in X.
+    lda #4
+    sta tmp5
+    sec
+    sbc cl
+    clc
+    adc #4
+    sta tmp6
     ldx cl
-    ; Starting line in Y.
-    pla
-    tay
-l:  lda (s),y
+l:  ldy tmp5
+    lda (s),y
+    ldy tmp6
     sta (d),y
+    ldy tmp5
     lda (tmp),y
+    ldy tmp6
     sta (tmp3),y
-    iny
+    inc tmp5
+    inc tmp6
     dex
     bne -l
 

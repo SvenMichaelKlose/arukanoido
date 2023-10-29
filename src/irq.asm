@@ -148,6 +148,19 @@ m:  lda screen_gate
     sta (c),y
 n:
 
+    ;; Animate obstacle gate.
+    ldx do_animate_obstacle_gate
+    beq +n  ; X=0
+    lda framecounter
+    and #%11
+    bne +n
+    dex
+    bne +n3 ; X=2
+    jsr open_obstacle_gate
+    jmp +n
+n3: jsr close_obstacle_gate
+n:
+
     ;; Play classic VIC sound.
 if @*has-digis?*
     lda currently_playing_digis
