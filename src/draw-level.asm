@@ -175,36 +175,22 @@ draw_walls:
     txa
     pha
 
+    ; Draw top border without connectors.
     lda playfield_yc
     sta scry
     lda #@(+ multicolor white)
     sta curcol
 
-    ; Draw top border without connectors.
     lda #1
     sta scrx
-l:  lda #bg_top_1
+l:  lda #bg_top0
     jsr plot_char
     inc scrx
     lda scrx
     cmp #14
     bne -l
 
-    ; Draw top border connectors.
-    lda #3
-    sta scrx
-    lda #bg_top_2
-    jsr plot_char
-    inc scrx
-    lda #bg_top_3
-    jsr plot_char
-    lda #10
-    sta scrx
-    lda #bg_top_2
-    jsr plot_char
-    inc scrx
-    lda #bg_top_3
-    jsr plot_char
+    jsr plot_obstacle_gates
 
     ; Draw corners.
     lda #0
@@ -272,10 +258,160 @@ done:
     tax
     rts
 
+open_obstacle_gate:
+    lda obstacle_gate_frame
+    bne +n
+    ; Fully opened.
+    sta do_animate_obstacle_gate
+    jsr remove_obstacle_gate
+    jmp make_obstacle
+n:  sta cl
+    jsr draw_obstacle_gate
+    lda obstacle_gate_frame
+    cmp #4
+    bne +r
+    jsr plot_obstacle_gate
+r:  dec obstacle_gate_frame
+    rts
+
+close_obstacle_gate:
+    lda obstacle_gate_frame
+    beq +r ; Fully open.
+n:  cmp #4
+    bne +n
+    ; Fully closed.
+    lda #0
+    sta do_animate_obstacle_gate
+    beq plot_obstacle_gates ; (jmp)
+n:  sta cl
+    jsr draw_obstacle_gate
+    lda obstacle_gate_frame
+    cmp #1
+    bne +r
+    jsr plot_obstacle_gate
+r:  inc obstacle_gate_frame
+    rts
+
+; Draw closed gates that are not animated.
+plot_obstacle_gates:
+    lda playfield_yc
+    sta scry
+    lda #@(+ multicolor white)
+    sta curcol
+    lda #3
+    sta scrx
+    lda #bg_top1
+    jsr plot_char
+    inc scrx
+    lda #bg_top2
+    jsr plot_char
+    lda #10
+    sta scrx
+    lda #bg_top1
+    jsr plot_char
+    inc scrx
+    lda #bg_top2
+    jmp plot_char
+
+; Plot obstacle gate with animated chars.
+plot_obstacle_gate:
+    lda new_obstacle_gate_xc
+    sta scrx
+    lda playfield_yc
+    sta scry
+    lda #@(+ multicolor white)
+    sta curcol
+    lda #bg_animated_gate0
+    jsr plot_char
+    inc scrx
+    lda #bg_animated_gate1
+    lda #bg_top2
+    jmp plot_char
+
+remove_obstacle_gate:
+    lda new_obstacle_gate_xc
+    sta scrx
+    lda playfield_yc
+    sta scry
+    lda #@(+ multicolor white)
+    sta curcol
+    lda #0
+    jsr plot_char
+    inc scrx
+    lda #0
+    jmp plot_char
+
+addr_top1 = @(+ charset (* bg_top1 8))
+addr_top2 = @(+ charset (* bg_top2 8))
+addr_animated_gate0 = @(+ charset (* bg_animated_gate0 8))
+addr_animated_gate1 = @(+ charset (* bg_animated_gate1 8))
+
+; cl: index into. 0-4 (open-closed)
+draw_obstacle_gate:
+    sta cl
+    cmp #0  ; (Just to be safe.)
+    beq remove_obstacle_gate
+    lda #<addr_top1
+    sta sl
+    lda #>addr_top1
+    sta sh
+    lda #<addr_top2
+    sta tmp
+    lda #>addr_top2
+    sta tmp2
+    lda #<addr_animated_gate0
+    sta dl
+    lda #>addr_animated_gate0
+    sta dh
+    lda #<addr_animated_gate1
+    sta tmp3
+    lda #>addr_animated_gate1
+    sta tmp4
+
+    ;; Clear chars.
+    ldy #15
+    lda #0
+l:  sta (s),y
+    dey
+    bpl -l
+
+    ;; Draw top halves.
+    ; Get number of lines to copy in X.
+    lda #4
+    sec
+    sbc cl
+    tax
+    pha
+    ; Starting line in Y.
+    ldy cl
+l:  lda (s),y
+    sta (d),y
+    lda (tmp),y
+    sta (tmp3),y
+    iny
+    dex
+    bne -l
+
+    ;; Draw bottom halves.
+    ; Get number of lines to copy in X.
+    ldx cl
+    ; Starting line in Y.
+    pla
+    tay
+l:  lda (s),y
+    sta (d),y
+    lda (tmp),y
+    sta (tmp3),y
+    iny
+    dex
+    bne -l
+
+    rts
+
 addr_gate0 = @(+ charset (* bg_gate0 8))
 addr_gate3 = @(+ charset (* bg_gate3 8))
 
-open_gate:
+open_break_mode_gate:
     ;; Move up upper part.
     ldy #0
     ldx #23

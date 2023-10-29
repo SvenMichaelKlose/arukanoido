@@ -88,30 +88,49 @@ turn_obstacle_counterclockwise:
 add_missing_obstacle:
     ldy level
     lda @(-- level_obstacle),y
-    bmi +done               ; No obstacles in level (none).
+    bmi +r                  ; No obstacles in level (none).
     lda num_obstacles
     cmp #3
-    beq +done               ; Three are enough.
+    beq +r                  ; Three are enough.
     lda framecounter
-    bne +done               ; Only every 256 frames.
+    bne +r                  ; Only every 256 frames.
 
-    ldy #@(- obstacle_init sprite_inits)
-    jsr add_sprite
+    inc do_animate_obstacle_gate
+    lda #4
+    sta obstacle_gate_frame
 
-    ; Set Y position.
-    tax
-    lda arena_y
-    sec
-    sbc #7
-    sta sprites_y,x
-
-    ; Set X position.
+    ; Get X position.
+    lda #3
+    sta tmp
     ldy #@(+ 4 (* 3 8))
     jsr random
     lsr
     bcs +n
+    lda #10
+    sta tmp
     ldy #@(+ 4 (* 10 8))
-n:  sty sprites_x,x
+n:  lda tmp
+    sta new_obstacle_gate_xc
+    sty new_obstacle_x
+
+    inc num_obstacles
+
+r:  rts
+
+make_obstacle:
+    ; Stop IRQ as we're dealing with the sprite tables
+    ; outside of it.
+    sei
+
+    ldy #@(- obstacle_init sprite_inits)
+    jsr add_sprite
+    tax
+
+    ; Set position.
+    lda obstacle_y
+    sta sprites_y,x
+    lda new_obstacle_x
+    sta sprites_x,x
 
     ; Set initial direction.
     lda #direction_down
@@ -119,8 +138,6 @@ n:  sty sprites_x,x
     jsr random
     and #128
     sta sprites_d2,x
-
-    inc num_obstacles
 
     ; Set graphics.
     ldy level
@@ -133,7 +150,7 @@ n:  sty sprites_x,x
     lda @(++ gfx_obstacles)
     sta sprites_pgh,x
 
-done:
+    cli
     rts
 
 ; Y: Sprite index
@@ -216,7 +233,9 @@ ctrl_obstacle_move_in:
 r:  rts
 
     ; Obstacle is out of its gate.
-n:  lda #<ctrl_obstacle_pacing
+n:  lda #2  ; Tell to close gate.
+    sta do_animate_obstacle_gate
+    lda #<ctrl_obstacle_pacing
     ldy #>ctrl_obstacle_pacing
 
 set_obstacle_controller:

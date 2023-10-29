@@ -229,6 +229,7 @@ n:  lda #0
     sta needs_redrawing_score2
     sta needs_redrawing_lives
     sta gate_opening
+    sta do_animate_obstacle_gate
     lda #1
     sta balls
     sta hits_before_bonus
@@ -373,8 +374,18 @@ if @*has-digis?*
     jsr exm_work
 end
 
+    ;; Animate obstacle gate.
+    ldx do_animate_obstacle_gate
+    beq +n  ; X=0
+    dex
+    bne +n3 ; X=2
+    jsr open_obstacle_gate
+    jmp +n
+n3: jsr close_obstacle_gate
+    jmp +n
+
     ;; Redraw graphics that have changed.
-    lda needs_redrawing_lives
+n:  lda needs_redrawing_lives
     beq +n
     jsr draw_lives
 n:  lda needs_redrawing_score1

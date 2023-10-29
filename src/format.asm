@@ -119,6 +119,13 @@ l:  stx user_screen_origin_x
     stx y_max
 
     ldx playfield_yc
+    txa
+    asl
+    asl
+    asl
+    sta obstacle_y
+
+    ldx playfield_yc
     inx
     txa
     asl
@@ -185,8 +192,7 @@ l:  stx user_screen_origin_x
     adc #14
     sta screen_gate
     lda @(++ scr)
-    clc
-    adc #0
+    adc #0          ; TODO: Remove?
     sta @(++ screen_gate)
 
     lda is_landscape

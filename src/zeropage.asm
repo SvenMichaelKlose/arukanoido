@@ -129,6 +129,10 @@ exo_y2:         0
 
 score:          0 0
 
+do_animate_obstacle_gate: 0
+obstacle_gate_frame:      0
+new_obstacle_gate_xc:     0
+new_obstacle_x:           0
 uncleaned_zp:
 
 bricks:         0   ; Starting page of brick map.
@@ -137,6 +141,7 @@ bricks:         0   ; Starting page of brick map.
 ;;; TODO: Move to lowmem where it isn't cleaned.
 user_screen_origin_x:   0
 user_screen_origin_y:   0
+obstacle_y:             0
 is_ntsc:                0
 is_landscape:           0
 

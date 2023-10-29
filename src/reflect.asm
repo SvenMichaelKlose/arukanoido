@@ -45,6 +45,8 @@ o:  lda sprites_d,x         ; Are we flying upwards?
     bpl +n                  ; No…
     lda ball_x
     ldy ball_y
+    cpy arena_y
+    beq +j                  ; Reflect from open obstacle gate…
     dey
     jsr get_soft_collision
     beq +r

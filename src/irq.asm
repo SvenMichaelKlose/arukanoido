@@ -106,7 +106,7 @@ n:  lda mode_break
     lda framecounter
     and #%1
     bne +n
-    jsr open_gate
+    jsr open_break_mode_gate
     dec gate_opening
     jmp +n
 
