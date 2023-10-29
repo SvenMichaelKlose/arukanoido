@@ -289,8 +289,10 @@ n:  lda spriteframe
     sta next_sprite_char
 
 n2: jsr get_keypress
-    bcc +l
-    cmp #keycode_p
+    bcs +n
+    jmp redraw_changed
+
+n:  cmp #keycode_p
     bne +n
     lda #1
     eor has_paused
@@ -369,12 +371,12 @@ n:  cmp #keycode_l
 end
 n:
 
-l:
 if @*has-digis?*
     jsr exm_work
 end
 
     ;; Redraw graphics that have changed.
+redraw_changed:
 n:  lda needs_redrawing_lives
     beq +n
     jsr draw_lives
