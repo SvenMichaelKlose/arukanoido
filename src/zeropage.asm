@@ -138,14 +138,6 @@ uncleaned_zp:
 
 bricks:         0   ; Starting page of brick map.
 
-;;; Format
-;;; TODO: Move to lowmem where it isn't cleaned.
-user_screen_origin_x:   0
-user_screen_origin_y:   0
-obstacle_y:             0
-is_ntsc:                0
-is_landscape:           0
-
 zp_end:
     @(check-zeropage-size (- #x00fc num_score_digits))
     org @(- #x00fc num_score_digits)
@@ -326,6 +318,8 @@ get_keypress_x:         0
 current_toplevel_view:  0
 hiscore_player:         0
 
+pal_raster_correction:  0
+
 before_int_vectors:
 
     org $320
@@ -337,6 +331,12 @@ line_addresses_h:   fill 33
 sprite_inits:           fill @sprite_inits_size
 
 uncleaned_lowmem:
+
+user_screen_origin_x:   0
+user_screen_origin_y:   0
+obstacle_y:             0
+is_ntsc:                0
+is_landscape:           0
 
 has_ultimem:        0
 has_3k:             0

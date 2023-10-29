@@ -17,6 +17,7 @@ start_irq:
     jsr init_music
 
 restart_irq:
+    sei
     lda #<irq
     sta $314
     lda #>irq

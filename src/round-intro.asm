@@ -49,7 +49,7 @@ round_intro:
     pla
     sta sh
 
-    jsr init_raster_ntsc
+    jsr init_raster
 
 l5: ldx playfield_yc
     inx
