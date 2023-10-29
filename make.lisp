@@ -135,6 +135,7 @@
                           "format.asm"
                           "chars.asm"
                           "screen.asm"
+                          "raster.asm"
                           "draw-bitmap.asm"
 
                           ; Sprites

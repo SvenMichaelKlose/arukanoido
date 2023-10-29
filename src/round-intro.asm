@@ -49,6 +49,8 @@ round_intro:
     pla
     sta sh
 
+    jsr init_raster_ntsc
+
 l5: ldx playfield_yc
     inx
     stx scry
@@ -92,7 +94,7 @@ n:  ldx #2
     jsr wait
     jmp -l2
 
-r:  rts
+r:  jmp restart_irq
 
 m:  ldx #15
     jsr wait
