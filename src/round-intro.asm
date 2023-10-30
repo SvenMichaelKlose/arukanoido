@@ -27,30 +27,42 @@ draw_round_intro_background:
     sta $9002
     rts
 
+;;; In:
+;;;   A:  Tune index.
+;;;   XY: Text
 round_intro:
+    ;; Save tune index.
     sta tmp
     tya
     pha
+
+    ;; Save text address.
     txa
     pha
     lda tmp
     pha
+
+    ;; Draw scores, stars and ship.
     jsr draw_round_intro_background
 
-    ; Save free char position before printing text page.
-    lda curchar
-    sta tmp4
-
+    ;; Start tune now that one can see something.
     pla
     jsr play_sound
 
+    ;; Init text start.
     pla
     sta sl
     pla
     sta sh
 
+    ;; Let ship engines flicker.
     jsr init_raster
 
+    ;; Save first char value for each page
+    lda curchar
+    sta tmp4
+
+    ;; Home position of page.
 l5: ldx playfield_yc
     inx
     stx scry
@@ -59,12 +71,15 @@ l5: ldx playfield_yc
     lda #white
     sta curcol
 
+    ;; Print char and step on.
 l:
 if @*shadowvic?*
     $22 $02         ; Wait for retrace.
 end
+    ; Move to line start.
     lda #0
     sta scrx2
+    ; Print char.
 l2: ldy #0
     lda (s),y
     bmi +n
@@ -72,30 +87,32 @@ l2: ldy #0
 n:  inc sl
     bne +n
     inc sh
+
+    ;; Handle newline.
 n:  cmp #254
     bne +n
-
     inc scry
     inc scry
     inc curchar
     jmp -l
 
+    ;; Handle end of text.
 n:  cmp #253
-    beq +r
+    beq +r      ; No more pages.
     cmp #255
-    beq +m
+    beq +m      ; End of page.
+
+    ;; End intro on fire.
     lda level
     cmp #@(+ 1 doh_level)
     beq +n
     jsr test_fire_and_release
     bcs +r
-
 n:  ldx #2
     jsr wait
     jmp -l2
 
-r:  jmp init_irq
-
+    ;; End of text page.
 m:  ldx #15
     jsr wait
     lda level
@@ -103,9 +120,11 @@ m:  ldx #15
     bne +l3
     ldx #60
     jsr wait
-
 l3: jsr clear_intro_text
     jmp -l5
+
+    ;; End of intro.
+r:  jmp init_irq
 
 make_stars:
     ldx #31
@@ -114,14 +133,13 @@ l:  lda bg_stars,x
     dex
     bpl -l
 
+    ;; Set first char to allocate.
     lda #1
     sta curchar
-    lda #white
-    sta curcol
 
+    ; Init loop for 128 stars.
     lda #128
     sta tmp2
-
     ; Make random position.
 l1: jsr random
     cmp #15
@@ -153,6 +171,7 @@ l:  jsr random
     dec tmp2
     bne -l1
 
+;; Clear text lines (including stars, I'm afraid).
 clear_intro_text:
     lda #0
     sta scrx
