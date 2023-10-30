@@ -128,7 +128,6 @@ n:
     jsr blink_score_label
     jmp $eabf
 
-
 init_raster_pal:
     lda #4
     sta pal_raster_correction
@@ -237,10 +236,13 @@ n:
     ldx #@(+ reverse red)
 n:  stx @(++ rastercol_pal)
 
+    ;; Play classic VIC sounds,
 if @*has-digis?*
     lda currently_playing_digis
     bne +n      ; Digis are decrunched in game loop.
 end
+    ; Call twice every fifth interrupt to have it
+    ; done 60 times per second like with NTSC.
     jsr play_music
     dec pal_raster_correction
     bpl +n
