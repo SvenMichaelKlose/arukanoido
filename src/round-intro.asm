@@ -94,7 +94,7 @@ n:  ldx #2
     jsr wait
     jmp -l2
 
-r:  jmp restart_irq
+r:  jmp init_irq
 
 m:  ldx #15
     jsr wait

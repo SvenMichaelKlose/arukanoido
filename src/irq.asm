@@ -7,16 +7,7 @@ frame_freq = 60
 frame_timer_pal  = @(- (/ (cpu-cycles :pal)  frame_freq) 18)
 frame_timer_ntsc = @(- (/ (cpu-cycles :ntsc) frame_freq) 158)
 
-start_irq:
-    lda #0
-    sta is_running_game
-
-    0
-    movmw $ce $03 <init_music_data >init_music_data <init_music_data_size >init_music_data_size
-    0
-    jsr init_music
-
-restart_irq:
+init_irq:
     sei
     lda #<irq
     sta $314
@@ -247,7 +238,3 @@ end
     sta $912d
     pla
     rti
-
-init_music_data: @(fetch-file "sound-init.bin")
-init_music_data_end:
-init_music_data_size = @(- init_music_data_end init_music_data)

@@ -1,7 +1,7 @@
-init_music      = $218d
-play_music      = $2027
-current_song    = $03d4
-requested_song  = $03d6
+init_music_imported = $218d
+play_music          = $2027
+current_song        = $03d4
+requested_song      = $03d6
 
 snd_test              = 3
 
@@ -90,6 +90,16 @@ digi_rates:
     0 ; 16  laser
     0 ; 17  warp
 end
+
+init_music_data: @(fetch-file "sound-init.bin")
+init_music_data_end:
+init_music_data_size = @(- init_music_data_end init_music_data)
+
+init_music:
+    0
+    movmw $ce $03 <init_music_data >init_music_data <init_music_data_size >init_music_data_size
+    0
+    jmp init_music_imported
 
 play_sound:
     sta tmp
