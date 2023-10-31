@@ -227,6 +227,7 @@
   (format t "Round start end:  ~X~%" (get-label '__end_round_start))
   (format t "Hiscore end:      ~X~%" (get-label '__end_hiscore))
   (format t "Round intro end:  ~X~%" (get-label '__end_round_intro))
+  (format t "End:              ~X~%" (get-label 'the_end))
   (!= (- #x00fc (get-label 'zp_end))
     (format t "~A zero page bytes free.~%" !)
     (when (< ! 0)
