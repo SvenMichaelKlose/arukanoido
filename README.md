@@ -59,6 +59,7 @@ when playing.
 * H, J, K, L: Move screen around.
 * F: Switch between landscape (NTSC) and portrait (PAL) format.
 * M: Switch between beamrider's blasting VIC sounds or arcade digis.
+* T: Jump to highscore table.
 * B: Quit and start BASIC.
 
 ### In-game keys

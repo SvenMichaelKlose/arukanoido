@@ -58,6 +58,9 @@ loop:
     beq start_one_player
 
     ;; Rotate views.
+view_title      = 0
+view_credits    = 1
+view_hiscore    = 2
     ; Not for +16K.
     lda has_24k
     beq +get_toplevel_key
@@ -110,7 +113,9 @@ n:
     cmp #keycode_t
     bne +n
     jsr hiscore_table
-    jmp toplevel
+    lda #view_hiscore
+    sta current_toplevel_view
+    jmp loop_with_framecounter_reset
 n:
 
     cmp #keycode_t
