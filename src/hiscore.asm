@@ -1,3 +1,5 @@
+__start_hiscore:
+
 hiscore_yc = 16
 score_item_size = @(+ num_score_digits 1 3)
 

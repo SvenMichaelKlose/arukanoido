@@ -1,22 +1,22 @@
+__start_round_start:
+
 roundstart:
     lda level
     cmp #doh_level
     bne +n
     lda #snd_doh_round
     jmp play_sound
-n:
 
-    ldx #0
+n:  ldx #0
 l:  lda txt_round_nn,x
     sta scratch,x
     cmp #255
     beq +n
     inx
     jmp -l
-n:
 
     ; Copy round number digits into round message.
-    lda #score_char0
+n:  lda #score_char0
     sta @(+ scratch 8)
     lda level
 l:  sec
@@ -76,10 +76,9 @@ o:  stx sl
     jsr clear_curchar
     jsr print_string
     inc curchar
-n:
 
     ; Print "READY".
-    jsr clear_curchar
+n:  jsr clear_curchar
     lda #12
     ldy has_two_players
     beq +n
@@ -137,4 +136,5 @@ txt_round_nn:   @(string4x8 " ROUND  XX") 255
 txt_ready:      @(string4x8 " READY") 255
 txt_player1:    @(string4x8 " PLAYER 1") 255
 txt_player2:    @(string4x8 " PLAYER 2") 255
+
 __end_round_start:

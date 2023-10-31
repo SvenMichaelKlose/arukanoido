@@ -2,11 +2,11 @@
 
 ; CONFIGURE HERE!
 
-(const *versions* '(:prg :tap :wav :shadowvic))
-;(const *versions* '(:prg))
+;(const *versions* '(:prg :tap :wav :shadowvic))
+(const *versions* '(:prg))
 
-(const *demo?* t)               ; Limit to first eight levels.
-(const *debug?* t)              ; Include self-tests and features.
+(const *demo?* nil)               ; Limit to first eight levels.
+(const *debug?* nil)              ; Include self-tests and features.
 (const *make-arcade-sounds?* nil) ; Lengthy process.
 (var *has-digis?* t)            ; Play optional original arcade sounds.
 (var *show-cpu?* nil)           ; Show time spent in game logic (NTSC!).
@@ -181,14 +181,14 @@
                           ,@(when *debug?*
                               '("debug.asm"))
                           "irq.asm"
-                          "round-start.asm"
                           "game.asm"
                           "main.asm"
 
+                          "round-start.asm"
                           "credits.asm"
                           "preshift-common-sprites.asm"
-                          "gfx-ship.asm"
                           "hiscore.asm"
+                          "gfx-ship.asm"
                           "round-intro.asm"
 
                           ; Digital audio
@@ -218,13 +218,15 @@
 
                           "end.asm"))
         cmds)
-  (format t "Level data (uncompressed): ~A B~%" (length +level-data+))
-  (format t "Game end: ~X~%" (get-label '__end_game))
-  (format t "Round start end: ~X~%" (get-label '__end_round_start))
-  (format t "Round start size: ~A~%" (- (get-label '__end_round_start) (get-label '__end_game)))
-  (format t "Hiscore size: ~A~%" (- (get-label '__end_hiscore) (get-label '__end_round_start)))
-  (format t "Round intro end: ~X~%" (get-label '__end_round_intro))
-  (format t "Round intro size: ~A~%" (- (get-label '__end_round_intro) (get-label '__end_hiscore)))
+  (format t "Level data size:  ~A (uncompressed)~%" (length +level-data+))
+  (format t "Game size:        ~A~%" (- (get-label '__end_game) #x2000))
+  (format t "Round start size: ~A~%" (- (get-label '__end_round_start) (get-label '__start_round_start)))
+  (format t "Round intro size: ~A~%" (- (get-label '__end_round_intro) (get-label '__start_round_intro)))
+  (format t "Hiscore size:     ~A~%" (- (get-label '__end_hiscore) (get-label '__start_hiscore)))
+  (format t "Game end:         ~X~%" (get-label '__end_game))
+  (format t "Round start end:  ~X~%" (get-label '__end_round_start))
+  (format t "Hiscore end:      ~X~%" (get-label '__end_hiscore))
+  (format t "Round intro end:  ~X~%" (get-label '__end_round_intro))
   (!= (- #x00fc (get-label 'zp_end))
     (format t "~A zero page bytes free.~%" !)
     (when (< ! 0)

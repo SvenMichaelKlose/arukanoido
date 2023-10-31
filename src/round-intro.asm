@@ -1,3 +1,5 @@
+__start_round_intro:
+
 draw_round_intro_background:
     lda $9002
     pha
