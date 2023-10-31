@@ -91,10 +91,10 @@ get_toplevel_key:
     cmp #keycode_1
     bne +n
 start_one_player:
-    lda #0
-    sta has_two_players
-    lda #1
-    sta active_player
+    ldx #0
+    stx has_two_players
+    inx
+    stx active_player
     jmp +f
 n:
 
@@ -105,7 +105,6 @@ n:
     bne +n
     lda #1
     sta has_two_players
-    lda #1
     sta active_player
     jmp +f
 n:
@@ -118,36 +117,35 @@ n:
     jmp loop_with_framecounter_reset
 n:
 
-    cmp #keycode_t
-    bne +n
-    jsr hiscore_table
-    jmp toplevel
-n:
-
+    ;; Move screen left.
     cmp #keycode_h
     bne +n
     dec $9000
     dec user_screen_origin_x
     bne -loop ; (jmp)
 
+    ;; Move screen right.
 n:  cmp #keycode_l
     bne +n
     inc $9000
     inc user_screen_origin_x
     bne +l ; (jmp)
 
+    ;; Move screen up.
 n:  cmp #keycode_k
     bne +n
     dec $9001
     dec user_screen_origin_y
     bne +l
 
+    ;; Move screen down.
 n:  cmp #keycode_j
     bne +n
     inc $9001
     inc user_screen_origin_y
     bne +l
 
+    ;; Toggle portrait/landscape format.
 n:  cmp #keycode_f
     bne +n
     lda is_landscape
