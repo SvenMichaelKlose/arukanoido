@@ -10,6 +10,7 @@
 (const *make-arcade-sounds?* nil) ; Lengthy process.
 (var *has-digis?* t)            ; Play optional original arcade sounds.
 (var *show-cpu?* nil)           ; Show time spent in game logic (NTSC!).
+(var *dejitter-paddles?* nil)
 
 
 ; DO NOT TOUCH FROM HERE ON!

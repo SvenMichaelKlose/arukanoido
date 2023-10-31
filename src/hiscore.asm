@@ -223,30 +223,37 @@ n:  lda #1
 
     ;; Print input line.
 l:  jsr wait_retrace
-    lda dl
-    sta sl
-    lda dh
-    sta sh
+
+    ; Save first allocate char of line.
     lda curchar
     pha
+
     ; Get index into initial.
     lda tmp5
     clc
     adc #@(++ num_score_digits)
     tay
-    ; Get char.
+
+    ; Write initial to score record.
     ldx tmp6
     lda initial_chars,x
     sta (d),y
+
+    ;; Print record.
     lda dl
     pha
     lda dh
     pha
+    lda dl
+    sta sl
+    lda dh
+    sta sh
     jsr print_score_round_name
     pla
     sta dh
     pla
     sta dl
+
     pla
     sta curchar
 
@@ -271,29 +278,41 @@ l6: jsr get_joystick
     bne -l6
     jmp +l4
 
+    ;; Get paddle value.
 l2: ldy active_player
     lda $9007,y
+if @*dejitter-paddles?*
     clc
     adc old_paddle_value
     ror
+end
     sta old_paddle_value
-    ; Test on fire.
+
+    ;; Test on fire.
 m:  jsr test_fire
     bne +o
 n2: jsr test_fire
     beq -n2
+
+    ;; Fire: add initial.
 n3: inc tmp5
     lda tmp5
     cmp #3
-    beq +r
+    beq +r      ; Three added…
     bne -l
+
+    ;; Select initial via paddle.
 o:  lda $9007,y
     cmp old_paddle_value
-    beq -m
+    beq -m      ; Paddle didn't move…
+
+    ; Negate paddle value and / 4.
     jsr neg
     lsr
     lsr
     sta tmp6
+
+    ; Dp not go beyond list of available initials.
 l4: lda tmp6
     cmp #num_initial_chars
     bcc +n
@@ -301,6 +320,7 @@ l4: lda tmp6
     sta tmp6
 n:  jmp -l
 
+    ; Done.
 r:  jsr hiscore_table
     lda #60
     jsr wait

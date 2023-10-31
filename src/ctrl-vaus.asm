@@ -29,33 +29,29 @@ n:  lda #is_obstacle
     jsr find_hit
     bcs +n
     jsr remove_obstacle
-n:
 
-    ; Determine paddle move distance.
+    ; Check if paddle is being used.
+n:  lda is_using_paddle
+    bne handle_paddle
+
+    ; Check if paddle is used.
     lda $9008
     sec
     sbc old_paddle_value
     jsr abs
     and #%11111110
-    sta paddle_move_distance
-
-    ; Check if paddle is being used.
-    lda is_using_paddle
-    bne handle_paddle
-    lda paddle_move_distance
-    beq handle_joystick
-
-    sta is_using_paddle
-    lda $9008
-    sta old_paddle_value
+    beq +handle_joystick
+    inc is_using_paddle
 
 handle_paddle:
     stx tmp6
     ldx active_player
     lda $9007,x
+if @*dejitter-paddles?*
     clc
     adc old_paddle_value
     ror
+end
     sta old_paddle_value
     tay
     ldx tmp6
