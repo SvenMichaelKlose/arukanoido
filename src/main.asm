@@ -73,11 +73,11 @@ view_hiscore    = 2
     dex
     bne +n
     jsr draw_credits
-    beq loop_with_framecounter_reset ; (jmp)
+    jmp loop_with_framecounter_reset
 n:  dex
     bne restart_toplevel_views
     jsr hiscore_table
-    beq loop_with_framecounter_reset ; (jmp)
+    jmp loop_with_framecounter_reset
 
 if @*has-digis?*
     jsr exm_work

@@ -137,12 +137,11 @@ new_obstacle_x:           0
 uncleaned_zp:
 
 bricks:         0   ; Starting page of brick map.
+hiscore:    fill num_score_digits
 
 zp_end:
-    @(check-zeropage-size (- #x00fc num_score_digits))
+    @(check-zeropage-size #x00fc)
     org @(- #x00fc num_score_digits)
-
-hiscore:    fill num_score_digits
 
     org $200
 
