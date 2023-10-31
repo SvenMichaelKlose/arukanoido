@@ -58,10 +58,12 @@ round_intro:
     sta sh
 
     ;; Let ship engines flicker.
+    lda is_playing_digis
+    bne +n
     jsr init_raster
 
     ;; Save first char value for each page
-    lda curchar
+n:  lda curchar
     sta tmp4
 
     ;; Home position of page.
