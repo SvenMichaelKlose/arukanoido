@@ -57,6 +57,7 @@ print_score_heading:
     rts
 
 hiscore_table:
+    jsr blank_screen
     jsr clear_screen
     jsr clear_charset
     lda #1
@@ -94,7 +95,8 @@ hiscore_table:
     jsr print_string_ay
     inc curchar
 
-    jmp print_hiscores
+    jsr print_hiscores
+    jmp unblank_screen
 
 r:  rts
 enter_hiscore:
@@ -111,6 +113,7 @@ n:  lda dl
     lda dh
     pha
 
+    jsr blank_screen
     jsr clear_screen
     jsr clear_charset
     lda #1
@@ -216,6 +219,8 @@ n:  lda #1
     sta tmp5
     lda #0
     sta tmp6
+
+    jsr unblank_screen
 
     lda level
     cmp #@(++ doh_level)

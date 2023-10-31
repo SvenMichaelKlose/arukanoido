@@ -25,7 +25,8 @@ n:  jsr wait_for_silence
 l:  lda has_24k
     beq +n
     jsr enter_hiscore
-n:  jsr clear_screen
+n:  jsr blank_screen
+    jsr clear_screen
 
     lda #1
     sta curchar
@@ -44,6 +45,8 @@ n:  jsr clear_screen
     lda #<txt_game_over
     ldy #>txt_game_over
     jsr print_string_ay
+
+    jsr unblank_screen
 
     lda #snd_game_over
     jsr play_sound
@@ -488,10 +491,12 @@ if @*demo?*
 end_of_demo:
     lda #0
     sta mode_break
+    jsr blank_screen
     jsr clear_screen
     jsr init_doh_charset
     lda #1
     sta curchar
+    jsr print_scores_and_labels
     jsr draw_doh
     lda #white
     sta curcol
@@ -509,6 +514,7 @@ end_of_demo:
     lda #<txt_preview2
     ldy #>txt_preview2
     jsr print_string_ay
+    jsr unblank_screen
     jmp wait_fire
 end
 

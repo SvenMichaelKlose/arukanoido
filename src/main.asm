@@ -184,6 +184,7 @@ f:  jsr game
     jmp toplevel
 
 draw_title_screen:
+    jsr blank_screen
     jsr clear_screen
     jsr clear_charset
     0
@@ -226,11 +227,9 @@ end
 ;    lda #<txt_credit
 ;    ldy #>txt_credit
 ;    jmp print_string_ay
-    rts
+    jmp init_screen
 
 boot_basic:
-    lda #0
-    sta $9002
 if @*rom?*
     sei
     lda #$7f

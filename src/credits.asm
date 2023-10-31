@@ -59,7 +59,7 @@ draw_credits:
     call <print_string_ay >print_string_ay
     0
 
-    rts
+    jmp unblank_screen
 
 txt_press:  @(string4x8 "PRESS FIRE, 1 OR 2") 255
 txt_c1:     @(string4x8 "CODE & GRAPHICS:") 255

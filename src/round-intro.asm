@@ -1,9 +1,6 @@
 __start_round_intro:
 
 draw_round_intro_background:
-    lda $9002
-    pha
-
     jsr blank_screen
     jsr clear_screen
     jsr make_stars
@@ -22,12 +19,7 @@ draw_round_intro_background:
     sta scry
     lda #<gfx_ship
     ldy #>gfx_ship
-    jsr draw_bitmap
-
-    jsr wait_retrace    ; Avoid garbage lighting up on screen.
-    pla
-    sta $9002
-    rts
+    jmp draw_bitmap
 
 ;;; In:
 ;;;   A:  Tune index.
@@ -35,10 +27,10 @@ draw_round_intro_background:
 round_intro:
     ;; Save tune index.
     sta tmp
-    tya
-    pha
 
     ;; Save text address.
+    tya
+    pha
     txa
     pha
     lda tmp
@@ -65,6 +57,8 @@ round_intro:
     ;; Save first char value for each page
 n:  lda curchar
     sta tmp4
+
+    jsr unblank_screen
 
     ;; Home position of page.
 l5: ldx playfield_yc
