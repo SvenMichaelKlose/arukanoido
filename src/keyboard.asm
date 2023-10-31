@@ -114,10 +114,10 @@ wait_key_release:
 if @*shadowvic?*
     rts
 end
-    lda #0
-    sta via2_portb0
-    lda via2_porta0
-    cmp #$ff
+    ldx #0
+    stx via2_portb0
+    ldx via2_porta0
+    cpx #$ff
     bne wait_key_release
     rts
 
