@@ -126,7 +126,16 @@ end
 n:
 
     jsr blink_score_label
-    jmp $eabf
+
+raster_end:
+    pla
+    tay
+    pla
+    tax
+    lda #$7f        ; Acknowledge IRQ.
+    sta $912d
+    pla
+    rti
 
 init_raster_pal:
     lda #4
@@ -252,4 +261,4 @@ end
 n:
 
     jsr blink_score_label
-    jmp $eabf
+    jmp raster_end
