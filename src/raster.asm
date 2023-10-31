@@ -82,28 +82,24 @@ raster_ntsc_mod:
     nop
     ldx #35
 rastercol_ntsc:
-l2: lda #0
-    ldy #@(+ reverse red)
+l2: lda #0                ; (2)
+    ldy #@(+ reverse red) ; (2)
     sta $900f
-    sty $900f
-    bit $24
-    bit $24
+    sty $900f       ; (= 8)
+
+    inc $f000       ; (6)
 
     sta $900f
-    sty $900f
-    bit $24
-    bit $24
-    bit $24
-    bit $24
-    bit $24
-    bit $24
-    bit $24
-    bit $24
-    nop
-    sta $f000,x
-    nop
-    dex
-    bne -l2
+    sty $900f       ; (= 8)
+
+    inc $f000,x
+    inc $f000,x
+    inc $f000,x
+    inc $f000,x
+    sta $f000,x     ; (= 33)
+
+    dex             ; (2)
+    bne -l2         ; (2/3+1)
 
     inc framecounter
     beq +n
@@ -208,29 +204,25 @@ raster_pal_mod:
     nop
     ldx #35
 rastercol_pal:
-l2: lda #0
-    ldy #@(+ reverse red)
+l2: lda #0                ; (2)
+    ldy #@(+ reverse red) ; (2)
     sta $900f
-    sty $900f
-    sta $f000
+    sty $900f   ; (= 8)
+
+    sta $f000   ; (4)
 
     sta $900f
-    sty $900f
-    bit $24
-    bit $24
-    bit $24
-    bit $24
-    bit $24
-    bit $24
-    bit $24
-    bit $24
-    bit $24
-    sta $f000
-    sta $f000
-    sta $f000,x
-    nop
-    dex
-    bne -l2
+    sty $900f   ; (= 8)
+
+    inc $f000,x
+    inc $f000,x
+    inc $f000,x
+    inc $f000,x
+    inc $f000,x
+    inc $f000,x ; (= 42)
+
+    dex         ; (2)
+    bne -l2     ; (2/3)
 
     inc framecounter
     beq +n
