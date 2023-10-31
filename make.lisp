@@ -379,7 +379,13 @@
       (tap2wav i o 44100 (cpu-cycles :ntsc)))))
 
 (sb-ext:run-program "/bin/cp"
-                    '("README.md" "obj/arukanoido-disk.prg.lbl" "obj/arukanoido-tape.prg.lbl" "arukanoido/")
+                    '("README.md" "arukanoido/")
+                    :pty cl:*standard-output*)
+(sb-ext:run-program "/bin/cp"
+                    '("obj/arukanoido-disk.prg.lbl" "arukanoido/arukanoido.prg.lbl")
+                    :pty cl:*standard-output*)
+(sb-ext:run-program "/bin/cp"
+                    '("obj/arukanoido-tape.prg.lbl" "arukanoido/arukanoido.tap.lbl")
                     :pty cl:*standard-output*)
 (sb-ext:run-program "/bin/cp"
                     '("media/arkanoid-roms-mame.zip" "arukanoido/")
