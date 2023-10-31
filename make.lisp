@@ -204,7 +204,6 @@
 
                           ,@(when *rom?*
                               `("init.asm"
-                                "patch.asm"
                                 "moveram.asm"
                                 ,@(when *has-digis?*
                                     `("music-arcade-blk5.asm"

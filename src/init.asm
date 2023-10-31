@@ -52,6 +52,7 @@ end
     ldx #$ff
     txs
 
+    ;; Copy UltiMem audio sample addresses.
 if @(& *has-digis?* *ultimem?*)
     lda $1100
     sta has_ultimem
@@ -113,7 +114,11 @@ n:  stx is_ntsc
     stx is_landscape
     jsr set_format
 
-if @*shadowvic?*
+;;; Unless we make a cartidge with 24K RAM, there
+;;; cannot be a patch.
+if @(| *shadowvic?* *rom?*)
     jmp start
 end
+if @(not (| *shadowvic?* *rom?*))
     jmp patch
+end
