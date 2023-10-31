@@ -184,6 +184,7 @@
                           "game.asm"
                           "main.asm"
 
+                          "credits.asm"
                           "preshift-common-sprites.asm"
                           "gfx-ship.asm"
                           "hiscore.asm"
