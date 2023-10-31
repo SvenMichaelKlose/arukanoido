@@ -6,7 +6,7 @@ l:  lda $9111
     txa
     and #joy_left
     beq +r
-    jsr get_keypress
+    jsr get_key
     bcc +n
     cmp #keycode_space
     jmp +r

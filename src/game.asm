@@ -288,7 +288,7 @@ n:  lda spriteframe
     ora #first_sprite_char
     sta next_sprite_char
 
-n2: jsr get_keypress
+n2: jsr get_key
     bcs +n
     jmp redraw_changed
 
@@ -298,7 +298,7 @@ n:  cmp #keycode_p
     eor has_paused
     sta has_paused
     jsr reset_volume
-q:  jsr wait_keyunpress
+q:  jsr wait_key_release
     jmp +l
 
 if @*has-digis?*
@@ -309,7 +309,7 @@ n:  ldy has_digis
     lda is_playing_digis
     eor #1
     sta is_playing_digis
-    jsr wait_keyunpress
+    jsr wait_key_release
 l:  jmp +l
 end
 
@@ -346,7 +346,7 @@ n:  ldx is_ntsc
     cmp #keycode_c
     bne +n
     inc has_paused
-    jsr wait_keyunpress
+    jsr wait_key_release
     jsr show_charset
     jsr clear_screen
     jsr clear_charset

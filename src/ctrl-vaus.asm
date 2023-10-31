@@ -126,7 +126,7 @@ handle_joystick_fire:
     and #joy_fire
     beq do_fire
 
-    jsr get_keypress
+    jsr get_key
     bcc -done
     cmp #keycode_s
     beq +l

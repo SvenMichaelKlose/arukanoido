@@ -313,7 +313,7 @@ preshifted_vaus_extended:   0 0
 preshifted_ball:            0 0
 preshifted_ball_caught:     0 0
 
-get_keypress_x:         0
+get_key_x:         0
 
 current_toplevel_view:  0
 hiscore_player:         0

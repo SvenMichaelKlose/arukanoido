@@ -43,7 +43,6 @@ toplevel:
     sta active_player
 
 restart_toplevel_views:
-    jsr reset_framecounter
     lda #0
     sta current_toplevel_view
     jsr draw_title_screen
@@ -52,6 +51,8 @@ if @*shadowvic?*
     $22 $02
 end
 
+loop_with_framecounter_reset:
+    jsr reset_framecounter
 loop:
     jsr test_fire
     beq start_one_player
@@ -69,20 +70,18 @@ loop:
     dex
     bne +n
     jsr draw_credits
-    jsr reset_framecounter
-    beq -loop ; (jmp)
+    beq loop_with_framecounter_reset ; (jmp)
 n:  dex
     bne restart_toplevel_views
     jsr hiscore_table
-    jsr reset_framecounter
-    beq -loop ; (jmp)
+    beq loop_with_framecounter_reset ; (jmp)
 
 if @*has-digis?*
     jsr exm_work
 end
 
 get_toplevel_key:
-    jsr poll_keypress
+    jsr poll_key
     bcc -loop
 
     cmp #keycode_1

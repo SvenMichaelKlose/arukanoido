@@ -47,22 +47,11 @@ keycode_space       = $1f
 via2_portb0 = $9120
 via2_porta0 = $9121
 
-wait_keyunpress:
-if @*shadowvic?*
-    rts
-end
-    lda #0
-    sta via2_portb0
-    lda via2_porta0
-    cmp #$ff
-    bne wait_keyunpress
-    rts
-
-get_keypress:
+get_key:
 if @*shadowvic?*
     jmp no_keypress
 end
-    stx get_keypress_x
+    stx get_key_x
     lda #255            ; Set port B to output.
     sta $9122
     lda #0
@@ -70,7 +59,7 @@ end
     sta via2_portb0
     lda via2_porta0
     cmp via2_porta0
-    bne get_keypress
+    bne get_key
     cmp #$ff
     beq no_keypress
 
@@ -92,7 +81,7 @@ next_row:
     bpl next_column
 
 no_keypress:
-    ldx get_keypress_x
+    ldx get_key_x
     clc
     rts
 
@@ -103,22 +92,33 @@ got_row:
     asl
     asl
     ora tmp
-    ldx get_keypress_x
+    ldx get_key_x
     sec
     rts
 
-poll_keypress:
-    jsr get_keypress
+poll_key:
+    jsr get_key
     bcs +l
     rts
 
-wait_keypress:
-    jsr get_keypress
-    bcc wait_keypress
+wait_key:
+    jsr get_key
+    bcc wait_key
 l:  pha
-    jsr wait_keyunpress
+    jsr wait_key_release
     pla
     sec
+    rts
+
+wait_key_release:
+if @*shadowvic?*
+    rts
+end
+    lda #0
+    sta via2_portb0
+    lda via2_porta0
+    cmp #$ff
+    bne wait_key_release
     rts
 
 columnbits:

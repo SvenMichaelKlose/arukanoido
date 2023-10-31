@@ -157,10 +157,10 @@ n:  sta scrx2
     ; Start game on user break.
     jsr test_fire
     beq +r
-    jsr poll_keypress
+    jsr poll_key
     bcc +n
 r:  jsr wait_fire_released
-    jsr wait_keyunpress
+    jsr wait_key_release
     ldx #$ff
     txs
     jmp start

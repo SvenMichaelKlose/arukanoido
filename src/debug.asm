@@ -21,4 +21,4 @@ l:  jsr scraddr
     lda scry
     cmp #16
     bne -l2
-    jmp wait_keypress
+    jmp wait_key
