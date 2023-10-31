@@ -1,11 +1,22 @@
+preshifted_size = $5d0
+
 preshift_common_sprites:
     lda has_3k
-    beq +r
-
+    beq +n
     0
-    clrmw $00 $04 $d0 $05
+    clrmw $00 $04 <preshifted_size >preshifted_size
     stmw <d >d $00 $04
+    0
+    jmp +l
 
+n:  lda has_24k
+    beq +r
+    0
+    clrmw <the_end >the_end <preshifted_size >preshifted_size
+    stmw <d >d <the_end >the_end
+    0
+
+l:  0
     mvmzw <preshifted_vaus >preshifted_vaus d
     stzw s <gfx_vaus >gfx_vaus
     ldxy 1 10

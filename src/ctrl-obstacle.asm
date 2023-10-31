@@ -174,6 +174,7 @@ animate_obstacle:
     bne +done
 
     lda has_3k
+    ora has_24k
     bne +l2
 
     ; Animate regular sprite graphics

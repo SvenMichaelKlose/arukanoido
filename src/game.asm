@@ -128,6 +128,7 @@ retry:
     ;; Pre-shift obstacle animation.
     ; Clear destination area.
     lda has_3k
+    ora has_24k
     beq +n
     0
     stzmw d <gfx_obstacles >gfx_obstacles
@@ -155,6 +156,7 @@ n:
     sta ch
 
     lda has_3k
+    ora has_24k
     beq no_obstacle_preshifts
 
     ; Pre-shift animation.
@@ -177,7 +179,7 @@ l:  ldx #0
     cmp ch
     bne -l
 
-    ; Save end of animation for shifting the next animation.
+    ; Save end of animation.
     lda dl
     sta gfx_obstacles_end
     lda dh
