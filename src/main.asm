@@ -12,11 +12,16 @@ n:  dex
     bne -l
 
     0
+    ;; Low memory before interrupt vectors.
     clrmw $00 $02 $13 $01
-lowmem_ofs = @(- uncleaned_lowmem #x320)
-    clrmw $20 $03 <lowmem_ofs >lowmem_ofs
+
+    ;; Low memory after interrupt vectors.
+    upper_lomem = @(- uncleaned_lowmem #x320)
+    clrmw $20 $03 <upper_lomem >upper_lomem
 
     movmw <loaded_sprite_inits >loaded_sprite_inits <sprite_inits >sprite_inits sprite_inits_size 0
+
+    ;; Exomizer-encoded audio sample player.
 if @*has-digis?*
     stmb <exm_needs_data >exm_needs_data $ff
     setmw <exm_buffers >exm_buffers $00 $02 light_cyan
