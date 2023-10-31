@@ -141,19 +141,6 @@ m:  lda screen_gate
     sta (c),y
 n:
 
-    ;; Animate obstacle gate.
-    ldx do_animate_obstacle_gate
-    beq +n  ; X=0
-    lda framecounter
-    and #%11
-    bne +n
-    dex
-    bne +n3 ; X=2
-    jsr open_obstacle_gate
-    jmp +n
-n3: jsr close_obstacle_gate
-n:
-
     ;; Play classic VIC sound.
 if @*has-digis?*
     lda currently_playing_digis
@@ -166,31 +153,39 @@ n:
     beq +l
     jsr blink_score_label
 
-    ;; Run the sprite controllers.
 l:  lda is_running_game
     beq +done
 
+    ;; Run the sprite controllers.
     jsr call_sprite_controllers
-    ; Done.  Tell main loop to redraw the sprites.
     lda #1
     sta has_moved_sprites
 
-    lda mode_break
-    beq +n
-    bpl +done
-
     ;; DOH round special treatment.
-n:  lda level
+    lda level
     cmp #doh_level
-    bne +n2
+    bne +n
     jsr flash_doh       ; Flash DOH when hit.
     jsr add_missing_doh_obstacle
     jmp +done
 
     ;; Regular round treatment.
-n2: jsr rotate_bonuses
+n:  jsr rotate_bonuses
     jsr add_missing_obstacle
     jsr dyn_brick_fx
+
+    ;; Animate obstacle gate.
+    ldx do_animate_obstacle_gate
+    beq +n  ; X=0
+    lda framecounter
+    and #%11
+    bne +n
+    dex
+    bne +n3 ; X=2
+    jsr open_obstacle_gate
+    jmp +n
+n3: jsr close_obstacle_gate
+n:
 
 done:
 if @*show-cpu?*
