@@ -391,7 +391,7 @@
                     '("obj/arukanoido-tape.prg.lbl" "arukanoido/arukanoido.tap.lbl")
                     :pty cl:*standard-output*)
 (sb-ext:run-program "/bin/cp"
-                    '("media/arkanoid-roms-mame.zip" "arukanoido/")
+                    '("media/arkanoid-roms-mame.zip" "arukanoido/arkanoid.zip")
                     :pty cl:*standard-output*)
 (sb-ext:run-program "/usr/bin/zip" '("-r" "-9" "arukanoido.zip" "arukanoido")
                     :pty cl:*standard-output*)
