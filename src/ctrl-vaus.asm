@@ -30,15 +30,19 @@ n:  lda #is_obstacle
     bcs +n
     jsr remove_obstacle
 
-    ; Check if paddle is being used.
-n:  lda is_using_paddle
-    bne handle_paddle
-
-    ; Check if paddle is used.
-    lda $9008
+    ; Get paddle movement.
+n:  lda $9008
     sec
     sbc old_paddle_value
     jsr abs
+    sta paddle_move_distance
+
+    ; Jump to paddle handler if active.
+    lda is_using_paddle
+    bne handle_paddle
+
+    ; Check if paddle is used.
+    lda paddle_move_distance
     and #%11111110
     beq +handle_joystick
     inc is_using_paddle
@@ -162,6 +166,7 @@ o:  lda #initial_ball_direction_skewed
 m:  jmp release_ball
 
 l:  lda paddle_move_distance
+    and #%11111110
     bne -o
     beq -m  ; (jmp)
 
