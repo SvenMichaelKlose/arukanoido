@@ -243,12 +243,12 @@
   (!= (- #x8000 (get-label 'the_end))
     (format t "~A bytes free before $8000.~%" !)
     (when (< ! 0)
-      (error "BLK3 overflow!~%")))
+      (error "BLK3 overflow by ~A bytes!~%" (abs !))))
   (when *has-digis?*
     (!= (- #xbe00 (get-label 'blk5_end))
       (format t "~A bytes free before $be00.~%" !)
       (when (< ! 0)
-        (error "BLK5 overflow!~%")))))
+        (error "BLK5 overflow by ~A bytes!~%" (abs !))))))
 
 (fn make-prg (file)
   (when *has-digis?*
