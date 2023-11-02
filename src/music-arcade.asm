@@ -39,7 +39,7 @@ sample_addrs_h:
 sample_addrs_b:
     fill num_tunes
 
-exm_break_out:          @(fetch-file "obj-audio/break-out.3.4000.exm")
+;exm_break_out:          @(fetch-file "obj-audio/break-out.3.4000.exm")
 ;exm_explosion:          @(fetch-file "obj-audio/explosion.3.4000.rle")
 ;exm_extension:          @(fetch-file "obj-audio/extension.3.4000.rle")
 ;exm_extra_life:         @(fetch-file "obj-audio/extra-life.3.4000.rle")
