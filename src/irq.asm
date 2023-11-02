@@ -62,7 +62,11 @@ irq:
     pha
     lda scr
     pha
+    lda @(++ scr)
+    pha
     lda col
+    pha
+    lda @(++ col)
     pha
     lda scrx
     pha
@@ -197,7 +201,11 @@ end
     pla
     sta scrx
     pla
+    sta @(++ col)
+    pla
     sta col
+    pla
+    sta @(++ scr)
     pla
     sta scr
     pla

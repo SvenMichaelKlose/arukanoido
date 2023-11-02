@@ -2,10 +2,10 @@
 
 ; CONFIGURE HERE!
 
-(const *versions* '(:prg :tap :wav :shadowvic))
-;(const *versions* '(:prg))
+;(const *versions* '(:prg :tap :wav :shadowvic))
+(const *versions* '(:prg))
 
-(const *demo?* t)               ; Limit to first eight levels.
+(const *demo?* nil)               ; Limit to first eight levels.
 (const *debug?* t)              ; Include self-tests and features.
 (const *make-arcade-sounds?* nil) ; Lengthy process.
 (var *has-digis?* t)            ; Play optional original arcade sounds.
