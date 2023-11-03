@@ -317,9 +317,10 @@ o:  lda $9007,y
     jsr neg
     lsr
     lsr
+    lsr
     sta tmp6
 
-    ; Dp not go beyond list of available initials.
+    ; Do not go beyond list of available initials.
 l4: lda tmp6
     cmp #num_initial_chars
     bcc +n
