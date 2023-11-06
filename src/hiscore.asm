@@ -288,11 +288,9 @@ l6: jsr get_joystick
     ;; Get paddle value.
 l2: ldy active_player
     lda $9007,y
-if @*dejitter-paddles?*
     clc
     adc old_paddle_value
     ror
-end
     sta old_paddle_value
 
     ;; Test on fire.
