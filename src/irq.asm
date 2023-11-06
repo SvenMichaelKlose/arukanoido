@@ -40,6 +40,7 @@ done:
     jmp +done
 
 irq:
+    sei
     lda s
     pha
     lda @(++ s)
@@ -96,7 +97,7 @@ n:  lda is_firing
 n:  lda mode_break
     beq +n
 
-    ; Open gate.
+    ; Open break mode gate.
     lda gate_opening
     beq +m
     lda framecounter
@@ -106,7 +107,7 @@ n:  lda mode_break
     dec gate_opening
     jmp +n
 
-    ; Animate gate.
+    ; Animate break mode gate.
 m:  lda screen_gate
     sta d
     sta c
@@ -174,12 +175,16 @@ l:  lda is_running_game
 
     ;; Regular round treatment.
 n:  jsr rotate_bonuses
+    lda gate_opening
+    bne +n2
     jsr add_missing_obstacle
-    jsr dyn_brick_fx
+n2:  jsr dyn_brick_fx
 
     ;; Animate obstacle gate.
     ldx do_animate_obstacle_gate
     beq +n  ; X=0
+    lda gate_opening
+    bne +n
     lda framecounter
     and #%11
     bne +n
@@ -239,4 +244,5 @@ end
     lda #$7f        ; Acknowledge IRQ.
     sta $912d
     pla
+    cli
     rti
