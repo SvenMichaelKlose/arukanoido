@@ -304,18 +304,18 @@ n:  cmp #keycode_p
     sta has_paused
     jsr reset_volume
 q:  jsr wait_key_release
-    jmp +l
+    jmp redraw_changed
 
 if @*has-digis?*
 n:  ldy has_digis
-    beq +l
+    beq +n
     cmp #keycode_m
     bne +n
     lda is_playing_digis
     eor #1
     sta is_playing_digis
     jsr wait_key_release
-l:  jmp +l
+    jmp redraw_changed
 end
 
 if @*demo?*
@@ -364,6 +364,7 @@ n:  ldx is_ntsc
     sta curchar
     jsr print_scores_and_labels
     dec has_paused
+    jmp redraw_changed
 
 n:  cmp #keycode_l
     bne +n
