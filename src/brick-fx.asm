@@ -43,9 +43,13 @@ l:  lda screen,x
 add_brick_fx:
     lda level
     cmp #33
-    beq -r
+    beq +r
     stx tmp
-    lda brickfx_end
+    ldy brickfx_end
+    iny
+    cpy brickfx_pos
+    beq undo_brick_fx
+l:  lda brickfx_end
     and #@(-- num_brickfx)
     tax
     lda scrx
@@ -62,6 +66,25 @@ add_brick_fx:
     sta brickfx_end
     ldx tmp
 r:  rts
+
+undo_brick_fx:
+    lda scr
+    pha
+    lda @(++ scr)
+    pha
+    dey
+    lda brickfx_x,y
+    sta scrx
+    lda brickfx_y,y
+    sta scry
+    jsr scraddr
+    lda #bg_brick_special
+    sta (scr),y
+    pla
+    sta @(++ scr)
+    pla
+    sta scr
+    jmp -l
 
 dyn_brick_fx:
     ldx brickfx_pos
