@@ -1,4 +1,5 @@
-brick_fx:
+;;; Animate brick (get next char index of animation).
+animate_brick:
     cmp #@bg_brick_fx
     bcc +n
     cmp #@(-- bg_brick_fx_end)
@@ -11,6 +12,8 @@ brick_fx:
 l:  lda #bg_brick_special
 r:  rts
 
+;;; Turn silver and golden brick chars into first
+;;; animated char.
 start_brick_fx:
     ldx #0
 l:  lda screen,x
@@ -22,36 +25,42 @@ l:  lda screen,x
     dex
     bne -l
     rts
-
 f:  cmp #bg_brick_special
     bne +n
     lda #bg_brick_fx
 n:  rts
 
+;;; Animate all special bricks on the screen.
 do_brick_fx:
     ldx #0
 l:  lda screen,x
-    jsr brick_fx
+    jsr animate_brick
     sta screen,x
     lda @(+ 256 screen),x
-    jsr brick_fx
+    jsr animate_brick
     sta @(+ 256 screen),x
     dex
     bne -l
     rts
 
+;;; Add brick to animate.
 add_brick_fx:
+    ;; Ignore the DOH…
     lda level
     cmp #33
     beq +r
+
+    ;; Check if circular list is full.
     stx tmp
     ldy brickfx_end
     iny
-    cpy brickfx_pos
-    beq undo_brick_fx
-l:  lda brickfx_end
+    tya
     and #@(-- num_brickfx)
-    tax
+    cmp brickfx_pos
+    beq undo_brick_fx
+
+add_brick_fx2:
+    ldx brickfx_end
     lda scrx
     sta brickfx_x,x
     tay
@@ -67,14 +76,23 @@ l:  lda brickfx_end
     ldx tmp
 r:  rts
 
+;;; Remove brick animation (on buffer overflow).
+;;; TODO: The buffer might be big enouh to render this
+;;; procedure unused.  Grab a calculator and check.
 undo_brick_fx:
+    tay
     lda scr
     pha
     lda @(++ scr)
     pha
     dey
+    tya
+    and #@(-- num_brickfx)
+    tay
     lda brickfx_x,y
     sta scrx
+    lda #0
+    sta brickfx_x,y
     lda brickfx_y,y
     sta scry
     jsr scraddr
@@ -84,8 +102,9 @@ undo_brick_fx:
     sta @(++ scr)
     pla
     sta scr
-    jmp -l
+    jmp add_brick_fx2
 
+;;; Animate all bricks in the list.
 dyn_brick_fx:
     ldx brickfx_pos
 l:  txa
@@ -93,21 +112,23 @@ l:  txa
     tax
     cpx brickfx_end
     beq -r
+    ; Plot new brick.
     lda brickfx_x,x
     sta scrx
     lda brickfx_y,x
     sta scry
     jsr scraddr
     lda (scr),y
-    jsr brick_fx
+    jsr animate_brick
     sta (scr),y
+    ; End animation.
     cmp #bg_brick_special
     bne +n
     lda #0
     sta brickfx_x,x
     inc brickfx_pos
-n:  inx
-    txa
+    lda brickfx_pos
     and #@(-- num_brickfx)
-    tax
+    sta brickfx_pos
+n:  inx
     jmp -l
