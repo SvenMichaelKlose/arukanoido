@@ -302,8 +302,9 @@ needs_redrawing_score2:  0
 needs_redrawing_hiscore: 0
 
 ;;; Paddles
-old_paddle_value:       0 ; Used to detect paddles.
 is_using_paddle:        0 ; Tells if paddles have been detected.
+paddle_value:           0
+old_paddle_value:       0
 paddle_move_distance:   0
 
 ; Position of pre-shifted sprite data.

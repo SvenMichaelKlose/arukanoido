@@ -101,7 +101,7 @@ hiscore_table:
 r:  rts
 enter_hiscore:
     jsr find_score_item
-    bcc -r
+    bcc -r  ; No new hiscore…
 
     lda level
     cmp #@(++ doh_level)
@@ -153,6 +153,7 @@ n:  lda dl
     jsr find_score_item
     ; Get number of bytes to copy.  (tmp * 10)
     lda tmp
+    sbc #1
     asl
     sta cl
     asl
@@ -162,13 +163,13 @@ n:  lda dl
     lda #0
     sta ch
     ; Move items down.
-    lda #@(low (- scores_end (* 2 score_item_size)))
+    lda #@(low (- scores_end score_item_size 1))
     sta sl
-    lda #@(high (- scores_end (* 2 score_item_size)))
+    lda #@(high (- scores_end score_item_size 1))
     sta sh
-    lda #@(low (- scores_end score_item_size))
+    lda #@(low (- scores_end 1))
     sta dl
-    lda #@(high (- scores_end score_item_size))
+    lda #@(high (- scores_end 1))
     sta dh
     jsr moveram_backwards
 
@@ -265,17 +266,18 @@ l:  jsr wait_retrace
     sta curchar
 
     lda is_using_paddle
-    bne +l2
+    bne +m
 
     ;; Handle joystick input.
     ; Fire
 l3: lda $9111
     and #joy_fire
     bne +n4
+    ; Wait for button release.
 l5: lda $9111
     and #joy_fire
     beq -l5
-    jmp +n3
+    jmp add_initial
 n4: jsr get_joystick
     beq -l3
     clc
@@ -285,46 +287,39 @@ l6: jsr get_joystick
     bne -l6
     jmp +l4
 
-    ;; Get paddle value.
-l2: ldy active_player
-    lda $9007,y
-    clc
-    adc old_paddle_value
-    ror
-    sta old_paddle_value
-
     ;; Test on fire.
 m:  jsr test_fire
     bne +o
+    ; Wait for button release.
 n2: jsr test_fire
     beq -n2
 
-    ;; Fire: add initial.
-n3: inc tmp5
+add_initial:
+    inc tmp5
     lda tmp5
     cmp #3
     beq +r      ; Three added…
     bne -l
 
     ;; Select initial via paddle.
-o:  lda $9007,y
-    cmp old_paddle_value
+o:  ldy active_player
+    lda $9007,y
+    clc
+    adc paddle_value
+    ror
+    cmp paddle_value
     beq -m      ; Paddle didn't move…
-
-    ; Negate paddle value and / 4.
+    sta paddle_value
     jsr neg
     lsr
     lsr
     lsr
-    sta tmp6
-
     ; Do not go beyond list of available initials.
-l4: lda tmp6
-    cmp #num_initial_chars
+l4: cmp #num_initial_chars
     bcc +n
     lda #@(-- num_initial_chars)
-    sta tmp6
-n:  jmp -l
+n:  sta tmp6
+    jmp -l
 
     ; Done.
 r:  jsr hiscore_table
