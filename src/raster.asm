@@ -97,7 +97,7 @@ l2: lda #0                ; (2)
     inc $f000,x
     inc $f000,x
     inc $f000,x
-    inc $f000,x     ; (= 33)
+    inc $f000     ; (= 33)
 
     dex             ; (2)
     bne -l2         ; (2/3+1)
@@ -220,7 +220,7 @@ l2: lda #0                ; (2)
     inc $f000,x
     inc $f000,x
     inc $f000,x
-    inc $f000,x ; (= 42)
+    inc $f000 ; (= 42)
 
     dex         ; (2)
     bne -l2     ; (2/3)

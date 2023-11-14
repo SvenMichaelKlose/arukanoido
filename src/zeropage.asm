@@ -111,14 +111,18 @@ if @*has-digis?*
 currently_playing_digis: 0
 exm_needs_data: 0
 digisound_a:
-paddle_nmi_a:   0
+paddle_nmi_a:  0
 digisound_x:    0
 digisound_y:
-paddle_nmi_y:   0
+paddle_nmi_y:  0
 raw_play_ptr:
 rle_play_ptr:
 exm_play_ptr:   0 0 0
 exm_play_dptr:  0 0
+end
+if @(not *has-digis?*)
+paddle_nmi_a:  0
+paddle_nmi_y:  0
 end
 rle_cnt:
 exo_y:          0
