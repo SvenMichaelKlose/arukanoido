@@ -120,13 +120,10 @@ play_sound:
 
 play:
 if @*has-digis?*
-    jsr digi_nmi_stop       ; Disable sample player.
-    lda #$ff                ; Disable sample decruncher.
-    sta exm_needs_data
-
     lda is_playing_digis
     beq play_native
-
+    lda #$ff            ; Disable sample decruncher.
+    sta exm_needs_data
     jsr audio_boost
 end
 

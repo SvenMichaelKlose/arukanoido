@@ -48,9 +48,7 @@ n:  lda $9008
     inc is_using_paddle
 
 handle_paddle:
-    stx tmp6
-    ldx active_player
-    lda $9007,x
+    lda paddle_value
 if @*dejitter-paddles?*
     clc
     adc old_paddle_value
@@ -58,7 +56,6 @@ if @*dejitter-paddles?*
 end
     sta old_paddle_value
     tay
-    ldx tmp6
 
     ; Take paddle value as centre of the Vaus.
     lda vaus_width

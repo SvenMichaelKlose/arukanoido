@@ -269,6 +269,8 @@ n:  lda #0
     iny
     sty is_running_game
 
+    jsr paddles_start
+
 mainloop:
 if @*shadowvic?*
     $22 $02     ; Wait for retrace.

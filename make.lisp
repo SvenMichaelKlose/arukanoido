@@ -104,7 +104,6 @@
 
                           ; Mixed data
                           "bits.asm"
-                          "paddle-xlat.asm"
                           "ball-directions.asm"
                           "score-infos.asm"
                           "brick-info.asm"
@@ -122,6 +121,7 @@
                           "moveram.asm"
                           "exomizer-stream-decrunsh.asm"
                           "math.asm"
+                          "nmi.asm"
                           "random.asm"
                           "wait.asm"
                           "zeropage-utils.asm"
@@ -130,6 +130,7 @@
                           "fire-button.asm"
                           "keyboard.asm"
                           "joystick.asm"
+                          "paddles.asm"
 
                           ; Graphics library
                           "print.asm"

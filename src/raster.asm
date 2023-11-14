@@ -11,6 +11,7 @@ pos_pal     = 0
 line_pal    = 102
 
 init_raster:
+    jsr nmi_stop
     lda is_ntsc
     bne init_raster_ntsc
     jmp init_raster_pal
@@ -96,7 +97,7 @@ l2: lda #0                ; (2)
     inc $f000,x
     inc $f000,x
     inc $f000,x
-    sta $f000,x     ; (= 33)
+    inc $f000,x     ; (= 33)
 
     dex             ; (2)
     bne -l2         ; (2/3+1)

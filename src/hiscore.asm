@@ -229,6 +229,8 @@ n:  lda #1
     lda #snd_hiscore
     jsr play_sound
 
+    jsr paddles_start
+
     ;; Print input line.
 l:  jsr wait_retrace
 
@@ -302,14 +304,13 @@ add_initial:
     bne -l
 
     ;; Select initial via paddle.
-o:  ldy active_player
-    lda $9007,y
+o:  lda paddle_value
     clc
-    adc paddle_value
+    adc old_paddle_value
     ror
-    cmp paddle_value
+    cmp old_paddle_value
     beq -m      ; Paddle didn't move…
-    sta paddle_value
+    sta old_paddle_value
     jsr neg
     lsr
     lsr

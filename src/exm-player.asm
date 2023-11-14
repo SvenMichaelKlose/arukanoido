@@ -1,7 +1,7 @@
 ; Play exomized stream of digital audio.
 
 exm_start:
-    jsr digi_nmi_stop
+    jsr nmi_stop
 
     ; Set NMI vector.
     lda #<exm_play_sample

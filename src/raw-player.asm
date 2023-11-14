@@ -1,6 +1,6 @@
 ; X: Sound index
 raw_start:
-    jsr digi_nmi_stop
+    jsr nmi_stop
 
     lda @(-- sample_addrs_b),x
     sta $9ffe
@@ -49,7 +49,7 @@ n:  lda #$a0
 done:
     lda #0
     sta current_song
-    jsr digi_nmi_stop
+    jsr nmi_stop
     ldy digisound_y
     lda digisound_a
     rti

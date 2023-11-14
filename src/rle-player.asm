@@ -1,6 +1,6 @@
 ; X: Sound index
 rle_start:
-    jsr digi_nmi_stop
+    jsr nmi_stop
 
     lda #1
     sta rle_cnt
@@ -93,7 +93,7 @@ r:  ldy digisound_y
     rti
 
 done:
-    jsr digi_nmi_stop
+    jsr nmi_stop
     lda #0
     sta current_song
     jsr stop_audio_boost
