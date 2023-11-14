@@ -1,5 +1,5 @@
-paddles_timer_pal       = @(/ (cpu-cycles :pal) 50)
-paddles_timer_ntsc      = @(/ (cpu-cycles :ntsc) 60)
+paddles_timer_pal       = @(- (/ (cpu-cycles :pal) 50) 18)
+paddles_timer_ntsc      = @(- (/ (cpu-cycles :ntsc) 60) 158)
 
 paddles_start:
     jsr nmi_stop
@@ -24,6 +24,10 @@ paddles_nmi:
     ldy active_player
     lda $9007,y
     sta paddle_value
+if @*debug?*
+    inc $900f
+    dec $900f
+end
     lda paddle_nmi_a
     ldy paddle_nmi_y
     rti
