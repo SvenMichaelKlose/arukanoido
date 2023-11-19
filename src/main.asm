@@ -191,16 +191,16 @@ draw_title_screen:
     stzb curchar 1
     call <print_scores_and_labels >print_scores_and_labels
 
-;    stzb scrx 5
-;    stzb scry 20
-;    lday <gfx_taito >gfx_taito
-;    call <draw_bitmap >draw_bitmap
-
     stzb curcol white
-    stmb <scrx2 >scrx2 9
+    stzb scrx 0
     stzb scry 8
-    lday <txt_arukanoido >txt_arukanoido
-    call <print_string_ay >print_string_ay
+    lday <gfx_arukanoido >gfx_arukanoido
+    call <draw_bitmap >draw_bitmap
+
+;    stmb <scrx2 >scrx2 9
+;    stzb scry 8
+;    lday <txt_arukanoido >txt_arukanoido
+;    call <print_string_ay >print_string_ay
 
 if @*demo?*
     stmb <scrx2 >scrx2 8

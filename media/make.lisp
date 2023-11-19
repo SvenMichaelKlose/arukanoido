@@ -3,6 +3,8 @@
   (exomize-stream "obj/title.bin" "obj/title.bin.exo")
   (apply #'assemble-files "obj/gfx-ship.bin" '("media/gfx-ship.asm"))
   (exomize-stream "obj/gfx-ship.bin" "obj/gfx-ship.bin.exo")
+  (apply #'assemble-files "obj/gfx-arukanoido.bin" '("media/gfx-arukanoido.asm"))
+  (exomize-stream "obj/gfx-arukanoido.bin" "obj/gfx-arukanoido.bin.exo")
   (apply #'assemble-files "obj/gfx-taito.bin" '("media/gfx-taito.asm"))
   (exomize-stream "obj/gfx-taito.bin" "obj/gfx-taito.bin.exo")
   (apply #'assemble-files "obj/gfx-background.bin" '("media/gfx-background.asm"))
