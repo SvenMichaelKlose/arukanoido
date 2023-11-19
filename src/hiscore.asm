@@ -63,6 +63,7 @@ hiscore_table:
     lda #1
     sta curchar
     jsr print_scores_and_labels
+    jsr draw_credits
 
     lda #yellow
     sta curcol

@@ -220,19 +220,24 @@ end
     call <print_string_ay >print_string_ay
     0
 
-;    lda is_landscape
-;    bne +n
-;    ldx #20
-;    ldy #31
-;    jmp +m
-;n:  ldx #30
-;    ldy #27
-;m:  stx scrx2
-;    sty scry
-;    lda #<txt_credit
-;    ldy #>txt_credit
-;    jmp print_string_ay
+    jsr draw_credits
     jmp init_screen
+
+draw_credits:
+    lda #white
+    sta curcol
+    lda is_landscape
+    bne +n
+    ldx #20
+    ldy #31
+    jmp +m
+n:  ldx #30
+    ldy #27
+m:  stx scrx2
+    sty scry
+    lda #<txt_credit
+    ldy #>txt_credit
+    jmp print_string_ay
 
 boot_basic:
 if @*rom?*
@@ -262,6 +267,6 @@ reset_framecounter:
 txt_arukanoido: @(string4x8 " ARUKANOIDO") 255
 txt_copyright:  @(string4x8 " DEMO VERSION") 255
 txt_rights:     @(string4x8 (+ "    REV. #" *revision*)) 255
-;txt_credit:     @(string4x8 " CREDIT  2") 255
+txt_credit:     @(string4x8 " CREDIT  2") 255
 
 __end_game:

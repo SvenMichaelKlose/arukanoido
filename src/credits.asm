@@ -1,5 +1,6 @@
 draw_credits_shared:
     jsr draw_round_intro_background
+    jsr draw_credits
 
     lda playfield_yc
     clc
@@ -11,7 +12,6 @@ draw_credits_shared:
     stzb scrx2 6
     lday <txt_press >txt_press
     call <print_string_ay >print_string_ay
-
     addzbi scry 3
     0
 
