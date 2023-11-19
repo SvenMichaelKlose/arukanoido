@@ -1,4 +1,8 @@
-# Arukanoido
+ARUKANOIDO – an Arkanoid clone for the Commodore VIC-20
+=======================================================
+
+
+# Overview
 
 ARUKANOIDO is a clone of the famous arcade game "Arkanoid" for the
 Commodore VIC–20 with at least 24K memory expansion.  Additional
@@ -20,7 +24,7 @@ Currently not working.
 The IMG files are the banks of the cartridge version.  You can
 fire them up with VICE like this:
 
-```
+```sh
 xvic -cart2 arukanoido.img.aa -cart4 arukanoido.img.ab -cart6 arukanoido.img.ac -cartA arukanoido.img.ad
 ```
 
@@ -68,6 +72,7 @@ when playing.
 * C: Display the current charset (NTSC only).
 * M: Toggle VIC/original sounds.
 
+
 # Keys for game testers
 
 * N: Warop to next level.
@@ -82,6 +87,7 @@ when playing.
 * C: Pause game nad how character map.
 * L: Set number of lives to ten.
 
+
 # More information
 
 Arukanoido is being discussed and developed on the VIC–20 Denial forum
@@ -90,6 +96,31 @@ http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?t=3752
 
 If you wanna complain or are in for crazy small talk just mail to
 Sven Michael Klose <pixel@hugbox.org>.
+
+
+# Contributions
+
+This project has been initiated by Sabine Kuhn <eimer@devcon.net>.
+
+Code and graphics mostly done by Sven Michael "pixel" Klose 
+<pixel@hugbox.org>.  Tiles and sprites have been created with beamrider's
+VIC—20 Screen and Character Designer:
+http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?f=14&t=7133
+
+VIC conversions of the original tunes and sounds have been contributed
+by Adrian "beamrider" Fox.
+
+Cover art and top-level screen lettering has been contributed by Bryan
+"darkatx" Henry.
+
+The DOH graphics have been contributed by Michael "Mike" Kircher.  He
+created them using his VIC–20 editor MINIPAINT (there must NOT be a ,1 in
+the LOAD command).
+Mike also contributed raster interrupt synchronisation code.
+
+A demo title screen has been contributed by Torsten "tokra" Kracke with
+help of Mike's MINIGRAFIK. (Also no ,1 in the LOAD command.)
+
 
 # Applications used
 
@@ -117,27 +148,8 @@ URL: http://vice-emu.sourceforge.net/
 
 ## exomizer
 
+Data has been compressed using exomizer v2.0.10 by Magnus Lind.
 URL: https://bitbucket.org/magli143/exomizer/wiki/Home
-
-
-# Contributions
-
-This project has been initiated by Sabine Kuhn <eimer@devcon.net>.
-
-Code has been contributed by Sven Michael Klose <pixel@hugbox.org>.
-
-VIC conversions of the original tunes and sounds have been contributed
-by beamrider.
-
-The DOH graphics have been contributed by Mike.  He created it
-with his VIC–20 editor MINIPAINT (there must not be a ,1 in the LOAD command).
-
-Tiles and sprites have been created with beamrider's VIC—20 Screen
-and Character Designer:
-http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?f=14&t=7133
-
-A demo title screen has been contributed by tokra with help of
-Mike's MINIGRAFIK. Also no ,1 in the LOAD command.
 
 
 # External resources
