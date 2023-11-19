@@ -64,8 +64,9 @@ loop:
 
     ;; Rotate views.
 view_title      = 0
-view_credits    = 1
-view_hiscore    = 2
+view_credits1   = 1
+view_credits2   = 2
+view_hiscore    = 3
     ; Not for +16K.
     lda has_24k
     beq +get_toplevel_key
@@ -77,7 +78,11 @@ view_hiscore    = 2
     ldx current_toplevel_view
     dex
     bne +n
-    jsr draw_credits
+    jsr draw_credits1
+    jmp loop_with_framecounter_reset
+n:  dex
+    bne +n
+    jsr draw_credits2
     jmp loop_with_framecounter_reset
 n:  dex
     bne restart_toplevel_views
