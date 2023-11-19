@@ -8,21 +8,21 @@ draw_credits:
 
     0
     stzb curcol white
-    stmb <scrx2 >scrx2 6
+    stzb scrx2 6
     lday <txt_press >txt_press
     call <print_string_ay >print_string_ay
 
     addzbi scry 3
 
     stzb curcol yellow
-    stmb <scrx2 >scrx2 4
+    stzb scrx2 4
     lday <txt_c1 >txt_c1
     call <print_string_ay >print_string_ay
 
     addzbi scry 2
 
     stzb curcol white
-    stmb <scrx2 >scrx2 9
+    stzb scrx2 9
     lday <txt_c2 >txt_c2
     call <print_string_ay >print_string_ay
 
@@ -30,7 +30,7 @@ draw_credits:
     inczbi curchar
 
     stzb curcol yellow
-    stmb <scrx2 >scrx2 4
+    stzb scrx2 4
     lday <txt_c3 >txt_c3
     call <print_string_ay >print_string_ay
 
@@ -38,7 +38,7 @@ draw_credits:
     inczbi curchar
 
     stzb curcol white
-    stmb <scrx2 >scrx2 17
+    stzb scrx2 17
     lday <txt_c4 >txt_c4
     call <print_string_ay >print_string_ay
 
@@ -46,7 +46,7 @@ draw_credits:
     inczbi curchar
 
     stzb curcol yellow
-    stmb <scrx2 >scrx2 4
+    stzb scrx2 4
     lday <txt_c5 >txt_c5
     call <print_string_ay >print_string_ay
 
@@ -54,7 +54,7 @@ draw_credits:
     inczbi curchar
 
     stzb curcol white
-    stmb <scrx2 >scrx2 12
+    stzb scrx2 12
     lday <txt_c6 >txt_c6
     call <print_string_ay >print_string_ay
     0

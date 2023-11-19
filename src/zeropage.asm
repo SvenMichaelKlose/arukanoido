@@ -30,6 +30,9 @@ scry:       0   ; Screen char Y position
 curchar:    0   ; Last allocated character
 curcol:     0   ; Character colour
 
+;;; Printing text
+scrx2:          0
+
 ;;; VCPU
 bcp:        0 0
 bca:        0 0
@@ -163,7 +166,6 @@ sprites_sh:     fill @(* 2 num_sprites)
 call_controllers_x: 0
 
 ;;; Printing text
-scrx2:          0
 p_x:            0
 p_y:            0
 print4x8_char:  0
