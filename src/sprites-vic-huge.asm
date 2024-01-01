@@ -214,8 +214,8 @@ n:  dec tmp2
     dec tmp3
     bne -l2b
 
-    ;; Get destination address in charset.
-    ; Add Y char offset.
+    ;;; Draw sprite graphics into prepared chars.
+    ;; Get destination address.
     lda sprite_y
     and #%111
     clc
@@ -237,9 +237,6 @@ end
     lda sprites_pgh,x
     bne +l
     jmp slow_shift          ; No…
-
-    ;; Draw pre-shifted graphics.
-    ; Get sprite graphics.
 l:  sta sh
     lda sprites_pgl,x
     sta sl
@@ -406,10 +403,10 @@ l2: lda sprite_scry
     sta tmp2
 
 l:  ;; Check if position is plottable.
-    lda scry
-    cmp playfield_yc
+    ldy scry
+    cpy playfield_yc
     bcc +n                  ; Don't plot into score area…
-    cmp screen_rows
+    cpy screen_rows
     bcs +n                  ; Don't plot over the bottom…
     lda scrx
     cmp #playfield_columns
@@ -417,7 +414,6 @@ l:  ;; Check if position is plottable.
 
     ;; Check if on a background char.
     ; Get screen and color RAM adresses.
-    ldy scry
     lda line_addresses_l,y
     sta scr
     sta col
@@ -443,15 +439,16 @@ l3: lda tmp
     lda curcol
     sta (col),y
 
-    ;;
-n:  inc tmp    ; To next sprite char.
-    inc scry                ; To next row.
+    ; Next row.
+n:  inc tmp     ; To next sprite char.
+    inc scry
     dec tmp2
-    bne -l                  ; Next row…
+    bne -l
 
+    ; Next column.
     inc scrx
     dec sprite_cols_on_screen
-    bne -l2                 ; Next column.
+    bne -l2
 
 if @*show-cpu?*
     dec $900f
