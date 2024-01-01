@@ -215,17 +215,16 @@ n:  dec tmp2
     bne -l2b
 
     ;; Get destination address in charset.
-    lda tmp5
-    sta dh
     ; Add Y char offset.
     lda sprite_y
     and #%111
     clc
     adc tmp4
     sta dl
+    ldy tmp5
     bcc +n
-    inc dh
-n:
+    iny
+n:  sty dh
 
 if @*show-cpu?*
     inc $900f
