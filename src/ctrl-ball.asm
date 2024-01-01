@@ -177,18 +177,19 @@ ctrl_ball_subpixel:
     beq hit_obstacle
     jmp hit_vaus
 
-    ;; Hit char?
+r:  rts
+
+    ;;; Hit char?
 check_reflection:
-    ; Side hit?
+    ;; Side hit?
     jsr reflect
     lda has_collision
     bne +n2                     ; Ball hit something…
-    ; Edge hit instead?
+
+    ;; Edge hit instead?
     jsr reflect_edge
     lda has_collision
-    beq avoid_endless_flight    ; Nothing hit…
-
-    ;; Deal with result of reflect_edge.
+    beq -r
 m:  lda #0
     sta has_collision
     lda sprites_d,x
@@ -196,13 +197,13 @@ m:  lda #0
     sta sprites_d,x
 
 n2: jsr adjust_ball_speed_hitting_top
+
+    ;;; Handle removed brick.
     lda has_removed_brick
     beq +n
-
     lda level
     cmp #33
     beq +n
-
     ;; Make bonus.
     lda mode
     cmp #mode_disruption    ; No bonuses in disruption mode.
@@ -210,7 +211,7 @@ n2: jsr adjust_ball_speed_hitting_top
     jsr make_bonus
     jmp +l
 
-    ;; Count hit with no effect for avoid_endless_flight.
+    ;;; Divert ball if it got stuck.
 n:  lda has_hit_silver_brick
     ora has_hit_golden_brick
     bne +f
@@ -219,6 +220,22 @@ n:  lda has_hit_silver_brick
     sta sprites_d2,x
     beq +l                  ; (jmp)
 f:  inc sprites_d2,x
+    lda sprites_d2,x
+    cmp #64
+    bcc +l
+    ;; Divert ball as it had 64 hits with no effect.
+    lda #0
+    sta sprites_d2,x
+    ; Random pick if (counter) clock-wise.
+    lda framecounter
+    lsr
+    bcc +n
+    lda sprites_d,x
+    jsr turn_clockwise
+    jmp +l2
+n:  lda sprites_d,x
+    jsr turn_counterclockwise
+l2: sta sprites_d,x
 
 l:  jsr apply_reflection
 
@@ -240,26 +257,6 @@ n:  lda has_hit_golden_brick
 n:  lda #snd_reflection_high
 l:  jmp play_sound
 
-;;; Divert ball if it got stuck.
-avoid_endless_flight:
-    lda sprites_d2,x
-    cmp #64
-    bcc +r
-    ;; Divert ball as it had 64 hits with no effect.
-    lda #0
-    sta sprites_d2,x
-    ; Random pick if (counter) clock-wise.
-    lda framecounter
-    lsr
-    bcc +n
-    lda sprites_d,x
-    jsr turn_clockwise
-    jmp +l
-n:  lda sprites_d,x
-    jsr turn_counterclockwise
-l:  sta sprites_d,x
-r:  rts
-
 ;;; Make first ball of a round.
 make_ball:
     ldy #@(- ball_init sprite_inits)
@@ -277,7 +274,7 @@ make_ball:
     sta sprites_d2,x
     lda #delay_until_forced_release
     sta ball_release_timer
-    rts
+r:  rts
 
 ;;; Adjust ball speed when it hits the top of the arena
 ;;; depending on round number.
