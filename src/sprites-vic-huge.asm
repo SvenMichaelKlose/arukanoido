@@ -17,14 +17,14 @@ n:  lda sprites_x,x
     lsr
     lsr
     lsr
-    sta sprite_cx
+    sta sprite_scrx
     sta sprites_sx,y
     lda sprites_y,x
     sta sprite_y
     lsr
     lsr
     lsr
-    sta sprite_cy
+    sta sprite_scry
     sta sprites_sy,y
 
     ;; Determine width.
@@ -99,12 +99,12 @@ end
     ;; Copy existing graphics into allocated chars.
     lda sprite_cols_on_screen
     sta tmp3
-    lda sprite_cx
+    lda sprite_scrx
     sta scrx
 
 l2: lda sprite_rows_on_screen
     sta tmp2
-    lda sprite_cy
+    lda sprite_scry
     sta scry
 
 l:  ; Get screen address.
@@ -398,11 +398,11 @@ end
     ;; Get initial sprite char and screen position.
     lda sprite_char
     sta tmp
-    lda sprite_cx
+    lda sprite_scrx
     sta scrx
 
     ;; Do a column.
-l2: lda sprite_cy
+l2: lda sprite_scry
     sta scry
     lda sprite_rows_on_screen
     sta tmp2
