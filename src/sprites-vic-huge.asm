@@ -116,6 +116,7 @@ l:  ; Get screen address.
 
     ldy scrx
     lda (scr),y
+    beq +m
     tay
 
     ; DOH char? (Any frame.)
@@ -129,6 +130,10 @@ l:  ; Get screen address.
     and #framemask
     cmp spriteframe
     beq +q      ; Yes, Copy…
+
+    lda level
+    cmp #doh_level
+    bne +m
 
     ; Not in our frame. Get pointer into brick map.
     lda scr
