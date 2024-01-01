@@ -435,7 +435,7 @@ n:
     sta sl
     bcc -l
     inc sh
-    jmp -l
+    bcs -l      ; (jmp)
 
     ;;; Plot the filled chars to screen.
 plot_chars:
