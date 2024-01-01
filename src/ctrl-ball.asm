@@ -216,11 +216,8 @@ n:  lda has_hit_silver_brick
     bne +f
     lda has_hit_brick
     bne +f
-    ; Reset.
-    lda #0
     sta sprites_d2,x
     beq +l                  ; (jmp)
-    ; Increment.
 f:  inc sprites_d2,x
 
 l:  jsr apply_reflection
