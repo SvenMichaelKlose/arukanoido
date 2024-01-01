@@ -47,7 +47,6 @@ hit_brick:
     lda @(++ scr)
     ora bricks
     sta @(++ tmp)
-
     ; Check.
     ldy scrx
     lda (tmp),y
