@@ -134,15 +134,11 @@ l:  ; Get screen address.
     lda level
     cmp #doh_level
     bne +m
-
-    ; Not in our frame. Get pointer into brick map.
     lda scr
     sta sl
     lda @(++ scr)
     ora bricks
     sta sh
-
-    ; Usually a DOH char at this position?
     ldy scrx
     lda (s),y
     and #%01100000
@@ -183,6 +179,9 @@ q:  lda charset_addrs_l,y
     sta (d),y
     jmp +n
 
+l2b:bne -l2     ; (jmp)
+l3: bne -l      ; (jmp)
+
 m:  lda #0
     tay
     sta (d),y
@@ -209,22 +208,20 @@ n:  inc scry
     bcc +n
     inc dh
 n:  dec tmp2
-    bne +l3
+    bne -l3
 
     inc scrx
     dec tmp3
-    bne +l2b
+    bne -l2b
 
     ;; Get destination address in charset.
     lda tmp5
     sta dh
-    lda tmp4
-    sta dl
     ; Add Y char offset.
     lda sprite_y
     and #%111
     clc
-    adc dl
+    adc tmp4
     sta dl
     bcc +n
     inc dh
@@ -241,9 +238,6 @@ end
     lda sprites_pgh,x
     bne +l
     jmp slow_shift          ; No…
-
-l3: jmp -l
-l2b:jmp -l2
 
     ;; Draw pre-shifted graphics.
     ; Get sprite graphics.
