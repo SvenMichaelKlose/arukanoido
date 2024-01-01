@@ -55,7 +55,9 @@ ctrl_ball:
 
     ;; Call the ball controller ball_speed times.
     ldy ball_speed
-l:  tya
+l:  lda sprites_i,x
+    bmi +r
+    tya
     pha
     ; Move it.
     jsr half_step_smooth
@@ -64,10 +66,7 @@ l:  tya
     lda position_has_changed
     beq +n
     jsr ctrl_ball_subpixel
-    ; Check if ball has been remove.
-n:  lda sprites_i,x
-    pla
-    bmi +r              ; Yes…
+n:  pla
     tay
     dey
     bne -l
