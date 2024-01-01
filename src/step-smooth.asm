@@ -4,8 +4,6 @@
 ;     (negate x)
 ;     (reverse (negate x))))
 
-position_has_changed:  0
-
 half_step_smooth:
     lda #0
     sta position_has_changed
@@ -19,45 +17,36 @@ half_step_smooth:
     asl                 ; Store sign in carry flag.
     lda ball_directions_y,y
     ror                 ; Signed division by 2 to keep aspect ratio.
-    sta tmp
+    clc
     bmi +m
 
-    lda sprites_dx,x
-    clc
-    adc tmp
+    adc sprites_dx,x
     bcc +n
     inc sprites_x,x
-    inc position_has_changed
-    bne +n              ; (jmp)
+    bne +o              ; (jmp)
 
-m:  lda sprites_dx,x
-    clc
-    adc tmp
+m:  adc sprites_dx,x
     bcs +n
     dec sprites_x,x
-    inc position_has_changed
 
+o:  inc position_has_changed
 n:  sta sprites_dx,x
 
     ; Move on Y axis.
     ldy sprites_d,x
     lda ball_directions_y,y
+    clc
     bmi +m
 
-    lda sprites_dy,x
-    clc
-    adc ball_directions_y,y
+    adc sprites_dy,x
     bcc +n
     inc sprites_y,x
-    inc position_has_changed
-    bne +n              ; (jmp)
+    bne +o              ; (jmp)
 
-m:  lda sprites_dy,x
-    clc
-    adc ball_directions_y,y
+m:  adc sprites_dy,x
     bcs +n
     dec sprites_y,x
-    inc position_has_changed
 
+o:  inc position_has_changed
 n:  sta sprites_dy,x
     rts

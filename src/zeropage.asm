@@ -163,7 +163,8 @@ sprites_sx:     fill @(* 2 num_sprites)
 sprites_sy:     fill @(* 2 num_sprites)
 sprites_sh:     fill @(* 2 num_sprites)
 ;; Temporaries
-call_controllers_x: 0
+call_controllers_x:     0
+position_has_changed:   0
 
 ;;; Printing text
 p_x:            0
@@ -322,8 +323,10 @@ preshifted_vaus_extended:   0 0
 preshifted_ball:            0 0
 preshifted_ball_caught:     0 0
 
+;;; Keyboard
 get_key_x:         0
 
+;;; Top-level
 current_toplevel_view:  0
 hiscore_player:         0
 
