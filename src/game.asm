@@ -122,6 +122,7 @@ end
     jsr get_level
 
 retry:
+    jsr blank_screen
     jsr clear_screen
     jsr init_foreground
     ldx active_player
@@ -248,6 +249,7 @@ n:  lda #0
     jsr remove_sprites
     jsr draw_walls      ; Freshen up after mode_break.
     jsr draw_lives
+    jsr unblank_screen
     jsr roundstart
     jsr make_vaus
     jsr make_ball
