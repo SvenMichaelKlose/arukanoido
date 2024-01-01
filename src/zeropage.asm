@@ -339,6 +339,9 @@ line_addresses_h:   fill 33
 ; For 'add_sprite'.
 sprite_inits:           fill @sprite_inits_size
 
+init_bonus_d_direction:     0
+init_bonus_d_balls_to_add:  0
+
 uncleaned_lowmem:
 
 user_screen_origin_x:   0

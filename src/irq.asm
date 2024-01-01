@@ -195,6 +195,11 @@ n2:  jsr dyn_brick_fx
 n3: jsr close_obstacle_gate
 n:
 
+    lda init_bonus_d_balls_to_add
+    beq +n
+    jsr apply_bonus_d_add_ball
+n:
+
 done:
 if @*show-cpu?*
     lda #@(+ 8 2)

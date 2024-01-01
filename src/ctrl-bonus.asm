@@ -183,20 +183,29 @@ f:  lda sprites_x,y                     ; Copy coordinates of ball.
     lda sprites_y,y
     sta @(+ ball_init sprite_init_y)
     lda sprites_d,y
-    pha
-    jsr turn_counterclockwise
-    sta @(+ ball_init sprite_init_data)
-    ldy #@(- ball_init sprite_inits)
-    jsr add_sprite
-    inc balls
-    pla
-    jsr turn_clockwise
-    sta @(+ ball_init sprite_init_data)
-    ldy #@(- ball_init sprite_inits)
-    jsr add_sprite
-    inc balls
-
+    sta init_bonus_d_direction
+    lda #2
+    sta init_bonus_d_balls_to_add
 r:  rts
+
+apply_bonus_d_add_ball:
+
+apply_bonus_d1:
+    lda init_bonus_d_balls_to_add
+    cmp #2
+    beq apply_bonus_d2
+    lda init_bonus_d_direction
+    jsr turn_counterclockwise
+l:  dec init_bonus_d_balls_to_add
+    sta @(+ ball_init sprite_init_data)
+    ldy #@(- ball_init sprite_inits)
+    inc balls
+    jmp add_sprite
+
+apply_bonus_d2:
+    lda init_bonus_d_direction
+    jsr turn_clockwise
+    jmp -l
 
 ;;; Extra life
 apply_bonus_p:
