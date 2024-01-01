@@ -311,6 +311,7 @@ needs_redrawing_lives:   0
 needs_redrawing_score1:  0
 needs_redrawing_score2:  0
 needs_redrawing_hiscore: 0
+overkill:                0
 
 ;;; Paddles
 is_using_paddle:        0 ; Tells if paddles have been detected.

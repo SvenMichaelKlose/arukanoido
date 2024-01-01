@@ -412,6 +412,8 @@ n:  lda has_moved_sprites   ; TODO: Remove?
 n:  lda #0
     sta has_moved_sprites
     jsr draw_sprites
+    lda has_moved_sprites
+    sta overkill
     jmp mainloop
 
 lose_life:

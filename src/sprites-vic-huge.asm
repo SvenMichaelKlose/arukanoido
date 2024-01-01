@@ -278,6 +278,8 @@ n3: dey
 
     lda sprite_cols_on_screen
     sta tmp2
+    lda overkill
+    bne turbo_preshift
 
     ;; Draw sprite column.
 l2: ldy sprite_lines
@@ -316,7 +318,7 @@ l:  lda (s),y
     bpl -l
 
     dec tmp2
-    beq plot_chars
+    beq +p
 
     ;; Step to next screen column.
     lda dl
@@ -332,9 +334,59 @@ n:
     sec
     adc sprite_lines
     sta sl
-    bcc +n
+    bcc -l2
     inc sh
-n:  jmp -l2
+    bcs -l2     ; (jmp)
+
+    ;; Draw sprite column.
+turbo_preshift:
+l2: ldy sprite_lines
+l:  lda (s),y
+    sta (d),y
+    dey
+    lda (s),y
+    sta (d),y
+    dey
+    lda (s),y
+    sta (d),y
+    dey
+    lda (s),y
+    sta (d),y
+    dey
+    lda (s),y
+    sta (d),y
+    dey
+    lda (s),y
+    sta (d),y
+    dey
+    lda (s),y
+    sta (d),y
+    dey
+    lda (s),y
+    sta (d),y
+    dey
+    bpl -l
+
+    dec tmp2
+p:  beq plot_chars
+
+    ;; Step to next screen column.
+    lda dl
+    clc
+    adc sprite_lines_on_screen
+    sta dl
+    bcc +n
+    inc dh
+n:
+
+    ;; Step to next sprite column.
+    lda sl
+    sec
+    adc sprite_lines
+    sta sl
+    bcc -l2
+    inc sh
+    bcs -l2     ; (jmp)
 
 slow_shift:
     ;; Configure the blitter.
@@ -427,8 +479,6 @@ l:  ;; Check if position is plottable.
     lda sprites_i,x
     and #is_doh_obstacle
     bne +l3
-
-    ; Check on background.
     lda (scr),y
     and #foreground
     bne +n                  ; Do not plot over background.
