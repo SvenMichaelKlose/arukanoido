@@ -2,7 +2,7 @@
 
 ; CONFIGURE HERE!
 
-(const *versions* '(:prg :tap :wav :shadowvic))
+(const *versions* '(:prg :tap :wav)); :shadowvic))
 ;(const *versions* '(:prg))
 
 (const *demo?* t)               ; Limit to first eight levels.
@@ -66,7 +66,8 @@
 (fn paddle-xlat ()
   (maptimes [bit-and (integer (+ 8 (/ (- 255 _) ; TODO: Häh?
                                       (/ 256 (++ (* 8 12))))))
-                     #xfe] 256))
+                     #xfe]
+            256))
 
 (fn make (to files cmds)
   (apply #'assemble-files to files)
@@ -74,151 +75,152 @@
 
 (fn make-game (file cmds)
   (make file
-        (@ [+ "src/" _] `("../bender/vic-20/vic.asm"
-                          "constants.asm"
-                          "zeropage.asm"
+        (@ [+ "src/" _]
+           `("../bender/vic-20/vic.asm"
+             "constants.asm"
+             "zeropage.asm"
 
-                          ,@(unless (| *shadowvic?* *rom?*)
-                              '("../bender/vic-20/basic-loader.asm"))
-                          ,@(? *rom?*
-                              '("init-rom.asm")
-                              '("init.asm"
-                                "patch.asm"
-                                "gap.asm"))
+             ,@(unless (| *shadowvic?* *rom?*)
+                 '("../bender/vic-20/basic-loader.asm"))
+             ,@(? *rom?*
+                  '("init-rom.asm")
+                  '("init.asm"
+                    "patch.asm"
+                    "gap.asm"))
 
-                          ; Imported music player binary.
-                          "music-player.asm"
+             ; Imported music player binary.
+             "music-player.asm"
 
-                          ; Graphics
-                          "font-4x8.asm"
-                          "gfx-background.asm"
-                          "gfx-doh.asm"
-                          "gfx-explosion.asm"
-                          "gfx-obstacle-cone.asm"
-                          "gfx-obstacle-cube.asm"
-                          "gfx-obstacle-pyramid.asm"
-                          "gfx-obstacle-spheres.asm"
-                          "gfx-obstacle-doh.asm"
-                          "gfx-sprites.asm"
-                          "gfx-arukanoido.asm"
-                          ;"gfx-taito.asm"
+             ; Graphics
+             "font-4x8.asm"
+             "gfx-background.asm"
+             "gfx-doh.asm"
+             "gfx-explosion.asm"
+             "gfx-obstacle-cone.asm"
+             "gfx-obstacle-cube.asm"
+             "gfx-obstacle-pyramid.asm"
+             "gfx-obstacle-spheres.asm"
+             "gfx-obstacle-doh.asm"
+             "gfx-sprites.asm"
+             "gfx-arukanoido.asm"
+             ;"gfx-taito.asm"
 
-                          ; Mixed data
-                          "bits.asm"
-                          "ball-directions.asm"
-                          "score-infos.asm"
-                          "brick-info.asm"
-                          "sprite-inits.asm"
-                          "level-data.asm"
+             ; Mixed data
+             "bits.asm"
+             "ball-directions.asm"
+             "score-infos.asm"
+             "brick-info.asm"
+             "sprite-inits.asm"
+             "level-data.asm"
 
-                          ; Virtual CPU
-                          "vcpu.asm"
-                          "vcpu-instructions.asm"
-                          "_vcpu.asm"
+             ; Virtual CPU
+             "vcpu.asm"
+             "vcpu-instructions.asm"
+             "_vcpu.asm"
 
-                          ; Library
-                          "bcd.asm"
-                          "clrram.asm"
-                          "moveram.asm"
-                          "exomizer-stream-decrunsh.asm"
-                          "math.asm"
-                          "nmi.asm"
-                          "random.asm"
-                          "wait.asm"
-                          "zeropage-utils.asm"
+             ; Library
+             "bcd.asm"
+             "clrram.asm"
+             "moveram.asm"
+             "exomizer-stream-decrunsh.asm"
+             "math.asm"
+             "nmi.asm"
+             "random.asm"
+             "wait.asm"
+             "zeropage-utils.asm"
 
-                          ; Controls
-                          "fire-button.asm"
-                          "keyboard.asm"
-                          "joystick.asm"
-                          "paddles.asm"
+             ; Controls
+             "fire-button.asm"
+             "keyboard.asm"
+             "joystick.asm"
+             "paddles.asm"
 
-                          ; Graphics library
-                          "print.asm"
-                          "format.asm"
-                          "chars.asm"
-                          "screen.asm"
-                          "raster.asm"
-                          "draw-bitmap.asm"
+             ; Graphics library
+             "print.asm"
+             "format.asm"
+             "chars.asm"
+             "screen.asm"
+             "raster.asm"
+             "draw-bitmap.asm"
 
-                          ; Sprites
-                          ,@(unless *rom?*
-                              '("blitter.asm"))
-                          "blit-char.asm"
-                          "sprites.asm"
-                          "sprites-vic-common.asm"
-                          "sprites-vic-huge.asm"
-                          "sprites-vic-huge-preshifted.asm"
+             ; Sprites
+             ,@(unless *rom?*
+                 '("blitter.asm"))
+             "blit-char.asm"
+             "sprites.asm"
+             "sprites-vic-common.asm"
+             "sprites-vic-huge.asm"
+             "sprites-vic-huge-preshifted.asm"
 
-                          ; Level display
-                          "brick-fx.asm"
-                          "draw-level.asm"
-                          "lives.asm"
-                          "score-display.asm"
+             ; Level display
+             "brick-fx.asm"
+             "draw-level.asm"
+             "lives.asm"
+             "score-display.asm"
 
-                          ; Collisions
-                          "get-collision.asm"
-                          "hit-brick.asm"
-                          "reflect.asm"
-                          "reflect-edge.asm"
-                          "reflect-ball-obstacle.asm"
-                          "score.asm"
+             ; Collisions
+             "get-collision.asm"
+             "hit-brick.asm"
+             "reflect.asm"
+             "reflect-edge.asm"
+             "reflect-ball-obstacle.asm"
+             "score.asm"
 
-                          ; Sprite controllers
-                          "step-smooth.asm"
-                          "ctrl-ball.asm"
-                          "ctrl-bonus.asm"
-                          "ctrl-explosion.asm"
-                          "ctrl-laser.asm"
-                          "ctrl-obstacle.asm"
-                          "ctrl-doh-obstacle.asm"
-                          "ctrl-vaus.asm"
-                          "doh.asm"
+             ; Sprite controllers
+             "step-smooth.asm"
+             "ctrl-ball.asm"
+             "ctrl-bonus.asm"
+             "ctrl-explosion.asm"
+             "ctrl-laser.asm"
+             "ctrl-obstacle.asm"
+             "ctrl-doh-obstacle.asm"
+             "ctrl-vaus.asm"
+             "doh.asm"
 
-                          ; Music
-                          "music-index.asm"
-                          "music.asm"
+             ; Music
+             "music-index.asm"
+             "music.asm"
 
-                          ; Top-level
-                          ,@(when *debug?*
-                              '("debug.asm"))
-                          "irq.asm"
-                          "game.asm"
-                          "main.asm"
+             ; Top-level
+             ,@(when *debug?*
+                 '("debug.asm"))
+             "irq.asm"
+             "game.asm"
+             "main.asm"
 
-                          "round-start.asm"
-                          "credits.asm"
-                          "preshift-common-sprites.asm"
-                          "hiscore.asm"
-                          "gfx-ship.asm"
-                          "round-intro.asm"
+             "round-start.asm"
+             "credits.asm"
+             "preshift-common-sprites.asm"
+             "hiscore.asm"
+             "gfx-ship.asm"
+             "round-intro.asm"
 
-                          ; Digital audio
-                          ,@(when *has-digis?*
-                              `(,@(unless *rom?*
-                                    '("exm-nmi.asm"))
-                                "audio-boost.asm"
-                                "digi-nmi.asm"
-                                "exm-player.asm"
-                                ,@(when *ultimem?*
-                                    '("raw-player.asm"))
-                                "rle-player.asm"
-                                "music-arcade.asm"))
+             ; Digital audio
+             ,@(when *has-digis?*
+                 `(,@(unless *rom?*
+                       '("exm-nmi.asm"))
+                   "audio-boost.asm"
+                   "digi-nmi.asm"
+                   "exm-player.asm"
+                   ,@(when *ultimem?*
+                       '("raw-player.asm"))
+                   "rle-player.asm"
+                   "music-arcade.asm"))
 
-                          ,@(when *rom?*
-                              `("init.asm"
-                                "moveram.asm"
-                                ,@(when *has-digis?*
-                                    `("music-arcade-blk5.asm"
-                                      "blk5-end.asm"))
+             ,@(when *rom?*
+                 `("init.asm"
+                   "moveram.asm"
+                   ,@(when *has-digis?*
+                       `("music-arcade-blk5.asm"
+                         "blk5-end.asm"))
 
-                                "lowmem-start.asm"
-                                "blitter.asm"
-                                ,@(when *has-digis?*
-                                    `("exm-nmi.asm"))
-                                "lowmem-end.asm"))
+                   "lowmem-start.asm"
+                   "blitter.asm"
+                   ,@(when *has-digis?*
+                       `("exm-nmi.asm"))
+                   "lowmem-end.asm"))
 
-                          "end.asm"))
+             "end.asm"))
         cmds)
   (format t "Level data size:  ~A (uncompressed)~%" (length +level-data+))
   (format t "Game size:        ~A~%" (- (get-label '__end_game) #x2000))
