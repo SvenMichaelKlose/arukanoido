@@ -235,6 +235,7 @@ n:  lda #0
     sta needs_redrawing_lives
     sta gate_opening
     sta do_animate_obstacle_gate
+    sta obstacle_release_countdown
     lda #1
     sta balls
     sta hits_before_bonus

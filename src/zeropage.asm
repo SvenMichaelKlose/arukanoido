@@ -138,6 +138,7 @@ exo_y2:         0
 
 score:          0 0
 
+;;; Obstacles
 do_animate_obstacle_gate: 0
 obstacle_gate_frame:      0
 new_obstacle_gate_xc:     0
@@ -285,7 +286,8 @@ is_firing:          0       ; Laser interval countdown.
 laser_delay_type:   0       ; 0: short, 1: long
 laser_has_hit:      0
 ;; Obstacles
-num_obstacles:      0
+obstacle_release_countdown: 0
+num_obstacles:              0
 ; Start and end of current obstacle graphics.
 gfx_obstacles:      0 0
 gfx_obstacles_end:  0 0

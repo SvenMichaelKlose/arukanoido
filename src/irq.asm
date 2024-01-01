@@ -88,6 +88,8 @@ end
     bne +n
     inc @(++ framecounter)
 
+n:  dec obstacle_release_countdown
+
     ;; Handle laser interval.
 n:  lda is_firing
     beq +n

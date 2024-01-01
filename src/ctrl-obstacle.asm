@@ -92,8 +92,11 @@ add_missing_obstacle:
     lda num_obstacles
     cmp #3
     beq +r                  ; Three are enough.
-    lda framecounter
+    lda obstacle_release_countdown
     bne +r                  ; Only every 256 frames.
+    ; Release one frame off to spread collision detections.
+    lda #254
+    sta obstacle_release_countdown
 
     inc do_animate_obstacle_gate
     lda #4
