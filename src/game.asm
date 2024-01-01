@@ -391,22 +391,28 @@ n:  lda needs_redrawing_lives
     lda #0
     sta needs_redrawing_lives
     jsr draw_lives
+    jmp redraw_sprites
 n:  lda needs_redrawing_score1
     beq +n
     lda #0
     sta needs_redrawing_score1
     jsr print_score1
+    jmp redraw_sprites
 n:  lda needs_redrawing_hiscore
     beq +n
     lda #0
     sta needs_redrawing_hiscore
     jsr print_hiscore
+    jmp redraw_sprites
 n:  lda needs_redrawing_score2
     beq +n
     lda #0
     sta needs_redrawing_score2
     jsr print_score2
-n:  lda has_moved_sprites   ; TODO: Remove?
+n:
+
+redraw_sprites:
+    lda has_moved_sprites   ; TODO: Remove?
     bne +n
     jmp -n2
 n:  lda #0
