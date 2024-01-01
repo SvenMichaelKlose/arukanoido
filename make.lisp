@@ -5,7 +5,7 @@
 (const *versions* '(:prg :tap :wav :shadowvic))
 ;(const *versions* '(:prg))
 
-(const *demo?* t)               ; Limit to first eight levels.
+(const *demo?* nil)               ; Limit to first eight levels.
 (const *debug?* t)              ; Include self-tests and features.
 (const *make-arcade-sounds?* nil) ; Lengthy process.
 (var *has-digis?* t)            ; Play optional original arcade sounds.
@@ -371,17 +371,17 @@
     (make-prg "arukanoido-tape")
     (make-tap)))
 
+(when (version? :wav)
+  (format t "### Making WAV file…")
+  (with-input-file i "arukanoido/arukanoido.tap"
+    (with-output-file o "arukanoido/arukanoido.wav"
+      (tap2wav i o 44100 (cpu-cycles :pal)))))
+
 (when (version? :shadowvic)
   (format t "### Making shadowVIC PRG…~%")
   (with-temporary *shadowvic?* t
     (with-temporary *has-digis?* nil
       (make-prg "arukanoido-shadowvic"))))
-
-(when (version? :wav)
-  (format t "### Making WAV file…")
-  (with-input-file i "arukanoido/arukanoido.tap"
-    (with-output-file o "arukanoido/arukanoido.wav"
-      (tap2wav i o 44100 (cpu-cycles :ntsc)))))
 
 (sb-ext:run-program "/bin/cp"
                     '("README.md" "arukanoido/")
