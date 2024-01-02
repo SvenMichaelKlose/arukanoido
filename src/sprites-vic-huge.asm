@@ -338,6 +338,8 @@ n:
     inc sh
     bcs -l2     ; (jmp)
 
+p:  jmp plot_chars
+
     ;; Draw sprite column.
 turbo_preshift:
 l2: ldy sprite_lines
@@ -368,7 +370,7 @@ l:  lda (s),y
     bpl -l
 
     dec tmp2
-p:  beq plot_chars
+    beq +p
 
     ;; Step to next screen column.
     lda dl
@@ -389,6 +391,16 @@ n:
     bcs -l2     ; (jmp)
 
 slow_shift:
+    ;; Get sprite graphics.
+    lda sprites_gl,x
+    sta sl
+    lda sprites_gh,x
+    sta sh
+
+    lda sprites_i,x
+    and #is_bonus
+    bne no_shift
+
     ;; Configure the blitter.
     lda sprite_x
     and #%111
@@ -396,12 +408,6 @@ slow_shift:
     tay
     lda negate7,y
     sta @(++ blit_right_addr)
-
-    ;; Get sprite graphics.
-    lda sprites_gl,x
-    sta sl
-    lda sprites_gh,x
-    sta sh
 
     ;; Draw left half of sprite column.
 l:  ldy sprite_lines
@@ -426,7 +432,7 @@ n:
 
     ;; Break here when all columns are done.
     dec tmp2
-    beq +plot_chars
+p:  beq +plot_chars
 
     ;; Step to next sprite graphics column.
     lda sl
@@ -436,6 +442,51 @@ n:
     bcc -l
     inc sh
     bcs -l      ; (jmp)
+
+no_shift:
+    ;; Draw column.
+l:  lda sprite_rows
+    sta tmp3
+    ldy #0
+l2: lda (s),y
+    sta (d),y
+    iny
+    lda (s),y
+    sta (d),y
+    iny
+    lda (s),y
+    sta (d),y
+    iny
+    lda (s),y
+    sta (d),y
+    iny
+    lda (s),y
+    sta (d),y
+    iny
+    lda (s),y
+    sta (d),y
+    iny
+    lda (s),y
+    sta (d),y
+    iny
+    lda (s),y
+    sta (d),y
+    iny
+    dec tmp3
+    bne -l2
+
+    ;; Break here when all columns are done.
+    dec tmp2
+    beq plot_chars
+
+    ;; Step to next screen column.
+    lda dl
+    clc
+    adc sprite_lines_on_screen
+    sta dl
+    bcc +l
+    inc dh
+    bcs +l      ; (jmp)
 
     ;;; Plot the filled chars to screen.
 plot_chars:
