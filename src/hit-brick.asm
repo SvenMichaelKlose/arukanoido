@@ -47,7 +47,6 @@ hit_brick:
     lda @(++ scr)
     ora bricks
     sta @(++ tmp)
-    ; Check.
     ldy scrx
     lda (tmp),y
     beq +no_brick_hit
@@ -87,8 +86,6 @@ remove_silver:
 
     ;; Remove regular brick.
 remove_brick:
-    ; Keep track of removed bricks for so we know when
-    ; we have to create a bonus.
     lda bonus_is_dropping
     ora has_missed_bonus
     ora has_hit_silver_brick
@@ -108,7 +105,7 @@ n:
     sta sh
 o:  jsr add_to_score
 
-    ;; Keep track of removed bricks,
+    ;; Count removed brick.
     txa
     pha
     ldx active_player
