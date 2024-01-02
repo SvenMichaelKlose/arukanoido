@@ -364,7 +364,6 @@ n:  ldx is_ntsc
     jsr draw_walls
     jsr draw_lives
     jsr draw_level
-    jsr draw_lives
     lda #foreground
     sta curchar
     jsr print_scores_and_labels
