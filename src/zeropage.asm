@@ -90,7 +90,7 @@ sprites_sw:         fill @(* 2 num_sprites)
 ;;; Ball
 ball_x:               0
 ball_y:               0
-has_collision:        0
+has_reflection:        0
 
 ;;; Reflection
 side_degrees:         0

@@ -183,15 +183,15 @@ r:  rts
 check_reflection:
     ;; Side hit?
     jsr reflect
-    lda has_collision
+    lda has_reflection
     bne +n2                     ; Ball hit something…
 
     ;; Edge hit instead?
     jsr reflect_edge
-    lda has_collision
+    lda has_reflection
     beq -r
 m:  lda #0
-    sta has_collision
+    sta has_reflection
     lda sprites_d,x
     eor #$80                ; Opposite direction.
     sta sprites_d,x

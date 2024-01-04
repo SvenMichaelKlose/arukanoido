@@ -1,7 +1,7 @@
 reflect_edge:
     lda #0
     sta side_degrees
-    sta has_collision
+    sta has_reflection
 
     ; Bounce back from bottom right.
     lda sprites_d,x
@@ -73,7 +73,7 @@ n:  lda ball_x
     jsr get_soft_collision
     beq +r
 
-j:  inc has_collision
+j:  inc has_reflection
     jmp hit_brick
 
 r:  rts
