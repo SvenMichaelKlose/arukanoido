@@ -2,29 +2,31 @@ ctrl_laser:
     lda #8
     jsr sprite_up
 
+    ;; Discard if outside playfield.
+    lda sprites_y,x
+    cmp arena_y
+    bcc +n
+
+    ;; Cpmfigure 'hit_brick'.
     ldy #0
     sty has_hit_golden_brick
     sty laser_has_hit
     iny
     sty is_testing_laser_hit
 
-    lda sprites_y,x
-    cmp arena_y
-    bcc +n              ; Laser left the playfield.
-
-    ; Check on collision on the left hand side.
+    ;; Check if bricks were hit.
+    ; Check left hand side.
     lda sprites_x,x
     ldy sprites_y,x
     jsr test_laser_hit
-
-    ; Check on collision on the right hand side.
+    ; Check right hand side.
     lda sprites_x,x
     clc
     adc #7
     ldy sprites_y,x
     jsr test_laser_hit
 
-    ; Hit left or right?
+    ; Remove laser if a brick was hit.
     lda laser_has_hit
     ora has_hit_golden_brick
     bne +n
