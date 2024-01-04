@@ -63,7 +63,7 @@ n:  inc has_hit_brick           ; (Set flag.)
     ;; Dispatch for regular, silver and golden bricks.
     cmp #b_golden
     beq +golden
-    bcc remove_brick
+    bcc remove_brick            ; Regular brick…
     inc has_hit_silver_brick    ; (Set flag.)
     cmp #b_silver
     beq remove_silver
