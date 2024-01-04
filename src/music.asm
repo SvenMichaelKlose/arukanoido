@@ -102,14 +102,14 @@ init_music:
     jmp init_music_imported
 
 play_sound:
-    sta tmp
+    sta tmp3
 
     txa
     pha
     tya
     pha
 
-    ldx tmp
+    ldx tmp3
     ldy current_song
     beq +play
 
@@ -132,7 +132,7 @@ if @*ultimem?*
     beq +n
 
     ; Play raw sample from Ultimem.
-    ldx tmp
+    ldx tmp3
     jsr raw_start
     jmp +r
 end
@@ -147,7 +147,7 @@ n:  lda digi_types,x
     lda @(-- sample_addrs_l),x
     ldy @(-- sample_addrs_h),x
     jsr init_decruncher
-    ldx tmp
+    ldx tmp3
     jsr exm_start
     jmp +r
 
@@ -158,7 +158,7 @@ m:  lsr
     sta currently_playing_digis
     jsr rle_start
 
-r:  lda tmp
+r:  lda tmp3
     sta current_song
     lda #$ff                ; Stop native player.
     sta requested_song
@@ -176,7 +176,7 @@ if @*has-digis?*
     lda #$ff                ; Disable EXM player.
     sta exm_needs_data
 end
-    lda tmp
+    lda tmp3
     sta requested_song
 
 done:
