@@ -8,6 +8,9 @@
                     8]
           (group (@ #'char-code (string-list (fetch-file "obj/font-4x8.bin"))) 16)))
 
+(fn make-font ()
+  (put-file "obj/font-4x8-packed.bin" (list-string (@ #'code-char (packed-font)))))
+
 (fn ascii2pixcii (x)
   (@ [?
        (== 32 (char-code _))  (code-char 255)
@@ -17,6 +20,3 @@
 
 (fn string4x8 (x)
   (@ [- (char-code _) 32] (string-list x)))
-
-(fn make-font ()
-  (put-file "obj/font-4x8-packed.bin" (list-string (@ #'code-char (packed-font)))))
