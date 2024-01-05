@@ -261,7 +261,7 @@ n:  dey
 call_sprite_controllers:
     ldx #@(-- num_sprites)
 l1: lda sprites_i,x
-    bmi +n1
+    bmi +n1             ; Slot unused…
     lda sprites_fl,x
     sta dl
     lda sprites_fh,x
