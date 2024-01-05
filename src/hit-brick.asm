@@ -43,12 +43,12 @@ hit_brick:
     ;; Check if any type of brick has been hit.
     ; Get pointer into brick map as we cannot tell from screen chars.
     lda scr
-    sta tmp
+    sta brickp
     lda @(++ scr)
     ora bricks
-    sta @(++ tmp)
+    sta @(++ brickp)
     ldy scrx
-    lda (tmp),y
+    lda (brickp),y
     beq +no_brick_hit
 
     ;; Adjust ball speed but not for laser hits.
@@ -58,7 +58,7 @@ hit_brick:
 n:  inc has_hit_brick           ; (Set flag.)
 
     ldy scrx
-    lda (tmp),y
+    lda (brickp),y
 
     ;; Dispatch for regular, silver and golden bricks.
     cmp #b_golden
@@ -71,7 +71,7 @@ n:  inc has_hit_brick           ; (Set flag.)
     ;; Degrade silver brick.
     sec
     sbc #1
-    sta (tmp),y
+    sta (brickp),y
     inc has_hit_brick
     jmp add_brick_fx
 
@@ -97,7 +97,7 @@ remove_brick:
     inc removed_bricks_for_bonus
 n:
     ; Add score of brick.
-    lda (tmp),y
+    lda (brickp),y
     tay
     lda brick_scores_l,y
     sta sl
@@ -121,7 +121,7 @@ o:  jsr add_to_score
     ldy scrx
     sty removed_brick_x
     sta (scr),y
-    sta (tmp),y
+    sta (brickp),y
 
     inc has_hit_brick       ; (Set flag.)
 no_brick_hit:

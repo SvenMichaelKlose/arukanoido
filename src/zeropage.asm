@@ -30,6 +30,9 @@ scry:       0   ; Screen char Y position
 curchar:    0   ; Last allocated character
 curcol:     0   ; Character colour
 
+;;; Brick map
+brickp:     0 0
+
 ;;; Printing text
 scrx2:          0
 
