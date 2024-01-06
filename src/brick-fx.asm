@@ -10,6 +10,7 @@ animate_brick:
     adc #1
     rts
 l:  lda #bg_brick_special
+    clc
 r:  rts
 
 ;;; Turn silver and golden brick chars into first
@@ -114,12 +115,14 @@ l:  txa
     beq -r
     ; Plot new brick.
     lda brickfx_x,x
+    beq +n              ; Slot unused (brick removed)…
     sta scrx
     lda brickfx_y,x
     sta scry
     jsr scraddr
     lda (scr),y
     jsr animate_brick
+    bcs +l2
     sta (scr),y
     ; End animation.
     cmp #bg_brick_special
@@ -131,4 +134,8 @@ l:  txa
     and #@(-- num_brickfx)
     sta brickfx_pos
 n:  inx
-    jmp -l
+    bpl -l  ; (jmp)
+
+l2: lda #0
+    sta brickfx_x,x
+    bne -n  ; (jmp)
