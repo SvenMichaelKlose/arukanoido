@@ -342,7 +342,7 @@ n:  cmp #keycode_n
     bne +n
     lda level
 end
-if @*demo?*
+if @(& *debug?* *demo?*)
     cmp #num_demo_levels
     beq end_of_demo2
 end
