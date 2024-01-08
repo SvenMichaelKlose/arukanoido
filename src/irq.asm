@@ -168,9 +168,8 @@ l:  lda is_running_game
     sta has_moved_sprites
 
     ;; DOH round special treatment.
-    lda level
-    cmp #doh_level
-    bne +n
+    lda is_doh_level
+    beq +n
     jsr flash_doh       ; Flash DOH when hit.
     jsr add_missing_doh_obstacle
     jmp +done

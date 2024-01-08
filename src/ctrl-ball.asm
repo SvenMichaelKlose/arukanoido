@@ -242,9 +242,8 @@ l:  jsr apply_reflection
 play_reflection_sound:
     lda has_hit_brick
     beq +r
-    lda level
-    cmp #doh_level
-    bne +n
+    lda is_doh_level
+    beq +n
     lda #snd_hit_doh
     bne +l  ; (jmp)
     ; Special sound for gold or silver brick.

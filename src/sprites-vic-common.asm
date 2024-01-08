@@ -21,8 +21,6 @@ end
 
     ldx #@(-- num_sprites)
 sprites_clear_loop:
-    lda sprites_i,x
-
     sei
 
     ; Make frame-related index into sprite tables.
@@ -66,6 +64,9 @@ l3: lda (scr),y
     cmp spriteframe
     beq +n      ; Char belongs to sprite in current frame…
 
+    lda is_doh_level
+    beq +n2
+
     ; Make pointer into brick map.
     lda scr
     sta dl
@@ -79,7 +80,7 @@ l3: lda (scr),y
     cmp #%01100000
     bne +n2     ; No. Just clear…
     lda (d),y   ; Restore DOH char.
-    jmp +n3
+    bne +n3
 
 n2: lda #0
 n3: sta (scr),y

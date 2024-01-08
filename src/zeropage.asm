@@ -147,6 +147,8 @@ obstacle_gate_frame:      0
 new_obstacle_gate_xc:     0
 new_obstacle_x:           0
 
+is_doh_level:   0
+
 uncleaned_zp:
 
 bricks:         0   ; Starting page of brick map.
