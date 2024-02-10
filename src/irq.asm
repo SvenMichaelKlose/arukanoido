@@ -83,6 +83,14 @@ end
     lda has_paused
     bne -done
 
+    ;; Play classic VIC sound.
+if @*has-digis?*
+    lda currently_playing_digis
+    bne +n      ; Digis are decrunched in game loop.
+end
+    jsr play_music
+n:
+
     ;; Increment framecounter.
     inc framecounter
     bne +n
@@ -145,14 +153,6 @@ m:  lda screen_gate
     sta (d),y
     lda #white
     sta (c),y
-n:
-
-    ;; Play classic VIC sound.
-if @*has-digis?*
-    lda currently_playing_digis
-    bne +n      ; Digis are decrunched in game loop.
-end
-    jsr play_music
 n:
 
     lda active_player
