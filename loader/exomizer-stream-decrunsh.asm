@@ -25,6 +25,7 @@
 ;
 
 decrunch_block_static:
+    inc c
     inc @(++ c)
 l:  jsr get_decrunched_byte
     ldy #0
