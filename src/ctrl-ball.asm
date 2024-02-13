@@ -303,15 +303,26 @@ ball_speeds_when_top_hit:
 
 ;;; Adjust ball speed depending on number of collisions.
 adjust_ball_speed:
-    lda ball_speed
-    cmp #$0f
-    beq +n
+    ldy ball_speed
+    cpy #$0f
+    beq +r          ; Maximum ball speed already…
+    lda sprites_d,x
+    clc
+    adc #64
+    bmi +l          ; Flying upwards, may accelerate…
+    lda sprites_y,x
+    sec
+    sbc arena_y
+    cmp #@(* 8 14)
+    bcs +r          ; Do not accelerate on bottom half of screen.
+
+l:  tya
     lsr
     tay
     inc num_hits
     lda num_hits
     cmp ball_accelerations,y
-    bcc +n
+    bcc +r
 
     ;; Increase ball speed.
     lda #0
@@ -320,15 +331,15 @@ adjust_ball_speed:
 increase_ball_speed:
     lda ball_speed
     ldy is_using_paddle
-    bne +m
+    bne +n
     cmp #max_ball_speed_joystick
-    bcs +n
+    bcs +r
     bcc +l                  ; (jmp)
-m:  cmp #max_ball_speed
-    bcs +n                  ; Already at maximum speed. Do nothing…
+n:  cmp #max_ball_speed
+    bcs +r                  ; Already at maximum speed. Do nothing…
 l:  inc ball_speed          ; Play the blues…
 
-n:  rts
+r:  rts
 
 ;;; From arcade ROM.
 ball_accelerations:
