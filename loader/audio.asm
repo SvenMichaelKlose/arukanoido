@@ -28,7 +28,7 @@ load_audio:
 
     jsr check_memory_expansion
     bcc -r
-;bcs -r
+bcs -r
 
     ; Tell loaded game that we have an Ultimem expansion.
     lda #1
