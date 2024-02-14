@@ -56,7 +56,6 @@ framecounter:         0 0
 draw_sprite_x:          0
 next_sprite_char:       0 ; Next free character for sprites.
 spriteframe:            0 ; Character offset into lower or upper half of charset.
-sprite_rr:              0 ; Round-robin sprite allocation index.
 sprite_char:            0 ; First char.
 sprite_x:               0 ; X position
 sprite_y:               0 ; Y position
@@ -347,6 +346,7 @@ line_addresses_h:   fill 33
 
 ; For 'add_sprite'.
 sprite_inits:           fill @sprite_inits_size
+free_sprites:           fill @(++ num_sprites)
 
 init_bonus_d_direction:     0
 init_bonus_d_balls_to_add:  0

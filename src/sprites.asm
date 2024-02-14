@@ -1,48 +1,38 @@
-; Replace decorative sprite by new one.
-;
-; Y: descriptor of new sprite in sprite_inits
-; Returns: A: Index of new sprite or 255 if slots are full.
-add_sprite:
-    stx tmp
-    sty tmp2
-
-    ldy #@(-- num_sprites)
-l:  dec sprite_rr
-    lda sprite_rr
-    and #@(-- num_sprites)
-    tax
-    lda sprites_i,x     ; Inactive?
-    bmi replace_sprite2 ; Yes…
+init_sprites:
+    lda #0
+    sta (@(+ free_sprites num_sprites)),y
+    ldy #num_sprites
+    ldx #is_inactive
+l:  tya
     dey
-    bpl -l
-
-    ldx #255            ; (Should never be reached.)
-
-sprite_added:
-    txa
-r:  ldx tmp
-    ldy tmp2
+    sta free_sprites,y
+    stx sprites_i,y
+    bne -l
     rts
 
-replace_sprite2:
-    txa
-    ldy tmp2
-    jmp replace_sprite
-
-; Replace sprite by dummy.
-;
 ; X: sprite index
 remove_sprite:
     lda #is_inactive
     sta sprites_i,x
+    inx
+    lda free_sprites
+    sta free_sprites,x
+    stx free_sprites
+    stx free_sprites
+    dex
     rts
 
-; Replace sprite by another.
-;
-; X: sprite index
-; Y: low address byte of descriptor of new sprite in sprite_inits
-replace_sprite:
-    ; Make pointer into init values.
+; Y: descriptor of new sprite in sprite_inits
+; Returns: A: Index of new sprite.
+add_sprite:
+    stx tmp
+    sty tmp2
+
+    ldx free_sprites
+    lda free_sprites,x
+    sta free_sprites
+    dex
+
     tya
     clc
     adc #<sprite_inits
@@ -52,7 +42,7 @@ replace_sprite:
     sta sh
 
     ; Make pointer into 'sprites_i'.
-n:  txa
+    txa
     clc
     adc #sprites_i
     sta dl
@@ -73,11 +63,10 @@ n:  lda dl
     bcs sprite_added
     bcc -l      ; (jmp)
 
-remove_sprites:
-    ldx #@(-- num_sprites)
-l:  jsr remove_sprite
-    dex
-    bpl -l
+sprite_added:
+    txa
+r:  ldx tmp
+    ldy tmp2
     rts
 
 remove_sprites_by_type:

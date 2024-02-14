@@ -246,7 +246,7 @@ n:  lda #0
     sta vaus_width
 
     jsr clear_screen_of_sprites
-    jsr remove_sprites
+    jsr init_sprites
     jsr draw_walls      ; Freshen up after mode_break.
     jsr draw_lives
     jsr unblank_screen
@@ -486,7 +486,7 @@ level_complete:
     ldx #1
     jsr wait
     jsr draw_sprites
-    jsr remove_sprites
+    jsr init_sprites
 if @*has-digis?*
     jsr exm_work
 end
