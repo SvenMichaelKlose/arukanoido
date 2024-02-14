@@ -36,9 +36,8 @@ hit_brick:
     bcs -r
 
     ;; Redirect to DOH handling.
-    lda level
-    cmp #doh_level
-    beq -hit_doh
+    lda is_doh_level
+    bne -hit_doh
 
     ;; Check if any type of brick has been hit.
     ; Get pointer into brick map as we cannot tell from screen chars.

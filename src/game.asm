@@ -101,6 +101,7 @@ next_level:
     lda #0
     sta is_running_game
     sta mode_break
+    sta is_doh_level
 
     ldx active_player
     inc level,x
@@ -196,6 +197,7 @@ redraw_game:
     lda level
     cmp #doh_level
     bne +n
+    sta is_doh_level
     jsr init_doh_charset
     jmp +m
 
@@ -206,9 +208,8 @@ m:  jsr draw_walls
     jsr switch_player_score
 
     ;; DOH level init
-    lda level
-    cmp #doh_level
-    bne +n
+    lda is_doh_level
+    beq +n
     lda #16
     ldy active_player
     sta @(-- bricks_left),y
@@ -341,7 +342,7 @@ n:  cmp #keycode_n
     bne +n
     lda level
 end
-if @*demo?*
+if @(& *debug?* *demo?*)
     cmp #num_demo_levels
     beq end_of_demo2
 end

@@ -29,9 +29,8 @@ get_level:
     sta dh
     jsr clrram
 
-    lda level
-    cmp #doh_level
-    beq +r2
+    lda is_doh_level
+    bne +r2
 
     lda #<level_data
     ldy #>level_data

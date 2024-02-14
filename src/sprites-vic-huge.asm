@@ -131,9 +131,9 @@ l:  ; Get screen address.
     cmp spriteframe
     beq +q      ; Yes, Copy…
 
-    lda level
-    cmp #doh_level
-    bne +m
+    ; DOH char to mix into?
+    lda is_doh_level
+    beq +m
     lda scr
     sta sl
     lda @(++ scr)
