@@ -114,10 +114,17 @@ n:  stx is_ntsc
     stx is_landscape
     jsr set_format
 
+    lda #0
+    sta is_playing_digis
+    jsr init_hiscore
+    jsr init_music
+    jsr init_irq
+    jsr init_score
+
 ;;; Unless we make a cartidge with 24K RAM, there
 ;;; cannot be a patch.
 if @(| *shadowvic?* *rom?*)
-    jmp start
+    jmp toplevel
 end
 if @(not (| *shadowvic?* *rom?*))
     jmp patch

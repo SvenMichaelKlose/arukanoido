@@ -31,14 +31,6 @@ end
     jsr clear_charset
     jmp set_format
 
-start:
-    lda #0
-    sta is_playing_digis
-    jsr init_hiscore
-    jsr init_music
-    jsr init_irq
-    jsr init_score
-
 toplevel:
     jsr clear_data
     jsr init_screen
