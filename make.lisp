@@ -185,6 +185,7 @@
              ,@(when *debug?*
                  '("debug.asm"))
              "irq.asm"
+             "title-screen.asm"
              "game.asm"
              "main.asm"
 
