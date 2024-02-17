@@ -19,8 +19,26 @@ l2: lda draw_bitmap_y
     lda draw_bitmap_height
     sta tmp2
 
-    ; Draw char.
-l:  jsr scrcoladdr
+l:  ; Copy into temporary buffer.
+    ldx #8
+    ldy #0
+l3: jsr get_decrunched_byte
+    sta scratch,y
+    iny
+    dex
+    bne -l3
+
+    ; Check if char is empty.
+    txa
+    ldx #7
+l4: ora scratch,x
+    bne +l5
+    dex
+    bpl -l4
+    bmi +skip
+
+    ;; Draw char.
+l5: jsr scrcoladdr
 
     ; Set char colour.
     lda curcol
@@ -33,14 +51,13 @@ l:  jsr scrcoladdr
 
     ; Copy into charset.
     jsr get_char_addr
-    ldx #8
-    ldy #0
-l3: jsr get_decrunched_byte
+    ldy #7
+l3: lda scratch,y
     sta (d),y
-    iny
-    dex
-    bne -l3
+    dey
+    bpl -l3
 
+skip:
     inc scry
     dec tmp2
     bne -l
