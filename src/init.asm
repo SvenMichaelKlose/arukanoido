@@ -116,16 +116,14 @@ n:  stx is_ntsc
 
     lda #0
     sta is_playing_digis
+
+if @(not (| *shadowvic?* *rom?*))
+    jmp patch
+end
+
+start_game:
     jsr init_hiscore
     jsr init_music
     jsr init_irq
     jsr init_score
-
-;;; Unless we make a cartidge with 24K RAM, there
-;;; cannot be a patch.
-if @(| *shadowvic?* *rom?*)
     jmp toplevel
-end
-if @(not (| *shadowvic?* *rom?*))
-    jmp patch
-end

@@ -116,7 +116,7 @@ n:  inc tmp3
     bne print_counter
 
     ; No patch found.  Do regular start.
-    jmp toplevel
+    jmp start_game
 
 print_counter:
     txa
@@ -164,7 +164,7 @@ r:  jsr wait_fire_released
     jsr wait_key_release
     ldx #$ff
     txs
-    jmp toplevel
+    jmp start_game
 
 n:  pla
     tay
