@@ -308,7 +308,7 @@ adjust_ball_speed:
     lda sprites_d,x
     clc
     adc #64
-    bmi +l          ; Flying upwards, may accelerate…
+    bpl +l          ; Reflecting upwards, may accelerate…
     lda sprites_y,x
     sec
     sbc arena_y
