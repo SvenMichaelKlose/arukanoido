@@ -73,10 +73,8 @@ next_column:
 next_row:
     lsr
     bcc got_row
-
     dex
     bpl next_row
-
     dey
     bpl next_column
 

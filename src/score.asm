@@ -38,7 +38,6 @@ l:  lda score_50000,x
     bpl -l
     rts
 
-
 ; s: Score to add.
 add_to_score:
     txa
