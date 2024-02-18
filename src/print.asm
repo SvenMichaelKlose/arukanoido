@@ -80,9 +80,21 @@ print4x8_dynalloc:
     bcs +n
     ldy #7
     lda #0
-l:  sta (d),y
+    sta (d),y
     dey
-    bpl -l
+    sta (d),y
+    dey
+    sta (d),y
+    dey
+    sta (d),y
+    dey
+    sta (d),y
+    dey
+    sta (d),y
+    dey
+    sta (d),y
+    dey
+    sta (d),y
 n:
 
     ; Plot char.
