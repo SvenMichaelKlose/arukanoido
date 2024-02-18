@@ -46,7 +46,7 @@ clear_screen:
     0
     clrmw <charset >charset 8 0
     clrmw <screen >screen @(low 588) @(high 588)
-    setmw <colors >colors @(low 588) @(high 588) @(+ multicolor white)
+    ;setmw <colors >colors @(low 588) @(high 588) @(+ multicolor white)
     0
     rts
 

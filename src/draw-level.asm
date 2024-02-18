@@ -215,9 +215,14 @@ l:  pha
     cmp screen_rows
     beq +done
     jsr scrcoladdr
+    lda #@(+ multicolor white)
+    ldy #0
+    sta (col),y
+    ldy #14
+    sta (col),y
     pla
     sta (scr),y
-    ldy #14
+    ldy #0
     sta (scr),y
     clc
     adc #1
