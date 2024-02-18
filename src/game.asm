@@ -388,7 +388,9 @@ end
 
     ;; Redraw graphics that have changed.
 redraw_changed:
-n:  lda needs_redrawing_lives
+    lda delay_redrawing
+    bne +l2
+    lda needs_redrawing_lives
     beq +n
     lda #0
     sta needs_redrawing_lives
@@ -411,10 +413,14 @@ n:  lda needs_redrawing_score2
     lda #0
     sta needs_redrawing_score2
     jsr print_score2
-n:
+n:  jmp +l
+
+l2: inc delay_redrawing
+    jmp +l
 
 redraw_sprites:
-    lda has_moved_sprites   ; TODO: Remove?
+    dec delay_redrawing
+l:  lda has_moved_sprites   ; TODO: Remove?
     bne +n
     jmp -n2
 n:  lda #0

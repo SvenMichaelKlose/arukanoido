@@ -311,6 +311,7 @@ removed_brick_y:        0
 
 ;;; Redrawing
 has_moved_sprites:       0
+delay_redrawing:         0
 needs_redrawing_lives:   0
 needs_redrawing_score1:  0
 needs_redrawing_score2:  0
