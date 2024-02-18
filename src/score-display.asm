@@ -112,7 +112,9 @@ print_hiscore_raw:
 ;;; scrx2/scry: Text position
 ;;; curchar: Character to print into.
 print_score_string:
-    jsr print_clear_curchar
+    lda #0
+    jsr print4x8_dynalloc
+    dec scrx2
 
     lda #0
     sta tmp3

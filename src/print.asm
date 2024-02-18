@@ -2,14 +2,13 @@
 ; A: char
 ; C: 0: left half, 1: right half
 print4x8:
-    sta print4x8_char
     stx p_x
     sty p_y
-    php
 
-    and #%11111110
     ldy #0
     sty tmp2
+    asl
+    rol tmp2
     asl
     rol tmp2
     asl
@@ -21,91 +20,119 @@ print4x8:
     adc #>charset4x8
     sta tmp2
 
-    lda print4x8_char
-    and #1
-    sta print4x8_char
+    ldy #0
+    lda scrx2
+    lsr
+    bcs +l
 
-    plp
-    bcs +n
-
-    ldy #7
-l:  lda (tmp),y
-    ldx print4x8_char
-    bne +m
-    asl
-    asl
-    asl
-    asl
-m:  and #$f0
+    lda (tmp),y
+    and #$f0
     sta (d),y
-    dey
-    bpl -l
-    bmi +r
+    iny
+    lda (tmp),y
+    and #$f0
+    sta (d),y
+    iny
+    lda (tmp),y
+    and #$f0
+    sta (d),y
+    iny
+    lda (tmp),y
+    and #$f0
+    sta (d),y
+    iny
+    lda (tmp),y
+    and #$f0
+    sta (d),y
+    iny
+    lda (tmp),y
+    and #$f0
+    sta (d),y
+    iny
+    lda (tmp),y
+    and #$f0
+    sta (d),y
+    iny
+    lda (tmp),y
+    and #$f0
+    sta (d),y
+    jmp +r
 
-n:  ldy #7
 l:  lda (tmp),y
-    ldx print4x8_char
-    beq +m
-    lsr
-    lsr
-    lsr
-    lsr
-m:  and #$0f
+    and #$0f
     ora (d),y
     sta (d),y
-    dey
-    bpl -l
+    iny
+    lda (tmp),y
+    and #$0f
+    ora (d),y
+    sta (d),y
+    iny
+    lda (tmp),y
+    and #$0f
+    ora (d),y
+    sta (d),y
+    iny
+    lda (tmp),y
+    and #$0f
+    ora (d),y
+    sta (d),y
+    iny
+    lda (tmp),y
+    and #$0f
+    ora (d),y
+    sta (d),y
+    iny
+    lda (tmp),y
+    and #$0f
+    ora (d),y
+    sta (d),y
+    iny
+    lda (tmp),y
+    and #$0f
+    ora (d),y
+    sta (d),y
+    iny
+    lda (tmp),y
+    and #$0f
+    ora (d),y
+    sta (d),y
 
 r:  ldx p_x
     ldy p_y
     rts
 
-get_curchar_address:
-    lda curchar
-    jmp get_char_addr
-
-print_clear_curchar:
-    jsr get_curchar_address
-    jmp blit_clear_char
-
 print4x8_dynalloc:
     pha
 
-    jsr get_curchar_address
+    ;jmp get_char_addr
+    ldy curchar
+    lda charset_addrs_l,y
+    sta d
+    lda charset_addrs_h,y
+    sta @(++ d)
 
     ; Clear char if left half is being printed to.
     lda scrx2
     lsr
     sta scrx
-    bcs +n
-    ldy #7
-    lda #0
-    sta (d),y
-    dey
-    sta (d),y
-    dey
-    sta (d),y
-    dey
-    sta (d),y
-    dey
-    sta (d),y
-    dey
-    sta (d),y
-    dey
-    sta (d),y
-    dey
-    sta (d),y
-n:
 
     ; Plot char.
-    jsr scrcoladdr
+    ;jsr scrcoladdr
+    ldy scry
+    lda line_addresses_l,y
+    sta scr
+    sta col
+    lda line_addresses_h,y
+    sta @(++ scr)
+    ora #>colors
+    sta @(++ col)
+    ldy scrx
     lda curchar
     sta (scr),y
     lda curcol
     sta (col),y
 
-    lda scrx2
-    lsr
     pla
     jsr print4x8
 
