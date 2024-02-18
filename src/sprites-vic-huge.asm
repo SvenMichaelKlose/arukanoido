@@ -342,6 +342,7 @@ p:  jmp plot_chars
 
     ;; Draw sprite column.
 turbo_preshift:
+    dec overkill
 l2: ldy sprite_lines
 l:  lda (s),y
     sta (d),y

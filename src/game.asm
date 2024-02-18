@@ -427,8 +427,10 @@ n:  lda #0
     sta has_moved_sprites
     jsr draw_sprites
     lda has_moved_sprites
-    sta overkill
-    jmp mainloop
+    beq +l
+    inc overkill
+    inc overkill
+l:  jmp mainloop
 
 lose_life:
     ; Decrement number of lives.
