@@ -64,7 +64,7 @@ view_hiscore    = 3
     beq +get_toplevel_key
     ; Switch every 786 frames.
     lda @(++ framecounter)
-    cmp #3
+    cmp #2
     bne +get_toplevel_key
     inc current_toplevel_view
     ldx current_toplevel_view
