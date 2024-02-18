@@ -1,7 +1,7 @@
-;;; Within the IRQ the game logic is enforced to 60 times per
-;;; second, so no matter how badly the sprites kick in, everything
-;;; keeps running at a constant speed.  That's not true for
-;;; original arcade sounds running via the NMI.
+; Within the IRQ the game logic is enforced to 60 times per second, so no
+; matter how badly the sprites kick in, everything keeps running at a constant
+; speed.
+; That's not true for original arcade sounds running via the NMI.
 
 frame_freq = 60
 frame_timer_pal  = @(- (/ (cpu-cycles :pal)  frame_freq) 18)
@@ -126,7 +126,7 @@ m:  lda screen_gate
     ora #>colors
     sta @(++ c)
 
-    ; Switch char every two pixels.
+    ; Toggle gate char.
     lda framecounter
     lsr
     and #1
@@ -179,7 +179,7 @@ n:  jsr rotate_bonuses
     lda gate_opening
     bne +n2
     jsr add_missing_obstacle
-n2:  jsr dyn_brick_fx
+n2: jsr dyn_brick_fx
 
     ;; Animate obstacle gate.
     ldx do_animate_obstacle_gate
