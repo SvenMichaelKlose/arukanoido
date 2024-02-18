@@ -81,11 +81,10 @@ n:  dex
     jsr hiscore_table
     jmp loop_with_framecounter_reset
 
+get_toplevel_key:
 if @*has-digis?*
     jsr exm_work
 end
-
-get_toplevel_key:
     jsr poll_key
     bcc -loop
     jsr wait_key_release
