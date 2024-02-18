@@ -1,4 +1,6 @@
 audio_boost:
+    sei
+
     ; Stop alto and soprano channel.
     lda #$7e
     sta $900a
@@ -7,7 +9,7 @@ audio_boost:
     sta $900d
 
     ; Let channels rest until LSFRs are empty.
-    ldy #0
+    ldy #$30
 l:  dey
     bne -l
 
@@ -31,6 +33,7 @@ l:  dey         ; 2
     lda #$fd    ; 2
     sta $900c   ; 4
 
+    cli
     rts
 
 stop_audio_boost:
