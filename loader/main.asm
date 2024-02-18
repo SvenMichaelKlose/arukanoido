@@ -6,20 +6,20 @@ main:
     sta $911e
     sta $912e
 
-if @*ultimem?*
+;if @*ultimem?*
     lda #0
     sta $1100       ; No Ultimem…
-    lda $9f55       ; Unhide registers.
-    lda $9faa
-    lda $9f01
-    lda $9ff3
-    cmp #$11
-    beq +f
-    cmp #$12
-    bne +n
+;    lda $9f55       ; Unhide registers.
+;    lda $9faa
+;    lda $9f01
+;    lda $9ff3
+;    cmp #$11
+;    beq +f
+;    cmp #$12
+;    bne +n
 
     ; Activate all Ultimem RAM.
-    inc $1100
+;    inc $1100
 f:  lda #%00111111
     sta $9ff1
     lda #%11111111
@@ -36,14 +36,14 @@ f:  lda #%00111111
     inx
     stx $9ffa
     sta $9ffb
-    inx
+    ldx #8
     stx $9ffc
     sta $9ffd
     inx
     stx $9ffe
     sta $9fff
 n:
-end
+;end
 
     ; Relocate to $2000.
     lda #<loaded_loader
