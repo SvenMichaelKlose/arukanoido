@@ -19,6 +19,8 @@ txt_fourth:     @(string4x8 "4TH") 255
 txt_fifth:      @(string4x8 "5TH") 255
 
 print_initial_char:
+    jsr scrcoladdr
+    jsr get_curchar_addr
     ldy #0
     lda (s),y
     jsr print4x8_dynalloc
@@ -423,6 +425,8 @@ print_score_round_name:
     sta scrx2
     jsr print_score_string
     inc curchar
+    jsr scrcoladdr
+    jsr get_curchar_addr
 
     lda #num_score_digits
     jsr add_sb

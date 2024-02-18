@@ -6,6 +6,9 @@ reuse_char:
     txa
     sta curchar
 
+get_curchar_addr:
+    lda curchar
+
 ; Get address of character in charset.
 get_char_addr:
     tay

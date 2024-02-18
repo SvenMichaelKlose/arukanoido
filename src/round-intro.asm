@@ -77,6 +77,8 @@ end
     ; Move to line start.
     lda #0
     sta scrx2
+    jsr scrcoladdr
+    jsr get_curchar_addr
     ; Print char.
 l2: ldy #0
     lda (s),y

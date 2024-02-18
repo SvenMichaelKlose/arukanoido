@@ -112,6 +112,8 @@ print_hiscore_raw:
 ;;; scrx2/scry: Text position
 ;;; curchar: Character to print into.
 print_score_string:
+    jsr scrcoladdr
+    jsr get_curchar_addr
     lda #0
     jsr print4x8_dynalloc
     dec scrx2

@@ -105,28 +105,12 @@ r:  ldx p_x
 print4x8_dynalloc:
     pha
 
-    ;jmp get_char_addr
-    ldy curchar
-    lda charset_addrs_l,y
-    sta d
-    lda charset_addrs_h,y
-    sta @(++ d)
-
     ; Clear char if left half is being printed to.
     lda scrx2
     lsr
     sta scrx
 
     ; Plot char.
-    ;jsr scrcoladdr
-    ldy scry
-    lda line_addresses_l,y
-    sta scr
-    sta col
-    lda line_addresses_h,y
-    sta @(++ scr)
-    ora #>colors
-    sta @(++ col)
     ldy scrx
     lda curchar
     sta (scr),y
@@ -145,9 +129,8 @@ print4x8_dynalloc:
     clc
     adc #8
     sta dl
-    lda dh
-    adc #0
-    sta dh
+    bcc +r
+    inc dh
 
 r:  inc scrx2
     rts
@@ -160,6 +143,8 @@ print_string_ay:
 ; scrx2/scry: Text position
 ; curchar: Character to print into.
 print_string:
+    jsr scrcoladdr
+    jsr get_curchar_addr
     ldy #0
 l:  tya
     pha
