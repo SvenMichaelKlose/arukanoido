@@ -71,6 +71,7 @@ apply_reflection:
     beq +r
 
 apply_reflection_unconditionally:
+    jsr adjust_ball_speed
     lda sprites_d,x     ; Get degrees.
     sec
     sbc side_degrees    ; Rotate back to zero degrees.

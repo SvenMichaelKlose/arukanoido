@@ -102,7 +102,6 @@ m:  sta sprites_d,x
     lda #0
     sta sprites_d2,x
 
-    ;; Increase ball speed on occasion.
     jsr adjust_ball_speed
 
     ;; Check if ball has to be catched.

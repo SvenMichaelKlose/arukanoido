@@ -51,11 +51,7 @@ hit_brick:
     lda (brickp),y
     beq -r
 
-    ;; Adjust ball speed but not for laser hits.
-    ldy is_testing_laser_hit
-    bne +n
-    jsr adjust_ball_speed
-n:  inc has_hit_brick           ; (Set flag.)
+    inc has_hit_brick           ; (Set flag.)
 
     ldy scrx
     lda (brickp),y
