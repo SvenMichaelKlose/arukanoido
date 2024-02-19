@@ -45,7 +45,8 @@ test_laser_hit:
     jsr get_soft_collision
     beq +o              ; Nothing hit…
     jsr hit_brick
-    bcs +o              ; No brick hit…
+    lda has_hit_brick
+    beq +o              ; No brick hit…
     inc laser_has_hit
 o:  rts
 

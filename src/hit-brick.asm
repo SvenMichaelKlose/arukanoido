@@ -13,13 +13,9 @@ hit_doh:
 r:  rts
 
 ;;; Check if a brick has been hit.
-;;; Ball MUST have been reflected by something.
+;;; Ball *MUST* have been reflected by something.
 ;;;
 ;;; scr: Screen address of brick to hit.
-;;;
-;;; Returns:
-;;; C=0: Regular or silver brick hit.
-;;; C=1: No brick or golden brick hit.
 hit_brick:
     ;; Reset flags other parts of the game want to know about.
     lda #0
@@ -29,9 +25,14 @@ hit_brick:
     sta has_hit_golden_brick
 
     ;; Check if off brick map.
+    lda scrx
+    beq -r
+    cmp #14
+    bcs -r
     lda scry
     sec
     sbc playfield_yc
+    beq -r
     cmp #24
     bcs -r
 
@@ -48,7 +49,7 @@ hit_brick:
     sta @(++ brickp)
     ldy scrx
     lda (brickp),y
-    beq +no_brick_hit
+    beq -r
 
     ;; Adjust ball speed but not for laser hits.
     ldy is_testing_laser_hit
@@ -123,7 +124,6 @@ o:  jsr add_to_score
     sta (brickp),y
 
     inc has_hit_brick       ; (Set flag.)
-no_brick_hit:
     rts
 
     ;; Handle golden brick.
