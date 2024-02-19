@@ -25,19 +25,19 @@ main:
 
     ; Make char address table.
     lda #0
-    sta s
+    sta sl
     tax
     lda #>charset
-    sta @(++ s)
-l:  lda s
+    sta sh
+l:  lda sl
     sta charset_addrs_l,x
     clc
     adc #8
-    sta s
-    lda @(++ s)
+    sta sl
+    lda sh
     sta charset_addrs_h,x
     adc #0
-    sta @(++ s)
+    sta sh
     inx
     bne -l
 
