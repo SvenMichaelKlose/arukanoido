@@ -14,7 +14,13 @@ get_soft_collision:
     lsr
     sta scry
 get_hard_collision:
-    jsr scraddr
+    ;jsr scraddr
+    ldy scry
+    lda line_addresses_l,y
+    sta scr
+    lda line_addresses_h,y
+    sta @(++ scr)
+    ldy scrx
     lda (scr),y
     cmp #bg_minivaus    ; Ignore miniature Vaus displaying # of lives.
     beq +n

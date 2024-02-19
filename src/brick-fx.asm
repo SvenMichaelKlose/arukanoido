@@ -96,7 +96,13 @@ undo_brick_fx:
     sta brickfx_x,y
     lda brickfx_y,y
     sta scry
-    jsr scraddr
+    ;jsr scraddr
+    ldy scry
+    lda line_addresses_l,y
+    sta scr
+    lda line_addresses_h,y
+    sta @(++ scr)
+    ldy scrx
     lda #bg_brick_special
     sta (scr),y
     pla
@@ -119,7 +125,13 @@ l:  txa
     sta scrx
     lda brickfx_y,x
     sta scry
-    jsr scraddr
+    ;jsr scraddr
+    ldy scry
+    lda line_addresses_l,y
+    sta scr
+    lda line_addresses_h,y
+    sta @(++ scr)
+    ldy scrx
     lda (scr),y
     jsr animate_brick
     bcs +l2

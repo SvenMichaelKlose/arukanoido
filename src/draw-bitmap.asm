@@ -38,7 +38,16 @@ l4: ora scratch,x
     bmi +skip
 
     ;; Draw char.
-l5: jsr scrcoladdr
+l5: ;jsr scrcoladdr
+    ldy scry
+    lda line_addresses_l,y
+    sta scr
+    sta col
+    lda line_addresses_h,y
+    sta @(++ scr)
+    ora #>colors
+    sta @(++ col)
+    ldy scrx
 
     ; Set char colour.
     lda curcol

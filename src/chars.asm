@@ -60,9 +60,6 @@ test_position:
     tay
 l:  rts
 
-scraddr_get_char:
-    jsr scrcoladdr
-
 get_char:
     jsr test_position
     bcs cant_use_position
