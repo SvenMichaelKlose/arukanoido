@@ -388,9 +388,12 @@ end
 
     ;; Redraw graphics that have changed.
 redraw_changed:
+    lda mode_break
+    beq +n
+    bpl +n
     lda delay_redrawing
     bne +l2
-    lda needs_redrawing_lives
+n:  lda needs_redrawing_lives
     beq +n
     lda #0
     sta needs_redrawing_lives

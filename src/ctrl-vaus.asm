@@ -19,9 +19,20 @@ m:  lda #<score_100
     jsr add_to_score
     dec mode_break      ; Start animation.
     bne -r
-    lda #0              ; Signal end of game to main loop.
+    txa
+    pha
+    jsr draw_lives
+    jsr print_hiscore
     ldy active_player
+    dey
+    bne +l1
+    jsr print_score1
+    jmp +l2
+l1: jsr print_score2
+l2: ldy active_player
+    lda #0              ; Signal end of game to main loop.
     sta @(-- bricks_left),y
+    pla
     jmp remove_sprite
 
     ; Check on collision with obstacle.
