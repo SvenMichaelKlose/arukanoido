@@ -2,8 +2,8 @@
 
 ; CONFIGURE HERE!
 
-;(const *versions* '(:prg :tap :wav)); :shadowvic))
-(const *versions* '(:prg))
+(const *versions* '(:prg :tap :wav)); :shadowvic))
+;(const *versions* '(:prg))
 
 (const *demo?* t)               ; Limit to first eight levels.
 (const *debug?* t)              ; Include self-tests and features.
@@ -166,7 +166,6 @@
              "hit-brick.asm"
              "reflect.asm"
              "reflect-edge.asm"
-             "reflect-ball-obstacle.asm"
 
              ; Sprite controllers
              "step-smooth.asm"

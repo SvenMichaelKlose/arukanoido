@@ -126,7 +126,8 @@ r:  lda #snd_reflection_low
 hit_obstacle:
     lda #0
     sta sprites_d2,x    ; Reset number of hits with no effect.
-    jsr reflect_ball_obstacle
+    lda #192
+    sta side_degrees
     jsr apply_reflection_unconditionally
     jmp remove_obstacle
 
