@@ -128,7 +128,6 @@ hit_obstacle:
     sta sprites_d2,x    ; Reset number of hits with no effect.
     jsr reflect_ball_obstacle
     jsr apply_reflection_unconditionally
-    jsr adjust_ball_speed
     jmp remove_obstacle
 
 lose_ball:
@@ -336,7 +335,6 @@ increase_ball_speed:
 n:  cmp #max_ball_speed
     bcs +r                  ; Already at maximum speed. Do nothing…
 l:  inc ball_speed          ; Play the blues…
-
 r:  rts
 
 ;;; From arcade ROM.
