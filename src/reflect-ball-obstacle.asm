@@ -7,7 +7,7 @@ reflect_ball_obstacle:
     bpl +n                  ; No…
     lda sprites_x,x
     cmp sprites_x,y
-    bcs +l
+    bcs +r
 j:  lda #64
     sta side_degrees
     rts
