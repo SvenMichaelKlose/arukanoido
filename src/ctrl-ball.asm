@@ -279,7 +279,7 @@ r:  rts
 adjust_ball_speed_hitting_top:
     lda sprites_y,x
     cmp ball_min_y
-    bne adjust_ball_speed
+    bne -r
     ldy level
     lda @(-- ball_speeds_when_top_hit),y
     cmp ball_speed
