@@ -162,7 +162,7 @@ remove_obstacle:
     pha
     tya
     tax
-    jsr make_explosion
+    jsr replace_by_explosion
     dec num_obstacles
     lda #snd_hit_obstacle
     jsr play_sound

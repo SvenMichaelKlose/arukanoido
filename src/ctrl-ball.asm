@@ -128,8 +128,8 @@ hit_obstacle:
     sta sprites_d2,x    ; Reset number of hits with no effect.
     jsr reflect_ball_obstacle
     jsr apply_reflection_unconditionally
-    jsr remove_obstacle
-    jmp increase_ball_speed
+    jsr adjust_ball_speed
+    jmp remove_obstacle
 
 lose_ball:
     pla
@@ -279,7 +279,7 @@ r:  rts
 adjust_ball_speed_hitting_top:
     lda sprites_y,x
     cmp ball_min_y
-    bne -r
+    bne adjust_ball_speed
     ldy level
     lda @(-- ball_speeds_when_top_hit),y
     cmp ball_speed

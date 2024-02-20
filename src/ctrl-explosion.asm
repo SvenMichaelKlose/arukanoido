@@ -1,11 +1,10 @@
-;;; Turn obstacle into an explosion.
-make_explosion:
-    lda #0
+replace_by_explosion:
+    lda #0              ; (decorative sprite)
     sta sprites_i,x
     sta sprites_pgl,x
     sta sprites_pgh,x
     lda sprites_x,x
-    and #$fe
+    and #$fe            ; (to multi-color X)
     sta sprites_x,x
     lda #<gfx_explosion
     sta sprites_gl,x
@@ -17,22 +16,23 @@ make_explosion:
     sta sprites_fl,x
     lda #>ctrl_explosion
     sta sprites_fh,x
-    rts
+r:  rts
 
-;;; Play animation, then remove it.
 ctrl_explosion:
+    ; Every four frames only.
     lda framecounter
     and #3
-    bne +n
+    bne -r
+
+    ; Step to next frame of animation.
     lda sprites_gl,x
     clc
     adc #16
     sta sprites_gl,x
-    lda sprites_gh,x
-    adc #0
-    sta sprites_gh,x
-    lda sprites_gl,x
-    cmp #<gfx_explosion_end
-    bne +n
+    bcc +n
+    inc sprites_gh,x
+
+    ; End of animation.
+n:  cmp #<gfx_explosion_end
+    bne -r
     jmp remove_sprite
-n:  rts
