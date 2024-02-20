@@ -69,7 +69,7 @@ l5: ldx playfield_yc
     lda #white
     sta curcol
 
-    ;; Print char and step on.
+    ;; Print line.
 l:
 if @*shadowvic?*
     $22 $02         ; Wait for retrace.
