@@ -85,7 +85,7 @@ n:  jsr test_vaus_hit_right
     beq +m
     jmp enter_break_mode
 
-m:  lda #@(* 14 8)
+m:  lda #ball_max_x
     sec
     sbc vaus_width
 n:  sec
