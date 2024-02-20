@@ -7,10 +7,10 @@ reflect_ball_obstacle:
     bpl +n                  ; No…
     lda sprites_x,x
     cmp sprites_x,y
-    bcs +r
+    bcs +n
 j:  lda #64
     sta side_degrees
-    rts
+    bne +l  ; (jmp)
 
     ; Bounce back right.
 n:  lda sprites_x,x
@@ -18,7 +18,7 @@ n:  lda sprites_x,x
     bcc -j
 
     ; Bounce back from top.
-    lda sprites_d,x         ; Are we flying upwards?
+l:  lda sprites_d,x         ; Are we flying upwards?
     clc
     adc #64
     bpl +n                  ; No…
@@ -26,6 +26,7 @@ n:  lda sprites_x,x
     cmp sprites_y,y
     bcc +r
 j:  lda #128
+    ora side_degrees
     sta side_degrees
 r:  rts
 
