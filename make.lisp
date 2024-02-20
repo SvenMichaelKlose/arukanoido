@@ -2,8 +2,8 @@
 
 ; CONFIGURE HERE!
 
-(const *versions* '(:prg :tap :wav)); :shadowvic))
-;(const *versions* '(:prg))
+;(const *versions* '(:prg :tap :wav)); :shadowvic))
+(const *versions* '(:prg))
 
 (const *demo?* t)               ; Limit to first eight levels.
 (const *debug?* t)              ; Include self-tests and features.
@@ -129,7 +129,7 @@
              "wait.asm"
              "zeropage-utils.asm"
 
-             ; Controls
+             ; Inputs
              "fire-button.asm"
              "keyboard.asm"
              "joystick.asm"
@@ -158,13 +158,15 @@
              "lives.asm"
              "score-display.asm"
 
+             "score.asm"
+             "ball-speed.asm"
+
              ; Collisions
              "get-collision.asm"
              "hit-brick.asm"
              "reflect.asm"
              "reflect-edge.asm"
              "reflect-ball-obstacle.asm"
-             "score.asm"
 
              ; Sprite controllers
              "step-smooth.asm"
