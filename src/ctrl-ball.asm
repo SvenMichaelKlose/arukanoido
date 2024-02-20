@@ -360,9 +360,9 @@ release_ball:
 
     ; Correct X position so the ball won't end up within the wall.
     lda sprites_x,y
-    cmp ball_max_x
+    cmp #ball_max_x
     bcc +n
-    lda ball_max_x
+    lda #@(-- ball_max_x)
     sta sprites_x,y
 n:  cmp #7
     bcs +n

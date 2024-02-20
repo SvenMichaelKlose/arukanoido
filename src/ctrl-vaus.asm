@@ -3,12 +3,12 @@ ctrl_vaus:
     beq +n      ; Not active.
     bmi +n      ; Active but Vaus is not moving through the gate.
 
-    ; Break mode: move Vaus out through the port.
+    ;; Break mode: move Vaus out through the port.
     lda framecounter
     and #7
     bne +m
     lda sprites_x,x
-    cmp ball_max_x
+    cmp #ball_max_x
     bcs +m
     lda #2              ; (1 multi-color pixel)
     jsr sprite_right

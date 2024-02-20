@@ -230,7 +230,6 @@ ball_vaus_y_upper:  0
 ball_vaus_y_above:  0
 ball_vaus_y_lower:  0
 ball_vaus_y_caught: 0
-ball_max_x:         0
 ball_max_y:         0
 ball_min_y:         0
 screen_gate:        0 0

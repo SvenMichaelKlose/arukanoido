@@ -1,6 +1,8 @@
 portrait_color_1up  = @(+ colors 2)
 portrait_color_2up  = @(+ colors 11)
 
+ball_max_x = @(* 14 8)
+
 format_portrait:
     15          ; screen_columns
     32          ; screen_rows
@@ -161,16 +163,6 @@ l:  stx user_screen_origin_x
     sec
     sbc #8
     sta ball_vaus_y_caught
-
-    lda screen_columns
-    sec
-    sbc #1
-    asl
-    asl
-    asl
-    tax
-    dex
-    stx ball_max_x
 
     ldx playfield_yc
     inx
