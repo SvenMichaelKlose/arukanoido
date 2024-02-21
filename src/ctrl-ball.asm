@@ -54,12 +54,10 @@ ctrl_ball:
     bpl loosen_caught_ball
 
     ;; Call the ball controller ball_speed times.
-    ldy ball_speed
+    lda ball_speed
+    sta ctrl_ball_tmp
 l:  lda sprites_i,x
     bmi +r
-    tya
-    pha
-    ; Move it.
     lda #0
     sta position_has_changed
     jsr half_step_smooth
@@ -68,9 +66,7 @@ l:  lda sprites_i,x
     lda position_has_changed
     beq +n
     jsr ctrl_ball_subpixel
-n:  pla
-    tay
-    dey
+n:  dec ctrl_ball_tmp
     bne -l
 r:  rts
 

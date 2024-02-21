@@ -21,6 +21,7 @@ tmp3:       0
 tmp4:       0
 tmp5:       0
 tmp6:       0
+ctrl_ball_tmp: 0
 
 ;;; Screen access
 scr:        0 0 ; Screen pointer (line start)
@@ -174,7 +175,7 @@ position_has_changed:   0
 ;;; Printing text
 p_x:            0
 p_y:            0
-print4x8_char:  0
+;print4x8_char:  0
 
 ;;; Brick FX
 ;; Circular list of bricks to animate.
