@@ -500,33 +500,39 @@ end
     lda sprite_scrx
     sta scrx
 
+    ; Get screen and color RAM adresses.
+    ldy sprite_scry
+    lda line_addresses_l,y
+    clc
+    adc scrx
+    sta scr
+    sta col
+    lda line_addresses_h,y
+    adc #0
+    sta @(++ scr)
+    ora #>colors
+    sta @(++ col)
+    lda #0
+    sta tmp3
+
     ;; Do a column.
 l2: lda sprite_scry
     sta scry
     lda sprite_rows_on_screen
     sta tmp2
+    ldy tmp3
 
 l:  ;; Check if position is plottable.
-    ldy scry
-    cpy playfield_yc
+    lda scry
+    cmp playfield_yc
     bcc +n                  ; Don't plot into score area…
-    cpy screen_rows
+    cmp screen_rows
     bcs +n                  ; Don't plot over the bottom…
     lda scrx
     cmp #playfield_columns
     bcs +n                  ; Don't plot over the right…
 
     ;; Check if on a background char.
-    ; Get screen and color RAM adresses.
-    lda line_addresses_l,y
-    sta scr
-    sta col
-    lda line_addresses_h,y
-    sta @(++ scr)
-    ora #>colors
-    sta @(++ col)
-    ldy scrx
-
     ; Plot over background if DOH projectile.
     lda sprites_i,x
     and #is_doh_obstacle
@@ -544,11 +550,14 @@ l3: lda tmp
     ; Next row.
 n:  inc tmp     ; To next sprite char.
     inc scry
+    lda next_line_offsets,y
+    tay
     dec tmp2
     bne -l
 
     ; Next column.
     inc scrx
+    inc tmp3
     dec sprite_cols_on_screen
     bne -l2
 
@@ -558,3 +567,6 @@ if @*show-cpu?*
     dec $900f
 end
     rts
+
+next_line_offsets:
+    fill 128

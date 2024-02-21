@@ -91,6 +91,18 @@ n:  inx
     bcc -l
     beq -l          ; Invisible bottom line.
 
+    ; Make next line offsets.
+    lda #128
+    sta tmp
+    ldx #0
+    lda screen_columns
+l:  sta next_line_offsets,x
+    inx
+    clc
+    adc #1
+    dec tmp
+    bne -l
+
     ; Set default screen origin.
     lda is_ntsc
     beq +n
