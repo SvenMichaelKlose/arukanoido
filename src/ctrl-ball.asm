@@ -60,6 +60,8 @@ l:  lda sprites_i,x
     tya
     pha
     ; Move it.
+    lda #0
+    sta position_has_changed
     jsr half_step_smooth
     ; Ball moves half a pixel maximum, so don't call the
     ; controller for nothing.
@@ -150,11 +152,6 @@ n:  lda balls
 n:  jmp remove_sprite
 
 ctrl_ball_subpixel:
-    ;; Deal with lost ball.
-    lda sprites_y,x
-    cmp ball_max_y
-    beq lose_ball
-
     lda #0
     sta has_hit_brick
 
@@ -163,6 +160,8 @@ ctrl_ball_subpixel:
     iny
     sty ball_x
     ldy sprites_y,x
+    cpy ball_max_y
+    beq lose_ball
     iny
     iny
     sty ball_y

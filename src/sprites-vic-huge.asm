@@ -497,14 +497,13 @@ end
     ;; Get initial sprite char and screen position.
     lda sprite_char
     sta tmp
-    lda sprite_scrx
-    sta scrx
 
     ; Get screen and color RAM adresses.
     ldy sprite_scry
-    lda line_addresses_l,y
+    lda sprite_scrx
+    sta scrx
     clc
-    adc scrx
+    adc line_addresses_l,y
     sta scr
     sta col
     lda line_addresses_h,y

@@ -1,13 +1,4 @@
-;(fn full-sin-wave (x)
-;  (+ x
-;     (reverse x)
-;     (negate x)
-;     (reverse (negate x))))
-
 half_step_smooth:
-    lda #0
-    sta position_has_changed
-
     ; Move on X axis.
     lda sprites_d,x     ; Get direction.
     sec
