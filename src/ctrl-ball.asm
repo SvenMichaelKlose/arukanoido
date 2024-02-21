@@ -132,7 +132,6 @@ hit_obstacle:
 lose_ball:
     pla
     pla
-    pla
     dec balls
     bne +n
     lda #0
