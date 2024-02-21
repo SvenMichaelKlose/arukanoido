@@ -93,9 +93,7 @@ n:  dey
     clc
     adc screen_columns
     sta scr
-    bcc +n
-    inc @(++ scr)
-    
+    bcs +l
 n:  dec sprite_rows
     bne -l2
 
@@ -110,6 +108,9 @@ if @*show-cpu?*
 end
 
     rts
+
+l:  inc @(++ scr)
+    bne -n  ; (jmp)
 
 clear_screen_of_sprites:
     ldx #0
