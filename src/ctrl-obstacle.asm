@@ -343,9 +343,7 @@ m:  lda #%11111111
     sta sprites_d,x
     bne -k
 
-n:  jsr get_sprite_screen_position
-
-    ; Skip testing vertical collision if not on Y char boundary.
+n:  ; Skip testing vertical collision if not on Y char boundary.
     lda sprites_y,x
     and #7
     bne +move_horizontally
