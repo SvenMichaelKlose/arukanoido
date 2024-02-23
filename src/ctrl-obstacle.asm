@@ -357,10 +357,10 @@ pace_obstacle:
     lsr
     clc
     adc line_addresses_l,y
-    sta scr2
+    sta scr
     lda line_addresses_h,y
     adc #0
-    sta @(++ scr2)
+    sta @(++ scr)
 
     ; Skip testing vertical collision if not on Y char boundary.
     lda sprites_y,x
@@ -441,11 +441,11 @@ move_right:
 
 test_gap_left:
     ldy lo_mx
-    lda (scr2),y
+    lda (scr),y
     and #foreground
     bne +n
     ldy lo_ymx
-    lda (scr2),y
+    lda (scr),y
     and #foreground
     bne +n
     ldy #direction_left
@@ -456,11 +456,11 @@ n:  clc
 
 test_gap_right:
     ldy lo_x
-    lda (scr2),y
+    lda (scr),y
     and #foreground
     bne -n
     ldy lo_yx
-    lda (scr2),y
+    lda (scr),y
     and #foreground
     bne -n
     ldy #direction_right
@@ -469,14 +469,14 @@ test_gap_right:
 
 test_gap_bottom:
     ldy lo_2y
-    lda (scr2),y
+    lda (scr),y
     and #foreground
     bne -n
     lda sprites_x,x
     and #7
     beq -f
     iny
-    lda (scr2),y
+    lda (scr),y
     and #foreground
     bne -n
     sec
@@ -484,14 +484,14 @@ r:  rts
 
 test_gap_top:
     ldy #0
-    lda (scr2),y
+    lda (scr),y
     and #foreground
     bne -n
     lda sprites_x,x
     and #7
     beq -f
     iny
-    lda (scr2),y
+    lda (scr),y
     and #foreground
     bne -n
     sec
