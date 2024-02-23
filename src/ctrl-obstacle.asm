@@ -345,31 +345,22 @@ pace_obstacle:
     cmp tmp
     bcs start_circling
 
-    lda sprites_x,x
-    lsr
-    lsr
-    lsr
-    sta scrx
     lda sprites_y,x
     lsr
     lsr
     lsr
-    sta scry
     tay
-    lda line_addresses_l,y
-    sec
-    sbc screen_columns
+    dey
+    lda sprites_x,x
+    lsr
+    lsr
+    lsr
+    clc
+    adc line_addresses_l,y
     sta scr2
     lda line_addresses_h,y
-    sbc #0
+    adc #0
     sta @(++ scr2)
-    lda scr2
-    clc
-    adc scrx
-    sta scr2
-    bcc +n
-    inc @(++ scr2)
-n:
 
     ; Skip testing vertical collision if not on Y char boundary.
     lda sprites_y,x
