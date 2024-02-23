@@ -374,6 +374,15 @@ bricks2:            0
 has_two_players:    0
 active_player:      0
 
+lo_my:      0
+lo_myx:     0
+lo_mx:      0
+lo_ymx:     0
+lo_x:       0
+lo_yx:      0
+lo_2y = double_screen_columns
+lo_2yx:     0
+
 scratch:    "                          "
 lowmem:
     end

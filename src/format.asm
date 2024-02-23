@@ -70,6 +70,29 @@ set_format_common:
     asl
     sta double_screen_columns
 
+    ; Relative screen offsets.
+    ldy #0
+    sty lo_my   ; -1 line
+    iny
+    sty lo_myx  ; -1 line +1 char
+    ldy screen_columns
+    dey
+    sty lo_mx   ; -1 char
+    tya
+    clc
+    adc screen_columns
+    sta lo_ymx  ; +1 line, -1 char
+    ldy screen_columns
+    iny
+    sta lo_x    ; +1 char
+    tya
+    clc
+    adc screen_columns
+    sta lo_yx   ; +1 line +1 char
+    ldy double_screen_columns
+    iny
+    sty lo_2yx  ; +2 lines +1 char
+
     ; Make line addresses.
     lda #<screen
     sta sl
