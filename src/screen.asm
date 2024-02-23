@@ -36,10 +36,8 @@ plot_char:
     jsr scrcoladdr
     pla
     sta (scr),y
-    pha
     lda curcol
     sta (col),y
-    pla
     rts
 
 clear_screen:
