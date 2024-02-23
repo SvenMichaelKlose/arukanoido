@@ -149,6 +149,7 @@ new_obstacle_x:           0
 
 is_doh_level:   0
 
+scr2:   0 0
 uncleaned_zp:
 
 bricks:         0   ; Starting page of brick map.
@@ -374,14 +375,11 @@ bricks2:            0
 has_two_players:    0
 active_player:      0
 
-lo_my:      0
-lo_myx:     0
-lo_mx:      0
-lo_ymx:     0
 lo_x:       0
 lo_yx:      0
-lo_2y = double_screen_columns
-lo_2yx:     0
+lo_mx:      0
+lo_ymx:     0
+lo_2y:      0
 
 scratch:    "                          "
 lowmem:

@@ -70,11 +70,10 @@ set_format_common:
     asl
     sta double_screen_columns
 
-    ; Relative screen offsets.
-    ldy #0
-    sty lo_my   ; -1 line
-    iny
-    sty lo_myx  ; -1 line +1 char
+    ;; Relative screen offsets.
+    adc screen_columns
+    sta lo_2y
+
     ldy screen_columns
     dey
     sty lo_mx   ; -1 char
@@ -82,18 +81,16 @@ set_format_common:
     clc
     adc screen_columns
     sta lo_ymx  ; +1 line, -1 char
+
     ldy screen_columns
     iny
-    sta lo_x    ; +1 char
+    sty lo_x    ; +1 char
     tya
     clc
     adc screen_columns
     sta lo_yx   ; +1 line +1 char
-    ldy double_screen_columns
-    iny
-    sty lo_2yx  ; +2 lines +1 char
 
-    ; Make line addresses.
+    ;; Make line addresses.
     lda #<screen
     sta sl
     lda #>screen
@@ -114,7 +111,7 @@ n:  inx
     bcc -l
     beq -l          ; Invisible bottom line.
 
-    ; Make next line offsets.
+    ;; Make next line offsets.
     lda #128
     sta tmp
     ldx #0
@@ -126,7 +123,7 @@ l:  sta next_line_offsets,x
     dec tmp
     bne -l
 
-    ; Set default screen origin.
+    ;; Set default screen origin.
     lda is_ntsc
     beq +n
     ldx #12

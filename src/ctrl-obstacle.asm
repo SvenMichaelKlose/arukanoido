@@ -302,6 +302,27 @@ n:  jsr turn_obstacle_clockwise
     beq -l
 r:  rts
 
+start_circling:
+    lda sprites_x,x
+    cmp #64
+    bcs +m
+
+    ; Counter-clockwise.
+    lda #%01111111
+    sta sprites_d2,x
+    lda #@(+ 128 direction_l)
+    sta sprites_d,x
+k:  lda #<ctrl_obstacle_circling
+    ldy #>ctrl_obstacle_circling
+    jmp set_obstacle_controller
+
+    ; Clockwise.
+m:  lda #%11111111
+    sta sprites_d2,x
+    lda #@(+ 128 direction_r)
+    sta sprites_d,x
+    bne -k  ; (jmp)
+
 ctrl_obstacle_pacing:
     jsr animate_obstacle
     jsr pace_obstacle
@@ -322,28 +343,35 @@ pace_obstacle:
     sec
     sbc arena_y
     cmp tmp
-    bcc +n          ; It didn't…
+    bcs start_circling
 
-    ;; Start circling.
     lda sprites_x,x
-    cmp #64
-    bcs +m
-    ; Counter-clockwise.
-    lda #%01111111
-    sta sprites_d2,x
-    lda #@(+ 128 direction_l)
-    sta sprites_d,x
-k:  lda #<ctrl_obstacle_circling
-    ldy #>ctrl_obstacle_circling
-    jmp set_obstacle_controller
-    ; Clockwise.
-m:  lda #%11111111
-    sta sprites_d2,x
-    lda #@(+ 128 direction_r)
-    sta sprites_d,x
-    bne -k
+    lsr
+    lsr
+    lsr
+    sta scrx
+    lda sprites_y,x
+    lsr
+    lsr
+    lsr
+    sta scry
+    tay
+    lda line_addresses_l,y
+    sec
+    sbc screen_columns
+    sta scr2
+    lda line_addresses_h,y
+    sbc #0
+    sta @(++ scr2)
+    lda scr2
+    clc
+    adc scrx
+    sta scr2
+    bcc +n
+    inc @(++ scr2)
+n:
 
-n:  ; Skip testing vertical collision if not on Y char boundary.
+    ; Skip testing vertical collision if not on Y char boundary.
     lda sprites_y,x
     and #7
     bne +move_horizontally
@@ -375,16 +403,17 @@ move_up:
     jsr test_gap_left
     bcc +l
     dec sprites_x,x
-m:  jmp pace_obstacle_again
+    jmp pace_obstacle_again
 
 n:  jsr test_gap_right
     bcc +l
     inc sprites_x,x
-    bne -m
+    jmp pace_obstacle_again
 
     ; Check collision upwards.
 l:  jsr test_gap_top
     bcs +r
+    ; Turn around.
     lda sprites_d2,x
     eor #128
     sta sprites_d2,x
@@ -416,55 +445,66 @@ f:  ldy #direction_up
 r:  rts
 
 move_right:
-    inc scrx
     jsr test_gap_right
     jmp -l
 
 test_gap_left:
-    jsr get_sprite_screen_position
-    dec scrx
-    jsr get_hard_collision
+    ldy lo_mx
+    lda (scr2),y
+    and #foreground
     bne +n
-    inc scry
-    jsr get_hard_collision
+    ldy lo_ymx
+    lda (scr2),y
+    and #foreground
     bne +n
     ldy #direction_left
-    sec
+f:  sec
     rts
 n:  clc
     rts
 
 test_gap_right:
-    jsr get_sprite_screen_position
-    inc scrx
-    jsr get_hard_collision
+    ldy lo_x
+    lda (scr2),y
+    and #foreground
     bne -n
-    inc scry
-    jsr get_hard_collision
+    ldy lo_yx
+    lda (scr2),y
+    and #foreground
     bne -n
     ldy #direction_right
     sec
     rts
 
 test_gap_bottom:
-    jsr get_sprite_screen_position
-    inc scry
-    inc scry
-l:  jsr get_hard_collision
+    ldy lo_2y
+    lda (scr2),y
+    and #foreground
     bne -n
     lda sprites_x,x
     and #7
-    beq +f
-    inc scrx
-    jsr get_hard_collision
+    beq -f
+    iny
+    lda (scr2),y
+    and #foreground
     bne -n
-f:  sec
-    rts
+    sec
+r:  rts
 
 test_gap_top:
-    jsr get_sprite_screen_position
-    dec scry
-    jmp -l
+    ldy #0
+    lda (scr2),y
+    and #foreground
+    bne -n
+    lda sprites_x,x
+    and #7
+    beq -f
+    iny
+    lda (scr2),y
+    and #foreground
+    bne -n
+    sec
+    rts
 
 ctrl_obstacle_chasing:
     ldy vaus_sprite_index
