@@ -407,22 +407,17 @@ move_horizontally:
     bcs -turn_downwards
 
     ; Move left.
-    jsr get_sprite_screen_position
     lda sprites_d,x
     bpl +move_right
-
-    dec scrx
-l:  jsr get_hard_collision
-    bne +f
-    inc scry
-    jsr get_hard_collision
-    beq +r
+    jsr test_gap_left
+l:  bcs +r
 f:  ldy #direction_up
     jmp pace_obstacle_again
 r:  rts
 
 move_right:
     inc scrx
+    jsr test_gap_right
     jmp -l
 
 test_gap_left:
