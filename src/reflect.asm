@@ -48,10 +48,10 @@ o:  lda sprites_d,x         ; Are we flying upwards?
     clc
     adc #64
     bpl +n                  ; No…
-    lda ball_x
     ldy ball_y
     cpy arena_y
     beq +j                  ; Reflect from open obstacle gate…
+    lda ball_x
     dey
     jsr get_soft_collision
     beq +r
@@ -84,7 +84,7 @@ apply_reflection_unconditionally:
     sec
     sbc side_degrees    ; Rotate back to zero degrees.
     eor #$7f            ; (neg) Get opposite deviation from general direction.
-    sec
+    sec                 ; TODO: Remove?
     adc side_degrees    ; Rotate back to original axis.
     ;eor #128            ; Rotate to opposite direction.
     sta sprites_d,x
