@@ -16,15 +16,15 @@ adjust_ball_speed:
     lda ball_speed
     cmp #$0f
     beq +r          ; Maximum ball speed already…
-    lda sprites_d,x
-    clc
-    adc #64
-    bpl +l          ; Reflecting upwards, may accelerate…
-    lda sprites_y,x
-    sec
-    sbc arena_y
-    cmp #@(* 8 14)
-    bcs +r          ; Do not accelerate on bottom half of screen.
+;    lda sprites_d,x
+;    clc
+;    adc #64
+;    bpl +l          ; Reflecting upwards, may accelerate…
+;    lda sprites_y,x
+;    sec
+;    sbc arena_y
+;    cmp #@(* 8 14)
+;    bcs +r          ; Do not accelerate on bottom half of screen.
 
 l:  lda ball_speed
     lsr
