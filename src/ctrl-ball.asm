@@ -134,11 +134,14 @@ lose_ball:
     pla
     dec balls
     bne +n
+
+    ;; End game.
     lda #0
     sta is_running_game
     lda #snd_miss
     jmp play_sound
 
+    ;; Lose ball in Disruption Mode.
 n:  lda balls
     cmp #1
     bne +n
@@ -164,7 +167,7 @@ ctrl_ball_subpixel:
     ;; Hit Vaus or obstacle?
     lda #@(+ is_vaus is_obstacle)
     jsr find_point_hit
-    bcs check_reflection    ; Nothing hit…
+    bcs check_reflection    ; No…
     lda sprites_i,y
     and #is_vaus
     beq hit_obstacle
@@ -177,26 +180,45 @@ check_reflection:
     ;; Side hit?
     jsr reflect
     lda has_reflection
-    bne +n2                     ; Ball hit something…
+    bne +n                  ; Ball hit something…
 
     ;; Edge hit instead?
     jsr reflect_edge
     lda has_reflection
-    beq -r
-m:  lda #0
+    beq -r                  ; Nothing hit.  Done…
+    lda #0
     sta has_reflection
     lda sprites_d,x
     eor #$80                ; Opposite direction.
     sta sprites_d,x
 
-n2: jsr adjust_ball_speed_hitting_top
+    ;; Adjust ball speed when it hits the top of the arena
+    ;; depending on round number.
+n:  lda sprites_y,x
+    cmp ball_min_y
+    bne +n
+    ldy level
+    lda @(-- ball_speeds_when_top_hit),y
+    cmp ball_speed
+    bcc +n
+    ldy is_using_paddle
+    bne +l
+    cmp #max_ball_speed_joystick
+    bcc +l
+    lda #max_ball_speed_joystick
+l:  sta ball_speed
+    bne +n2 ; (jmp)
+n:  ;jsr adjust_ball_speed
+n2:
 
     ;;; Handle removed brick.
     lda has_removed_brick
     beq +n
-    lda level
-    cmp #33
-    beq +n
+
+    ;; Handle DOH.
+    lda is_doh_level    ; TODO: Remove?
+    bne +n
+
     ;; Make bonus.
     lda mode
     cmp #mode_disruption    ; No bonuses in disruption mode.
@@ -216,9 +238,11 @@ f:  inc sprites_d2,x
     lda sprites_d2,x
     cmp #64
     bcc +l
+
     ;; Divert ball as it had 64 hits with no effect.
     lda #0
     sta sprites_d2,x
+
     ; Random pick if (counter) clock-wise.
     lda framecounter
     lsr

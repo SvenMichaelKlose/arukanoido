@@ -9,24 +9,6 @@ ball_speeds_when_top_hit:
 ball_accelerations:
     $00 $19 $19 $23 $23 $2d $3c $50 $78 $8c $a0 $b4 $c8 $dc $f0
 
-;;; Adjust ball speed when it hits the top of the arena
-;;; depending on round number.
-adjust_ball_speed_hitting_top:
-    lda sprites_y,x
-    cmp ball_min_y
-    bne adjust_ball_speed
-    ldy level
-    lda @(-- ball_speeds_when_top_hit),y
-    cmp ball_speed
-    bcc adjust_ball_speed
-    ldy is_using_paddle
-    bne +l
-    cmp #max_ball_speed_joystick
-    bcc +l
-    lda #max_ball_speed_joystick
-l:  sta ball_speed
-    rts
-
 ;;; Adjust ball speed depending on number of collisions.
 adjust_ball_speed:
     tya
