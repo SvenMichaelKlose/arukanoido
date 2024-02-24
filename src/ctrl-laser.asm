@@ -7,18 +7,19 @@ ctrl_laser:
     cmp arena_y
     bcc +n
 
-    ;; Cpmfigure 'hit_brick'.
+    ;; Check if bricks were hit.
+    ; Comfigure 'hit_brick'.
     ldy #0
     sty has_hit_golden_brick
     sty laser_has_hit
     iny
     sty is_testing_laser_hit
 
-    ;; Check if bricks were hit.
     ; Check left hand side.
     lda sprites_x,x
     ldy sprites_y,x
     jsr test_laser_hit
+
     ; Check right hand side.
     lda sprites_x,x
     clc
@@ -43,10 +44,9 @@ r:  dec is_testing_laser_hit
 
 test_laser_hit:
     jsr get_soft_collision
-    beq +o              ; Nothing hit…
+    beq +r              ; Nothing hit…
     jsr hit_brick
     lda has_hit_brick
-    beq +o              ; No brick hit…
+    beq +r              ; No brick hit…
     inc laser_has_hit
-o:  rts
-
+r:  rts
