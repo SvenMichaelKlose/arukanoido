@@ -51,7 +51,7 @@ hit_brick:
     lda (brickp),y
     beq -r
 
-    inc has_hit_brick           ; (Set flag.)
+    inc has_hit_brick
 
     ldy scrx
     lda (brickp),y
@@ -60,7 +60,7 @@ hit_brick:
     cmp #b_golden
     beq +golden
     bcc remove_brick            ; Regular brick…
-    inc has_hit_silver_brick    ; (Set flag.)
+    inc has_hit_silver_brick
     cmp #b_silver
     beq remove_silver
 
@@ -108,7 +108,7 @@ o:  jsr add_to_score
     dec @(-- bricks_left),x
     pla
     tax
-    inc has_removed_brick   ; (Set flag.)
+    inc has_removed_brick
 
     ;; Vanish brick from screen and brick map.
     lda scry
@@ -119,10 +119,10 @@ o:  jsr add_to_score
     sta (scr),y
     sta (brickp),y
 
-    inc has_hit_brick       ; (Set flag.)
+    inc has_hit_brick
     rts
 
     ;; Handle golden brick.
 golden:
-    inc has_hit_golden_brick    ; (Set flag.)
+    inc has_hit_golden_brick
     jmp add_brick_fx
