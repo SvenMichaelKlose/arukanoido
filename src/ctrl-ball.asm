@@ -207,12 +207,9 @@ n:  lda sprites_y,x
     bcc +l
     lda #max_ball_speed_joystick
 l:  sta ball_speed
-    bne +n2 ; (jmp)
-n:  ;jsr adjust_ball_speed
-n2:
 
     ;;; Handle removed brick.
-    lda has_removed_brick
+n:  lda has_removed_brick
     beq +n
 
     ;; Handle DOH.

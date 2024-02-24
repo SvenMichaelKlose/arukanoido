@@ -167,6 +167,11 @@ l:  lda is_running_game
     lda #1
     sta has_moved_sprites
 
+    lda mode_break
+    beq +n
+    bpl +done
+n:
+
     ;; DOH round special treatment.
     lda is_doh_level
     beq +n
@@ -177,9 +182,9 @@ l:  lda is_running_game
     ;; Regular round treatment.
 n:  jsr rotate_bonuses
     lda gate_opening
-    bne +n2
+    bne +n
     jsr add_missing_obstacle
-n2: jsr dyn_brick_fx
+n:  jsr dyn_brick_fx
 
     ;; Animate obstacle gate.
     ldx do_animate_obstacle_gate
@@ -190,10 +195,10 @@ n2: jsr dyn_brick_fx
     and #%11
     bne +n
     dex
-    bne +n3 ; X=2
+    bne +l ; X=2
     jsr open_obstacle_gate
     jmp +n
-n3: jsr close_obstacle_gate
+l:  jsr close_obstacle_gate
 n:
 
     lda init_bonus_d_balls_to_add
