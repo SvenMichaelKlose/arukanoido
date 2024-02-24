@@ -30,7 +30,7 @@ hit_brick:
     cmp #14
     bcs -r
     lda scry
-    sec
+    clc
     sbc playfield_yc
     beq -r
     cmp #24
