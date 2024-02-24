@@ -30,12 +30,9 @@ n:  lda #<score2
     rts
 
 init_hiscore:
-; TODO: Use VCPU.
-    ldx #@(-- num_score_digits)
-l:  lda score_50000,x
-    sta hiscore,x
-    dex
-    bpl -l
+    0
+    movmw <score_50000 >score_50000 <hiscore >hiscore num_score_digits 0
+    0
     rts
 
 ; s: Score to add.
