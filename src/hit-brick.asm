@@ -1,8 +1,8 @@
 hit_doh:
     ldy scrx
     lda (scr),y
-    and #%01100000 ; Check if background char.
-    cmp #%01100000
+    and #background
+    cmp #background
     bne +r
     lda #doh_flash_duration
     sta flashing_doh

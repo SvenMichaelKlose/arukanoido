@@ -27,7 +27,7 @@ n:  lda sprites_x,x
     sta sprite_scry
     sta sprites_sy,y
 
-    ;; Determine width.
+    ;; Get width.
     lda sprites_dimensions,x
     and #%111
     sta sprite_cols
@@ -39,7 +39,7 @@ n:  lda sprites_x,x
     inc sprite_cols_on_screen     ; One more due to shift.
 n:
 
-    ;; Determine height.
+    ;; Get height.
     lda sprites_dimensions,x
     lsr
     lsr
@@ -64,7 +64,7 @@ n:
     sta sprite_lines_on_screen
 n:
 
-    ;; Save dimensions for cleanup.
+    ;; Save dimensions for clean-up.
     lda sprite_cols_on_screen
     sta sprites_sw,y
     lda sprite_rows_on_screen
@@ -120,8 +120,8 @@ l:  ; Get screen address.
     tay
 
     ; DOH char? (Any frame.)
-    and #%01100000
-    cmp #%01100000
+    and #background
+    cmp #background
     beq +q      ; Yes. Copy…
 
     ; Char of current frame?
@@ -141,8 +141,8 @@ l:  ; Get screen address.
     sta sh
     ldy scrx
     lda (s),y
-    and #%01100000
-    cmp #%01100000
+    and #background
+    cmp #background
     bne +m      ; No. Clear…
     lda (s),y   ; Copy DOH char.
     tay

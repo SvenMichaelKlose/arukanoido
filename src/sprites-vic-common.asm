@@ -76,8 +76,8 @@ l3: lda (scr),y
 
     ; Check if DOH char
     lda (d),y
-    and #%01100000
-    cmp #%01100000
+    and #background
+    cmp #background
     bne +n2     ; No. Just clear…
     lda (d),y   ; Restore DOH char.
     bne +n3

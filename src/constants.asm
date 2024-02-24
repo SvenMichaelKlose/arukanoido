@@ -25,6 +25,7 @@ framechars          = @(half num_chars)
 first_sprite_char   = 1
 foreground          = @(half framechars)
 bg_start            = @(+ framechars foreground)
+background          = @(half bg_start)
 
 ;;; Game settings
 
