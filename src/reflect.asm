@@ -8,26 +8,29 @@ reflect_h:
     and #%111
     beq +o
     cmp #%111
+    beq +n
     bne reflect_v
 
     ; Bounce back left.
 o:  lda sprites_d,x         ; Moving to the left?
-    bpl +n                  ; No…
+    bpl +reflect_v          ; No…
     ldy ball_x
     dey
     tya
     ldy ball_y
     jsr get_soft_collision
-    beq reflect_v
+    beq +reflect_v
     bne +j ; (jmp)
 
     ; Bounce back right.
-n:  ldy ball_x
+n:  lda sprites_d,x         ; Moving to the right?
+    bmi +reflect_v          ; No…
+    ldy ball_x
     iny
     tya
     ldy ball_y
     jsr get_soft_collision
-    beq reflect_v
+    beq +reflect_v
 j:  lda #64
     bne +l ; (jmp)
 
@@ -36,6 +39,7 @@ reflect_v:
     and #%111
     beq +o
     cmp #%111
+    beq +n
     bne +r
 
     ; Bounce back top.
@@ -53,7 +57,11 @@ o:  lda sprites_d,x         ; Are we flying upwards?
     bne +j ; (jmp)
 
     ; Bounce back bottom.
-n:  lda ball_x
+n:  lda sprites_d,x         ; Are we flying downwards?
+    clc
+    adc #64
+    bmi +r                  ; No…
+    lda ball_x
     ldy ball_y
     iny
     jsr get_soft_collision
