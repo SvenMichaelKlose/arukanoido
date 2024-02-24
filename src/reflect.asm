@@ -20,7 +20,8 @@ o:  lda sprites_d,x         ; Moving to the left?
     ldy ball_y
     jsr get_soft_collision
     beq +reflect_v
-    bne +j ; (jmp)
+    lda #64
+    bne +l ; (jmp)
 
     ; Bounce back right.
 n:  lda sprites_d,x         ; Moving to the right?
@@ -31,7 +32,7 @@ n:  lda sprites_d,x         ; Moving to the right?
     ldy ball_y
     jsr get_soft_collision
     beq +reflect_v
-j:  lda #64
+    lda #64
     bne +l ; (jmp)
 
 reflect_v:
@@ -54,7 +55,8 @@ o:  lda sprites_d,x         ; Are we flying upwards?
     dey
     jsr get_soft_collision
     beq +r
-    bne +j ; (jmp)
+    lda #128
+    bne +l ; (jmp)
 
     ; Bounce back bottom.
 n:  lda sprites_d,x         ; Are we flying downwards?
@@ -68,9 +70,7 @@ n:  lda sprites_d,x         ; Are we flying downwards?
     beq +r
 j:  lda #128
 
-l:  clc
-    adc side_degrees
-    sta side_degrees
+l:  sta side_degrees
     inc has_reflection
     jmp hit_brick
 
@@ -83,9 +83,9 @@ apply_reflection_unconditionally:
     lda sprites_d,x     ; Get degrees.
     sec
     sbc side_degrees    ; Rotate back to zero degrees.
-    eor #$ff            ; (neg) Get opposite deviation from general direction.
+    eor #$7f            ; (neg) Get opposite deviation from general direction.
     sec
     adc side_degrees    ; Rotate back to original axis.
-    eor #128            ; Rotate to opposite direction.
+    ;eor #128            ; Rotate to opposite direction.
     sta sprites_d,x
 r:  rts
