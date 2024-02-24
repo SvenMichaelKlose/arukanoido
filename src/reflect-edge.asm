@@ -19,7 +19,7 @@ reflect_edge:
     iny
     jsr get_soft_collision
     beq +r
-    bne +j
+    bne +j  ; (jmp)
 
     ; Bounce back from top right.
 n:  asl
@@ -39,7 +39,7 @@ n:  asl
     dey
     jsr get_soft_collision
     beq +r
-    bne +j
+    bne +j  ; (jmp)
 
     ; Bounce back from top left.
 n:  asl
@@ -55,7 +55,7 @@ n:  asl
     dey
     jsr get_soft_collision
     beq +r
-    bne +j
+    bne +j  ; (jmp)
 
     ; Bounce back from bottom left.
 n:  lda ball_x
