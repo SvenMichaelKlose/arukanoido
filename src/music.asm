@@ -153,18 +153,20 @@ n:  lda digi_types,x
 
     ; Play RLE-compressed sample. (type 1)
 m:
+end
 
-if @*rle?*
+if @(& *has-digis?* *rle?*)
     lsr
     bne play_native
     lda #1
     sta currently_playing_digis
     jsr rle_start
 end
-if @(not *rle?*)
+if @(& *has-digis?* (not *rle?*))
     jmp play_native
 end
 
+if @*has-digis?*
 r:  lda tmp3
     sta current_song
     lda #$ff                ; Stop native player.
