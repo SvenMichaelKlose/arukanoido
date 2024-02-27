@@ -42,12 +42,6 @@ l:  lda sl
     bne -l
 
     jsr blank_screen
-    ; A is 0.
-if @*has-digis?*
-    sta currently_playing_digis
-    sta is_playing_digis
-end
-    sta current_song
 
     ldx #$ff
     txs
