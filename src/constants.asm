@@ -51,7 +51,7 @@ score_char0         = 16    ; Digit '0' in 4x8 charset.
 
 ;;; Miscellaneous
 
-num_brickfx         = 32    ; List of hit silver/golden bricks that
+num_brickfx         = 8     ; List of hit silver/golden bricks that
                             ; are being animated.
 playfield_columns   = 15
 vaus_x              = 52
