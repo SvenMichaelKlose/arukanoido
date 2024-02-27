@@ -61,7 +61,8 @@ step_to_next_shifted_column:
 ; for hires ones.
 ;
 ; X: hires (0)/multicolor (not 0)
-; Y: Sprite dimensions (lower octet is number of chars for X axis, next octet is Y axis)
+; Y: Sprite dimensions (lower octet is number of chars for X axis,
+;    next octet is Y axis)
 ; s: Sprite graphics
 ; d: Destination address
 preshift_huge_sprite:

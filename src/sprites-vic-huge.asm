@@ -233,10 +233,10 @@ end
     lda sprite_cols         ; (Loop init.)
     sta tmp2
 
-    ;; Draw pre-shifted?
+    ;; Get pre-shifted data.
     lda sprites_pgh,x
     bne +l
-    jmp slow_shift          ; No…
+    jmp slow_shift          ; There is none…
 l:  sta sh
     lda sprites_pgl,x
     sta sl
