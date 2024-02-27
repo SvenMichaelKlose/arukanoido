@@ -11,9 +11,6 @@ patch:
     stx has_24k
     stx has_digis
 
-    lda #$5e        ; Init for +16K.
-    sta bricks2
-
     ; Detect RAM123.
     ldx #2
     ldy $0400
@@ -34,8 +31,6 @@ l:  stx $6000
     dex
     bne -l
     inc has_24k
-    lda #$1e        ; Instead of EXM buffers.
-    sta bricks2
 n:  sty $6000
 
     ; Detect BLK5.
@@ -47,8 +42,6 @@ l:  stx $a000
     dex
     bne -l
     inc has_digis
-    lda #$be
-    sta bricks2
 n:  sty $a000
 m:
 

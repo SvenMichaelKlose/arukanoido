@@ -161,7 +161,7 @@ n:  cmp #keycode_b
     beq boot_basic
 
 if @(not *has-digis?*)
-    bne -l
+    bne -l  ; (jmp)
 end
 if @*has-digis?*
     ldy has_digis

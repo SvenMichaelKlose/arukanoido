@@ -366,8 +366,9 @@ has_ultimem:        0
 has_3k:             0
 has_24k:            0
 has_digis:          0
+if @*has-digis?*
 is_playing_digis:   0
-bricks2:            0
+end
 
 ;;; Game configuration
 ;; Players
