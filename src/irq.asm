@@ -184,7 +184,10 @@ n:  jsr rotate_bonuses
     lda gate_opening
     bne +n
     jsr add_missing_obstacle
-n:  jsr dyn_brick_fx
+n:
+if @*brickfx?*
+    jsr dyn_brick_fx
+end
 
     ;; Animate obstacle gate.
     ldx do_animate_obstacle_gate

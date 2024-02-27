@@ -5,13 +5,14 @@ decrunch_table  = $1250     ; 156 bytes
 buffer_start_hi = $13
 buffer_len_hi   = $01
 charset         = $1400
-charset_addrs_l = $7e00
-charset_addrs_h = $7f00
 bricks1         = $1c00     ; Map of brick types
 bricks2         = $1e00
-txt_tmp         = bricks
+charset_addrs_l = $7e00
+charset_addrs_h = $7f00
 exm_buffers     = $be00     ; 2x256 bytes
 colors          = $9400
+
+txt_tmp         = bricks
 
 ;;; Charset settings
 

@@ -50,8 +50,10 @@ round_intro:
     sta sh
 
     ;; Let ship engines flicker.
+if @*has-digis?*
     lda is_playing_digis
     bne +n
+end
     jsr init_raster
 
     ;; Save first char value for each page

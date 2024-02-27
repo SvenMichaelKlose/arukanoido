@@ -2,14 +2,14 @@
 
 ; CONFIGURE HERE!
 
-(const *versions* '(:prg :tap :wav)); :shadowvic))
+(const *versions* '(:prg :tap :wav :shadowvic))
 ;(const *versions* '(:prg))
 
-(const *demo?* t)               ; Limit to first eight levels.
+(const *demo?* nil)               ; Limit to first eight levels.
 (const *debug?* t)              ; Include self-tests and features.
 (const *make-arcade-sounds?* nil) ; Lengthy process.
 (var *has-digis?* t)            ; Play optional original arcade sounds.
-(var *show-cpu?* nil)           ; Show time spent in game logic (NTSC!).
+(var *show-cpu?* nil)               ; Show time spent in game logic (NTSC!).
 (var *dejitter-paddles?* nil)
 
 
@@ -18,6 +18,7 @@
 ; In-game this is a bad idea with Disruption Mode.
 ; Audio files aren't in the tables or linked in anyhow.
 (var *rle?* nil)
+(var *brickfx?* t)
 
 (fn version? (x)
   (member x *versions*))
@@ -157,7 +158,8 @@
              "sprites-vic-huge-preshifted.asm"
 
              ; Level display
-             "brick-fx.asm"
+             ,@(when *brickfx?*
+                 '("brick-fx.asm"))
              "draw-level.asm"
              "lives.asm"
              "score-display.asm"
@@ -239,6 +241,8 @@
   (format t "Hiscore end:      ~X~%" (get-label '__end_hiscore))
   (format t "Round intro end:  ~X~%" (get-label '__end_round_intro))
   (format t "End:              ~X~%" (get-label 'the_end))
+  (format t "End preshifts:    ~X~%" (+ (get-label 'the_end)
+                                        (get-label 'preshifted_size)))
   (!= (- #x00fc (get-label 'zp_end))
     (format t "~A zero page bytes free.~%" !)
     (when (< ! 0)

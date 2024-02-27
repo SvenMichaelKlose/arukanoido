@@ -116,6 +116,7 @@ l:  lda playfield_yc
     cmp #13
     bne -l
 
+if @*brickfx?*
     jsr start_brick_fx
     lda #8
     sta tmp
@@ -124,6 +125,7 @@ l:  ldx #1
     jsr do_brick_fx
     dec tmp
     bne -l
+end
 
     rts
 

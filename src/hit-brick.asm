@@ -72,7 +72,12 @@ n:
     sbc #1
     sta (brickp),y
     inc has_hit_brick
+if @*brickfx?*
     jmp add_brick_fx
+end
+if @(not *brickfx?*)
+    rts
+end
 
     ;; Remove fully degraded silver brick.
 remove_silver:
@@ -128,4 +133,9 @@ o:  jsr add_to_score
     ;; Handle golden brick.
 golden:
     inc has_hit_golden_brick
+if @*brickfx?*
     jmp add_brick_fx
+end
+if @(not *brickfx?*)
+    rts
+end

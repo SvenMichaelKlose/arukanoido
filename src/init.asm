@@ -108,9 +108,6 @@ n:  stx is_ntsc
     stx is_landscape
     jsr set_format
 
-    lda #0
-    sta is_playing_digis
-
 if @(not (| *shadowvic?* *rom?*))
     jmp patch
 end

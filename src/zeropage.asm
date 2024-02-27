@@ -177,12 +177,14 @@ p_x:            0
 p_y:            0
 ;print4x8_char:  0
 
+if @*brickfx?*
 ;;; Brick FX
 ;; Circular list of bricks to animate.
 brickfx_x:      fill num_brickfx
 brickfx_y:      fill num_brickfx
 brickfx_pos:    0   ; First.
 brickfx_end:    0   ; Last.
+end
 
 ;;; Scores
 num_lives_by_score: 0

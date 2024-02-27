@@ -1,8 +1,12 @@
 (= *model* :vic-20+xk)
 
-(var *pulse-short*      #x20)
-(var *pulse-medium*     (* 2 *pulse-short*))
-(var *pulse-long*       (* 3 *pulse-short*))
+;(var *pulse-short*      #x20)
+;(var *pulse-medium*     (* 2 *pulse-short*))
+;(var *pulse-long*       (* 3 *pulse-short*))
+(var *pulse-short*      #x13)
+(var *pulse-diff*       #x0d)
+(var *pulse-medium*     (+ *pulse-short* *pulse-diff*))
+;(var *pulse-long*       (+ *pulse-short* (* 2 *pulse-diff*)))
 
 (var *tape-leader-length*   64)
 (var *trailer-length*       32)
