@@ -33,8 +33,11 @@ hit_brick:
     clc
     sbc playfield_yc
     beq -r
-    cmp #24
+    ldy active_player
+    cmp @(-- level_ending_row),y
+    beq +n
     bcs -r
+n:
 
     ;; Redirect to DOH handling.
     lda is_doh_level
