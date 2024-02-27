@@ -2,10 +2,10 @@
 
 ; CONFIGURE HERE!
 
-(const *versions* '(:prg :tap :wav :shadowvic))
+(const *versions* '(:prg :tap :wav)) ;:shadowvic))
 ;(const *versions* '(:prg))
 
-(const *demo?* nil)               ; Limit to first eight levels.
+(const *demo?* t)               ; Limit to first eight levels.
 (const *debug?* t)              ; Include self-tests and features.
 (const *make-arcade-sounds?* nil) ; Lengthy process.
 (var *has-digis?* t)            ; Play optional original arcade sounds.
@@ -255,8 +255,8 @@
     (format t "~A low memory bytes free before $03ce.~%" !)
     (when (< ! 0)
       (error "Bugging VIC music player!~%")))
-  (!= (- #x8000 (get-label 'the_end))
-    (format t "~A bytes free before $8000.~%" !)
+  (!= (- #x7e00 (get-label 'the_end))
+    (format t "~A bytes free before $7e00.~%" !)
     (when (< ! 0)
       (error "BLK3 overflow by ~A bytes!~%" (abs !))))
   (when *has-digis?*
