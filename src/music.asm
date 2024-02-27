@@ -152,11 +152,18 @@ n:  lda digi_types,x
     jmp +r
 
     ; Play RLE-compressed sample. (type 1)
-m:  lsr
+m:
+
+if @*rle?*
+    lsr
     bne play_native
     lda #1
     sta currently_playing_digis
     jsr rle_start
+end
+if @(not *rle?*)
+    jmp play_native
+end
 
 r:  lda tmp3
     sta current_song

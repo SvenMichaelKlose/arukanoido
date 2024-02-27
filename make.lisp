@@ -15,6 +15,10 @@
 
 ; DO NOT TOUCH FROM HERE ON!
 
+; In-game this is a bad idea with Disruption Mode.
+; Audio files aren't in the tables or linked in anyhow.
+(var *rle?* nil)
+
 (fn version? (x)
   (member x *versions*))
 
@@ -206,7 +210,8 @@
                    "exm-player.asm"
                    ,@(when *ultimem?*
                        '("raw-player.asm"))
-                   "rle-player.asm"
+                   ,@(when *rle?*
+                       '("rle-player.asm"))
                    "music-arcade.asm"))
 
              ,@(when *rom?*
@@ -299,8 +304,8 @@
   (make-vice-commands "obj/tape-loader.prg.lbl" "break .stop")
   (format t "Short pulse width:  ~A (~X cycles)~%" *pulse-short* (* 8 *pulse-short*))
   (format t "Medium pulse width: ~A (~X cycles)~%" *pulse-medium* (* 8 *pulse-medium*))
-  (format t "Long pulse width:   ~A (~X cycles)~%" *pulse-long* (* 8 *pulse-long*))
-  (!= (integer (/ (cpu-cycles :pal) (* 4 *pulse-long*) 8))
+  ;(format t "Long pulse width:   ~A (~X cycles)~%" *pulse-long* (* 8 *pulse-long*))
+  (!= (integer (/ (cpu-cycles :pal) (* 4 (+ *pulse-short* *pulse-medium*)) 8))
     (format t "Average bit rate:   ~A~%" (* ! 8))
     (format t "Average byte rate:  ~A~%" !))
   (with-output-file o "arukanoido/arukanoido.tap"
