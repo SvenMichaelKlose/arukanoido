@@ -122,6 +122,11 @@ r:  lda #snd_reflection_low
     jmp play_sound
 
 hit_obstacle:
+    lda #<score_100
+    sta sl
+    lda #>score_100
+    sta sh
+    jsr add_to_score
     lda #0
     sta sprites_d2,x    ; Reset number of hits with no effect.
     lda #192
