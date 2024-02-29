@@ -1,10 +1,21 @@
 (= *model* :vic-20+xk)
 
+;; Educated guess for comprimise between speed and durability (decades).
 ;(var *pulse-short*      #x20)
 ;(var *pulse-medium*     (* 2 *pulse-short*))
 ;(var *pulse-long*       (* 3 *pulse-short*))
+
+;; Fast but started failing after rewiring equipment.
+;(var *pulse-short*      #x13)
+;(var *pulse-diff*       #x0d)
+;; Working with new wiring.
 (var *pulse-short*      #x13)
-(var *pulse-diff*       #x0d)
+(var *pulse-diff*       #x0e)
+
+;; Fastest to have worked at least once.
+;(var *pulse-short*      #x12)
+;(var *pulse-diff*       #x0d)
+
 (var *pulse-medium*     (+ *pulse-short* *pulse-diff*))
 ;(var *pulse-long*       (+ *pulse-short* (* 2 *pulse-diff*)))
 
