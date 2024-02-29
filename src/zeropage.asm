@@ -269,10 +269,11 @@ level_ending_row:   0 0
 level:              0 0 0
 bricks_left:        0 0
 ;; Ball
-caught_ball:        0
-ball_release_timer: 0
-ball_speed:         0
-num_hits:           0
+caught_ball:            0
+ball_release_timer:     0
+ball_speed:             0
+num_hits:               0
+acceleration_pending:   0
 ;; Vaus
 vaus_width:         0
 vaus_last_x:        0

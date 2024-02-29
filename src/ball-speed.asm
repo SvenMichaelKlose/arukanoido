@@ -9,6 +9,11 @@ ball_speeds_when_top_hit:
 ball_accelerations:
     $00 $19 $19 $23 $23 $2d $3c $50 $78 $8c $a0 $b4 $c8 $dc $f0
 
+l:  inc acceleration_pending
+    pla
+    tay
+    rts
+
 ;;; Adjust ball speed depending on number of collisions.
 adjust_ball_speed:
     tya
@@ -16,26 +21,36 @@ adjust_ball_speed:
     lda ball_speed
     cmp #$0f
     beq +r          ; Maximum ball speed already…
-;    lda sprites_d,x
-;    clc
-;    adc #64
-;    bpl +l          ; Reflecting upwards, may accelerate…
-;    lda sprites_y,x
-;    sec
-;    sbc arena_y
-;    cmp #@(* 8 14)
-;    bcs +r          ; Do not accelerate on bottom half of screen.
 
-l:  lda ball_speed
+    inc num_hits
+
+    lda acceleration_pending
+    bne +n
+
+    ;; Check if an increase is in order.
+    lda ball_speed
     lsr
     tay
-    inc num_hits
     lda num_hits
     cmp ball_accelerations,y
     bcc +r
 
-    ;; Increase ball speed.
+    ;; Check if on bottom half of screen…
+    lda sprites_y,x
+    sec
+    sbc arena_y
+    cmp #@(* 8 14)
+    bcc increase_ball_speed
+
+    ;; …and delay acceleration if going downwards.
+n:  lda sprites_d,x
+    clc
+    adc #64
+    bmi -l
+
+increase_ball_speed:
     lda #0
+    sta acceleration_pending
     sta num_hits
     lda ball_speed
     ldy is_using_paddle
