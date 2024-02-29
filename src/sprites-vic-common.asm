@@ -62,7 +62,7 @@ l3: lda (scr),y
     lda (scr),y
     and #framemask
     cmp spriteframe
-    beq +n      ; Char belongs to sprite in current frame…
+    beq +n              ; Char belongs to sprite in current frame…
 
     lda is_doh_level
     beq +n2
@@ -78,8 +78,8 @@ l3: lda (scr),y
     lda (d),y
     and #background
     cmp #background
-    bne +n2     ; No. Just clear…
-    lda (d),y   ; Restore DOH char.
+    bne +n2             ; No. Just clear…
+    lda (d),y           ; Restore DOH char.
     bne +n3
 
 n2: lda #0
