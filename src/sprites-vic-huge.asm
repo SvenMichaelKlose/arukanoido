@@ -498,7 +498,7 @@ end
     lda sprite_char
     sta tmp
 
-    ; Get screen and color RAM adresses.
+    ; Get screen and color address.
     ldy sprite_scry
     lda sprite_scrx
     sta scrx
@@ -511,6 +511,8 @@ end
     sta @(++ scr)
     ora #>colors
     sta @(++ col)
+
+    ; Reset column index.
     lda #0
     sta tmp3
 
@@ -524,12 +526,12 @@ l2: lda sprite_scry
 l:  ;; Check if position is plottable.
     lda scry
     cmp playfield_yc
-    bcc +n                  ; Don't plot into score area…
+    bcc +n                  ; Don't plot over top…
     cmp screen_rows
-    bcs +n                  ; Don't plot over the bottom…
+    bcs +n                  ; Don't plot over bottom…
     lda scrx
     cmp #playfield_columns
-    bcs +n                  ; Don't plot over the right…
+    bcs +n                  ; Don't plot over right…
 
     ;; Check if on a background char.
     ; Plot over background if DOH projectile.
@@ -547,8 +549,8 @@ l3: lda tmp
     sta (col),y
 
     ; Next row.
-n:  inc tmp     ; To next sprite char.
-    inc scry
+n:  inc scry
+    inc tmp                 ; To next sprite char.
     lda next_line_offsets,y
     tay
     dec tmp2
