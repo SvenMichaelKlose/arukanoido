@@ -37,8 +37,8 @@ init_hiscore:
 
 ; s: Score to add.
 add_to_score:
-    txa
-    pha
+    stx tmp
+    sty @(++ tmp)
 
     ldx active_player
     dex
@@ -112,8 +112,8 @@ l:  lda #<next_powerup_score
     jsr bcd_add
     inc num_lives_by_score
 
-r:  pla
-    tax
+r:  ldx tmp
+    ldy @(++ tmp)
     rts
 
 init_silver_score:
