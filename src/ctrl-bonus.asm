@@ -291,11 +291,7 @@ make_bonus:
     cmp #1
     bne +n
     asl hits_before_bonus
-    ;asl hits_before_bonus
-;    bne +l  ; (jmp)
 n:  cmp #4
-;    bne +l
-;    asl hits_before_bonus
 l:
 
 if @*debug?*
