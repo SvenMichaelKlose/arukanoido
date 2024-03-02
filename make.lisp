@@ -303,10 +303,12 @@
            "bender/vic-20/minigrafik-display.asm"
            "loader/exomizer-stream-decrunsh.asm"
            "loader/audio.asm"
+           "loader/hamming.asm"
            "loader/loader.asm"
            "loader/ctrl.asm"))
   (make-vice-commands "obj/tape-loader.prg.lbl" "break .stop")
   (format t "Short pulse width:  ~A (~X cycles)~%" *pulse-short* (* 8 *pulse-short*))
+  (format t "Pulse timer: ~A (~X cycles)~%" *pulse-timer* (* 8 *pulse-timer*))
   (format t "Medium pulse width: ~A (~X cycles)~%" *pulse-medium* (* 8 *pulse-medium*))
   ;(format t "Long pulse width:   ~A (~X cycles)~%" *pulse-long* (* 8 *pulse-long*))
   (!= (integer (/ (cpu-cycles :pal) (* 4 (+ *pulse-short* *pulse-medium*)) 8))
