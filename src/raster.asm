@@ -23,7 +23,7 @@ init_raster_ntsc:
     sta $0315
     lda #<cycles_ntsc
     sta $9124
-    ldx #0
+    ldx #0      ; TODO: Remove?
     ldy #line_ntsc
 l1: cpy $9004
     bne -l1
@@ -143,7 +143,7 @@ init_raster_pal:
     sta $0315
     lda #<cycles_pal
     sta $9124
-    ldx #0
+    ldx #0      ; TODO: Remove?
     ldy #line_pal
 l1: cpy $9004
     bne -l1
