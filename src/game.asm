@@ -142,7 +142,7 @@ retry:
     0
 n:
 
-    ; Get graphics for current level.
+    ; Get obstacle type of round.
     ldy level
     lda @(-- level_obstacle),y
     cmp #none
