@@ -80,10 +80,34 @@ blank_screen:
     jsr wait_retrace
     lda #0
     sta $9002
+    ldy #0
+l:  dey
+    bne -l
+    jsr wait_retrace
+    lda screen_columns
+    sta $9002
+    ldy #0
+l:  dey
+    bne -l
+    jsr wait_retrace
+    lda #0
+    sta $9002
     rts
 
 ; A has to be 0 on return.
 unblank_screen:
+    jsr wait_retrace
+    lda screen_columns
+    sta $9002
+    ldy #0
+l:  dey
+    bne -l
+    jsr wait_retrace
+    lda #0
+    sta $9002
+    ldy #0
+l:  dey
+    bne -l
     jsr wait_retrace
     lda screen_columns
     sta $9002
