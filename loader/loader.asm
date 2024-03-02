@@ -1,5 +1,5 @@
 medium_pulse    = @(* 8 *pulse-medium*)
-measuring_pulse = @(* 8 (+ *pulse-short* (/ (- *pulse-medium* *pulse-short*) 2)))
+measuring_pulse = @(* 8 *pulse-timer*)
 
 c2nwarp_start:
     sei
@@ -28,7 +28,7 @@ c2nwarp_start:
     lda #@*tape-leader-length*
     sta tape_leader_countdown
     lda #<measuring_pulse
-    sta $9124
+    sta $9126
     lda #>measuring_pulse
     sta $9125
 
@@ -37,16 +37,22 @@ c2nwarp_start:
 
 ; Expect short pulse.
 tape_leader:
-    jsr tape_get_bit
+    lda $912d               ; Get timer underflow bit.
+    ldx #>measuring_pulse
+    stx $9125               ; Restart timer.
+    asl                     ; Move underflow bit into carry.
+    asl
     bcc +l  ; Short pulse marking end of leader…
     dec tape_leader_countdown
     bpl +n
     inc tape_leader_countdown
-n:  bpl intret ; (jmp)
+n:  bpl done ; (jmp)
 
     ;; Check if leader was long enough.
 l:  lda tape_leader_countdown
     bne tape_restart_leader     ; Leader too short.
+
+    ;; Init bit read.
     lda #8
     sta tape_bit_counter
     lda #<tape_data
@@ -54,50 +60,59 @@ l:  lda tape_leader_countdown
     lda #>tape_data
     sta $0315
 
-intret:
-    lda $9121
+done:
     lda #$7f
     sta $912d
-    jmp $eb18
+    pla
+    tay
+    pla
+    tax
+    pla
+    rti
 
 tape_restart_leader:
     lda #@*tape-leader-length*
     sta tape_leader_countdown
-    bne -intret
+    bne -done
 
 tape_data:
-    jsr tape_get_bit
+    lda $912d               ; Get timer underflow bit.
+    ldx #>measuring_pulse
+    stx $9125               ; Restart timer.
+    asl                     ; Move underflow bit into carry.
+    asl
     ror tape_current_byte
     dec tape_bit_counter
-    bne -intret
+    bne -done
 
 byte_complete:
+    ; Reset bit read.
     lda #8
     sta tape_bit_counter
-    lda tape_current_byte   ; Save byte to its destination.
+
+    ; Save byte to its destination.
+    lda tape_current_byte
     ldy #0
     sta (tape_ptr),y
-    inc tape_ptr            ; Advance destination address.
+
+    ; Advance destination address.
+    inc tape_ptr
     bne +n
     inc @(++ tape_ptr)
+
+    ; Decrement total number of bytes for progress bar or countdown.
 n:  dec total_counter
     bne +n
     dec @(++ total_counter)
-n:  dec tape_counter        ; All bytes loaded?
-    bne -intret
+
+    ; Countdown current block.
+n:  dec tape_counter
+    bne -done
     dec @(++ tape_counter)
-    bne -intret
+    bne -done
 
     sei
-    lda #$7f                ; Turn off tape pulse interrupt.
+    lda #$7f    ; Turn off tape pulse interrupt.
     sta $912e
     sta $912d
     jmp (tape_callback)
-
-tape_get_bit:
-    lda $912d               ; Get timer underflow bit.
-    ldx #>measuring_pulse
-    stx $9125
-    asl                     ; Move underflow bit into carry.
-    asl
-    rts

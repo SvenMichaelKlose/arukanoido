@@ -63,4 +63,16 @@ get_byte:           0 0
 
 total_counter:  0 0
 
+;data:       0
+;d1:         0
+;d2:         0
+;d3:         0
+encoded:    0
+e1:         0
+e2:         0
+e3:         0
+e4:         0
+e5:         0
+e6:         0
+syndrome:   0
     end

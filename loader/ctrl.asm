@@ -79,7 +79,7 @@ show_countdown:
 
     lda #0
     sta tmp2
-l2: lda tmp
+l:  lda tmp
     sec
     sbc #<cdec
     sta tmp
@@ -87,7 +87,7 @@ l2: lda tmp
     sbc #>cdec
     sta @(++ tmp)
     inc tmp2
-    bcs -l2
+    bcs -l
 
     lda #<number_0
     clc
@@ -98,10 +98,10 @@ l2: lda tmp
     sta @(++ tmp)
 
     ldy #7
-l3: lda (tmp),y
+l:  lda (tmp),y
     sta mg_charset,y
     dey
-    bpl -l3
+    bpl -l
 
     bmi show_countdown ; (jmp)
 

@@ -102,6 +102,7 @@ l:  jsr get_decrunched_byte
     jsr set_bank
 n:  txa
     bne -l
+
     dec digis_left
     jmp next_digi
 

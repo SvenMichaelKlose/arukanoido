@@ -9,13 +9,22 @@
 ;(var *pulse-short*      #x13)
 ;(var *pulse-diff*       #x0d)
 ;; Working with new wiring.
-(var *pulse-short*      #x13)
-(var *pulse-diff*       #x0e)
+;(var *pulse-short*      #x13)
+;(var *pulse-diff*       #x0a)
 
-;; Fastest to have worked at least once.
+;; Fastest.
 ;(var *pulse-short*      #x12)
-;(var *pulse-diff*       #x0d)
+;(var *pulse-diff*       #x0a)
 
+;; Current test point
+(var *pulse-short*      #x12)
+(var *pulse-diff*       #x0a)
+
+;; Fastest working in VICE.
+;(var *pulse-short*      #x10)
+;(var *pulse-diff*       #x07)
+
+(var *pulse-timer*     (+ *pulse-short* (integer (half *pulse-diff*))))
 (var *pulse-medium*     (+ *pulse-short* *pulse-diff*))
 ;(var *pulse-long*       (+ *pulse-short* (* 2 *pulse-diff*)))
 
