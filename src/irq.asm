@@ -61,6 +61,10 @@ irq:
     pha
     lda tmp4
     pha
+    lda tmp5
+    pha
+    lda tmp6
+    pha
     lda scr
     pha
     lda @(++ scr)
@@ -227,6 +231,10 @@ end
     sta @(++ scr)
     pla
     sta scr
+    pla
+    sta tmp6
+    pla
+    sta tmp5
     pla
     sta tmp4
     pla
