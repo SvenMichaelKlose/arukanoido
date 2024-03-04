@@ -35,7 +35,7 @@ c2nwarp_start:
     cli
     rts
 
-; Expect short pulse.
+; Read minimum number of long pulses before a short one.
 tape_leader:
     lda $912d               ; Get timer underflow bit.
     ldx #>measuring_pulse
