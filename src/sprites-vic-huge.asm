@@ -542,13 +542,19 @@ l:  ;; Check if position is plottable.
     and #foreground
     bne +n                  ; Do not plot over background.
 
-    ; Plot.
-l3: lda tmp
+    ;; Plot.
+    ; Do not overwrite priority chars.
+l3: lda (scr),y
+    eor spriteframe
+    beq +l4
+    cmp #last_priority_char + 1
+    bcc +n
+l4: lda tmp
     sta (scr),y
     lda curcol
     sta (col),y
 
-    ; Next row.
+    ;; Next row.
 n:  inc scry
     inc tmp                 ; To next sprite char.
     lda next_line_offsets,y
@@ -556,7 +562,7 @@ n:  inc scry
     dec tmp2
     bne -l
 
-    ; Next column.
+    ;; Next column.
     inc scrx
     inc tmp3
     dec sprite_cols_on_screen
