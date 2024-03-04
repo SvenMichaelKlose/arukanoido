@@ -28,7 +28,7 @@ first_sprite_char   = 1
 foreground          = @(half framechars)
 bg_start            = @(+ framechars foreground)
 background          = @(half bg_start)
-last_priority_char  = 3
+last_priority_char  = 4
 
 ;;; Game settings
 
