@@ -2,6 +2,11 @@ sprites_nchars:    @(gen-sprite-nchars)
 
 ; Draw sprite, masking out the background
 draw_huge_sprite:
+
+    ;;;;;;;;;;;;;;;;;
+    ;;; Configure ;;;
+    ;;;;;;;;;;;;;;;;;
+
     lda sprites_c,x
     sta curcol
 
@@ -70,6 +75,10 @@ n:
     lda sprite_rows_on_screen
     sta sprites_sh,y
 
+    ;;;;;;;;;;;;;;;;;;;;;;
+    ;;; Allocate chars ;;;
+    ;;;;;;;;;;;;;;;;;;;;;;
+
     ;; Get char adress.
     ldy next_sprite_char
     sty sprite_char
@@ -95,6 +104,10 @@ n:
 if @*show-cpu?*
     inc $900f
 end
+
+    ;;;;;;;;;;;;;;;;;;
+    ;;; Init chars ;;;
+    ;;;;;;;;;;;;;;;;;;
 
     ;; Copy existing graphics into allocated chars.
     lda sprite_cols_on_screen
@@ -214,7 +227,10 @@ n:  dec tmp2
     dec tmp3
     bne -l2b
 
-    ;;; Draw sprite graphics into prepared chars.
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;; Draw sprite into chars ;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
     ;; Get destination address.
     lda sprite_y
     and #%111
@@ -489,7 +505,10 @@ l2: lda (s),y
     inc dh
     bcs +l      ; (jmp)
 
-    ;;; Plot the filled chars to screen.
+    ;;;;;;;;;;;;;;;;;;
+    ;;; Plot chars ;;;
+    ;;;;;;;;;;;;;;;;;;
+
 plot_chars:
 if @*show-cpu?*
     inc $900f
