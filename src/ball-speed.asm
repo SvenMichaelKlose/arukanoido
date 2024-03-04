@@ -46,7 +46,7 @@ adjust_ball_speed:
 n:  lda sprites_d,x
     clc
     adc #64
-    bmi -l
+    bpl -l
 
 increase_ball_speed:
     lda #0
