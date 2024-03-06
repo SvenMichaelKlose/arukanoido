@@ -137,7 +137,7 @@ retry:
     beq +n
     0
     stzmw d <gfx_obstacles >gfx_obstacles
-    stzw c $00 $09
+    stzw c $00 $08
     call <clrram >clrram
     0
 n:

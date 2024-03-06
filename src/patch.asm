@@ -19,7 +19,7 @@ l:  stx $0400
     bne +n
     dex
     bne -l
-    inc has_3k
+;    inc has_3k
 n:  sty $0400
 
     ; Detect BLK3.

@@ -13,6 +13,7 @@ exm_buffers     = $be00     ; 2x256 bytes
 colors          = $9400
 
 txt_tmp         = bricks
+preshifted_size = @(- charset_addrs_l the_end)
 
 ;;; Charset settings
 
