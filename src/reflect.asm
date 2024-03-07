@@ -49,14 +49,16 @@ o:  lda sprites_d,x         ; Are we flying upwards?
     adc #64
     bpl +n                  ; No…
     ldy ball_y
-    cpy arena_y
-    beq +j                  ; Reflect from open obstacle gate…
-    lda ball_x
     dey
+    cpy arena_y
+    beq +m                  ; Reflect from open obstacle gate…
+    lda ball_x
     jsr get_soft_collision
     beq +r
     lda #128
     bne +l ; (jmp)
+m:  jsr scraddr
+    jmp +j
 
     ; Bounce back bottom.
 n:  lda sprites_d,x         ; Are we flying downwards?
