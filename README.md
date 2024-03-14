@@ -17,17 +17,6 @@ Don't play the WAV file without the volume turned down unless you
 want your ears zonked.  Instead, you can record it on a music
 cassette and slap that into a real VICs C2N drive.
 
-## Cartidge version
-
-Currently not working.
-
-The IMG files are the banks of the cartridge version.  You can
-fire them up with VICE like this:
-
-```sh
-xvic -cart2 arukanoido.img.aa -cart4 arukanoido.img.ab -cart6 arukanoido.img.ac -cartA arukanoido.img.ad
-```
-
 # Controls
 
 ## Joystick or paddles
@@ -46,15 +35,6 @@ If you're playing this in an emulator with a mouse as a replacement
 for paddles, make sure to switch off your desktop's mouse
 acceleration or it'll drive you nuts!
 
-## Keyboard
-
-Keyboard controls need a rewrite and are kind of dysfunctional
-when playing.
-
-* S, J: Move Vaus left.
-* D. K: Move Vaus right.
-* SPACE: Fire – doesn't work in combination with other key tough. :(
-
 ### Title screen keys
 
 * 1: Start one player game.
@@ -72,8 +52,7 @@ when playing.
 * C: Display the current charset (NTSC only).
 * M: Toggle VIC/original sounds.
 
-
-# Keys for game testers
+# Keys for game testers (compiled with demo mode enabled)
 
 * N: Warop to next level.
 * 0: Drop random bonuses.
@@ -87,16 +66,10 @@ when playing.
 * C: Pause game nad how character map.
 * L: Set number of lives to ten.
 
-
 # More information
 
-Arukanoido is being discussed and developed on the VIC–20 Denial forum
-where you can also get the latest demo version:
+Arukanoido is being discussed on the VIC–20 Denial forum:
 http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?t=3752
-
-If you wanna complain or are in for crazy small talk just mail to
-Sven Michael Klose <pixel@hugbox.org>.
-
 
 # Contributions
 
@@ -104,7 +77,7 @@ This project has been initiated by Sabine Kuhn <eimer@devcon.net>.
 
 Code and graphics mostly done by Sven Michael "pixel" Klose 
 <pixel@hugbox.org>.  Tiles and sprites have been created with beamrider's
-VIC—20 Screen and Character Designer:
+VIC—20 Screen and Character Designer and VIM.
 http://sleepingelephant.com/ipw-web/bulletin/bb/viewtopic.php?f=14&t=7133
 
 VIC conversions of the original tunes and sounds have been contributed
