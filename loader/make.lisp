@@ -16,9 +16,9 @@
 ;(var *pulse-short*      #x12)
 ;(var *pulse-diff*       #x0a)
 
-;; Current test point
-(var *pulse-short*      #x12)
-(var *pulse-diff*       #x0a)
+;; Current test point.
+(var *pulse-short*      #x13)
+(var *pulse-diff*       #x0b)
 
 ;; Fastest working in VICE.
 ;(var *pulse-short*      #x10)

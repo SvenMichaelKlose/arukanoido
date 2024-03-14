@@ -2,6 +2,7 @@ medium_pulse    = @(* 8 *pulse-medium*)
 measuring_pulse = @(* 8 *pulse-timer*)
 
 c2nwarp_start:
+    ;; Disable interrups.
     sei
     lda #$7f
     sta $911e
@@ -43,14 +44,17 @@ tape_leader:
     asl                     ; Move underflow bit into carry.
     asl
     bcc +l  ; Short pulse marking end of leader…
+
+    ;; Count down leader length.
     dec tape_leader_countdown
+    ; Do not underflow.
     bpl +n
     inc tape_leader_countdown
 n:  bpl done ; (jmp)
 
     ;; Check if leader was long enough.
 l:  lda tape_leader_countdown
-    bne tape_restart_leader     ; Leader too short.
+    bne tape_restart_leader     ; Too short…
 
     ;; Init bit read.
     lda #8
@@ -86,33 +90,35 @@ tape_data:
     bne -done
 
 byte_complete:
-    ; Reset bit read.
+    ;; Reset bit read.
     lda #8
     sta tape_bit_counter
 
-    ; Save byte to its destination.
+    ;; Save byte to its destination.
     lda tape_current_byte
     ldy #0
     sta (tape_ptr),y
 
-    ; Advance destination address.
+    ;; Advance destination address.
     inc tape_ptr
     bne +n
     inc @(++ tape_ptr)
 
-    ; Decrement total number of bytes for progress bar or countdown.
+    ;; Decrement total number of bytes for multi-block loads.
 n:  dec total_counter
     bne +n
     dec @(++ total_counter)
 
-    ; Countdown current block.
+    ;; Countdown current block.
 n:  dec tape_counter
     bne -done
     dec @(++ tape_counter)
     bne -done
 
+    ;; Turn interrupts back off.
     sei
-    lda #$7f    ; Turn off tape pulse interrupt.
+    lda #$7f
     sta $912e
     sta $912d
+
     jmp (tape_callback)
