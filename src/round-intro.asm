@@ -43,12 +43,6 @@ round_intro:
     pla
     jsr play_sound
 
-    ;; Init text start.
-    pla
-    sta sl
-    pla
-    sta sh
-
     ;; Let ship engines flicker.
 if @*has-digis?*
     lda is_playing_digis
@@ -61,6 +55,12 @@ n:  lda curchar
     sta tmp4
 
     jsr unblank_screen
+
+    ;; Init text start.
+    pla
+    sta sl
+    pla
+    sta sh
 
     ;; Home position of page.
 l5: ldx playfield_yc
@@ -85,10 +85,13 @@ end
 l2: ldy #0
     lda (s),y
     bmi +n
+    pha
     jsr print4x8_dynalloc
+    pla
 n:  inc sl
     bne +n
     inc sh
+    bne +o
 
     ;; Handle newline.
 n:  cmp #254
@@ -104,8 +107,8 @@ n:  cmp #253
     cmp #255
     beq +m      ; End of page.
 
-    ;; End intro on fire.
-    lda level
+    ;; End intro on fire press.
+o:  lda level
     cmp #@(+ 1 doh_level)
     beq +n
     jsr test_fire_and_release
