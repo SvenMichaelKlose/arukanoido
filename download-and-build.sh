@@ -5,6 +5,7 @@
 #
 # You must have git, sbcl and sox installed.
 # Debian-based: sudo apt install git sbcl sox
+# Some packages might be missing by accident.
 
 set -e
 
