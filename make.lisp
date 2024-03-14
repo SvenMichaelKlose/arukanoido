@@ -2,14 +2,14 @@
 
 ; CONFIGURE HERE!
 
-(const *versions* '(:prg :tap :wav)) ;:shadowvic))
+(const *versions* '(:prg :tap :wav :shadowvic))
 ;(const *versions* '(:prg))
 
-(const *demo?* t)               ; Limit to first eight levels.
-(const *debug?* t)              ; Include self-tests and features.
-(const *make-arcade-sounds?* nil) ; Lengthy process.
+(const *demo?* nil)             ; Limit to first eight levels.
+(const *debug?* nil)            ; Include self-tests and features.
+(const *make-arcade-sounds?* t) ; Lengthy process.
 (var *has-digis?* t)            ; Play optional original arcade sounds.
-(var *show-cpu?* nil)               ; Show time spent in game logic (NTSC!).
+(var *show-cpu?* nil)           ; Show time spent in game logic (NTSC!).
 (var *dejitter-paddles?* nil)
 
 
@@ -295,6 +295,11 @@
 
 (fn make-tap ()
   (apply #'assemble-files
+         "obj/primary-loader.prg"
+         `("primary-loader/zeropage.asm"
+           "bender/vic-20/basic-loader.asm"
+           "primary-loader/main.asm"))
+   (apply #'assemble-files
          "obj/tape-loader.prg"
          `("src/music-index.asm"
            "loader/zeropage.asm"
