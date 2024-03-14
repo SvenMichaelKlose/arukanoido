@@ -52,7 +52,7 @@ acceleration or it'll drive you nuts!
 * C: Display the current charset (NTSC only).
 * M: Toggle VIC/original sounds.
 
-# Keys for game testers (compiled with demo mode enabled)
+# Keys for game testers (compiled with debug mode enabled)
 
 * N: Warop to next level.
 * 0: Drop random bonuses.
