@@ -6,16 +6,14 @@ ARUKANOIDO – an Arkanoid clone for the Commodore VIC-20
 
 ARUKANOIDO is a clone of the famous arcade game "Arkanoid" for the
 Commodore VIC–20 with at least 24K memory expansion.  Additional
-3K will give you faster graphics and +32K will enable original
-arcade sounds.
-
-This demo comes with the first ten of 33 levels.
++32K will enable original arcade sounds (when debugged).
 
 ## WAV file for real tapes
 
 Don't play the WAV file without the volume turned down unless you
 want your ears zonked.  Instead, you can record it on a music
-cassette and slap that into a real VICs C2N drive.
+cassette and slap that into a real VICs C2N drive.  Loads at
+5.6kbit/s.
 
 # Controls
 
