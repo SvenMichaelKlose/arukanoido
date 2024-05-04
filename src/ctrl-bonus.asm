@@ -23,7 +23,7 @@ ctrl_bonus:
     ;; Test on collision with the Vaus.
     lda #is_vaus
     jsr find_hit
-    bcs +m              ; Nothing hit…
+    bcs no_bonus
 
     lda #0
     sta removed_bricks_for_bonus
@@ -75,7 +75,8 @@ n:  lda #0
     jsr +j
     rts
 
-m:  lda #1
+no_bonus:
+    lda #1
     jmp sprite_down
 j:  jmp (d)
 
@@ -173,12 +174,13 @@ apply_bonus_d:
     ldy #@(-- num_sprites)
 l:  lda sprites_i,y
     and #is_ball
-    bne +f
+    bne duplicate_ball
     dey
     bpl -l
 
     ;; Add two new balls with +/- 45° change in direction.
-f:  lda sprites_x,y                     ; Copy coordinates of ball.
+duplicate_ball:
+    lda sprites_x,y                     ; Copy coordinates of ball.
     sta @(+ ball_init sprite_init_x)
     lda sprites_y,y
     sta @(+ ball_init sprite_init_y)

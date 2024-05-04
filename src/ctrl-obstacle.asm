@@ -66,7 +66,7 @@ l:  cmp used_obstacle_directions,y
     iny
     cpy #@(- used_obstacle_directions_end used_obstacle_directions)
     bne -l
-w:  jmp -w
+    ; Should not be reached.
 r:  rts
 
 turn_obstacle_clockwise:
@@ -206,7 +206,7 @@ n:  dey
 r:  rts
 
     ; Animate pre-shifted graphics.
-l2:  lda sprites_pgl,x
+l2: lda sprites_pgl,x
     clc
     adc #@(* 8 30)
     sta sprites_pgl,x
@@ -230,14 +230,15 @@ ctrl_obstacle_move_in:
     jsr animate_obstacle
     lda sprites_y,x
     cmp arena_y
-    bcs +n
+    bcs out_of_gate
 
     ; Move obstacle in.
     inc sprites_y,x
 r:  rts
 
     ; Obstacle is out of its gate.
-n:  lda #2  ; Tell to close gate.
+out_of_gate:
+    lda #2  ; Tell to close gate.
     sta do_animate_obstacle_gate
     lda #<ctrl_obstacle_pacing
     ldy #>ctrl_obstacle_pacing
@@ -255,7 +256,6 @@ ctrl_obstacle_circling:
     jmp half_step_smooth
 
 decrement_counter:
-    ; Do it;
     lda sprites_d2,x
     and #%00011111
     tay
@@ -312,7 +312,8 @@ start_circling:
     sta sprites_d2,x
     lda #@(+ 128 direction_l)
     sta sprites_d,x
-k:  lda #<ctrl_obstacle_circling
+set_circling:
+    lda #<ctrl_obstacle_circling
     ldy #>ctrl_obstacle_circling
     jmp set_obstacle_controller
 
@@ -321,7 +322,7 @@ m:  lda #%11111111
     sta sprites_d2,x
     lda #@(+ 128 direction_r)
     sta sprites_d,x
-    bne -k  ; (jmp)
+    bne set_circling ; (jmp)
 
 ctrl_obstacle_pacing:
     jsr animate_obstacle

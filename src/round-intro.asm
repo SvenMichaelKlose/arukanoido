@@ -50,7 +50,7 @@ if @*has-digis?*
 end
     jsr init_raster
 
-    ;; Save first char value for each page
+    ;; Save first char index to restart page.
 n:  lda curchar
     sta tmp4
 
@@ -62,8 +62,9 @@ n:  lda curchar
     pla
     sta sh
 
-    ;; Home position of page.
-l5: ldx playfield_yc
+    ;; Go to home position of page.
+round_intro_home:
+    ldx playfield_yc
     inx
     stx scry
     lda tmp4
@@ -72,26 +73,32 @@ l5: ldx playfield_yc
     sta curcol
 
     ;; Print line.
-l:
+round_intro_line:
 if @*shadowvic?*
     $22 $02         ; Wait for retrace.
 end
+
     ; Move to line start.
     lda #0
     sta scrx2
     jsr scrcoladdr
     jsr get_curchar_addr
-    ; Print char.
-l2: ldy #0
+
+round_intro_char:
+    ; Get char/code.
+    ldy #0
     lda (s),y
-    bmi +n
+    bmi +n  ; It's a code...
+
+    ; Draw char.
     pha
     jsr print4x8_dynalloc
     pla
+
+    ; Step to next char.
 n:  inc sl
     bne +n
     inc sh
-    bne +o
 
     ;; Handle newline.
 n:  cmp #254
@@ -99,36 +106,42 @@ n:  cmp #254
     inc scry
     inc scry
     inc curchar
-    jmp -l
+    jmp round_intro_line
 
     ;; Handle end of text.
 n:  cmp #253
     beq +r      ; No more pages.
     cmp #255
-    beq +m      ; End of page.
+    beq end_of_page  ; End of page.
 
-    ;; End intro on fire press.
-o:  lda level
+    ;; End intro on fire.
+    lda level
+    ; But not when games has been finished.
     cmp #@(+ 1 doh_level)
     beq +n
     jsr test_fire_and_release
     bcs +r
+
+    ; Delay after each char.
 n:  ldx #2
     jsr wait
-    jmp -l2
+
+    jmp round_intro_char
 
     ;; End of text page.
-m:  ldx #15
+end_of_page:
+    ldx #15
     jsr wait
     lda level
     cmp #@(+ 1 doh_level)
-    bne +l3
+    bne +n
     ldx #60
     jsr wait
-l3: jsr clear_intro_text
-    jmp -l5
+n:  jsr clear_intro_text
+    jmp round_intro_home
 
     ;; End of intro.
+    ; Back to game IRQ handling.
 r:  jmp init_irq
 
 make_stars:

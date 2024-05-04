@@ -77,7 +77,7 @@ game:
     lda #snd_theme
     ldx #<txt_round_intro
     ldy #>txt_round_intro
-    ;jsr round_intro
+    jsr round_intro
 n:  jsr clear_data
     jsr preshift_common_sprites
     jsr init_screen

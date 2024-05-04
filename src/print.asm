@@ -1,6 +1,5 @@
 ; d: Destination
 ; A: char
-; C: 0: left half, 1: right half
 print4x8:
     stx p_x
     sty p_y
@@ -105,7 +104,7 @@ r:  ldx p_x
 print4x8_dynalloc:
     pha
 
-    ; Clear char if left half is being printed to.
+    ; Line position to screen-X.
     lda scrx2
     lsr
     sta scrx

@@ -68,6 +68,7 @@ l:  lda sprites_i,x
     jsr ctrl_ball_subpixel
 n:  dec ctrl_ball_tmp
     bne -l
+
 r:  rts
 
 jmp_check_reflection:
