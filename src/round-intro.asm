@@ -49,9 +49,12 @@ if @*has-digis?*
     bne +n
 end
     jsr init_raster
+if @*has-digis?*
+n:
+end
 
     ;; Save first char index to restart page.
-n:  lda curchar
+    lda curchar
     sta tmp4
 
     jsr unblank_screen
@@ -133,6 +136,7 @@ end_of_page:
     ldx #15
     jsr wait
     lda level
+    ; (Wait a bit longer if extro.)
     cmp #@(+ 1 doh_level)
     bne +n
     ldx #60
@@ -158,12 +162,15 @@ l:  lda bg_stars,x
     ; Init loop for 128 stars.
     lda #128
     sta tmp2
+
     ; Make random position.
 l1: jsr random
+    and #31 ; (Reduce probability of retries.)
     cmp #15
-    bcs -l1
+    bcs -l1 ; Over the right. Try again...
     sta scrx
 l:  jsr random
+    and #31 ; (Reduce probability of retries.)
     cmp playfield_yc
     bcc -l               ; Don't plot into score area…
     cmp yc_max
@@ -188,6 +195,7 @@ l:  jsr random
     jsr plot
     dec tmp2
     bne -l1
+    ; (jmp clear_intro_text)
 
 ;; Clear text lines (including stars, I'm afraid).
 clear_intro_text:
