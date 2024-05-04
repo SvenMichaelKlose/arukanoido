@@ -359,10 +359,9 @@ p:  jmp plot_chars
     ;; Draw sprite column.
 turbo_preshift:
     dec overkill
-l2: ldy sprite_lines
-l:  lda (s),y
-    sta (d),y
-    dey
+turbo_column:
+    ldy sprite_lines
+turbo_char:
     lda (s),y
     sta (d),y
     dey
@@ -384,7 +383,10 @@ l:  lda (s),y
     lda (s),y
     sta (d),y
     dey
-    bpl -l
+    lda (s),y
+    sta (d),y
+    dey
+    bpl turbo_char
 
     dec tmp2
     beq +p
@@ -403,9 +405,9 @@ n:
     sec
     adc sprite_lines
     sta sl
-    bcc -l2
+    bcc turbo_column
     inc sh
-    bcs -l2     ; (jmp)
+    bcs turbo_column ; (jmp)
 
 slow_shift:
     ;; Get sprite graphics.
@@ -501,9 +503,9 @@ l2: lda (s),y
     clc
     adc sprite_lines_on_screen
     sta dl
-    bcc +l
+    bcc -l
     inc dh
-    bcs +l      ; (jmp)
+    bcs -l      ; (jmp)
 
     ;;;;;;;;;;;;;;;;;;
     ;;; Plot chars ;;;
