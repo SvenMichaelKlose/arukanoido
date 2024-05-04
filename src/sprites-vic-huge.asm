@@ -579,57 +579,59 @@ end
     lda #0
     sta tmp3
 
-    ;; Do a column.
-l2: lda sprite_scry
+plot_column:
+    lda sprite_scry
     sta scry
     lda sprite_rows_on_screen
     sta tmp2
     ldy tmp3
 
-l:  ;; Check if position is plottable.
+plot_row:
+    ;; Check if position is plottable.
     lda scry
     cmp playfield_yc
-    bcc +n                  ; Don't plot over top…
+    bcc dont_plot       ; Don't plot over top…
     cmp screen_rows
-    bcs +n                  ; Don't plot over bottom…
+    bcs dont_plot       ; Don't plot over bottom…
     lda scrx
     cmp #playfield_columns
-    bcs +n                  ; Don't plot over right…
+    bcs dont_plot       ; Don't plot over right…
 
     ;; Check if on a background char.
     ; Plot over background if DOH projectile.
     lda sprites_i,x
     and #is_doh_obstacle
-    bne +l3
+    bne +n
     lda (scr),y
     and #foreground
-    bne +n                  ; Do not plot over background.
+    bne dont_plot       ; Do not plot over background.
 
     ;; Plot.
     ; Do not overwrite priority chars.
-l3: lda (scr),y
+n:  lda (scr),y
     eor spriteframe
-    beq +l4
+    beq +n
     cmp #last_priority_char + 1
-    bcc +n
-l4: lda tmp
+    bcc dont_plot
+
+n:  lda tmp
     sta (scr),y
     lda curcol
     sta (col),y
 
-    ;; Next row.
-n:  inc scry
+dont_plot:
+    inc scry
     inc tmp                 ; To next sprite char.
     lda next_line_offsets,y
     tay
     dec tmp2
-    bne -l
+    bne plot_row
 
     ;; Next column.
     inc scrx
     inc tmp3
     dec sprite_cols_on_screen
-    bne -l2
+    bne plot_column
 
 if @*show-cpu?*
     dec $900f
