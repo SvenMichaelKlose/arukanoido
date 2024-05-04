@@ -75,6 +75,8 @@ n:
     lda sprite_rows_on_screen
     sta sprites_sh,y
 
+; #########################################################
+
     ;;;;;;;;;;;;;;;;;;;;;;
     ;;; Allocate chars ;;;
     ;;;;;;;;;;;;;;;;;;;;;;
@@ -105,6 +107,8 @@ if @*show-cpu?*
     inc $900f
 end
 
+; #########################################################
+
     ;;;;;;;;;;;;;;;;;;
     ;;; Init chars ;;;
     ;;;;;;;;;;;;;;;;;;
@@ -115,12 +119,14 @@ end
     lda sprite_scrx
     sta scrx
 
-l2: lda sprite_rows_on_screen
+init_next_row:
+    lda sprite_rows_on_screen
     sta tmp2
     lda sprite_scry
     sta scry
 
-l:  ; Get screen address.
+init_next_char:
+    ; Get screen address.
     ldy scry
     lda line_addresses_l,y
     sta scr
@@ -129,24 +135,24 @@ l:  ; Get screen address.
 
     ldy scrx
     lda (scr),y
-    beq +m
+    beq init_clear
     tay
 
     ; DOH char? (Any frame.)
     and #background
     cmp #background
-    beq +q      ; Yes. Copy…
+    beq init_copy   ; Yes. Copy…
 
     ; Char of current frame?
     tya
-    beq +m
+    beq init_clear
     and #framemask
     cmp spriteframe
-    beq +q      ; Yes, Copy…
+    beq init_copy   ; Yes, Copy…
 
     ; DOH char to mix into?
     lda is_doh_level
-    beq +m
+    beq init_clear
     lda scr
     sta sl
     lda @(++ scr)
@@ -156,12 +162,13 @@ l:  ; Get screen address.
     lda (s),y
     and #background
     cmp #background
-    bne +m      ; No. Clear…
+    bne init_clear ; No. Clear…
     lda (s),y   ; Copy DOH char.
     tay
 
+init_copy:
     ; Get char address to copy from.
-q:  lda charset_addrs_l,y
+    lda charset_addrs_l,y
     sta sl
     lda charset_addrs_h,y
     sta sh
@@ -190,12 +197,15 @@ q:  lda charset_addrs_l,y
     iny
     lda (s),y
     sta (d),y
-    jmp +n
+    jmp init_done_char
 
-l2b:bne -l2     ; (jmp)
-l3: bne -l      ; (jmp)
+j_init_next_char:
+    bne init_next_char  ; (jmp)
+j_init_next_row:
+    bne init_next_row   ; (jmp)
 
-m:  lda #0
+init_clear:
+    lda #0
     tay
     sta (d),y
     iny
@@ -213,7 +223,8 @@ m:  lda #0
     iny
     sta (d),y
 
-n:  inc scry
+init_done_char:
+    inc scry
     lda dl
     clc
     adc #8
@@ -221,11 +232,13 @@ n:  inc scry
     bcc +n
     inc dh
 n:  dec tmp2
-    bne -l3
+    bne j_init_next_char
 
     inc scrx
     dec tmp3
-    bne -l2b
+    bne j_init_next_row
+
+; #########################################################
 
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ;;; Draw sprite into chars ;;;
@@ -251,11 +264,15 @@ end
 
     ;; Get pre-shifted data.
     lda sprites_pgh,x
-    bne +l
+    bne +n
     jmp slow_shift          ; There is none…
-l:  sta sh
+n:  sta sh
     lda sprites_pgl,x
     sta sl
+
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;; PRE-SHIFTED SPRITES ;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     ; Make number of chars number of bytes.
     ldy sprites_dimensions,x
@@ -270,7 +287,7 @@ l:  sta sh
     ; Get number of times to shift.
     lda sprite_x
     and #%111
-    beq +l2             ; No shift. Ready to draw…
+    beq regular_column  ; No shift. Ready to draw…
     ldy curcol
     bpl +n
     lsr                 ; Half X resolution for multicolor.
@@ -280,16 +297,17 @@ n:  tay
     lda sl
     clc
     sbc sprite_lines
-    bcs +l4
+    bcs multiply_by_shifts
     dec sh
 
     ; Multiply bytes by shifts.
-l4: clc
+multiply_by_shifts:
+    clc
     adc tmp3
-    bcc +n3
+    bcc +n
     inc sh
-n3: dey
-    bne -l4
+n:  dey
+    bne multiply_by_shifts
     sta sl
 
     lda sprite_cols_on_screen
@@ -297,12 +315,14 @@ n3: dey
     lda overkill
     bne turbo_preshift
 
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;; REGULAR PRE-SHIFTED (OR) ;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
     ;; Draw sprite column.
-l2: ldy sprite_lines
-l:  lda (s),y
-    ora (d),y
-    sta (d),y
-    dey
+regular_column:
+    ldy sprite_lines
+regular_char:
     lda (s),y
     ora (d),y
     sta (d),y
@@ -331,10 +351,14 @@ l:  lda (s),y
     ora (d),y
     sta (d),y
     dey
-    bpl -l
+    lda (s),y
+    ora (d),y
+    sta (d),y
+    dey
+    bpl regular_char
 
     dec tmp2
-    beq +p
+    beq j2_plot_chars
 
     ;; Step to next screen column.
     lda dl
@@ -350,11 +374,16 @@ n:
     sec
     adc sprite_lines
     sta sl
-    bcc -l2
+    bcc regular_column
     inc sh
-    bcs -l2     ; (jmp)
+    bcs regular_column ; (jmp)
 
-p:  jmp plot_chars
+j2_plot_chars:
+    jmp plot_chars
+
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;; TURBO (PRE-SHIFTED COPY) ;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     ;; Draw sprite column.
 turbo_preshift:
@@ -389,7 +418,7 @@ turbo_char:
     bpl turbo_char
 
     dec tmp2
-    beq +p
+    beq j_plot_chars
 
     ;; Step to next screen column.
     lda dl
@@ -409,6 +438,10 @@ n:
     inc sh
     bcs turbo_column ; (jmp)
 
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;; SLOW MANUALLY SHIFTED ;;;
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 slow_shift:
     ;; Get sprite graphics.
     lda sprites_gl,x
@@ -418,7 +451,7 @@ slow_shift:
 
     lda sprites_i,x
     and #is_bonus
-    bne no_shift
+    bne direct_copy
 
     ;; Configure the blitter.
     lda sprite_x
@@ -428,8 +461,9 @@ slow_shift:
     lda negate7,y
     sta @(++ blit_right_addr)
 
+slow_column:
     ;; Draw left half of sprite column.
-l:  ldy sprite_lines
+    ldy sprite_lines
     jsr _blit_right_loop
 
     ;; Step to next screen column.
@@ -451,23 +485,29 @@ n:
 
     ;; Break here when all columns are done.
     dec tmp2
-p:  beq +plot_chars
+j_plot_chars:
+    beq +plot_chars
 
     ;; Step to next sprite graphics column.
     lda sl
     sec
     adc sprite_lines
     sta sl
-    bcc -l
+    bcc slow_column
     inc sh
-    bcs -l      ; (jmp)
+    bcs slow_column ; (jmp)
 
-no_shift:
+    ;;;;;;;;;;;;;;;;;;;
+    ;;; DIRECT COPY ;;;
+    ;;;;;;;;;;;;;;;;;;;
+
     ;; Draw column.
-l:  lda sprite_rows
+direct_copy:
+    lda sprite_rows
     sta tmp3
     ldy #0
-l2: lda (s),y
+direct_char:
+    lda (s),y
     sta (d),y
     iny
     lda (s),y
@@ -492,7 +532,7 @@ l2: lda (s),y
     sta (d),y
     iny
     dec tmp3
-    bne -l2
+    bne direct_char
 
     ;; Break here when all columns are done.
     dec tmp2
@@ -503,9 +543,11 @@ l2: lda (s),y
     clc
     adc sprite_lines_on_screen
     sta dl
-    bcc -l
+    bcc direct_copy
     inc dh
-    bcs -l      ; (jmp)
+    bcs direct_copy ; (jmp)
+
+; #########################################################
 
     ;;;;;;;;;;;;;;;;;;
     ;;; Plot chars ;;;
