@@ -39,6 +39,7 @@ default_ball_speed      = 6
 min_ball_speed          = 4
 max_ball_speed          = 15
 max_ball_speed_joystick = 6
+max_ball_stickyness     = 64
 
 ball_width              = 3
 ball_height             = 5

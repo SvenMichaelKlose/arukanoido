@@ -70,14 +70,15 @@ n:  dec ctrl_ball_tmp
     bne -l
 r:  rts
 
-l:  jmp check_reflection
+jmp_check_reflection:
+    jmp check_reflection
 
 hit_vaus:
     ;; Ignore ball if it's not headed downwards.
     lda sprites_d,x
     sec
     sbc #64
-    bpl -l
+    bpl jmp_check_reflection
 
     ;; Get relative X position to Vaus
     ;; which is our reflection table index.
@@ -146,12 +147,14 @@ lose_ball:
     lda #snd_miss
     jmp play_sound
 
-    ;; Lose ball in Disruption Mode.
+    ;; Undo Disruption Mode if 1 ball left.
 n:  lda balls
     cmp #1
     bne +n
-    lda #0              ; Undo disruption mode.
+    lda #0
     sta mode
+
+    ;; Remove ball.
 n:  jmp remove_sprite
 
 ctrl_ball_subpixel:
@@ -201,23 +204,24 @@ check_reflection:
     ;; depending on round number.
 n:  lda sprites_y,x
     cmp ball_min_y
-    bne +n
+    bne regular_speed_adjustment
     ldy level
     lda @(-- ball_speeds_when_top_hit),y
     cmp ball_speed
-    bcc +n
+    bcc regular_speed_adjustment
     ldy is_using_paddle
-    bne +l
+    bne +n
     cmp #max_ball_speed_joystick
-    bcc +l
+    bcc +n
     lda #max_ball_speed_joystick
-l:  sta ball_speed
-    bne +l  ; (jmp)
+n:  sta ball_speed
+    bne handle_removed_brick ; (jmp)
 
-n:  jsr adjust_ball_speed
+regular_speed_adjustment:
+    jsr adjust_ball_speed
 
-    ;;; Handle removed brick.
-l:  lda has_removed_brick
+handle_removed_brick:
+    lda has_removed_brick
     beq +n
 
     ;; Handle DOH.
@@ -227,27 +231,28 @@ l:  lda has_removed_brick
     ;; Make bonus.
     lda mode
     cmp #mode_disruption    ; No bonuses in disruption mode.
-    beq +l
+    beq handle_reflection
     jsr make_bonus
-    jmp +l
+    jmp handle_reflection
 
     ;;; Divert ball if it got stuck.
 n:  lda has_hit_silver_brick
     ora has_hit_golden_brick
-    bne +f
+    bne maybe_stuck
     lda has_hit_brick
-    bne +f
+    bne maybe_stuck
     sta sprites_d2,x
-    beq +l                  ; (jmp)
-f:  inc sprites_d2,x
-    lda sprites_d2,x
-    cmp #64
-    bcc +l
+    beq handle_reflection ; (jmp)
 
-    ;; Divert ball as it had 64 hits with no effect.
+maybe_stuck:
+    inc sprites_d2,x    ; Increment stickyness.
+    lda sprites_d2,x
+    cmp #max_ball_stickyness
+    bcc handle_reflection
+
+    ;; Divert ball a step.
     lda #0
     sta sprites_d2,x
-
     ; Random pick if (counter) clock-wise.
     lda framecounter
     lsr
@@ -259,7 +264,8 @@ n:  lda sprites_d,x
     jsr turn_counterclockwise
 l2: sta sprites_d,x
 
-l:  jsr apply_reflection
+handle_reflection:
+    jsr apply_reflection
 
 play_reflection_sound:
     lda has_hit_brick
@@ -267,16 +273,25 @@ play_reflection_sound:
     lda is_doh_level
     beq +n
     lda #snd_hit_doh
-    bne +l  ; (jmp)
+    bne jmp_play_sound ; (jmp)
     ; Special sound for gold or silver brick.
 n:  lda has_hit_golden_brick
     ora has_hit_silver_brick
     beq +n
     lda #snd_reflection_silver
-    bne +l  ; (jmp)
+    bne jmp_play_sound  ; (jmp)
     ; Regular.
 n:  lda #snd_reflection_high
-l:  jmp play_sound
+jmp_play_sound:
+    jmp play_sound
+
+;;; Make first ball of a round.
+make_ball:
+    ldy #@(- ball_init sprite_inits)
+    jsr add_sprite
+    sta caught_ball ; (Just in case.)
+    tax
+    lda #59
 
 ;;; Make first ball of a round.
 make_ball:
