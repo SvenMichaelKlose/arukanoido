@@ -1,8 +1,8 @@
 (= *model* :vic-20+xk)
 
 ;; Educated guess for comprimise between speed and durability (decades).
-;(var *pulse-short*      #x20)
-;(var *pulse-medium*     (* 2 *pulse-short*))
+(var *pulse-short*      #x20)
+(var *pulse-diff*       #x20)
 ;(var *pulse-long*       (* 3 *pulse-short*))
 
 ;; Fast but started failing after rewiring equipment.
@@ -17,8 +17,8 @@
 ;(var *pulse-diff*       #x0a)
 
 ;; Current test point.
-(var *pulse-short*      #x13)
-(var *pulse-diff*       #x0b)
+;(var *pulse-short*      #x12)
+;(var *pulse-diff*       #x0a)
 
 ;; Fastest working in VICE.
 ;(var *pulse-short*      #x10)
