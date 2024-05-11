@@ -24,8 +24,12 @@ tmp6:       0
 ctrl_ball_tmp: 0
 
 ;;; Screen access
-scr:        0 0 ; Screen pointer (line start)
-col:        0 0 ; Colour RAM pointer
+scr:            ; Screen pointer (line start)
+scrl:       0
+scrh:       0
+col:            ; Colour RAM pointer
+coll:       0
+colr:       0
 scrx:       8   ; Screen char X position
 scry:       0   ; Screen char Y position
 curchar:    0   ; Last allocated character
@@ -34,16 +38,18 @@ curcol:     0   ; Character colour
 ;;; Brick map
 brickp:     0 0
 
-;;; Printing text
+;;; 4x8 char X position
 scrx2:      0
 
 ;;; VCPU
-bcp:        0 0
-bca:        0 0
-num_args:   0
+bcp:        0 0 ; Code pointer
+bca:        0 0 ; Argument definition pointer
+; Saved registers. No flags.
 sra:        0
 srx:        0
 sry:        0
+; Instruction arguments.
+num_args:   0
 a0:         0
 a1:         0
 a2:         0
@@ -91,12 +97,12 @@ sprites_ih:         fill num_sprites
 sprites_sw:         fill @(* 2 num_sprites)
 
 ;;; Ball
-ball_x:               0
-ball_y:               0
-has_reflection:        0
+ball_x:         0
+ball_y:         0
+has_reflection: 0
 
 ;;; Reflection
-side_degrees:         0
+side_degrees:   0
 
 ;;; Decompression
 get_crunched_byte_tmp:  0
@@ -351,8 +357,8 @@ line_addresses_l = $100 ;:   fill 33
 line_addresses_h:   fill 33
 
 ; For 'add_sprite'.
-sprite_inits:           fill @sprite_inits_size
-free_sprites:           fill @(++ num_sprites)
+sprite_inits:       fill @sprite_inits_size
+free_sprites:       fill @(++ num_sprites)
 
 init_bonus_d_direction:     0
 init_bonus_d_balls_to_add:  0
