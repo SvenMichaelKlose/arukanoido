@@ -18,7 +18,6 @@ remove_sprite:
     lda free_sprites
     sta free_sprites,x
     stx free_sprites
-    stx free_sprites
     dex
     rts
 
